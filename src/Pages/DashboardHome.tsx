@@ -4,7 +4,6 @@ import type React from "react"
 
 import { type FunctionComponent, useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import styles from "../Styles/DashboardHome.module.css"
 import Layout from "../App/Layout"
 import Sidebar from "./Sidebar"
 import { useAuth } from "../Authentication/auth-context"
@@ -12,7 +11,10 @@ import { useBooking } from "../Context/booking-context"
 
 // Success notification component
 const BookingNotification: React.FC = () => {
-  const [notification, setNotification] = useState<{ message: string; show: boolean }>({ message: "", show: false })
+  const [notification, setNotification] = useState<{ message: string; show: boolean }>({ 
+    message: "", 
+    show: false 
+  })
 
   useEffect(() => {
     const handleBookingSuccess = (event: CustomEvent) => {
@@ -27,9 +29,9 @@ const BookingNotification: React.FC = () => {
   if (!notification.show) return null
 
   return (
-    <div className={styles.successNotification}>
-      <div className={styles.notificationContent}>
-        <span className={styles.successIcon}>🎉</span>
+    <div className="fixed top-4 right-4 z-50 bg-green-100 border border-green-300 rounded-lg p-4 shadow-lg">
+      <div className="flex items-center gap-3">
+        <span className="text-2xl">🎉</span>
         <span>{notification.message}</span>
         <button onClick={() => setNotification((prev) => ({ ...prev, show: false }))}>×</button>
       </div>
@@ -73,9 +75,9 @@ const DashboardHome: FunctionComponent = () => {
   if (authLoading) {
     return (
       <Layout>
-        <div style={{ display: "flex" }}>
+        <div className="flex">
           <Sidebar />
-          <div style={{ flex: 1, padding: "40px", textAlign: "center" }}>
+          <div className="flex-1 p-10 text-center">
             <div>Loading...</div>
           </div>
         </div>
@@ -92,107 +94,112 @@ const DashboardHome: FunctionComponent = () => {
   return (
     <Layout>
       <BookingNotification />
-      <div style={{ display: "flex" }}>
+      <div className="flex">
         <Sidebar />
-        <div className={styles.dashboardHome}>
-          <div className={styles.dashboardWrapper}>
-            <div className={styles.dashboard1}>
-              <div className={styles.depth0Frame0}>
-                <div className={styles.depth1Frame0}>
-                  <div className={styles.depth2Frame1}>
-                    <div className={styles.depth3Frame02}>
+        <div className="flex-1 p-6 bg-gradient-to-br from-gray-100 to-blue-100 min-h-[calc(100vh-80px)] overflow-y-auto">
+          <div className="max-w-6xl mx-auto">
+            <div className="w-full">
+              <div className="w-full">
+                <div className="w-full">
+                  <div className="w-full">
+                    <div className="w-full">
                       {/* Welcome Section */}
-                      <div className={styles.welcomeSection}>
-                        <div className={styles.depth4Frame02}>
-                          <div className={styles.depth5Frame03}>
-                            <div className={styles.depth6Frame02}>
-                              <div className={styles.welcomeBack}>
+                      <div className="mb-8">
+                        <div className="w-full flex flex-row items-start justify-start p-4">
+                          <div className="flex flex-col items-start justify-start gap-3 min-w-72">
+                            <div className="w-full flex flex-col items-start justify-start">
+                              <div className="text-3xl font-bold text-gray-900 mb-2 bg-gradient-to-br from-amber-700 to-amber-600 bg-clip-text text-transparent">
                                 Welcome back, {user?.first_name || user?.username || "Traveler"}! 👋
                               </div>
                             </div>
-                            <div className={styles.depth6Frame11}>
-                              <div className={styles.readyForYour}>Ready for your next adventure?</div>
+                            <div className="w-full flex flex-col items-start justify-start text-lg text-gray-600">
+                              <div className="text-lg text-gray-600 font-normal">Ready for your next adventure?</div>
                             </div>
                           </div>
                         </div>
                       </div>
 
                       {/* Stats Cards */}
-                      <div className={styles.statsSection}>
-                        <div className={styles.statsGrid}>
-                          <div className={styles.statCard}>
-                            <div className={styles.statIcon}>📊</div>
-                            <div className={styles.statContent}>
-                              <div className={styles.statNumber}>{stats.totalBookings}</div>
-                              <div className={styles.statLabel}>Total Bookings</div>
+                      <div className="mb-8">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                          <div className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.08)] flex items-center gap-4 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
+                            <div className="text-3xl w-15 h-15 flex items-center justify-center bg-gradient-to-br from-amber-700 to-amber-600 rounded-xl text-white">📊</div>
+                            <div className="flex-1">
+                              <div className="text-3xl font-bold text-gray-900 my-0 mb-1">{stats.totalBookings}</div>
+                              <div className="text-sm text-gray-600 my-0 font-medium">Total Bookings</div>
                             </div>
                           </div>
-                          <div className={styles.statCard}>
-                            <div className={styles.statIcon}>✈️</div>
-                            <div className={styles.statContent}>
-                              <div className={styles.statNumber}>{stats.upcomingTrips}</div>
-                              <div className={styles.statLabel}>Upcoming Trips</div>
+                          <div className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.08)] flex items-center gap-4 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
+                            <div className="text-3xl w-15 h-15 flex items-center justify-center bg-gradient-to-br from-amber-700 to-amber-600 rounded-xl text-white">✈️</div>
+                            <div className="flex-1">
+                              <div className="text-3xl font-bold text-gray-900 my-0 mb-1">{stats.upcomingTrips}</div>
+                              <div className="text-sm text-gray-600 my-0 font-medium">Upcoming Trips</div>
                             </div>
                           </div>
-                          <div className={styles.statCard}>
-                            <div className={styles.statIcon}>💰</div>
-                            <div className={styles.statContent}>
-                              <div className={styles.statNumber}>{formatCurrency(stats.totalSpent)}</div>
-                              <div className={styles.statLabel}>Total Spent</div>
+                          <div className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.08)] flex items-center gap-4 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
+                            <div className="text-3xl w-15 h-15 flex items-center justify-center bg-gradient-to-br from-amber-700 to-amber-600 rounded-xl text-white">💰</div>
+                            <div className="flex-1">
+                              <div className="text-3xl font-bold text-gray-900 my-0 mb-1">{formatCurrency(stats.totalSpent)}</div>
+                              <div className="text-sm text-gray-600 my-0 font-medium">Total Spent</div>
                             </div>
                           </div>
-                          <div className={styles.statCard}>
-                            <div className={styles.statIcon}>🏆</div>
-                            <div className={styles.statContent}>
-                              <div className={styles.statNumber}>{stats.completedTrips}</div>
-                              <div className={styles.statLabel}>Completed Trips</div>
+                          <div className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.08)] flex items-center gap-4 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
+                            <div className="text-3xl w-15 h-15 flex items-center justify-center bg-gradient-to-br from-amber-700 to-amber-600 rounded-xl text-white">🏆</div>
+                            <div className="flex-1">
+                              <div className="text-3xl font-bold text-gray-900 my-0 mb-1">{stats.completedTrips}</div>
+                              <div className="text-sm text-gray-600 my-0 font-medium">Completed Trips</div>
                             </div>
                           </div>
                         </div>
                       </div>
 
                       {/* Recent Bookings */}
-                      <div className={styles.section}>
-                        <div className={styles.sectionHeader}>
-                          <h2 className={styles.sectionTitle}>
-                            <span className={styles.sectionIcon}>📋</span>
+                      <div className="mb-8">
+                        <div className="flex justify-between items-center mb-6">
+                          <h2 className="text-2xl font-bold text-gray-900 my-0 flex items-center gap-3">
+                            <span className="text-xl">📋</span>
                             Recent Bookings
                           </h2>
-                          <button className={styles.viewAllButton} onClick={() => navigate("/my-trips")}>
+                          <button className="bg-gradient-to-br from-amber-700 to-amber-600 text-white border-none py-3 px-6 rounded-lg font-semibold cursor-pointer transition-all duration-200 ease-out hover:-translate-y-px hover:shadow-[0_4px_12px_rgba(161,130,74,0.3)]" onClick={() => navigate("/my-trips")}>
                             View All
                           </button>
                         </div>
 
                         {isLoading ? (
-                          <div className={styles.loadingSpinner}>Loading bookings...</div>
+                          <div className="text-center py-10 text-gray-600 text-lg">Loading bookings...</div>
                         ) : recentBookings.length === 0 ? (
-                          <div className={styles.emptyState}>
-                            <div className={styles.emptyIcon}>📝</div>
+                          <div className="text-center py-10 text-gray-600">
+                            <div className="text-5xl mb-4 opacity-50">📝</div>
                             <p>No bookings yet</p>
-                            <button className={styles.ctaButton} onClick={() => navigate("/packages")}>
+                            <button className="bg-gradient-to-br from-amber-700 to-amber-600 text-white border-none py-3 px-6 rounded-lg font-semibold cursor-pointer mt-4 transition-all duration-200 ease-out hover:-translate-y-px hover:shadow-[0_4px_12px_rgba(161,130,74,0.3)]" onClick={() => navigate("/packages")}>
                               Book Your First Trip
                             </button>
                           </div>
                         ) : (
-                          <div className={styles.bookingsList}>
+                          <div className="flex flex-col gap-4">
                             {recentBookings.map((booking) => (
-                              <div key={booking.id} className={styles.bookingCard}>
-                                <div className={styles.bookingImage}>
+                              <div key={booking.id} className="bg-white rounded-xl p-5 shadow-[0_2px_12px_rgba(0,0,0,0.08)] flex items-center gap-4 transition-all duration-200 ease-out hover:-translate-y-px hover:shadow-[0_4px_20px_rgba(0,0,0,0.12)]">
+                                <div className="w-20 h-15 rounded-lg overflow-hidden flex-shrink-0">
                                   <img
                                     src={booking.image || "/placeholder.svg?height=60&width=80"}
                                     alt={booking.title}
+                                    className="w-full h-full object-cover"
                                   />
                                 </div>
-                                <div className={styles.bookingInfo}>
-                                  <div className={styles.bookingTitle}>{booking.title}</div>
-                                  <div className={styles.bookingLocation}>📍 {booking.location}</div>
-                                  <div className={styles.bookingDate}>
+                                <div className="flex-1">
+                                  <div className="text-lg font-semibold text-gray-900 mb-1">{booking.title}</div>
+                                  <div className="text-sm text-gray-600 mb-1">📍 {booking.location}</div>
+                                  <div className="text-sm text-gray-500">
                                     {formatDate(booking.startDate)} - {formatDate(booking.endDate)}
                                   </div>
                                 </div>
-                                <div className={styles.bookingMeta}>
-                                  <div className={styles.bookingPrice}>{formatCurrency(booking.price)}</div>
-                                  <div className={`${styles.bookingStatus} ${styles[booking.status]}`}>
+                                <div className="text-right flex-shrink-0">
+                                  <div className="text-lg font-bold text-amber-700 mb-1">{formatCurrency(booking.price)}</div>
+                                  <div className={`text-xs font-semibold py-1 px-2 rounded-sm text-transform-capitalize ${
+                                    booking.status === 'confirmed' ? 'bg-green-200 text-green-800' :
+                                    booking.status === 'pending' ? 'bg-yellow-200 text-yellow-800' :
+                                    booking.status === 'cancelled' ? 'bg-red-200 text-red-800' : ''
+                                  }`}>
                                     {booking.status ? booking.status.charAt(0).toUpperCase() + booking.status.slice(1) : 'Unknown'}
                                   </div>
                                 </div>
@@ -204,26 +211,26 @@ const DashboardHome: FunctionComponent = () => {
 
                       {/* Upcoming Trips */}
                       {upcomingTrips.length > 0 && (
-                        <div className={styles.section}>
-                          <div className={styles.sectionHeader}>
-                            <h2 className={styles.sectionTitle}>
-                              <span className={styles.sectionIcon}>🗓️</span>
+                        <div className="mb-8">
+                          <div className="flex justify-between items-center mb-6">
+                            <h2 className="text-2xl font-bold text-gray-900 my-0 flex items-center gap-3">
+                              <span className="text-xl">🗓️</span>
                               Upcoming Trips
                             </h2>
                           </div>
-                          <div className={styles.upcomingTripsGrid}>
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                             {upcomingTrips.map((trip) => (
-                              <div key={trip.id} className={styles.tripCard}>
+                              <div key={trip.id} className="bg-white rounded-xl overflow-hidden shadow-[0_2px_12px_rgba(0,0,0,0.08)] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_4px_20px_rgba(0,0,0,0.12)]">
                                 <img
                                   src={trip.image || "/placeholder.svg?height=120&width=200"}
                                   alt={trip.title}
-                                  className={styles.tripImage}
+                                  className="w-full h-30 object-cover"
                                 />
-                                <div className={styles.tripInfo}>
-                                  <div className={styles.tripTitle}>{trip.title}</div>
-                                  <div className={styles.tripLocation}>📍 {trip.location}</div>
-                                  <div className={styles.tripDate}>🗓️ {formatDate(trip.startDate)}</div>
-                                  <div className={styles.tripTravelers}>
+                                <div className="p-4">
+                                  <div className="text-lg font-semibold text-gray-900 mb-2">{trip.title}</div>
+                                  <div className="text-sm text-gray-600 mb-1">📍 {trip.location}</div>
+                                  <div className="text-sm text-gray-500 mb-1">🗓️ {formatDate(trip.startDate)}</div>
+                                  <div className="text-sm text-gray-500">
                                     👥 {trip.travelers} traveler{trip.travelers > 1 ? "s" : ""}
                                   </div>
                                 </div>

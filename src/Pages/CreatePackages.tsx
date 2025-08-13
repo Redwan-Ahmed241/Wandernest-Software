@@ -2,7 +2,6 @@
 
 import { type FunctionComponent, useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import styles from "../Styles/CreatePackage.module.css"
 import Layout from "../App/Layout"
 import Sidebar from "./Sidebar"
 import { useAuth } from "../Authentication/auth-context"
@@ -288,9 +287,9 @@ const CreatePackage: FunctionComponent = () => {
   if (authLoading) {
     return (
       <Layout>
-        <div className={styles.flexRow}>
+        <div className="flex flex-row min-h-screen">
           <Sidebar />
-          <div className={`${styles.flexGrow} ${styles.centeredPadding}`}>
+          <div className="flex-1 flex flex-col items-center justify-center p-10">
             <div>Loading...</div>
           </div>
         </div>
@@ -306,22 +305,24 @@ const CreatePackage: FunctionComponent = () => {
 
   return (
     <Layout>
-      <div className={styles.flexRow}>
+      <div className="flex flex-row min-h-screen">
         <Sidebar />
-        <div className={styles.flexGrow}>
-          <div className={styles.createPackage}>
-            <div className={styles.headerSection}>
-              <div className={styles.createYourCustom}>Create Your Custom Package</div>
+        <div className="flex-1 flex flex-col">
+          <div className="w-full max-w-6xl mx-auto flex flex-col items-center justify-start text-left text-base text-gray-900 font-['Plus_Jakarta_Sans'] bg-white p-5 box-border min-h-screen">
+            <div className="w-full max-w-4xl flex flex-col items-center py-8 px-5 mb-6 text-center">
+              <div className="text-4xl font-extrabold tracking-tight leading-10 mb-7 mt-0 text-center">Create Your Custom Package</div>
 
-              {error && <div className={styles.errorMessage}>{error}</div>}
+              {error && <div className="bg-red-50 text-red-600 p-3 rounded-md mb-5 border border-red-200 text-center">
+                {error}
+              </div>}
 
               {/* Enhanced Form Section */}
-              <div className={styles.enhancedFormSection}>
-                <div className={styles.compactFormGrid}>
+              <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 mb-8 shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-green-200">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-4xl">
                   {/* Row 1: From and To */}
-                  <div className={styles.compactInputGroup}>
-                    <label className={styles.enhancedInputLabel}>
-                      <svg className={styles.labelIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-sm font-semibold text-gray-700 flex items-center gap-1.5 mb-1">
+                      <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -338,7 +339,7 @@ const CreatePackage: FunctionComponent = () => {
                       From *
                     </label>
                     <input
-                      className={styles.enhancedInputField}
+                      className="w-full py-3 px-4 rounded-xl border-2 border-gray-200 text-sm bg-white/90 backdrop-blur-sm transition-all duration-200 ease-out box-border focus:outline-none focus:border-green-600 focus:shadow-[0_0_0_3px_rgba(22,163,74,0.1)] placeholder:text-gray-400"
                       type="text"
                       placeholder="Departure city"
                       value={from}
@@ -347,9 +348,9 @@ const CreatePackage: FunctionComponent = () => {
                     />
                   </div>
 
-                  <div className={styles.compactInputGroup}>
-                    <label className={styles.enhancedInputLabel}>
-                      <svg className={styles.labelIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-sm font-semibold text-gray-700 flex items-center gap-1.5 mb-1">
+                      <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -366,7 +367,7 @@ const CreatePackage: FunctionComponent = () => {
                       To *
                     </label>
                     <input
-                      className={styles.enhancedInputField}
+                      className="w-full py-3 px-4 rounded-xl border-2 border-gray-200 text-sm bg-white/90 backdrop-blur-sm transition-all duration-200 ease-out box-border focus:outline-none focus:border-green-600 focus:shadow-[0_0_0_3px_rgba(22,163,74,0.1)] placeholder:text-gray-400"
                       type="text"
                       placeholder="Destination city"
                       value={to}
@@ -376,9 +377,9 @@ const CreatePackage: FunctionComponent = () => {
                   </div>
 
                   {/* Row 2: Start Date and End Date */}
-                  <div className={styles.compactInputGroup} style={{ position: "relative" }}>
-                    <label className={styles.enhancedInputLabel}>
-                      <svg className={styles.labelIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="flex flex-col gap-1.5 relative">
+                    <label className="text-sm font-semibold text-gray-700 flex items-center gap-1.5 mb-1">
+                      <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -389,7 +390,7 @@ const CreatePackage: FunctionComponent = () => {
                       Start Date *
                     </label>
                     <input
-                      className={styles.enhancedInputField}
+                      className="w-full py-3 px-4 rounded-xl border-2 border-gray-200 text-sm bg-white/90 backdrop-blur-sm transition-all duration-200 ease-out box-border focus:outline-none focus:border-green-600 focus:shadow-[0_0_0_3px_rgba(22,163,74,0.1)] placeholder:text-gray-400 cursor-pointer"
                       type="text"
                       placeholder="Select start date"
                       value={startDate}
@@ -399,12 +400,12 @@ const CreatePackage: FunctionComponent = () => {
                       style={{ cursor: "pointer" }}
                     />
                     {showStartCalendar && (
-                      <div className={styles.enhancedCalendarPopup}>
-                        <div className={styles.enhancedCalendarHeader}>
+                      <div className="absolute z-20 bg-white border-2 border-green-200 rounded-xl shadow-[0_8px_24px_rgba(0,0,0,0.12)] p-4 mt-2 top-full">
+                        <div className="font-semibold mb-3 text-center flex items-center justify-between text-green-600">
                           <button
                             type="button"
                             onClick={handleStartPrevMonth}
-                            className={styles.enhancedCalendarNavButton}
+                            className="bg-none border-none cursor-pointer text-lg py-2 px-3 rounded-lg transition-colors duration-200 text-green-600 hover:bg-green-50"
                           >
                             ←
                           </button>
@@ -417,20 +418,19 @@ const CreatePackage: FunctionComponent = () => {
                           <button
                             type="button"
                             onClick={handleStartNextMonth}
-                            className={styles.enhancedCalendarNavButton}
+                            className="bg-none border-none cursor-pointer text-lg py-2 px-3 rounded-lg transition-colors duration-200 text-green-600 hover:bg-green-50"
                           >
                             →
                           </button>
                         </div>
-                        <div className={styles.enhancedCalendarGrid}>
+                        <div className="grid grid-cols-7 gap-1">
                           {getDaysArray(startCalendarYear, startCalendarMonth).map((day) => {
                             const isDisabled = isPastDate(startCalendarYear, startCalendarMonth, day)
                             return (
                               <div
                                 key={day}
-                                className={`${styles.enhancedCalendarDay} ${isDisabled ? styles.disabled : ""}`}
+                                className={`w-8 h-8 flex items-center justify-center rounded-lg cursor-pointer transition-colors duration-200 text-sm ${isDisabled ? "text-gray-300 cursor-not-allowed bg-gray-50 hover:bg-gray-50" : "hover:bg-green-100"}`}
                                 onClick={() => !isDisabled && handleStartDateSelect(day)}
-                                style={{ cursor: isDisabled ? "not-allowed" : "pointer" }}
                               >
                                 {day}
                               </div>
@@ -441,9 +441,9 @@ const CreatePackage: FunctionComponent = () => {
                     )}
                   </div>
 
-                  <div className={styles.compactInputGroup} style={{ position: "relative" }}>
-                    <label className={styles.enhancedInputLabel}>
-                      <svg className={styles.labelIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="flex flex-col gap-1.5 relative">
+                    <label className="text-sm font-semibold text-gray-700 flex items-center gap-1.5 mb-1">
+                      <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -454,7 +454,7 @@ const CreatePackage: FunctionComponent = () => {
                       End Date *
                     </label>
                     <input
-                      className={styles.enhancedInputField}
+                      className="w-full py-3 px-4 rounded-xl border-2 border-gray-200 text-sm bg-white/90 backdrop-blur-sm transition-all duration-200 ease-out box-border focus:outline-none focus:border-green-600 focus:shadow-[0_0_0_3px_rgba(22,163,74,0.1)] placeholder:text-gray-400 cursor-pointer"
                       type="text"
                       placeholder="Select end date"
                       value={endDate}
@@ -464,12 +464,12 @@ const CreatePackage: FunctionComponent = () => {
                       style={{ cursor: "pointer" }}
                     />
                     {showEndCalendar && (
-                      <div className={styles.enhancedCalendarPopup}>
-                        <div className={styles.enhancedCalendarHeader}>
+                      <div className="absolute z-20 bg-white border-2 border-green-200 rounded-xl shadow-[0_8px_24px_rgba(0,0,0,0.12)] p-4 mt-2 top-full">
+                        <div className="font-semibold mb-3 text-center flex items-center justify-between text-green-600">
                           <button
                             type="button"
                             onClick={handleEndPrevMonth}
-                            className={styles.enhancedCalendarNavButton}
+                            className="bg-none border-none cursor-pointer text-lg py-2 px-3 rounded-lg transition-colors duration-200 text-green-600 hover:bg-green-50"
                           >
                             ←
                           </button>
@@ -480,12 +480,12 @@ const CreatePackage: FunctionComponent = () => {
                           <button
                             type="button"
                             onClick={handleEndNextMonth}
-                            className={styles.enhancedCalendarNavButton}
+                            className="bg-none border-none cursor-pointer text-lg py-2 px-3 rounded-lg transition-colors duration-200 text-green-600 hover:bg-green-50"
                           >
                             →
                           </button>
                         </div>
-                        <div className={styles.enhancedCalendarGrid}>
+                        <div className="grid grid-cols-7 gap-1">
                           {getDaysArray(endCalendarYear, endCalendarMonth).map((day) => {
                             const isDisabled =
                               isPastDate(endCalendarYear, endCalendarMonth, day) ||
@@ -493,9 +493,8 @@ const CreatePackage: FunctionComponent = () => {
                             return (
                               <div
                                 key={day}
-                                className={`${styles.enhancedCalendarDay} ${isDisabled ? styles.disabled : ""}`}
+                                className={`w-8 h-8 flex items-center justify-center rounded-lg cursor-pointer transition-colors duration-200 text-sm ${isDisabled ? "text-gray-300 cursor-not-allowed bg-gray-50 hover:bg-gray-50" : "hover:bg-green-100"}`}
                                 onClick={() => !isDisabled && handleEndDateSelect(day)}
-                                style={{ cursor: isDisabled ? "not-allowed" : "pointer" }}
                               >
                                 {day}
                               </div>
@@ -507,9 +506,9 @@ const CreatePackage: FunctionComponent = () => {
                   </div>
 
                   {/* Row 3: Travelers and Budget */}
-                  <div className={styles.compactInputGroup}>
-                    <label className={styles.enhancedInputLabel}>
-                      <svg className={styles.labelIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-sm font-semibold text-gray-700 flex items-center gap-1.5 mb-1">
+                      <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -520,7 +519,7 @@ const CreatePackage: FunctionComponent = () => {
                       Travelers *
                     </label>
                     <input
-                      className={styles.enhancedInputField}
+                      className="w-full py-3 px-4 rounded-xl border-2 border-gray-200 text-sm bg-white/90 backdrop-blur-sm transition-all duration-200 ease-out box-border focus:outline-none focus:border-green-600 focus:shadow-[0_0_0_3px_rgba(22,163,74,0.1)] placeholder:text-gray-400"
                       type="number"
                       min="1"
                       max="20"
@@ -531,9 +530,9 @@ const CreatePackage: FunctionComponent = () => {
                     />
                   </div>
 
-                  <div className={styles.compactInputGroup}>
-                    <label className={styles.enhancedInputLabel}>
-                      <svg className={styles.labelIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-sm font-semibold text-gray-700 flex items-center gap-1.5 mb-1">
+                      <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -544,7 +543,7 @@ const CreatePackage: FunctionComponent = () => {
                       Budget (BDT) *
                     </label>
                     <input
-                      className={styles.enhancedInputField}
+                      className="w-full py-3 px-4 rounded-xl border-2 border-gray-200 text-sm bg-white/90 backdrop-blur-sm transition-all duration-200 ease-out box-border focus:outline-none focus:border-green-600 focus:shadow-[0_0_0_3px_rgba(22,163,74,0.1)] placeholder:text-gray-400"
                       type="number"
                       min="0"
                       step="100"
@@ -559,42 +558,42 @@ const CreatePackage: FunctionComponent = () => {
             </div>
 
             {isLoadingOptions ? (
-              <div className={styles.loadingSection}>
+              <div className="text-center py-15 px-5 text-gray-500 text-lg">
                 <div>Loading package options...</div>
               </div>
             ) : (
               <>
                 {/* Transport Section */}
-                <div className={styles.sectionContainer}>
-                  <div className={styles.sectionHeader}>
-                    <span className={styles.sectionTitle}>Select Transport</span>
+                <div className="w-full max-w-5xl mx-auto mb-10 px-5 box-border">
+                  <div className="flex flex-row items-center justify-center w-full mb-6 gap-4">
+                    <span className="text-2xl font-bold text-gray-900 text-center">Select Transport</span>
                     <button
                       type="button"
-                      className={styles.skipButton}
+                      className="bg-green-100 text-green-700 border-none rounded-lg py-2 px-5 text-base font-semibold cursor-pointer transition-colors duration-200 hover:bg-green-200"
                       onClick={() => handleSkip(skipTransport, setSkipTransport, setSelectedTransport)}
                     >
                       {skipTransport ? "Include" : "Skip"}
                     </button>
                   </div>
-                  <div className={`${styles.cardsGrid} ${skipTransport ? styles.sectionDisabled : ""}`}>
+                  <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl mx-auto justify-items-center ${skipTransport ? "opacity-50 pointer-events-none" : ""}`}>
                     {transportOptions.map((option) => (
                       <div
                         key={option.id}
-                        className={`${styles.card} ${selectedTransport === option.id ? styles.selectedCard : ""}`}
+                        className={`bg-gray-50 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.06)] p-0 flex flex-col items-start cursor-pointer relative transition-all duration-300 ease-out border-2 border-transparent w-full max-w-80 min-h-80 overflow-hidden hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] hover:-translate-y-0.5 ${selectedTransport === option.id ? "border-green-500 shadow-[0_0_0_2px_#c8e6c9,0_4px_16px_rgba(76,175,80,0.2)] -translate-y-0.5" : ""}`}
                         onClick={() =>
                           handleOptionSelect(option.id, selectedTransport, setSelectedTransport, skipTransport)
                         }
                       >
                         <img
-                          className={styles.cardImage}
+                          className="w-full h-50 object-cover rounded-t-xl mb-0"
                           alt={option.name}
                           src={option.image || "/placeholder.svg?height=200&width=300"}
                         />
-                        <div className={styles.cardContent}>
-                          <div className={styles.cardTitle}>{option.name}</div>
-                          <div className={styles.cardDescription}>{option.description}</div>
-                          <div className={styles.cardPrice}>৳{option.price}</div>
-                          {selectedTransport === option.id && <span className={styles.selectedMark}>✔</span>}
+                        <div className="p-4 flex flex-col gap-2 w-full box-border">
+                          <div className="text-lg font-semibold my-0 text-gray-900">{option.name}</div>
+                          <div className="text-sm text-gray-600 my-0 leading-6">{option.description}</div>
+                          <div className="font-bold text-green-600 mt-2 text-xl">৳{option.price}</div>
+                          {selectedTransport === option.id && <span className="absolute top-3 right-3 text-green-500 text-2xl font-bold bg-white rounded-full w-7 h-7 flex items-center justify-center shadow-[0_2px_8px_rgba(0,0,0,0.15)]">✔</span>}
                         </div>
                       </div>
                     ))}
@@ -602,34 +601,34 @@ const CreatePackage: FunctionComponent = () => {
                 </div>
 
                 {/* Hotels Section */}
-                <div className={styles.sectionContainer}>
-                  <div className={styles.sectionHeader}>
-                    <span className={styles.sectionTitle}>Select Hotels</span>
+                <div className="w-full max-w-5xl mx-auto mb-10 px-5 box-border">
+                  <div className="flex flex-row items-center justify-center w-full mb-6 gap-4">
+                    <span className="text-2xl font-bold text-gray-900 text-center">Select Hotels</span>
                     <button
                       type="button"
-                      className={styles.skipButton}
+                      className="bg-green-100 text-green-700 border-none rounded-lg py-2 px-5 text-base font-semibold cursor-pointer transition-colors duration-200 hover:bg-green-200"
                       onClick={() => handleSkip(skipHotel, setSkipHotel, setSelectedHotel)}
                     >
                       {skipHotel ? "Include" : "Skip"}
                     </button>
                   </div>
-                  <div className={`${styles.cardsGrid} ${skipHotel ? styles.sectionDisabled : ""}`}>
+                  <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl mx-auto justify-items-center ${skipHotel ? "opacity-50 pointer-events-none" : ""}`}>
                     {hotelOptions.map((option) => (
                       <div
                         key={option.id}
-                        className={`${styles.card} ${selectedHotel === option.id ? styles.selectedCard : ""}`}
+                        className={`bg-gray-50 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.06)] p-0 flex flex-col items-start cursor-pointer relative transition-all duration-300 ease-out border-2 border-transparent w-full max-w-80 min-h-80 overflow-hidden hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] hover:-translate-y-0.5 ${selectedHotel === option.id ? "border-green-500 shadow-[0_0_0_2px_#c8e6c9,0_4px_16px_rgba(76,175,80,0.2)] -translate-y-0.5" : ""}`}
                         onClick={() => handleOptionSelect(option.id, selectedHotel, setSelectedHotel, skipHotel)}
                       >
                         <img
-                          className={styles.cardImage}
+                          className="w-full h-50 object-cover rounded-t-xl mb-0"
                           alt={option.name}
                           src={option.image || "/placeholder.svg?height=200&width=300"}
                         />
-                        <div className={styles.cardContent}>
-                          <div className={styles.cardTitle}>{option.name}</div>
-                          <div className={styles.cardDescription}>{option.description}</div>
-                          <div className={styles.cardPrice}>৳{option.price}/night</div>
-                          {selectedHotel === option.id && <span className={styles.selectedMark}>✔</span>}
+                        <div className="p-4 flex flex-col gap-2 w-full box-border">
+                          <div className="text-lg font-semibold my-0 text-gray-900">{option.name}</div>
+                          <div className="text-sm text-gray-600 my-0 leading-6">{option.description}</div>
+                          <div className="font-bold text-green-600 mt-2 text-xl">৳{option.price}/night</div>
+                          {selectedHotel === option.id && <span className="absolute top-3 right-3 text-green-500 text-2xl font-bold bg-white rounded-full w-7 h-7 flex items-center justify-center shadow-[0_2px_8px_rgba(0,0,0,0.15)]">✔</span>}
                         </div>
                       </div>
                     ))}
@@ -637,34 +636,34 @@ const CreatePackage: FunctionComponent = () => {
                 </div>
 
                 {/* Guide Section */}
-                <div className={styles.sectionContainer}>
-                  <div className={styles.sectionHeader}>
-                    <span className={styles.sectionTitle}>Hire a Guide</span>
+                <div className="w-full max-w-5xl mx-auto mb-10 px-5 box-border">
+                  <div className="flex flex-row items-center justify-center w-full mb-6 gap-4">
+                    <span className="text-2xl font-bold text-gray-900 text-center">Hire a Guide</span>
                     <button
                       type="button"
-                      className={styles.skipButton}
+                      className="bg-green-100 text-green-700 border-none rounded-lg py-2 px-5 text-base font-semibold cursor-pointer transition-colors duration-200 hover:bg-green-200"
                       onClick={() => handleSkip(skipGuide, setSkipGuide, setSelectedGuide)}
                     >
                       {skipGuide ? "Include" : "Skip"}
                     </button>
                   </div>
-                  <div className={`${styles.cardsGrid} ${skipGuide ? styles.sectionDisabled : ""}`}>
+                  <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl mx-auto justify-items-center ${skipGuide ? "opacity-50 pointer-events-none" : ""}`}>
                     {guideOptions.map((option) => (
                       <div
                         key={option.id}
-                        className={`${styles.card} ${selectedGuide === option.id ? styles.selectedCard : ""}`}
+                        className={`bg-gray-50 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.06)] p-0 flex flex-col items-start cursor-pointer relative transition-all duration-300 ease-out border-2 border-transparent w-full max-w-80 min-h-80 overflow-hidden hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] hover:-translate-y-0.5 ${selectedGuide === option.id ? "border-green-500 shadow-[0_0_0_2px_#c8e6c9,0_4px_16px_rgba(76,175,80,0.2)] -translate-y-0.5" : ""}`}
                         onClick={() => handleOptionSelect(option.id, selectedGuide, setSelectedGuide, skipGuide)}
                       >
                         <img
-                          className={styles.cardImage}
+                          className="w-full h-50 object-cover rounded-t-xl mb-0"
                           alt={option.name}
                           src={option.image || "/placeholder.svg?height=200&width=300"}
                         />
-                        <div className={styles.cardContent}>
-                          <div className={styles.cardTitle}>{option.name}</div>
-                          <div className={styles.cardDescription}>{option.description}</div>
-                          <div className={styles.cardPrice}>৳{option.price}/day</div>
-                          {selectedGuide === option.id && <span className={styles.selectedMark}>✔</span>}
+                        <div className="p-4 flex flex-col gap-2 w-full box-border">
+                          <div className="text-lg font-semibold my-0 text-gray-900">{option.name}</div>
+                          <div className="text-sm text-gray-600 my-0 leading-6">{option.description}</div>
+                          <div className="font-bold text-green-600 mt-2 text-xl">৳{option.price}/day</div>
+                          {selectedGuide === option.id && <span className="absolute top-3 right-3 text-green-500 text-2xl font-bold bg-white rounded-full w-7 h-7 flex items-center justify-center shadow-[0_2px_8px_rgba(0,0,0,0.15)]">✔</span>}
                         </div>
                       </div>
                     ))}
@@ -674,13 +673,13 @@ const CreatePackage: FunctionComponent = () => {
             )}
 
             {/* Confirm section */}
-            <div className={styles.confirmSection}>
-              <div className={styles.reviewText}>
+            <div className="w-full max-w-2xl flex flex-col items-center mx-auto mt-10 mb-15 px-5 text-center">
+              <div className="text-lg text-gray-700 mb-6 text-center leading-6">
                 Review your package details and proceed to create your custom travel package.
               </div>
               <button
                 type="button"
-                className={styles.confirmPackage}
+                className="bg-green-700 text-white border-none rounded-xl py-4 px-12 text-xl font-bold cursor-pointer transition-all duration-300 ease-out shadow-[0_4px_12px_rgba(56,142,60,0.3)] hover:bg-green-800 hover:-translate-y-0.5 hover:shadow-[0_6px_16px_rgba(56,142,60,0.4)] disabled:bg-gray-400 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
                 onClick={handleCreatePackage}
                 disabled={!isFormValid() || isCreatingPackage}
               >
