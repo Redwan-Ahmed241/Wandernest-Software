@@ -1,0 +1,112 @@
+.profileDropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.profileButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: white;
+  border: 1px solid #e1e5e9;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.profileButton:hover {
+  background: #f8f9fa;
+  border-color: #d1d5db;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #3b82f6;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.username {
+  font-weight: 500;
+  color: #374151;
+}
+
+.chevron {
+  transition: transform 0.2s ease;
+}
+
+.chevronUp {
+  transform: rotate(180deg);
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 4px;
+  background: #fff;
+  border: 1.5px solid #e1e5e9;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  min-width: 160px;
+  z-index: 1000;
+  padding: 4px 0;
+  transition: box-shadow 0.2s;
+}
+
+.dropdownItem {
+  padding: 6px 12px !important;
+  font-size: 14px !important;
+  color: #222;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  border-radius: 6px;
+  margin: 0;
+  text-align: left;
+}
+
+.dropdownItem:hover {
+  background: #f8f9fa;
+  color: #0077ff;
+}
+
+.logout {
+  color: #dc2626;
+  font-weight: 500;
+}
+
+.logout:hover {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.divider {
+  margin: 4px 0;
+  border: none;
+  border-top: 1px solid #f3f4f6;
+}
+
+.userInfo {
+  padding: 6px 12px 4px 12px !important;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.userName {
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 2px;
+}
+
+.userEmail {
+  font-size: 14px;
+  color: #6b7280;
+}

@@ -1,0 +1,435 @@
+.depth4Frame0 {
+  	width: 16px;
+  	height: 16px;
+}
+.wandernest {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 23px;
+}
+.depth4Frame1 {
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	cursor: pointer;
+}
+.depth3Frame0 {
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: flex-start;
+  	gap: 16px;
+}
+.destinations {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 21px;
+  	font-weight: 500;
+}
+.flights {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 21px;
+  	font-weight: 500;
+  	cursor: pointer;
+}
+.depth4Frame01 {
+  	height: 40px;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: flex-start;
+  	gap: 36px;
+}
+.signUp {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 21px;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+  	white-space: nowrap;
+}
+.depth6Frame0 {
+  	overflow: hidden;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	justify-content: flex-start;
+}
+.depth5Frame01 {
+  	width: 84px;
+  	border-radius: 12px;
+  	background-color: #abb79a;
+  	height: 40px;
+  	overflow: hidden;
+  	flex-shrink: 0;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: center;
+  	padding: 0px 16px;
+  	box-sizing: border-box;
+  	min-width: 84px;
+  	max-width: 480px;
+  	cursor: pointer;
+}
+.depth5Frame11 {
+  	width: 84px;
+  	border-radius: 12px;
+  	background-color: #e8f2f2;
+  	height: 40px;
+  	overflow: hidden;
+  	flex-shrink: 0;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: center;
+  	padding: 0px 16px;
+  	box-sizing: border-box;
+  	min-width: 84px;
+  	max-width: 480px;
+  	cursor: pointer;
+}
+.depth5Frame21 {
+  	width: 40px;
+  	border-radius: 12px;
+  	height: 40px;
+  	overflow: hidden;
+  	flex-shrink: 0;
+  	max-width: 480px;
+}
+.depth4Frame11 {
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	gap: 8px;
+  	text-align: center;
+}
+.depth3Frame1 {
+  	flex: 1;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: flex-end;
+  	gap: 32px;
+  	font-size: 14px;
+}
+.navbar {
+  	width: 1428px;
+  	border-bottom: 1px solid #e5e8eb;
+  	box-sizing: border-box;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: space-between;
+  	padding: 12px 40px;
+  	gap: 0px;
+}
+.giftTheJoy {
+  	align-self: stretch;
+  	position: relative;
+  	letter-spacing: -2px;
+  	line-height: 60px;
+  	font-weight: 800;
+}
+.depth8Frame0 {
+  	width: 538px;
+  	height: 60px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	justify-content: flex-start;
+}
+.giveYourLoved {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 24px;
+}
+.depth8Frame1 {
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	justify-content: flex-start;
+  	font-size: 16px;
+}
+.depth7Frame0 {
+  	position: absolute;
+  	top: 240px;
+  	left: 180px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	gap: 8px;
+}
+.buyGiftCard {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 24px;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+  	white-space: nowrap;
+}
+.depth8Frame01 {
+  	border-radius: 24px;
+  	background-color: #abb79a;
+  	height: 48px;
+  	overflow: hidden;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: center;
+  	padding: 0px 20px;
+  	box-sizing: border-box;
+  	min-width: 84px;
+  	max-width: 480px;
+}
+.depth8Frame11 {
+  	border-radius: 24px;
+  	background-color: #f5f0e5;
+  	height: 48px;
+  	overflow: hidden;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: center;
+  	padding: 0px 20px;
+  	box-sizing: border-box;
+  	min-width: 84px;
+  	max-width: 480px;
+  	color: #1c170d;
+}
+.depth7Frame1 {
+  	position: absolute;
+  	top: 374px;
+  	left: 295px;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: center;
+  	flex-wrap: wrap;
+  	align-content: flex-start;
+  	gap: 12px;
+  	font-size: 16px;
+}
+.depth6Frame02 {
+  	align-self: stretch;
+  	position: relative;
+  	border-radius: 12px;
+  	height: 480px;
+  	overflow: hidden;
+  	flex-shrink: 0;
+  	background-image: url('Depth 6, Frame 0.png');
+  	background-size: cover;
+  	background-repeat: no-repeat;
+  	background-position: top;
+  	min-height: 480px;
+}
+.depth5Frame02 {
+  	align-self: stretch;
+  	flex: 1;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 16px;
+}
+.depth4Frame02 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	text-align: center;
+  	font-size: 48px;
+  	color: #fff;
+}
+.howItWorks {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 28px;
+}
+.depth4Frame12 {
+  	align-self: stretch;
+  	height: 60px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 20px 16px 12px;
+  	box-sizing: border-box;
+}
+.depth7Frame01 {
+  	align-self: stretch;
+  	max-width: 100%;
+  	overflow: hidden;
+  	height: 24px;
+  	flex-shrink: 0;
+}
+.chooseAGift {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 20px;
+}
+.depth8Frame02 {
+  	align-self: stretch;
+  	height: 20px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.selectACard {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 21px;
+}
+.depth8Frame12 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	font-size: 14px;
+  	color: #a1824a;
+}
+.depth7Frame11 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	gap: 4px;
+}
+.depth6Frame03 {
+  	align-self: stretch;
+  	width: 288px;
+  	border-radius: 8px;
+  	background-color: #fff;
+  	border: 1px solid #e8decf;
+  	box-sizing: border-box;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 16px;
+  	gap: 12px;
+}
+.depth5Frame03 {
+  	align-self: stretch;
+  	flex: 1;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	gap: 12px;
+}
+.depth4Frame2 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 16px;
+  	font-size: 16px;
+}
+.perfectForAny {
+  	align-self: stretch;
+  	position: relative;
+  	letter-spacing: -1px;
+  	line-height: 45px;
+  	font-weight: 800;
+}
+.depth6Frame04 {
+  	width: 720px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	max-width: 720px;
+}
+.depth6Frame11 {
+  	width: 720px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	max-width: 720px;
+  	font-size: 16px;
+}
+.depth5Frame04 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	gap: 16px;
+}
+.depth5Frame12 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	font-size: 16px;
+}
+.depth4Frame4 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 40px 16px;
+  	gap: 40px;
+  	font-size: 36px;
+}
+.depth3Frame01 {
+  	width: 960px;
+  	overflow: hidden;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	max-width: 960px;
+}
+.depth4Frame03 {
+  	width: 40px;
+  	height: 520px;
+}
+.depth3Frame11 {
+  	height: 1098px;
+  	overflow: hidden;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.depth2Frame1 {
+  	align-self: stretch;
+  	height: 1138px;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: center;
+  	padding: 20px 160px;
+  	box-sizing: border-box;
+  	font-size: 22px;
+  	color: #1c170d;
+}
+.giftCard {
+  	width: 100%;
+  	position: relative;
+  	background-color: #fff;
+  	height: 1248px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	text-align: left;
+  	font-size: 18px;
+  	color: #0d1c1c;
+  	font-family: 'Plus Jakarta Sans';
+}
+

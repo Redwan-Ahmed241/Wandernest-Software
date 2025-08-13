@@ -1,0 +1,244 @@
+.confirmBookContainer {
+  background: linear-gradient(135deg, #ffffff 0%, #eaf6ef 100%);
+  box-shadow: 0 8px 32px 0 #4b996220;
+  border-radius: 24px;
+  padding: 48px 32px 32px 32px;
+  max-width: 650px;
+  margin: 48px auto;
+  transition: box-shadow 0.3s;
+}
+.pageTitle {
+  font-size: 2.3rem;
+  font-weight: 800;
+  margin-bottom: 32px;
+  color: #35794a;
+  letter-spacing: -0.5px;
+  text-align: center;
+}
+.section {
+  margin-bottom: 32px;
+}
+.sectionTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+  color: #4b9962;
+  letter-spacing: 0.01em;
+}
+.divider {
+  border: none;
+  border-top: 1.5px solid #e0e0e0;
+  margin: 32px 0;
+}
+.formFieldsContainer {
+  margin-bottom: 0;
+}
+.formRow {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+.inputGroup {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.inputLabel {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #333;
+}
+.inputField {
+  padding: 12px 14px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 10px;
+  background: #f7f7f7;
+  font-size: 1rem;
+  color: #222;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+.inputField:focus {
+  border: 1.5px solid #4b9962;
+  box-shadow: 0 0 0 2px #b2e6d6;
+  outline: none;
+}
+.optionsSection {
+  margin-bottom: 0;
+}
+.optionRow {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 28px;
+  padding: 12px 0 12px 0;
+  border-radius: 12px;
+  transition: box-shadow 0.2s, background 0.2s;
+}
+.optionRow.active {
+  box-shadow: 0 0 0 3px #0a7cff33;
+  background: #f0f8ff;
+}
+.optionLabel {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #222;
+  min-width: 160px;
+}
+.skipToggleBtn {
+  background: #e6f4ea;
+  color: #2d7a46;
+  border: none;
+  border-radius: 999px;
+  padding: 8px 28px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-left: 8px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.1s;
+  outline: none;
+  box-shadow: 0 2px 8px 0 #4b996220;
+  letter-spacing: 0.01em;
+}
+.skipToggleBtn:hover, .skipToggleBtn:focus {
+  background: #c2e6d6;
+  color: #176b3a;
+  box-shadow: 0 0 0 2px #b2e6d6;
+  transform: scale(0.97);
+}
+.optionCard {
+  margin-top: 10px;
+  padding: 18px;
+  border-radius: 14px;
+  background: #f7f7f7;
+  border: 1.5px solid #e0e0e0;
+  transition: box-shadow 0.2s, opacity 0.2s;
+  cursor: pointer;
+  min-width: 180px;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: #35794a;
+  box-shadow: 0 2px 8px 0 #4b996210;
+}
+.optionCard--disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  filter: grayscale(0.7);
+}
+.buttonRow {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  margin-top: 40px;
+}
+.confirmButton {
+  background: #4b9962;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 16px 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  width: 260px;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  box-shadow: 0 4px 16px 0 #4b996220;
+  margin: 0 auto;
+  display: block;
+  letter-spacing: 0.01em;
+}
+.confirmButton:hover {
+  background: #35794a;
+  box-shadow: 0 6px 20px 0 #4b996230;
+  transform: scale(0.98);
+}
+.cancelButton {
+  background: #fff;
+  color: #4b9962;
+  border: 2px solid #4b9962;
+  border-radius: 999px;
+  padding: 14px 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  width: 260px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border 0.2s, transform 0.1s;
+  margin: 0 auto;
+  display: block;
+  margin-top: 16px;
+  letter-spacing: 0.01em;
+  position: relative;
+}
+.cancelButton:hover {
+  background: #f3f7f4;
+  color: #35794a;
+  border-color: #35794a;
+  transform: scale(0.98);
+}
+.cancelIcon {
+  margin-right: 8px;
+  font-size: 1.1em;
+  vertical-align: middle;
+}
+.calendarIcon {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 22px;
+  color: #288a33;
+  background: #fff;
+  border-radius: 50%;
+  padding: 2px 6px;
+  box-shadow: 0 1px 4px #eee;
+  transition: background 0.2s, color 0.2s;
+  z-index: 2;
+}
+.calendarIcon:hover {
+  background: #288a33;
+  color: #fff;
+}
+@media (max-width: 900px) {
+  .confirmBookContainer {
+    max-width: 98vw;
+    padding: 24px 4vw 24px 4vw;
+  }
+}
+@media (max-width: 700px) {
+  .confirmBookContainer {
+    padding: 12px 1vw;
+    min-height: 400px;
+  }
+  .formRow {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .inputField {
+    font-size: 0.98rem;
+    padding: 10px 8px;
+  }
+  .optionRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 10px 0;
+  }
+  .optionLabel {
+    min-width: unset;
+    font-size: 1rem;
+  }
+  .optionCard {
+    min-width: 120px;
+    font-size: 0.98rem;
+    padding: 12px;
+  }
+  .skipToggleBtn, .confirmButton, .cancelButton {
+    width: 100%;
+    font-size: 1rem;
+    padding: 14px 0;
+  }
+} 

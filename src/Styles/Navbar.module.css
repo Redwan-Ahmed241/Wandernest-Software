@@ -1,0 +1,178 @@
+.navbarWrapper {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: white;
+  width: 100%;
+  border-bottom: 1px solid #e5e8eb;
+}
+
+.navbar {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  border-bottom: 1px solid #e5e8eb;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 40px;
+  background-color: white;
+  position: relative;
+  z-index: 1000;
+}
+
+.depth3Frame0 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  cursor: pointer;
+}
+
+.depth4Frame0 {
+  width: 32px; /* Increased from 16px for better visibility */
+  height: 32px;
+  transition: transform 0.3s ease;
+}
+
+.depth4Frame0:hover {
+  transform: scale(1.1);
+}
+
+.wandernest {
+  font-size: 18px;
+  line-height: 23px;
+  font-family: 'Plus Jakarta Sans';
+  color: #0d1c1c;
+  text-align: left;
+  transition: color 0.3s;
+}
+
+.depth3Frame0:hover .wandernest {
+  color: #4a6b5b;
+}
+
+.depth4Frame1 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  cursor: pointer;
+}
+
+.depth3Frame1 {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 32px;
+  flex-wrap: wrap; /* Ensure layout doesn't break on smaller screens */
+}
+
+.depth4Frame01 {
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 36px;
+  flex-wrap: wrap;
+}
+
+.destinations,
+.flights {
+  font-size: 14px;
+  line-height: 21px;
+  font-weight: 500;
+  font-family: 'Plus Jakarta Sans';
+  color: #0d1c1c;
+  cursor: pointer;
+}
+
+.depth5Frame2 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.depth4Frame11 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.depth5Frame01,
+.depth5Frame11 {
+  width: 84px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.depth5Frame01 {
+  background-color: #abb79a;
+}
+
+.depth5Frame11 {
+  background-color: #e8f2f2;
+}
+
+.depth6Frame0 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.signUp {
+  font-size: 14px;
+  line-height: 21px;
+  font-family: 'Plus Jakarta Sans';
+  color: #0d1c1c;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.depth5Frame21 {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+/* Universal button/link hover effect */
+.destinations,
+.flights,
+.signUp,
+.depth5Frame01,
+.depth5Frame11 {
+  transition: background 0.3s, color 0.3s, box-shadow 0.3s, transform 0.2s;
+}
+
+.destinations:hover,
+.flights:hover,
+.signUp:hover,
+.depth5Frame01:hover,
+.depth5Frame11:hover {
+  color: #0d1c1c;
+  background: rgba(106, 177, 135, 0.18);
+  border-radius: 14px;
+  box-shadow: 0 8px 32px 0 rgba(106, 177, 135, 0.25), 0 1.5px 8px 0 rgba(78, 148, 79, 0.1);
+  transform: scale(1.04);
+}
