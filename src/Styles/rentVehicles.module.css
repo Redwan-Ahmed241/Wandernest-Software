@@ -1,0 +1,849 @@
+.depth4Frame0 {
+    width: 17.1px;
+    height: 17.1px;
+}
+.wandernest {
+    align-self: stretch;
+    position: relative;
+    line-height: 24.57px;
+}
+.depth4Frame1 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    cursor: pointer;
+}
+.depth3Frame0 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 17.1px;
+}
+.destinations {
+    align-self: stretch;
+    position: relative;
+    line-height: 22.43px;
+    font-weight: 500;
+}
+.flights {
+    align-self: stretch;
+    position: relative;
+    line-height: 22.43px;
+    font-weight: 500;
+    cursor: pointer;
+}
+.depth5Frame2 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.depth4Frame01 {
+    height: 42.7px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 38.5px;
+}
+.signUp {
+    align-self: stretch;
+    position: relative;
+    line-height: 22.43px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.depth6Frame0 {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+.depth5Frame01 {
+    width: 89.7px;
+    border-radius: 12.82px;
+    background-color: #abb79a;
+    height: 42.7px;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 17.1px;
+    box-sizing: border-box;
+    min-width: 89.74px;
+    max-width: 512.79px;
+    cursor: pointer;
+}
+.depth5Frame11 {
+    width: 89.7px;
+    border-radius: 12.82px;
+    background-color: #e8f2f2;
+    height: 42.7px;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 17.1px;
+    box-sizing: border-box;
+    min-width: 89.74px;
+    max-width: 512.79px;
+    cursor: pointer;
+}
+.depth5Frame21 {
+    width: 42.7px;
+    border-radius: 12.82px;
+    height: 42.7px;
+    overflow: hidden;
+    flex-shrink: 0;
+    max-width: 512.79px;
+}
+.depth4Frame11 {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 8.5px;
+    text-align: center;
+}
+.depth3Frame1 {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: 34.2px;
+    font-size: 14.96px;
+}
+.navbar {
+ width: 100%;
+  max-width: 1428px; 
+  margin: 0 auto; 
+  padding: 12px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.navbarWrapper {
+    width: 1525.6px;
+    position: relative;
+    height: 69.4px;
+}
+.exploreTheWorld {
+  position: relative;
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--color-white);
+  text-align: center;
+  width: 100%;
+  margin-bottom: 16px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+.depth8Frame0 {
+    width: 824.7px;
+    position: relative;
+    height: 64.1px;
+}
+.findThePerfect {
+  position: relative;
+  font-size: 18px;
+  color: var(--color-white);
+  text-align: center;
+  width: 100%;
+  margin: 40px auto 40px;
+  max-width: 600px;
+  opacity: 0.85;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  font-weight: 300;
+  letter-spacing: 0.3px;
+}
+.depth8Frame1 {
+    width: 758.5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 17.09px;
+}
+.depth7Frame0 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    margin: 48px 0;
+    width: 100%;
+    max-width: 800px;
+}
+.depth9Frame0 {
+    align-self: stretch;
+    width: 38.5px;
+    border-radius: 12.82px 0px 0px 12.82px;
+    max-height: 100%;
+}
+.searchVehicles {
+    width: 169.9px;
+    position: relative;
+    line-height: 25.64px;
+    white-space: pre-wrap;
+    display: inline-block;
+    flex-shrink: 0;
+}
+.depth9Frame1 {
+    align-self: stretch;
+    flex: 1;
+    background-color: #fff;
+    border-top: 1.1px solid #e8decf;
+    border-bottom: 1.1px solid #e8decf;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 8.5px;
+}
+.search {
+    align-self: stretch;
+    position: relative;
+    line-height: 25.64px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.depth10Frame0 {
+    flex: 1;
+    border-radius: 25.64px;
+    background-color: #abb79a;
+    height: 51.3px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 21.4px;
+    box-sizing: border-box;
+    min-width: 89.74px;
+    max-width: 512.79px;
+}
+.depth9Frame2 {
+    align-self: stretch;
+    border-radius: 0px 12.82px 12.82px 0px;
+    background-color: #fff;
+    border-top: 1.1px solid #e8decf;
+    border-right: 1.1px solid #e8decf;
+    border-bottom: 1.1px solid #e8decf;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 7.5px 0px 0px;
+    text-align: center;
+    color: #fff;
+}
+.depth8Frame01 {
+    align-self: stretch;
+    flex: 1;
+    border-radius: 12.82px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.depth7Frame1 {
+    position: absolute;
+    top: 381.39px;
+    left: 226.48px;
+    width: 512.8px;
+    height: 68.4px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    min-width: 170.93px;
+    max-width: 512.79px;
+    text-align: left;
+    font-size: 17.09px;
+    color: #a1824a;
+}
+.depth6Frame02 {
+    width: 100%;
+    position: relative;
+    border-radius: 24px;
+    height: 480px;
+    overflow: hidden;
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/public/Figma_photoes/Rectangle (15).png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    margin: 24px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+}
+.depth5Frame02 {
+    align-self: stretch;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 17.1px;
+}
+.depth4Frame02 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: center;
+    font-size: 51.28px;
+    color: #fff;
+}
+.featuredVehicles {
+    font-size: 2rem;
+    line-height: 1.4;
+    color: #1c170d;
+    margin-bottom: 8px;
+    text-align: center;
+    position: relative;
+    display: inline-block;
+}
+
+.featuredVehicles::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #abb79a, #a1824a);
+    border-radius: 2px;
+}
+
+.depth4Frame12 {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px 12px;
+    box-sizing: border-box;
+}
+.depth7Frame01 {
+    align-self: stretch;
+    position: relative;
+    border-radius: 12.82px;
+    max-width: 100%;
+    overflow: hidden;
+    height: 173.1px;
+    flex-shrink: 0;
+    object-fit: cover;
+}
+.suvRentals {
+    align-self: stretch;
+    position: relative;
+    line-height: 25.64px;
+    font-weight: 500;
+}
+.comfortableSuvsFor {
+    align-self: stretch;
+    position: relative;
+    line-height: 22.43px;
+}
+.depth8Frame11 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    font-size: 14.96px;
+    color: #a1824a;
+}
+.depth6Frame03 {
+    align-self: stretch;
+    width: 307.7px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 0px 0px 12.8px;
+    box-sizing: border-box;
+    gap: 12.8px;
+}
+.depth5Frame03 {
+    align-self: stretch;
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 12.8px;
+}
+.depth4Frame2 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 8px 0 0 0;
+    font-size: 17.09px;
+}
+.depth7Frame04 {
+    align-self: stretch;
+    max-width: 100%;
+    overflow: hidden;
+    height: 25.6px;
+    flex-shrink: 0;
+}
+.customerSupport {
+    align-self: stretch;
+    position: relative;
+    line-height: 21.37px;
+}
+.depth8Frame05 {
+    align-self: stretch;
+    height: 21.4px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.depth7Frame14 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 4.3px;
+}
+.depth6Frame04 {
+    flex: 1;
+    min-width: 280px;
+    max-width: 380px;
+    border-radius: 16px;
+    background-color: #fff;
+    border: 1px solid #e8decf;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 24px;
+    gap: 16px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.depth6Frame04:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+}
+.depth3Frame01 {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 24px 0 24px;
+}
+.depth4Frame03 {
+    width: 42.7px;
+    height: 555.5px;
+}
+.depth3Frame11 {
+    height: 1112.1px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.depth2Frame1 {
+    align-self: stretch;
+    height: 1154.8px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 21.4px 170.9px;
+    box-sizing: border-box;
+    font-size: 23.5px;
+    color: #1c170d;
+}
+.depth1Frame0 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.depth0Frame0 {
+    position: relative;
+    background-color: #fff;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+.depth6Frame05 {
+    width: 170.9px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-width: 170.93px;
+    cursor: pointer;
+}
+.depth6Frame12 {
+    width: 170.9px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-width: 170.93px;
+}
+.depth5Frame05 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-content: center;
+    gap: 24px 0px;
+}
+.depth6Frame06 {
+    width: 25.6px;
+    height: 25.6px;
+}
+.depth5Frame12 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 16px 17.1px;
+}
+.depth5Frame22 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+.depth4Frame04 {
+    align-self: stretch;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 42.7px 21.4px;
+    gap: 25.6px;
+}
+.depth3Frame02 {
+    width: 1025.6px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    max-width: 1025.58px;
+}
+.footer {
+    position: absolute;
+    top: 1470px;
+    left: 0px;
+    background-color: #1c170d;
+    width: 1630px;
+    height: 214px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: center;
+    font-size: 17.09px;
+    color: #fff;
+}
+.rentVehicles {
+    width: 100%;
+    position: relative;
+    text-align: left;
+    font-size: 19.23px;
+    color: #0d1c1c;
+    font-family: 'Plus Jakarta Sans';
+    background-color: #fafafa;
+    margin-top: 24px;
+    min-height: 80vh;
+}
+
+/* Modern Search Bar */
+.searchBarContainer {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 32px;
+  border: 2px solid #5cb98b;
+  box-shadow: none;
+  padding: 12px 24px;
+  margin: 32px auto;
+  max-width: 600px;
+  width: 100%;
+  position: relative;
+  transition: border-color 0.2s;
+}
+.searchBarContainer:focus-within {
+  border-color: #388e5c;
+  box-shadow: 0 2px 12px rgba(92,185,139,0.08);
+}
+.searchIconInside {
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
+  opacity: 1;
+  color: #222;
+  filter: none;
+}
+.searchInput {
+  border: none;
+  outline: none;
+  font-size: 1.1rem;
+  background: transparent;
+  flex: 1;
+  color: #222;
+  padding: 8px 0;
+}
+.searchInput::placeholder {
+  color: #333;
+  opacity: 0.7;
+}
+
+/* Responsive Vehicle Cards Grid */
+.vehicleCardsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  margin: 24px 0 24px 0;
+  justify-content: center;
+  width: 100%;
+}
+.vehicleCard {
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 340px;
+  min-width: 260px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  border: 1px solid rgba(0,0,0,0.04);
+}
+.vehicleCard:hover {
+  box-shadow: 0 8px 32px rgba(161,130,74,0.18);
+  transform: translateY(-4px) scale(1.025);
+}
+.vehicleImage {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  object-position: center;
+  transition: all 0.5s ease;
+  transform-origin: center;
+}
+.vehicleCard:hover .vehicleImage {
+  filter: brightness(0.97) saturate(1.1);
+}
+.vehicleCardContent {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+}
+.suvRentals {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1c170d;
+}
+.comfortableSuvsFor {
+  font-size: 1rem;
+  color: #a1824a;
+  font-weight: 500;
+}
+
+@media (max-width: 1200px) {
+  .exploreTheWorld {
+    font-size: 2.8rem;
+  }
+  .vehicleCardsGrid {
+    gap: 24px;
+    padding: 0 16px;
+  }
+  .vehicleCard {
+    width: calc(50% - 12px);
+    min-width: 280px;
+  }
+  .depth6Frame04 {
+    min-width: 240px;
+  }
+}
+
+@media (max-width: 900px) {
+  .exploreTheWorld {
+    font-size: 2.4rem;
+  }
+  .findThePerfect {
+    font-size: 1.1rem;
+    padding: 0 16px;
+  }
+  .vehicleCardsGrid {
+    gap: 20px;
+  }
+  .vehicleCard {
+    width: 100%;
+    max-width: 500px;
+  }
+  .vehicleImage {
+    height: 180px;
+  }
+  .depth6Frame02 {
+    height: 360px;
+    border-radius: 20px;
+  }
+  .depth6Frame04 {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .exploreTheWorld {
+    font-size: 2rem;
+    letter-spacing: -1px;
+  }
+  .findThePerfect {
+    font-size: 1rem;
+  }
+  .searchBarContainer {
+    margin: 24px 16px;
+    padding: 10px 16px;
+  }
+  .vehicleCardsGrid {
+    gap: 16px;
+    margin: 12px 0;
+  }
+  .vehicleCard {
+    border-radius: 16px;
+  }
+  .vehicleImage {
+    height: 160px;
+  }
+  .vehicleCardContent {
+    padding: 16px;
+  }
+  .depth6Frame02 {
+    height: 280px;
+    margin: 16px 0;
+  }
+  .featuredVehicles {
+    font-size: 1.6rem;
+  }
+  .depth4Frame12 {
+    padding: 20px 8px 8px;
+  }
+  .depth4Frame2 {
+    padding-bottom: 12px;
+  }
+}
+
+.searchDropdown {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+  z-index: 10;
+  max-height: 320px;
+  overflow-y: auto;
+  border: 1px solid #e8decf;
+  border-top: none;
+  padding: 8px 0;
+  animation: fadeIn 0.18s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.searchResult {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.searchResult:hover {
+  background: #f8f9fa;
+}
+.searchResultImg {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.searchResultName {
+  font-weight: 700;
+  color: #1c170d;
+  font-size: 1.05rem;
+}
+.searchResultDesc {
+  color: #a1824a;
+  font-size: 0.95rem;
+  margin-top: 2px;
+}
+@media (max-width: 600px) {
+  .searchDropdown {
+    border-radius: 0 0 14px 14px;
+    max-height: 180px;
+    font-size: 0.97rem;
+  }
+  .searchResult {
+    gap: 10px;
+    padding: 8px 10px;
+  }
+  .searchResultImg {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+  }
+  .searchResultName {
+    font-size: 0.98rem;
+  }
+  .searchResultDesc {
+    font-size: 0.89rem;
+  }
+}
+

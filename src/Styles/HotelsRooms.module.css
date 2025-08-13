@@ -1,0 +1,701 @@
+/* Main container */
+.hotelsContainer {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+/* Header Section */
+.groupParent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 32px auto 0;
+  padding: 0 20px;
+  gap: 24px;
+}
+
+.tourPackages2 {
+  font-size: 36px;
+  font-weight: 700;
+  margin: 0;
+  color: #1c170d;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+  text-align: left;
+  flex-shrink: 0;
+}
+
+.createCustomPackage {
+  position: static !important;
+  padding: 12px 24px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #6ab187 0%, #5a9a75 100%);
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(106, 177, 135, 0.3);
+  border: none;
+  transition: all 0.2s ease;
+  outline: none;
+  white-space: nowrap;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.filters {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.filterSelect {
+  padding: 12px 18px;
+  border-radius: 24px;
+  background: #f8f9fa;
+  border: 1.5px solid #e9ecef;
+  font-size: 15px;
+  color: #495057;
+  cursor: pointer;
+}
+
+.bookButton {
+  background: linear-gradient(135deg, #6ab187 0%, #5a9a75 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.createCustomPackage:hover {
+  background: linear-gradient(135deg, #5a9a75 0%, #4e8a66 100%);
+  box-shadow: 0 6px 20px rgba(106, 177, 135, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Search Bar */
+.searchBarContainer {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  margin: 24px auto 32px;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 16px 20px 16px 50px;
+  border: 2px solid #e9ecef;
+  border-radius: 24px;
+  font-size: 16px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.searchInput:focus {
+  border-color: #6ab187;
+  box-shadow: 0 4px 16px rgba(106, 177, 135, 0.12);
+}
+
+.searchInput::placeholder {
+  color: #6c757d;
+  font-weight: 400;
+}
+
+.searchIconInside {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  opacity: 0.6;
+  z-index: 2;
+  transition: opacity 0.2s ease;
+}
+
+.searchBarContainer:focus-within .searchIconInside {
+  opacity: 0.8;
+}
+
+/* Main Content Layout */
+.tourPackagesWrapper {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.tourPackages {
+  width: 100%;
+}
+
+.tourPackages1 {
+  width: 100%;
+}
+
+.depth0Frame0 {
+  width: 100%;
+}
+
+.depth1Frame0 {
+  width: 100%;
+}
+
+.depth2Frame1 {
+  width: 100%;
+}
+
+.depth3Frame01 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Filters Section */
+.depth4Frame2 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin: 20px 0 30px;
+  padding: 0 !important;
+}
+
+.depth5Frame03 {
+  position: relative;
+  margin: 0 5px 10px !important;
+}
+
+.depth6Frame03 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px !important;
+  min-width: 150px;
+  border-radius: 24px;
+  background: #f8f9fa;
+  border: 1.5px solid #e9ecef;
+  font-size: 15px;
+  color: #495057;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+  font-weight: 500;
+  outline: none;
+  gap: 10px;
+}
+
+.depth6Frame03:hover, .depth6Frame03:focus {
+  background: #e8f5e8;
+  border: 1.5px solid #6ab187;
+  color: #4e944f;
+  box-shadow: 0 4px 16px rgba(106, 177, 135, 0.12);
+  transform: translateY(-1px);
+}
+
+.depth6Frame1 {
+  width: 12px;
+  height: 12px;
+  transition: transform 0.2s ease;
+}
+
+.depth6Frame03:hover .depth6Frame1 {
+  transform: rotate(180deg);
+}
+
+.filterDropdown {
+  position: absolute;
+  top: 100% !important;
+  left: 0;
+  background: #fff;
+  border: 1.5px solid #e9ecef;
+  border-radius: 16px !important;
+  min-width: 180px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  z-index: 20;
+  padding: 8px 0;
+  margin-top: 8px;
+  width: 100%;
+}
+
+.filterDropdownOption {
+  padding: 12px 20px;
+  cursor: pointer;
+  font-size: 15px;
+  color: #495057;
+  background: transparent;
+  border-radius: 10px;
+  transition: all 0.15s ease;
+  margin: 2px 8px;
+}
+
+.filterDropdownOption:hover, .filterDropdownOption.selected {
+  background: #e8f5e8;
+  color: #4e944f;
+}
+
+.destinations {
+  font-weight: 500;
+  color: inherit;
+}
+
+/* Hotels Grid */
+.depth4Frame3 {
+  width: 100%;
+}
+
+.depth5Frame04 {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.depth6Frame07 {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Ensure all cards are the same height */
+  min-height: 420px; /* Adjust as needed for your design */
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(16,185,129,0.08);
+  overflow: hidden;
+  padding: 0;
+}
+
+.depth6Frame07:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.depth7Frame01 {
+  height: 200px !important;
+  width: 100%;
+  object-fit: cover;
+}
+
+.depth7Frame11 {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 24px;
+}
+
+.cardPrice {
+  margin-top: 12px;
+  font-size: 1.2rem;
+  color: #10b981;
+  font-weight: 700;
+}
+
+.sundarbansWildlifeExpedition {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1c170d;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.exploreTheWorlds {
+  font-size: 14px;
+  color: #6c757d;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.depth8Frame1 {
+  margin-bottom: 12px;
+}
+
+/* Hotel Meta Information */
+.hotelMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.hotelLocation {
+  font-size: 14px;
+  color: #495057;
+  font-weight: 500;
+}
+
+.hotelRating {
+  font-size: 12px;
+  color: #ffc107;
+  font-weight: 500;
+}
+
+.cardPrice {
+  font-size: 20px;
+  font-weight: 700;
+  color: #6ab187;
+  margin-bottom: 16px;
+}
+
+/* Local Amenities Section */
+.amenitiesSection {
+  margin-top: 60px;
+  padding: 40px 20px;
+  background: #f8f9fa;
+  border-radius: 16px;
+}
+
+.sectionTitle {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1c170d;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.amenitiesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.amenityCard {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.amenityCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.amenityIcon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.amenityInfo {
+  flex: 1;
+}
+
+.amenityTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1c170d;
+  margin-bottom: 4px;
+}
+
+.amenityDescription {
+  font-size: 14px;
+  color: #6c757d;
+  line-height: 1.4;
+}
+
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modalContent {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: modalAppear 0.3s ease;
+}
+
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.modalHeader h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1c170d;
+  margin: 0;
+}
+
+.modalClose {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #6c757d;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.modalClose:hover {
+  background: #f8f9fa;
+  color: #495057;
+}
+
+.hotelSummary {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.modalImage {
+  width: 120px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.hotelInfo h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1c170d;
+  margin: 0 0 4px 0;
+}
+
+.hotelInfo p {
+  font-size: 14px;
+  color: #6c757d;
+  margin: 0 0 8px 0;
+}
+
+.hotelPrice {
+  font-size: 16px;
+  font-weight: 600;
+  color: #6ab187;
+  margin: 0;
+}
+
+.bookingForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formGroup label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #495057;
+}
+
+.formGroup input {
+  padding: 12px 16px;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+}
+
+.formGroup input:focus {
+  outline: none;
+  border-color: #6ab187;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.bookButton {
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #6ab187 0%, #5a9a75 100%);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 8px;
+}
+
+.bookButton:hover {
+  background: linear-gradient(135deg, #5a9a75 0%, #4e8a66 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(106, 177, 135, 0.3);
+}
+
+.successMessage {
+  background: #d4edda;
+  color: #155724;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-top: 16px;
+  text-align: center;
+}
+
+.errorMessage {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-top: 16px;
+  text-align: center;
+}
+
+.selected {
+  background: #e8f5e8 !important;
+  border-color: #6ab187 !important;
+  color: #4e944f !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .groupParent {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin: 20px auto 0;
+    text-align: center;
+  }
+  
+  .tourPackages2 {
+    font-size: 28px;
+  }
+  
+  .createCustomPackage {
+    width: auto;
+    min-width: 200px;
+  }
+
+  .depth4Frame2 {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .depth5Frame04 {
+    grid-template-columns: 1fr;
+  }
+
+  .searchBarContainer {
+    max-width: 100%;
+    margin: 16px auto 24px;
+  }
+
+  .amenitiesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .searchBarContainer {
+    margin: 12px auto 20px;
+  }
+
+  .depth6Frame03 {
+    min-width: 120px;
+    padding: 10px 14px !important;
+    font-size: 14px;
+  }
+
+  .tourPackages2 {
+    font-size: 24px;
+  }
+
+  .createCustomPackage {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  .groupParent {
+    padding: 0 16px;
+  }
+
+  .depth3Frame01 {
+    padding: 0 16px;
+  }
+
+  .amenityCard {
+    padding: 16px;
+  }
+
+  .modalContent {
+    margin: 10px;
+    padding: 20px;
+  }
+}
+
+.arrowOpen {
+  transform: rotate(180deg) !important;
+  transition: transform 0.2s;
+}

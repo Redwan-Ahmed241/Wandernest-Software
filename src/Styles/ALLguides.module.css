@@ -1,0 +1,833 @@
+.depth4Frame0 {
+    width: 16px;
+    height: 16px;
+}
+.wandernest {
+    align-self: stretch;
+    position: relative;
+    line-height: 23px;
+}
+.depth4Frame1 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    cursor: pointer;
+}
+.depth3Frame0 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 16px;
+}
+.destinations {
+    align-self: stretch;
+    position: relative;
+    line-height: 21px;
+    font-weight: 500;
+}
+.flights {
+    align-self: stretch;
+    position: relative;
+    line-height: 21px;
+    font-weight: 500;
+    cursor: pointer;
+}
+.depth4Frame01 {
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 36px;
+}
+.signUp {
+    align-self: stretch;
+    position: relative;
+    line-height: 21px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.depth6Frame0 {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+.depth5Frame01 {
+    width: 84px;
+    border-radius: 12px;
+    background-color: #abb79a;
+    height: 40px;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 16px;
+    box-sizing: border-box;
+    min-width: 84px;
+    max-width: 480px;
+    cursor: pointer;
+}
+.depth5Frame11 {
+    width: 84px;
+    border-radius: 12px;
+    background-color: #e8f2f2;
+    height: 40px;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 16px;
+    box-sizing: border-box;
+    min-width: 84px;
+    max-width: 480px;
+    cursor: pointer;
+}
+.depth5Frame21 {
+    width: 40px;
+    border-radius: 12px;
+    height: 40px;
+    overflow: hidden;
+    flex-shrink: 0;
+    max-width: 480px;
+}
+.depth4Frame11 {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 8px;
+    text-align: center;
+}
+.depth3Frame1 {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: 32px;
+    font-size: 14px;
+}
+.navbar {
+    width: 1520px;
+    border-bottom: 1px solid #e5e8eb;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 40px;
+    gap: 0px;
+}
+.exploreLocalTravel {
+    align-self: stretch;
+    position: relative;
+    font-size: 2.3rem;
+    letter-spacing: -1.2px;
+    line-height: 1.15;
+    font-weight: 800;
+    text-align: center;
+    color: #f8f9fa;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.28);
+    margin: 0 auto 10px auto;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+.depth8Frame0 {
+    height: 43.9px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+.findTheBest {
+    align-self: stretch;
+    position: relative;
+    font-size: 1.15rem;
+    line-height: 1.5;
+    color: #f8f9fa;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.22);
+    text-align: center;
+    margin-bottom: 18px;
+}
+.depth8Frame1 {
+    width: 435.9px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 11.7px;
+}
+.depth7Frame0 {
+    position: absolute;
+    top: 141.88px;
+    left: 132.37px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 5.9px;
+}
+.depth7Frame1 {
+    position: absolute;
+    top: 271.33px;
+    left: 277.91px;
+    width: 351px;
+    height: 46.8px;
+    min-width: 117.01px;
+    max-width: 351.04px;
+}
+.depth9Frame0 {
+    width: 38px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+    margin-right: 10px;
+    font-size: 2.2rem;
+}
+.depth9Frame0 img {
+    height: 1.5em;
+    width: auto;
+    display: block;
+}
+.searchForGuides {
+    width: 193px;
+    position: relative;
+    line-height: 17.55px;
+    white-space: pre-wrap;
+    display: inline-block;
+    flex-shrink: 0;
+}
+.depth9Frame1 {
+    align-self: stretch;
+    flex: 1;
+    background-color: #fff;
+    border-top: 0.7px solid #e8decf;
+    border-bottom: 0.7px solid #e8decf;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 5.9px;
+}
+.search {
+    align-self: stretch;
+    position: relative;
+    line-height: 17.55px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.depth10Frame0 {
+    flex: 1;
+    border-radius: 17.55px;
+    background-color: #abb79a;
+    height: 35.1px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 14.6px;
+    box-sizing: border-box;
+    min-width: 61.43px;
+    max-width: 351.04px;
+}
+.depth9Frame2 {
+    align-self: stretch;
+    border-radius: 0px 8.78px 8.78px 0px;
+    background-color: #fff;
+    border-top: 0.7px solid #e8decf;
+    border-right: 0.7px solid #e8decf;
+    border-bottom: 0.7px solid #e8decf;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 5.1px 0px 0px;
+    text-align: center;
+    color: #fff;
+}
+.depth8Frame01 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: #fff;
+    border-radius: 50px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    padding: 0 16px;
+    width: 100%;
+    max-width: 480px;
+    margin: 24px auto 32px auto;
+    border: 1.5px solid #e8f2e8;
+    transition: border 0.2s;
+    height: 56px;
+}
+.depth8Frame01:focus-within {
+    border: 2px solid #179c6a;
+}
+.depth9Frame0 {
+    width: 22px;
+    height: 60px;
+    opacity: 0.7;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+}
+.depth9Frame1 {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+.searchForGuides {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 1.15rem;
+    color: #222;
+    padding: 20px 0;
+    width: 100%;
+}
+.depth6Frame02 {
+    align-self: stretch;
+    position: relative;
+    border-radius: 8.78px;
+    height: 351px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background-image: url('/public/Figma_photoes/1a.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top;
+    min-height: 351.04px;
+}
+.depth5Frame02 {
+    align-self: stretch;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 11.7px;
+}
+.depth4Frame02 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: center;
+    font-size: 35.1px;
+    color: #fff;
+}
+.availableTravelGuides {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: #1c170d;
+    margin-bottom: 18px;
+    text-align: right;
+    margin-left: 100px;
+    display: block;
+}
+.depth4Frame12 {
+    align-self: stretch;
+    height: 43.9px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 14.6px 11.7px 8.8px;
+    box-sizing: border-box;
+    font-size: 16.09px;
+}
+.depth4Frame5 {
+    align-self: stretch;
+    height: 43.9px;
+}
+.depth6Frame03 {
+    flex: 1;
+    position: relative;
+    border-radius: 8.78px;
+    max-width: 100%;
+    overflow: hidden;
+    height: 179.2px;
+    object-fit: cover;
+    width: 20px;
+}
+.guideForSundarban {
+    align-self: stretch;
+    position: relative;
+    line-height: 16.82px;
+}
+.depth7Frame01 {
+    align-self: stretch;
+    height: 16.8px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.depth9Frame01 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.depth9Frame11 {
+    width: 199.7px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.depth8Frame02 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 2.9px;
+}
+.viewDetails {
+    align-self: stretch;
+    position: relative;
+    line-height: 15.36px;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.depth8Frame11 {
+    border-radius: 11.7px;
+    background-color: #abb79a;
+    height: 23.4px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 11.7px;
+    box-sizing: border-box;
+    min-width: 61.43px;
+    max-width: 351.04px;
+    text-align: center;
+    font-size: 10.24px;
+    color: #fff;
+}
+.depth7Frame11 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 0px;
+    font-size: 11.7px;
+    color: #a1824a;
+}
+.depth6Frame1 {
+    flex: 0.9279;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 11.7px;
+    box-sizing: border-box;
+    gap: 2.9px;
+    min-width: 210.63px;
+}
+.depth5Frame03 {
+    align-self: stretch;
+    box-shadow: 0px 0px 2.93px rgba(0, 0, 0, 0.1);
+    border-radius: 8.78px;
+    background-color: #fff;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    cursor: pointer;
+}
+.depth4Frame2 {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    margin: 32px 0;
+    align-items: center;
+}
+.depth9Frame03 {
+    width: 195.3px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.depth5Frame04 {
+    align-self: stretch;
+    box-shadow: 0px 0px 2.93px rgba(0, 0, 0, 0.1);
+    border-radius: 8.78px;
+    background-color: #fff;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.depth3Frame01 {
+    width: 672.8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    max-width: 702.09px;
+}
+.depth4Frame03 {
+    width: 29.3px;
+    height: 415.4px;
+}
+.depth3Frame11 {
+    height: 1466.3px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.depth2Frame1 {
+    width: 85%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(rgba(0,0,0,0.18), rgba(0,0,0,0.18)), url('/public/Figma_photoes/1a.jpeg') center/cover no-repeat;
+    border-radius: 24px;
+    min-height: 500px;
+    max-height: 4000px;
+    margin-left: 50px;
+    margin-bottom: 24px;
+    margin-top: 50px;
+    position: relative;
+}
+.depth1Frame0 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.depth0Frame0 {
+   	align-self: stretch;
+  	background-color: #fff;
+  	overflow: visible;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	min-height: 800px;
+}
+.localGuide {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: #fff;
+    width: 100;
+    height: 1303.3px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.depth6Frame06 {
+    width: 117px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-width: 117.01px;
+}
+.depth5Frame06 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-content: center;
+    gap: 24px 0px;
+}
+.depth6Frame07 {
+    width: 17.6px;
+    height: 17.6px;
+}
+.depth5Frame12 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 16px 11.7px;
+}
+.depth5Frame22 {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.localGuideParent {
+    width: 993.2px;
+    position: relative;
+    height: 1496px;
+}
+.allGuides {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #f8f9fa;
+  padding: 0;
+  margin: 0;
+}
+.localGuideParent {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.depth0Frame0 {
+  width: 100%;
+}
+.depth9Frame0 {
+  width: 26px;
+  height: 26px;
+  margin-right: 8px;
+  opacity: 0.7;
+}
+.depth9Frame1 {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+.searchForGuides {
+  width: 100%;
+  font-size: 1.1rem;
+  color: #222;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 8px 0;
+}
+.depth9Frame2 {
+  background: #abb79a;
+  border-radius: 16px;
+  padding: 0 24px;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  border: none;
+  font-size: 1.1rem;
+  margin-left: 8px;
+}
+.depth9Frame2:hover {
+  background: #6ab187;
+}
+.depth4Frame2 {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  margin: 32px 0;
+  align-items: center;
+}
+.depth5Frame03, .depth5Frame04 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  padding: 0;
+  min-width: 0;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  transition: box-shadow 0.2s, transform 0.2s;
+  overflow: hidden;
+  border: 1.5px solid #f2f2f2;
+}
+.depth5Frame03:hover, .depth5Frame04:hover {
+  box-shadow: 0 8px 32px rgba(161,130,74,0.13);
+  transform: translateY(-4px) scale(1.02);
+}
+.depth6Frame03 {
+  width: 220px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 20px 0 0 20px;
+  flex-shrink: 0;
+}
+.depth6Frame1 {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32px 32px 32px 32px;
+  gap: 32px;
+}
+.depth7Frame01 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1c170d;
+  margin-bottom: 8px;
+  text-align: left;
+}
+.depth7Frame11 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+.depth8Frame02 {
+  font-size: 1.05rem;
+  color: #a1824a;
+  margin-bottom: 2px;
+  text-align: left;
+}
+.depth9Frame01, .depth9Frame03 {
+  font-size: 1rem;
+  color: #a1824a;
+  text-align: left;
+}
+.viewDetails {
+  background: #abb79a;
+  color: #f5f2f2;
+  border-radius: px;
+  padding: 0px 0px;
+  font-weight: 600;
+  font-size: 1.15rem;
+  margin-left: 0px;
+  cursor: pointer;
+  transition: background 0.2s;
+  text-align: center;
+  border: none;
+  white-space: nowrap;
+}
+.viewDetails:hover {
+  background: #6ab187;
+}
+@media (max-width: 900px) {
+  .localGuideParent {
+    padding: 0 8px;
+  }
+  .depth4Frame2 {
+    gap: 18px;
+    margin: 18px 0;
+  }
+  .depth2Frame1 {
+    min-height: 140px;
+    max-height: 200px;
+    border-radius: 12px;
+    padding: 8px 0;
+  }
+  .exploreLocalTravel {
+    font-size: 1.3rem;
+  }
+  .findTheBest {
+    font-size: 1rem;
+  }
+  .depth8Frame01 {
+    max-width: 98vw;
+    padding: 0 4px;
+    height: 44px;
+  }
+  .depth9Frame0 {
+    width: 20px;
+    height: 20px;
+  }
+  .searchForGuides {
+    font-size: 0.98rem;
+  }
+  .depth9Frame2 {
+    font-size: 0.98rem;
+    height: 32px;
+    padding: 0 12px;
+  }
+  .depth5Frame03, .depth5Frame04 {
+    flex-direction: column;
+    max-width: 98vw;
+    border-radius: 16px;
+  }
+  .depth6Frame03 {
+    width: 100%;
+    height: 180px;
+    border-radius: 16px 16px 0 0;
+  }
+  .depth6Frame1 {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 18px 14px 18px 14px;
+    gap: 12px;
+  }
+  .viewDetails {
+    margin-left: 0;
+    margin-top: 12px;
+    width: 100%;
+  }
+}
+@media (max-width: 600px) {
+  .allGuides {
+    padding: 0;
+  }
+  .depth2Frame1 {
+    border-radius: 12px;
+    min-height: 120px;
+    padding: 8px 0;
+  }
+  .depth8Frame01 {
+    max-width: 98vw;
+    padding: 0 4px;
+  }
+  .depth4Frame2 {
+    margin: 16px 0;
+  }
+  .depth6Frame03 {
+    height: 120px;
+  }
+}
+.cardTitle {
+  color: #222;
+}
+.cardDetails {
+  color: #333;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+  margin-bottom: 8px;
+}

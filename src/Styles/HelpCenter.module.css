@@ -1,0 +1,528 @@
+.depth4Frame01 {
+  	width: 16px;
+  	height: 16px;
+}
+.wandernest {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 23px;
+}
+.depth4Frame1 {
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	cursor: pointer;
+}
+.depth4Frame0 {
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: flex-start;
+  	gap: 16px;
+}
+.home {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 21px;
+  	font-weight: 500;
+}
+.depth5Frame0 {
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.depth4Frame11 {
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: flex-start;
+  	gap: 36px;
+  	font-size: 14px;
+  	color: #1c170d;
+}
+.depth3Frame0 {
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: flex-start;
+  	gap: 32px;
+}
+.depth6Frame0 {
+  	align-self: stretch;
+  	width: 40px;
+  	border-radius: 12px 0px 0px 12px;
+  	max-height: 100%;
+}
+.search {
+  	position: relative;
+  	line-height: 24px;
+}
+.depth6Frame1 {
+  	align-self: stretch;
+  	flex: 1;
+  	border-radius: 0px 12px 12px 0px;
+  	background-color: #f5f0e5;
+  	overflow: hidden;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: flex-start;
+  	padding: 8px 16px 8px 8px;
+}
+.depth5Frame01 {
+  	align-self: stretch;
+  	flex: 1;
+  	border-radius: 12px;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.depth4Frame02 {
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	min-width: 160px;
+  	max-width: 256px;
+}
+.depth4Frame12 {
+  	width: 40px;
+  	border-radius: 20px;
+  	height: 40px;
+  	overflow: hidden;
+  	flex-shrink: 0;
+  	object-fit: cover;
+  	max-width: 480px;
+}
+.depth3Frame1 {
+  	flex: 1;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: flex-end;
+  	gap: 32px;
+  	font-size: 16px;
+  	color: #a1824a;
+}
+.depth2Frame0 {
+  	align-self: stretch;
+  	border-bottom: 1px solid #e5e8eb;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: space-between;
+  	padding: 12px 40px;
+  	gap: 0px;
+}
+.searchForHelp {
+  	position: relative;
+  	line-height: 24px;
+  	white-space: pre-wrap;
+}
+.depth5Frame02 {
+  	align-self: stretch;
+  	height: 48px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	min-width: 160px;
+}
+.depth4Frame03 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 12px 16px;
+  	color: #a1824a;
+}
+.emergencyContacts {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 40px;
+}
+.reachOutTo {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 21px;
+}
+.depth6Frame11 {
+  	width: 329px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	font-size: 14px;
+  	color: #a1824a;
+}
+.depth5Frame03 {
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	gap: 12px;
+  	min-width: 288px;
+}
+.depth4Frame13 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: space-between;
+  	flex-wrap: wrap;
+  	align-content: flex-start;
+  	padding: 16px;
+  	font-size: 32px;
+}
+.depth8Frame0 {
+  	align-self: stretch;
+  	width: 186px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.depth7Frame01 {
+  	align-self: stretch;
+  	flex: 1;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.depth7Frame11 {
+  	align-self: stretch;
+  	flex: 1;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	color: #1c170d;
+}
+.depth6Frame03 {
+  	align-self: stretch;
+  	width: 186px;
+  	border-top: 1px solid #e5e8eb;
+  	box-sizing: border-box;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 20px 0px;
+}
+.depth8Frame02 {
+  	align-self: stretch;
+  	width: 718px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.depth6Frame12 {
+  	align-self: stretch;
+  	width: 718px;
+  	border-top: 1px solid #e5e8eb;
+  	box-sizing: border-box;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 20px 0px;
+}
+.depth5Frame04 {
+  	align-self: stretch;
+  	flex: 1;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	gap: 24px;
+}
+.depth8Frame04 {
+  	width: 186px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.depth7Frame03 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.depth7Frame13 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	color: #1c170d;
+}
+.depth4Frame2 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 16px;
+  	gap: 24px;
+  	font-size: 14px;
+  	color: #a1824a;
+}
+.frequentlyAskedQuestions {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 28px;
+}
+.depth4Frame3 {
+  	align-self: stretch;
+  	height: 60px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 20px 16px 12px;
+  	box-sizing: border-box;
+  	font-size: 22px;
+}
+.depth6Frame05 {
+  	width: 48px;
+  	border-radius: 8px;
+  	height: 48px;
+}
+.howToReset {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 24px;
+  	font-weight: 500;
+}
+.depth7Frame05 {
+  	width: 301px;
+  	overflow: hidden;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.depth7Frame15 {
+  	overflow: hidden;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	font-size: 14px;
+  	color: #a1824a;
+}
+.depth6Frame14 {
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: center;
+}
+.depth5Frame11 {
+  	width: 28px;
+  	height: 28px;
+}
+.depth4Frame4 {
+  	align-self: stretch;
+  	background-color: #fff;
+  	height: 72px;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: space-between;
+  	padding: 8px 16px;
+  	box-sizing: border-box;
+  	gap: 0px;
+  	min-height: 72px;
+}
+.depth7Frame06 {
+  	width: 254px;
+  	overflow: hidden;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.depth4Frame5 {
+  	align-self: stretch;
+  	background-color: #fff;
+  	height: 72px;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: space-between;
+  	padding: 8px 16px;
+  	box-sizing: border-box;
+  	gap: 0px;
+  	min-height: 72px;
+  	cursor: pointer;
+}
+.depth7Frame07 {
+  	overflow: hidden;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.depth7Frame17 {
+  	width: 258px;
+  	overflow: hidden;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	font-size: 14px;
+  	color: #a1824a;
+}
+.depth3Frame01 {
+  	flex: 1;
+  	height: 695px;
+  	overflow: hidden;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	max-width: 960px;
+}
+.depth2Frame1 {
+  	align-self: stretch;
+  	flex: 1;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: center;
+  	padding: 20px 160px;
+  	font-size: 16px;
+  	color: #1c170d;
+}
+.depth1Frame0 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.depth0Frame0 {
+  	align-self: stretch;
+  	background-color: #fff;
+  	overflow: hidden;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	min-height: 800px;
+}
+.helpCenter1 {
+  	position: absolute;
+  	top: 0px;
+  	left: 0px;
+  	background-color: #fff;
+  	width: 1280px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+}
+.aboutUs {
+  	align-self: stretch;
+  	position: relative;
+  	line-height: 24px;
+}
+.depth6Frame08 {
+  	width: 160px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	justify-content: flex-start;
+  	min-width: 160px;
+  	cursor: pointer;
+}
+.depth6Frame17 {
+  	width: 160px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	justify-content: flex-start;
+  	min-width: 160px;
+}
+.depth5Frame08 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+  	justify-content: space-between;
+  	flex-wrap: wrap;
+  	align-content: center;
+  	gap: 24px 0px;
+}
+.depth6Frame09 {
+  	width: 24px;
+  	height: 24px;
+}
+.depth5Frame14 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: center;
+  	flex-wrap: wrap;
+  	align-content: flex-start;
+  	gap: 16px;
+}
+.depth5Frame21 {
+  	align-self: stretch;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	justify-content: flex-start;
+}
+.depth4Frame04 {
+  	align-self: stretch;
+  	flex: 1;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	padding: 40px 20px;
+  	gap: 24px;
+}
+.depth3Frame02 {
+  	width: 960px;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: flex-start;
+  	justify-content: flex-start;
+  	max-width: 960px;
+}
+.footer {
+  	position: absolute;
+  	top: 800px;
+  	left: 0px;
+  	background-color: #1c170d;
+  	width: 1280px;
+  	height: 200px;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
+  	justify-content: center;
+  	text-align: center;
+  	font-size: 16px;
+  	color: #e8f2f2;
+}
+.helpCenter {
+  	width: 100%;
+  	position: relative;
+  	height: 1000px;
+  	text-align: left;
+  	font-size: 18px;
+  	color: #0d1c1c;
+  	font-family: 'Plus Jakarta Sans';
+}
+
