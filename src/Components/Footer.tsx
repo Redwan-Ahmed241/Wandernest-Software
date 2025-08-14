@@ -1,41 +1,75 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import styles from '../Styles/Footer.module.css';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+// Tailwind conversion: all styles are now inline utility classes
 
 const Footer: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className={styles.depth2Frame3}>
-      <div className={styles.depth3Frame02}>
-        <div className={styles.depth4Frame03}>
-          <div className={styles.depth5Frame06}>
-            <div className={styles.depth6Frame05} onClick={() => navigate('/about-us')} style={{ cursor: 'pointer' }}>
-              <div className={styles.aboutUs}>About Us</div>
-            </div>
-            <div className={styles.depth6Frame12} onClick={() => navigate('/contact')} style={{ cursor: 'pointer' }}>
-              <div className={styles.aboutUs}>Contact</div>
-            </div>
-            <div className={styles.depth6Frame05} onClick={() => navigate('/terms')} style={{ cursor: 'pointer' }}>
-              <div className={styles.aboutUs}>Terms of Service</div>
-            </div>
-            <div className={styles.depth6Frame05} onClick={() => navigate('/PrivacyPolicy')} style={{ cursor: 'pointer' }}>
-              <div className={styles.aboutUs}>Privacy Policy</div>
-            </div>
+    <footer className="bg-[#1c170d] w-full min-h-[200px] flex flex-col items-center justify-center text-center text-base text-[#e8f2f2] box-border py-10 px-5 gap-6 relative z-10">
+      <div className="w-full max-w-[1200px] flex flex-col items-center justify-center gap-6">
+        <div className="w-full flex flex-col gap-4 items-center">
+          <div className="flex flex-wrap gap-4 md:gap-8 justify-center text-center">
+            <button
+              className="min-w-[120px] flex flex-col items-center cursor-pointer"
+              onClick={() => navigate("/about-us")}
+            >
+              <span className="text-base leading-6 font-sans text-[#e8f2f2] hover:underline">
+                About Us
+              </span>
+            </button>
+            <button
+              className="min-w-[120px] flex flex-col items-center cursor-pointer"
+              onClick={() => navigate("/contact")}
+            >
+              <span className="text-base leading-6 font-sans text-[#e8f2f2] hover:underline">
+                Contact
+              </span>
+            </button>
+            <button
+              className="min-w-[120px] flex flex-col items-center cursor-pointer"
+              onClick={() => navigate("/terms")}
+            >
+              <span className="text-base leading-6 font-sans text-[#e8f2f2] hover:underline">
+                Terms of Service
+              </span>
+            </button>
+            <button
+              className="min-w-[120px] flex flex-col items-center cursor-pointer"
+              onClick={() => navigate("/PrivacyPolicy")}
+            >
+              <span className="text-base leading-6 font-sans text-[#e8f2f2] hover:underline">
+                Privacy Policy
+              </span>
+            </button>
           </div>
 
-          <div className={styles.depth5Frame12}>
-            <img className={styles.depth6Frame06} alt="Facebook" src="/Figma_photoes/facebook.svg" />
-            <img className={styles.depth6Frame06} alt="Twitter" src="/Figma_photoes/twitter.svg" />
-            <img className={styles.depth6Frame06} alt="Instagram" src="/Figma_photoes/insta.svg" />
+          <div className="flex justify-center gap-4 flex-wrap items-center">
+            <img
+              className="w-6 h-6"
+              alt="Facebook"
+              src="/Figma_photoes/facebook.svg"
+            />
+            <img
+              className="w-6 h-6"
+              alt="Twitter"
+              src="/Figma_photoes/twitter.svg"
+            />
+            <img
+              className="w-6 h-6"
+              alt="Instagram"
+              src="/Figma_photoes/insta.svg"
+            />
           </div>
 
-          <div className={styles.depth5Frame22}>
-            <div className={styles.aboutUs}>@2025 WanderNest, All rights reserved.</div>
+          <div className="flex flex-col items-center justify-center text-sm text-gray-400">
+            <span className="text-base leading-6 font-sans text-[#e8f2f2]">
+              @2025 WanderNest, All rights reserved.
+            </span>
           </div>
         </div>
       </div>
-    </div>
+    </footer>
   );
 };
 
