@@ -1,4 +1,3 @@
-import { FunctionComponent, useState } from 'react';
 import Layout from '../App/Layout';
 
 interface ReviewProps {

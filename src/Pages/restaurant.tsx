@@ -1,5 +1,4 @@
 import React, { FunctionComponent, useCallback, useState } from 'react';
-import { useNavigate } from "react-router-dom";
 import Layout from '../App/Layout';
 
 const FILTERS = [

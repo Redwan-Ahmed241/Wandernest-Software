@@ -4,7 +4,6 @@ import type { FunctionComponent } from "react"
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import Layout from "../App/Layout"
-import Sidebar from "./Sidebar"
 import { visaAPI, type Country, type VisaPurpose, type VisaRequirement, type CurrencyRate } from "../App/api"
 import { useAuth } from "../Authentication/auth-context"
 

@@ -1,4 +1,3 @@
-import { FunctionComponent, useCallback } from 'react';
 
 const Support: FunctionComponent = () => {
   const onDepth7FrameClick = useCallback(() => {
