@@ -1,21 +1,21 @@
-import React, { FunctionComponent, useCallback, useState } from 'react';
+import React, { FunctionComponent, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from '../Styles/restaurant.module.css';
-import Layout from '../App/Layout';
+import styles from "../Styles/restaurant.module.css";
+import Layout from "../App/Layout";
 
 const FILTERS = [
-  { label: 'Popular', value: 'popular' },
-  { label: 'Highest Rated', value: 'highest' },
-  { label: 'Newest', value: 'newest' },
-  { label: 'Budget-friendly', value: 'budget' },
-  { label: 'Fast Delivery', value: 'fast' },
-  { label: 'Halal', value: 'halal' },
+  { label: "Popular", value: "popular" },
+  { label: "Highest Rated", value: "highest" },
+  { label: "Newest", value: "newest" },
+  { label: "Budget-friendly", value: "budget" },
+  { label: "Fast Delivery", value: "fast" },
+  { label: "Halal", value: "halal" },
 ];
 
-const Restaurant:FunctionComponent = () => {
+const Restaurant: FunctionComponent = () => {
   const _navigate = useNavigate();
-  const [search, setSearch] = useState('');
-  const [selectedFilter, setSelectedFilter] = useState('popular');
+  const [search, setSearch] = useState("");
+  const [selectedFilter, setSelectedFilter] = useState("popular");
   const [priceRange, setPriceRange] = useState(1000); // Example max price
   // Optionally, add filter state if you want dropdowns like Packages
   // const [openFilter, setOpenFilter] = useState<string | null>(null);
@@ -24,76 +24,75 @@ const Restaurant:FunctionComponent = () => {
   // Dummy restaurant data for filtering (replace with your real data)
   const restaurants = [
     {
-      name: 'NORTH END coffee',
-      location: 'Shahajadpur, Dhaka',
-      image: '/Figma_photoes/NE.jpeg',
-      rating: '4.8★ (1,200+ reviews)',
-      cuisine: 'Bengali cuisine',
+      name: "NORTH END coffee",
+      location: "Shahajadpur, Dhaka",
+      image: "/figma_photos/NE.jpeg",
+      rating: "4.8★ (1,200+ reviews)",
+      cuisine: "Bengali cuisine",
       price: 350,
-      tags: ['popular', 'highest', 'halal'],
+      tags: ["popular", "highest", "halal"],
     },
     {
-      name: 'Mezzan Haile Aaiun',
-      location: 'Chittagong',
-      image: '/Figma_photoes/local_cuisine.jpeg',
-      rating: '4.7★ (950+ reviews)',
-      cuisine: 'Traditional Bangladeshi dishes',
+      name: "Mezzan Haile Aaiun",
+      location: "Chittagong",
+      image: "/figma_photos/local_cuisine.jpeg",
+      rating: "4.7★ (950+ reviews)",
+      cuisine: "Traditional Bangladeshi dishes",
       price: 200,
-      tags: ['popular', 'budget', 'halal'],
+      tags: ["popular", "budget", "halal"],
     },
     {
-      name: 'Panshi Restaurant',
-      location: 'Sylhet',
-      image: '/Figma_photoes/tandoori-chicken.jpg',
-      rating: '4.6★ (800+ reviews)',
-      cuisine: 'Sylheti specialties',
+      name: "Panshi Restaurant",
+      location: "Sylhet",
+      image: "/figma_photos/tandoori-chicken.jpg",
+      rating: "4.6★ (800+ reviews)",
+      cuisine: "Sylheti specialties",
       price: 150,
-      tags: ['popular', 'newest', 'halal'],
+      tags: ["popular", "newest", "halal"],
     },
     {
-      name: 'Sultans Dine',
-      location: 'Gulshan 2',
-      image: '/Figma_photoes/s-dine.png',
-      rating: '4.9★ (1,500+ reviews)',
-      cuisine: 'Biryani and kebabs',
+      name: "Sultans Dine",
+      location: "Gulshan 2",
+      image: "/figma_photos/s-dine.png",
+      rating: "4.9★ (1,500+ reviews)",
+      cuisine: "Biryani and kebabs",
       price: 400,
-      tags: ['highest', 'fast', 'halal'],
+      tags: ["highest", "fast", "halal"],
     },
     {
-      name: 'Kamrul Hotel',
-      location: 'Khulna',
-      image: '/Figma_photoes/hqdefault.jpg',
-      rating: '4.5★ (700+ reviews)',
-      cuisine: 'Orginal Chuijhaal flavors',
+      name: "Kamrul Hotel",
+      location: "Khulna",
+      image: "/figma_photos/hqdefault.jpg",
+      rating: "4.5★ (700+ reviews)",
+      cuisine: "Orginal Chuijhaal flavors",
       price: 100,
-      tags: ['budget', 'halal'],
+      tags: ["budget", "halal"],
     },
     {
-      name: 'Kacchi Vai',
-      location: 'Narayanganj',
-      image: '/Figma_photoes/kacchi.jpeg',
-      rating: '4.7★ (600+ reviews)',
-      cuisine: 'Delicious Kacchi',
+      name: "Kacchi Vai",
+      location: "Narayanganj",
+      image: "/figma_photos/kacchi.jpeg",
+      rating: "4.7★ (600+ reviews)",
+      cuisine: "Delicious Kacchi",
       price: 250,
-      tags: ['budget', 'fast', 'halal'],
+      tags: ["budget", "fast", "halal"],
     },
   ];
 
   // Filter restaurants by search and selected filter
-  const filteredRestaurants = restaurants.filter(r =>
-    (selectedFilter === 'popular' || r.tags.includes(selectedFilter)) &&
-    r.price <= priceRange &&
-    (
-      r.name.toLowerCase().includes(search.toLowerCase()) ||
-      r.location.toLowerCase().includes(search.toLowerCase()) ||
-      r.cuisine.toLowerCase().includes(search.toLowerCase())
-    )
+  const filteredRestaurants = restaurants.filter(
+    (r) =>
+      (selectedFilter === "popular" || r.tags.includes(selectedFilter)) &&
+      r.price <= priceRange &&
+      (r.name.toLowerCase().includes(search.toLowerCase()) ||
+        r.location.toLowerCase().includes(search.toLowerCase()) ||
+        r.cuisine.toLowerCase().includes(search.toLowerCase()))
   );
 
   const _onDepth4FrameClick = useCallback(() => {
     // Add your code here
   }, []);
-  
+
   return (
     <Layout>
       <div className={styles.restaurant}>
@@ -101,12 +100,14 @@ const Restaurant:FunctionComponent = () => {
           <div className={styles.depth0Frame0}>
             <div className={styles.depth1Frame0}>
               <div className={styles.groupParent}>
-                <h1 className={styles.topRatedEateries}>Top-Rated Eateries Across Bangladesh</h1>
+                <h1 className={styles.topRatedEateries}>
+                  Top-Rated Eateries Across Bangladesh
+                </h1>
               </div>
               {/* Search Bar */}
               <div className={styles.searchBarContainer}>
                 <img
-                  src="/Figma_photoes/search.svg"
+                  src="/figma_photos/search.svg"
                   alt="search"
                   className={styles.searchIconInside}
                 />
@@ -115,7 +116,7 @@ const Restaurant:FunctionComponent = () => {
                   className={styles.searchInput}
                   placeholder="Search restaurants or cuisines"
                   value={search}
-                  onChange={e => setSearch(e.target.value)}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
               {/* Price Range */}
@@ -127,17 +128,20 @@ const Restaurant:FunctionComponent = () => {
                   max={1000}
                   step={10}
                   value={priceRange}
-                  onChange={e => setPriceRange(Number(e.target.value))}
+                  onChange={(e) => setPriceRange(Number(e.target.value))}
                   className={styles.priceRangeInput}
                 />
                 <span className={styles.priceRangeValue}>৳{priceRange}</span>
               </div>
               {/* Filter Buttons */}
               <div className={styles.filterButtonsContainer}>
-                {FILTERS.map(f => (
+                {FILTERS.map((f) => (
                   <button
                     key={f.value}
-                    className={styles.filterButton + (selectedFilter === f.value ? ' ' + styles.selected : '')}
+                    className={
+                      styles.filterButton +
+                      (selectedFilter === f.value ? " " + styles.selected : "")
+                    }
                     onClick={() => setSelectedFilter(f.value)}
                     type="button"
                   >
@@ -147,13 +151,22 @@ const Restaurant:FunctionComponent = () => {
               </div>
               {/* Restaurant Cards Grid */}
               <div className={styles.depth5Frame04}>
-                {filteredRestaurants.map(r => (
+                {filteredRestaurants.map((r) => (
                   <div className={styles.depth6Frame09} key={r.name}>
                     <img className={styles.cardImage} alt="" src={r.image} />
                     <div className={styles.cardContent}>
-                      <div className={styles.cardTitle}>{r.name} <span style={{fontWeight:400, color:'#888'}}>({r.location})</span></div>
-                      <div className={styles.cardDescription}>{r.rating} · {r.cuisine}</div>
-                      {r.price && <div className={styles.priceTag}>৳{r.price}</div>}
+                      <div className={styles.cardTitle}>
+                        {r.name}{" "}
+                        <span style={{ fontWeight: 400, color: "#888" }}>
+                          ({r.location})
+                        </span>
+                      </div>
+                      <div className={styles.cardDescription}>
+                        {r.rating} · {r.cuisine}
+                      </div>
+                      {r.price && (
+                        <div className={styles.priceTag}>৳{r.price}</div>
+                      )}
                     </div>
                   </div>
                 ))}
