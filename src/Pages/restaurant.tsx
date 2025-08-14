@@ -1,6 +1,4 @@
 import React, { FunctionComponent, useCallback, useState } from 'react';
-import { useNavigate } from "react-router-dom";
-import styles from '../Styles/restaurant.module.css';
 import Layout from '../App/Layout';
 
 const FILTERS = [

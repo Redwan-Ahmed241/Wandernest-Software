@@ -1,5 +1,4 @@
 import { FunctionComponent, useCallback } from 'react';
-import styles from '../Styles/GiftCard.module.css';
 
 
 const GiftCard:FunctionComponent = () => {

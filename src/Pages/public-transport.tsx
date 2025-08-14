@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import "../Styles/page-styles.css"
 import Layout from "../App/Layout"
 export default function PublicTransport() {
   const [selectedTransportType, setSelectedTransportType] = useState("all")
