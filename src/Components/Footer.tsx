@@ -1,72 +1,61 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "../Styles/Footer.module.css";
 
 const Footer: React.FC = () => {
   const navigate = useNavigate();
-
   return (
-    <div className={styles.depth2Frame3}>
-      <div className={styles.depth3Frame02}>
-        <div className={styles.depth4Frame03}>
-          <div className={styles.depth5Frame06}>
-            <div
-              className={styles.depth6Frame05}
-              onClick={() => navigate("/about-us")}
-              style={{ cursor: "pointer" }}
-            >
-              <div className={styles.aboutUs}>About Us</div>
-            </div>
-            <div
-              className={styles.depth6Frame12}
-              onClick={() => navigate("/contact")}
-              style={{ cursor: "pointer" }}
-            >
-              <div className={styles.aboutUs}>Contact</div>
-            </div>
-            <div
-              className={styles.depth6Frame05}
-              onClick={() => navigate("/terms")}
-              style={{ cursor: "pointer" }}
-            >
-              <div className={styles.aboutUs}>Terms of Service</div>
-            </div>
-            <div
-              className={styles.depth6Frame05}
-              onClick={() => navigate("/PrivacyPolicy")}
-              style={{ cursor: "pointer" }}
-            >
-              <div className={styles.aboutUs}>Privacy Policy</div>
-            </div>
-          </div>
-
-          <div className={styles.depth5Frame12}>
-            <img
-              className={styles.depth6Frame06}
-              alt="Facebook"
-              src="/figma_photos/facebook.svg"
-            />
-            <img
-              className={styles.depth6Frame06}
-              alt="Twitter"
-              src="/figma_photos/twitter.svg"
-            />
-            <img
-              className={styles.depth6Frame06}
-              alt="Instagram"
-              src="/figma_photos/insta.svg"
-            />
-          </div>
-
-          <div className={styles.depth5Frame22}>
-            <div className={styles.aboutUs}>
-              @2025 WanderNest, All rights reserved.
-            </div>
-          </div>
+    <footer className="w-full bg-white border-t border-border py-8 mt-12">
+      <div className="max-w-4xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-8">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-8 items-center">
+          <button
+            className="text-primary-dark font-jakarta text-base hover:text-primary transition"
+            onClick={() => navigate("/about-us")}
+          >
+            About Us
+          </button>
+          <button
+            className="text-primary-dark font-jakarta text-base hover:text-primary transition"
+            onClick={() => navigate("/contact")}
+          >
+            Contact
+          </button>
+          <button
+            className="text-primary-dark font-jakarta text-base hover:text-primary transition"
+            onClick={() => navigate("/terms")}
+          >
+            Terms of Service
+          </button>
+          <button
+            className="text-primary-dark font-jakarta text-base hover:text-primary transition"
+            onClick={() => navigate("/PrivacyPolicy")}
+          >
+            Privacy Policy
+          </button>
+        </div>
+        <div className="flex gap-4 items-center">
+          <img
+            className="w-6 h-6"
+            alt="Facebook"
+            src="/figma_photos/facebook.svg"
+          />
+          <img
+            className="w-6 h-6"
+            alt="Twitter"
+            src="/figma_photos/twitter.svg"
+          />
+          <img
+            className="w-6 h-6"
+            alt="Instagram"
+            src="/figma_photos/insta.svg"
+          />
         </div>
       </div>
-    </div>
+      <div className="text-center text-sm text-primary-dark mt-6 font-jakarta">
+        @2025 WanderNest, All rights reserved.
+      </div>
+    </footer>
   );
 };
 
 export default Footer;
+<div className={styles.aboutUs}>Terms of Service</div>;

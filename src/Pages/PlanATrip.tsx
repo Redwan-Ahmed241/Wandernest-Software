@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "../Styles/PlanATrip.module.css";
+// Tailwind conversion: removed CSS module import
 import Layout from "../App/Layout";
 import Sidebar from "./Sidebar";
 
@@ -27,8 +27,6 @@ const activities = [
 ];
 
 const PlanATrip: React.FC = () => {
-  // Sidebar toggle for mobile
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   // Calendar state
   const today = new Date();
   const [calendarMonth, setCalendarMonth] = useState(today.getMonth());
@@ -37,23 +35,6 @@ const PlanATrip: React.FC = () => {
   const daysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate();
   const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1);
   const firstDayOfWeek = new Date(calendarYear, calendarMonth, 1).getDay();
-  // Search state
-  const [search, setSearch] = useState("");
-  // Active nav
-  const [, setActiveNav] = useState(0);
-
-  // Sidebar navigation (dummy)
-  const _navItems = [
-    { label: "Home", icon: "/figma_photos/homebg.jpg" },
-    { label: "My Trips", icon: "/figma_photos/plan.svg" },
-    { label: "Explore", icon: "/figma_photos/explore.svg" },
-    { label: "Plan a Trip", icon: "/figma_photos/plan.svg" },
-    { label: "Flights", icon: "/figma_photos/flight.svg" },
-    { label: "Hotels", icon: "/figma_photos/hotel.svg" },
-    { label: "Cars", icon: "/figma_photos/car.svg" },
-    { label: "Gift Cards", icon: "/figma_photos/gift.svg" },
-  ];
-
   // Calendar navigation
   const handlePrevMonth = () => {
     if (calendarMonth === 0) {
@@ -62,124 +43,32 @@ const PlanATrip: React.FC = () => {
     } else {
       setCalendarMonth(calendarMonth - 1);
     }
-  };
-  const handleNextMonth = () => {
-    if (calendarMonth === 11) {
-      setCalendarMonth(0);
-      setCalendarYear(calendarYear + 1);
-    } else {
-      setCalendarMonth(calendarMonth + 1);
-    }
-  };
-
-  // Sidebar toggle handler
-  const _handleSidebarToggle = () => setSidebarOpen(!sidebarOpen);
-  const _handleNavClick = (idx: number) => setActiveNav(idx);
-
   return (
     <Layout>
-      <div style={{ display: "flex", alignItems: "flex-start" }}>
-        <Sidebar />
-        <div style={{ flex: 1 }}>
-          <div className={styles.planATripGrid}>
-            {/* Main Content */}
-            <main className={styles.mainContentModern}>
-              {/* Page Heading */}
-              <div style={{ marginBottom: 12 }}>
-                <h1
-                  style={{
-                    fontSize: "2.5rem",
-                    fontWeight: 800,
-                    color: "#1c170d",
-                    margin: 0,
-                  }}
-                >
-                  Plan Your Trip
-                </h1>
-                <div
-                  style={{
-                    color: "#a1824a",
-                    fontSize: "1.25rem",
-                    marginTop: 8,
-                  }}
-                >
-                  Use the trip planner to create a personalized travel
-                  experience.
-                </div>
-              </div>
-              {/* Search Bar */}
-              <div className={styles.searchBarContainerModern}>
-                <img
-                  src="/figma_photos/search.svg"
-                  alt="search"
-                  className={styles.searchIconInside}
-                />
-                <input
-                  type="text"
-                  className={styles.searchInput}
-                  placeholder="Search activities, hotels, destinations..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                />
-                <button className={styles.searchButton}>Search</button>
-              </div>
-              {/* Calendar and Suggested Activities Row */}
-              <section
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  alignItems: "flex-start",
-                  gap: 32,
-                  marginBottom: 32,
-                }}
-              >
+      <div className="min-h-screen bg-theme-bg flex flex-col items-center justify-center py-8">
+        <div className="w-full max-w-6xl mx-auto bg-white rounded-2xl shadow-lg p-8 flex flex-col gap-8">
+          <div className="flex flex-col items-center gap-2">
+            <h1 className="text-3xl font-bold text-theme-primary mb-2">Plan a Trip to Cox's Bazar</h1>
+            <p className="text-lg text-theme-secondary">Select your travel dates and explore recommended activities!</p>
+          </div>
+          <div className="flex flex-col md:flex-row gap-8">
+            <main className="flex-1">
+              {/* Calendar & Activities */}
+              <section className="flex flex-col md:flex-row gap-8 mb-8">
                 {/* Calendar */}
-                <div className={styles.calendarContainerModern}>
-                  <div className={styles.calendarHeaderRow}>
-                    <button
-                      onClick={handlePrevMonth}
-                      className={styles.calendarNavBtn}
-                    >
-                      {"<"}
-                    </button>
-                    <span className={styles.calendarMonthLabel}>
-                      {new Date(calendarYear, calendarMonth).toLocaleString(
-                        "default",
-                        { month: "long", year: "numeric" }
-                      )}
-                    </span>
-                    <button
-                      onClick={handleNextMonth}
-                      className={styles.calendarNavBtn}
-                    >
-                      {">"}
-                    </button>
-                  </div>
-                  <div className={styles.calendarWeekdays}>
-                    {weekDays.map((d, i) => (
-                      <span key={i} className={styles.calendarWeekday}>
-                        {d}
-                      </span>
-                    ))}
-                  </div>
-                  <div className={styles.calendarGrid}>
+                <div className="bg-theme-light rounded-xl shadow p-6 flex flex-col items-center min-w-[320px] max-w-[400px] flex-1">
+                  <h3 className="font-bold text-xl text-theme-primary mb-4">Select Your Dates</h3>
+                  <div className="grid grid-cols-7 gap-2 w-full">
+                    {/* Render empty days for firstDayOfWeek */}
                     {Array.from({ length: firstDayOfWeek }).map((_, i) => (
-                      <span
-                        key={"empty-" + i}
-                        className={styles.calendarDayEmpty}
-                      ></span>
+                      <span key={"empty-" + i} className="" />
                     ))}
+                    {/* Render days in month */}
                     {daysArray.map((day) => (
                       <span
                         key={day}
-                        className={
-                          styles.calendarDay +
-                          (selectedDay === day
-                            ? " " + styles.selectedCalendarDay
-                            : "")
-                        }
+                        className={`cursor-pointer px-3 py-2 rounded-lg text-theme-primary font-semibold transition-all duration-150 ${selectedDay === day ? 'bg-theme-accent text-white' : 'bg-theme-bg hover:bg-theme-accent/20'}`}
                         onClick={() => setSelectedDay(day)}
-                        style={{ cursor: "pointer" }}
                       >
                         {day}
                       </span>
@@ -187,171 +76,92 @@ const PlanATrip: React.FC = () => {
                   </div>
                 </div>
                 {/* Suggested Activities Section */}
-                <div style={{ minWidth: 320, flex: 1, maxWidth: 400 }}>
-                  <h3
-                    style={{
-                      fontWeight: 700,
-                      fontSize: "1.25rem",
-                      color: "#1c170d",
-                      marginBottom: 18,
-                    }}
-                  >
-                    Suggested Activities in Cox's Bazar
-                  </h3>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 20,
-                    }}
-                  >
-                    {/* Example activities, you can expand this list */}
-                    <div
-                      style={{ display: "flex", alignItems: "center", gap: 16 }}
-                    >
-                      <div
-                        style={{
-                          background: "#f5f0e5",
-                          borderRadius: 12,
-                          padding: 12,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <img
-                          src="/figma_photos/plan.svg"
-                          alt="Beach"
-                          style={{ width: 32, height: 32 }}
-                        />
+                <div className="min-w-[320px] flex-1 max-w-[400px]">
+                  <h3 className="font-bold text-xl text-theme-primary mb-4">Suggested Activities in Cox's Bazar</h3>
+                  <div className="flex flex-col gap-5">
+                    <div className="flex items-center gap-4">
+                      <div className="bg-theme-light rounded-xl p-3 flex items-center justify-center">
+                        <img src="/figma_photos/plan.svg" alt="Beach" className="w-8 h-8" />
                       </div>
                       <div>
-                        <div style={{ fontWeight: 600, color: "#1c170d" }}>
-                          Beach Walk
-                        </div>
-                        <div style={{ color: "#a1824a", fontSize: "1em" }}>
-                          8:00 AM
-                        </div>
-                        <div style={{ color: "#555", fontSize: "1em" }}>
-                          Enjoy a morning walk along the world's longest sea
-                          beach.
-                        </div>
+                        <div className="font-semibold text-theme-primary">Beach Walk</div>
+                        <div className="text-theme-accent text-base">8:00 AM</div>
+                        <div className="text-gray-600 text-base">Enjoy a morning walk along the world's longest sea beach.</div>
                       </div>
                     </div>
-                    <div
-                      style={{ display: "flex", alignItems: "center", gap: 16 }}
-                    >
-                      <div
-                        style={{
-                          background: "#f5f0e5",
-                          borderRadius: 12,
-                          padding: 12,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <img
-                          src="/figma_photos/restaurant.svg"
-                          alt="Seafood"
-                          style={{ width: 32, height: 32 }}
-                        />
+                    <div className="flex items-center gap-4">
+                      <div className="bg-theme-light rounded-xl p-3 flex items-center justify-center">
+                        <img src="/figma_photos/restaurant.svg" alt="Seafood" className="w-8 h-8" />
                       </div>
                       <div>
-                        <div style={{ fontWeight: 600, color: "#1c170d" }}>
-                          Seafood Lunch
-                        </div>
-                        <div style={{ color: "#a1824a", fontSize: "1em" }}>
-                          1:00 PM
-                        </div>
-                        <div style={{ color: "#555", fontSize: "1em" }}>
-                          Taste fresh seafood at a local Cox's Bazar eatery.
-                        </div>
+                        <div className="font-semibold text-theme-primary">Seafood Lunch</div>
+                        <div className="text-theme-accent text-base">1:00 PM</div>
+                        <div className="text-gray-600 text-base">Taste fresh seafood at a local Cox's Bazar eatery.</div>
                       </div>
                     </div>
-                    <div
-                      style={{ display: "flex", alignItems: "center", gap: 16 }}
-                    >
-                      <div
-                        style={{
-                          background: "#f5f0e5",
-                          borderRadius: 12,
-                          padding: 12,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <img
-                          src="/figma_photos/explore.svg"
-                          alt="Boat Ride"
-                          style={{ width: 32, height: 32 }}
-                        />
+                    <div className="flex items-center gap-4">
+                      <div className="bg-theme-light rounded-xl p-3 flex items-center justify-center">
+                        <img src="/figma_photos/explore.svg" alt="Boat Ride" className="w-8 h-8" />
                       </div>
                       <div>
-                        <div style={{ fontWeight: 600, color: "#1c170d" }}>
-                          Boat Ride
-                        </div>
-                        <div style={{ color: "#a1824a", fontSize: "1em" }}>
-                          4:00 PM
-                        </div>
-                        <div style={{ color: "#555", fontSize: "1em" }}>
-                          Take a scenic boat ride to see the sunset from the
-                          water.
-                        </div>
+                        <div className="font-semibold text-theme-primary">Boat Ride</div>
+                        <div className="text-theme-accent text-base">4:00 PM</div>
+                        <div className="text-gray-600 text-base">Take a scenic boat ride to see the sunset from the water.</div>
                       </div>
                     </div>
                   </div>
                   <button
-                    style={{
-                      marginTop: 28,
-                      width: "100%",
-                      background: "#008060",
-                      color: "#fff",
-                      border: "none",
-                      borderRadius: 12,
-                      fontWeight: 700,
-                      fontSize: "1.1rem",
-                      padding: "14px 0",
-                      boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-                      cursor: "pointer",
-                      transition: "background 0.18s",
-                    }}
-                    onMouseOver={(e) =>
-                      (e.currentTarget.style.background = "#00684a")
-                    }
-                    onMouseOut={(e) =>
-                      (e.currentTarget.style.background = "#008060")
-                    }
+                    className="mt-7 w-full bg-theme-accent text-white rounded-xl font-bold text-lg py-3 shadow transition-colors duration-200 hover:bg-theme-accent-dark"
                   >
                     Go for it!
                   </button>
                 </div>
               </section>
               {/* Activities Grid */}
-              <section className={styles.activitiesSection}>
-                <h2 className={styles.sectionTitle}>Recommended Activities</h2>
-                <div className={styles.activitiesGridModern}>
+              <section className="mt-10">
+                <h2 className="text-2xl font-bold text-theme-primary mb-6">Recommended Activities</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {activities.map((act, idx) => (
                     <div
-                      className={styles.activityCardModern}
+                      className="bg-theme-light rounded-2xl shadow p-6 flex flex-col items-center gap-4 hover:shadow-lg transition-shadow duration-200"
                       key={idx}
                       tabIndex={0}
                     >
                       <img
                         src={act.image}
                         alt={act.title}
-                        className={styles.activityImageModern}
+                        className="w-24 h-24 object-cover rounded-xl mb-2"
                       />
-                      <div className={styles.activityContentModern}>
-                        <div className={styles.activityTitle}>{act.title}</div>
-                        <div className={styles.activityTime}>{act.time}</div>
-                        <div className={styles.activityDesc}>
-                          {act.description}
-                        </div>
-                        <button className={styles.addToItineraryBtnModern}>
-                          Add to Itinerary
-                        </button>
+                      <div className="flex flex-col items-center gap-1">
+                        <div className="font-semibold text-theme-primary text-lg">{act.title}</div>
+                        <div className="text-theme-accent text-base">{act.time}</div>
+                        <div className="text-gray-600 text-center text-base">{act.description}</div>
+                        <button className="mt-2 bg-theme-accent text-white rounded-lg px-4 py-2 font-semibold shadow hover:bg-theme-accent-dark transition-colors duration-200">Add to Itinerary</button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            </main>
+          </div>
+        </div>
+      </div>
+    </Layout>
+  );
+                      className="bg-theme-light rounded-2xl shadow p-6 flex flex-col items-center gap-4 hover:shadow-lg transition-shadow duration-200"
+                      key={idx}
+                      tabIndex={0}
+                    >
+                      <img
+                        src={act.image}
+                        alt={act.title}
+                        className="w-24 h-24 object-cover rounded-xl mb-2"
+                      />
+                      <div className="flex flex-col items-center gap-1">
+                        <div className="font-semibold text-theme-primary text-lg">{act.title}</div>
+                        <div className="text-theme-accent text-base">{act.time}</div>
+                        <div className="text-gray-600 text-center text-base">{act.description}</div>
+                        <button className="mt-2 bg-theme-accent text-white rounded-lg px-4 py-2 font-semibold shadow hover:bg-theme-accent-dark transition-colors duration-200">Add to Itinerary</button>
                       </div>
                     </div>
                   ))}

@@ -4,7 +4,7 @@ import type React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Authentication/auth-context";
-import styles from "../Styles/Loginpage.module.css";
+// Tailwind conversion: remove CSS import
 
 export default function TravelLogin() {
   const [username, setUsername] = useState("");
@@ -173,76 +173,93 @@ export default function TravelLogin() {
 
   // Remove the isLoggedIn state and related logic since we're using auth context
   return (
-    <div className={styles.container}>
-      <div className={styles.card}>
-        <div className={styles.cardHeader}>
-          <div className={styles.logoContainer} onClick={handleWanderNestClick}>
+    <div className="min-h-screen flex items-center justify-center bg-accent-light font-jakarta">
+      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
+        <div className="flex flex-col items-center mb-6">
+          <div
+            className="flex items-center gap-2 cursor-pointer"
+            onClick={handleWanderNestClick}
+          >
             <img
               src="/figma_photos/wandernest.svg"
               alt="WanderNest Logo"
-              className={styles.logo}
+              className="w-10 h-10"
             />
-            <button type="button" className={styles.wanderNestButton}>
+            <button
+              type="button"
+              className="text-xl font-bold text-primary hover:text-primary-dark transition"
+            >
               WanderNest
             </button>
           </div>
         </div>
-
-        <div className={styles.header}>
-          <h1 className={styles.title}>Welcome back</h1>
-          <p className={styles.subtitle}>We're so excited to see you again!</p>
+        <div className="text-center mb-6">
+          <h1 className="text-2xl font-bold text-primary mb-2">Welcome back</h1>
+          <p className="text-base text-primary-dark">
+            We're so excited to see you again!
+          </p>
         </div>
-
-        {error && <div className={styles.errorMessage}>{error}</div>}
-
-        <form className={styles.form} onSubmit={handleSubmit}>
-          <div className={styles.field}>
-            <label htmlFor="username" className={styles.label}>
+        {error && (
+          <div className="mb-4 text-red-600 text-sm text-center font-semibold">
+            {error}
+          </div>
+        )}
+        <form className="space-y-6" onSubmit={handleSubmit}>
+          <div>
+            <label
+              htmlFor="username"
+              className="block text-sm font-medium text-primary-dark mb-1"
+            >
               Username
             </label>
             <input
               id="username"
               type="text"
-              className={styles.input}
+              className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-light text-primary-dark bg-accent-light"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
               placeholder="Enter your username"
             />
           </div>
-
-          <div className={styles.field}>
-            <label htmlFor="password" className={styles.label}>
+          <div>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-primary-dark mb-1"
+            >
               Password
             </label>
             <input
               id="password"
               type="password"
-              className={styles.input}
+              className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-light text-primary-dark bg-accent-light"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
               placeholder="Enter your password"
             />
           </div>
-
-          <div className={styles.forgotPassword}>
+          <div className="flex justify-end mb-2">
             <span
-              className={styles.link}
+              className="text-sm text-primary cursor-pointer hover:underline"
               onClick={() => navigate("/fpass")}
-              style={{ cursor: "pointer" }}
             >
               Forget your password?
             </span>
           </div>
-
-          <button type="submit" className={styles.button} disabled={isLoading}>
+          <button
+            type="submit"
+            className="w-full py-2 rounded-lg bg-primary text-white font-semibold hover:bg-primary-dark transition"
+            disabled={isLoading}
+          >
             {isLoading ? "Logging in..." : "Log in"}
           </button>
-
-          <div className={styles.footer}>
+          <div className="text-center text-sm mt-4">
             Don't have an account?{" "}
-            <a href="/signup" className={styles.signupLink}>
+            <a
+              href="/signup"
+              className="text-primary font-semibold hover:underline"
+            >
               Sign up
             </a>
           </div>

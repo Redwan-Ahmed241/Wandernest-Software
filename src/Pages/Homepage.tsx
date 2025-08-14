@@ -2,7 +2,7 @@
 
 import { type FunctionComponent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "../Styles/Homepage.module.css";
+// Tailwind conversion: remove CSS import
 import Layout from "../App/Layout";
 
 const FEATURED_API_URL =
@@ -59,116 +59,99 @@ const HomePage: FunctionComponent = () => {
 
   return (
     <Layout>
-      <main className={styles.homePage}>
-        <div className={styles.depth6Frame02}>
-          <div className={styles.heroContentWrapper}>
-            <div className={styles.exploreBangladeshWith}>
-              Explore Bangladesh with WanderNest
-            </div>
-            <div className={styles.depth7Frame0}>
-              <div className={styles.discoverTheBeauty}>
-                Discover the beauty and culture of Bangladesh with our tailored
-                travel services.
-              </div>
-            </div>
+      <main className="min-h-screen bg-white text-primary-dark font-jakarta">
+        {/* Hero Section */}
+        <section className="flex flex-col items-center justify-center h-72 bg-primary-light mb-10">
+          <div className="text-4xl md:text-5xl font-bold text-primary mb-4 text-center">
+            Explore Bangladesh with WanderNest
           </div>
-        </div>
+          <div className="text-lg md:text-2xl text-primary-dark text-center">
+            Discover the beauty and culture of Bangladesh with our tailored
+            travel services.
+          </div>
+        </section>
 
-        <div className={styles.Destinations}>
-          <h2 className={styles.sectionTitle}>Featured Destinations</h2>
-          {error && (
-            <div style={{ color: "red", marginBottom: 12 }}>{error}</div>
-          )}
-          <div className={styles.destinationsGrid}>
+        {/* Featured Destinations */}
+        <section className="max-w-5xl mx-auto px-4 mb-12">
+          <h2 className="text-2xl font-bold text-primary mb-6">
+            Featured Destinations
+          </h2>
+          {error && <div className="text-red-600 mb-3">{error}</div>}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             {destinations.map((place, index) => (
               <div
                 key={place.id || index}
-                className={styles.destinationCard}
+                className="bg-accent-light rounded-xl shadow-md overflow-hidden cursor-pointer hover:scale-105 transition"
                 onClick={() => handleCardClick(place)}
-                style={{ cursor: "pointer" }}
               >
                 <img
                   src={place.image_url}
                   alt={place.name}
-                  className={styles.destinationImage}
+                  className="w-full h-48 object-cover"
                 />
-                <div className={styles.destinationContent}>
-                  <div className={styles.destinationTitle}>{place.name}</div>
-                  <div className={styles.destinationDescription}>
+                <div className="p-4">
+                  <div className="text-lg font-bold text-primary mb-1">
+                    {place.name}
+                  </div>
+                  <div className="text-sm text-primary-dark">
                     {place.description}
                   </div>
                 </div>
               </div>
             ))}
             {loading && (
-              <div style={{ gridColumn: "1/-1", textAlign: "center" }}>
+              <div className="col-span-full text-center text-primary-dark">
                 Loading destinations...
               </div>
             )}
           </div>
-        </div>
+        </section>
 
-        <div className={styles.depth4Frame12}>
-          <b className={styles.featuredDestinations}>Our Services</b>
-        </div>
-
-        <div className={styles.depth4Frame4}>
-          <div className={styles.depth5Frame04}>
-            <div className={styles.depth6Frame04}>
+        {/* Our Services */}
+        <section className="max-w-5xl mx-auto px-4 mb-12">
+          <h2 className="text-2xl font-bold text-primary mb-6">Our Services</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-accent-light rounded-xl shadow-md p-6 flex flex-col items-center">
               <img
-                className={styles.depth7Frame05}
-                alt=""
+                className="w-16 h-16 mb-4"
+                alt="Visa Assistance"
                 src="/figma_photos/visa.svg"
               />
-              <div className={styles.depth7Frame14}>
-                <div className={styles.depth8Frame04}>
-                  <b className={styles.visaAssistance}>Visa Assistance</b>
-                </div>
-                <div className={styles.depth7Frame1}>
-                  <div className={styles.exploreLushTea}>
-                    Fast and reliable visa processing
-                  </div>
-                </div>
+              <div className="text-lg font-bold text-primary mb-1">
+                Visa Assistance
+              </div>
+              <div className="text-sm text-primary-dark text-center">
+                Fast and reliable visa processing
               </div>
             </div>
-
-            <div className={styles.depth6Frame04}>
+            <div className="bg-accent-light rounded-xl shadow-md p-6 flex flex-col items-center">
               <img
-                className={styles.depth7Frame05}
-                alt=""
+                className="w-16 h-16 mb-4"
+                alt="Travel Planner"
                 src="/figma_photos/tp.svg"
               />
-              <div className={styles.depth7Frame14}>
-                <div className={styles.depth8Frame04}>
-                  <b className={styles.visaAssistance}>Travel Planner</b>
-                </div>
-                <div className={styles.depth7Frame1}>
-                  <div className={styles.exploreLushTea}>
-                    Customize your perfect trip
-                  </div>
-                </div>
+              <div className="text-lg font-bold text-primary mb-1">
+                Travel Planner
+              </div>
+              <div className="text-sm text-primary-dark text-center">
+                Customize your perfect trip
               </div>
             </div>
-
-            <div className={styles.depth6Frame04}>
+            <div className="bg-accent-light rounded-xl shadow-md p-6 flex flex-col items-center">
               <img
-                className={styles.depth7Frame05}
-                alt=""
+                className="w-16 h-16 mb-4"
+                alt="Emergency Support"
                 src="/figma_photos/em.svg"
               />
-              <div className={styles.depth7Frame14}>
-                <div className={styles.depth8Frame04}>
-                  <b className={styles.visaAssistance}>Emergency Support</b>
-                </div>
-                <div className={styles.depth7Frame1}>
-                  <div className={styles.exploreLushTea}>
-                    24/7 assistance during your travels
-                  </div>
-                </div>
+              <div className="text-lg font-bold text-primary mb-1">
+                Emergency Support
+              </div>
+              <div className="text-sm text-primary-dark text-center">
+                24/7 assistance during your travels
               </div>
             </div>
           </div>
-        </div>
+        </section>
       </main>
     </Layout>
   );
