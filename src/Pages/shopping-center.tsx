@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import "../Styles/page-styles.css"
 import Layout from "../App/Layout"
 export default function ShoppingCenters() {
   const [selectedCategory, setSelectedCategory] = useState("all")

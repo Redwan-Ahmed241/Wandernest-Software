@@ -2,6 +2,7 @@
 
 import { type FunctionComponent, useCallback, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import styles from "../Styles/Destinations.module.css"
 import Layout from "../App/Layout"
 import { getDestinations } from "../App/api-services"
 

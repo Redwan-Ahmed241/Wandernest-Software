@@ -1,3 +1,5 @@
+import React from 'react';
+import styles from '../Styles/aboutUs.module.css';
 import Layout from '../App/Layout';
 
 const teamMembers = [

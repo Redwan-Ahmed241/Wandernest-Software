@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import styles from '../Styles/fpass.module.css';
 // import { supabase } from '../supabaseClient'; // Uncomment and configure if supabase client is set up
 
 const FPass: React.FC = () => {

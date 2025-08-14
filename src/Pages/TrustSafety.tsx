@@ -1,5 +1,4 @@
 import { FunctionComponent, useCallback } from 'react';
-import styles from '../Styles/TrustSafety.module.css';
 
 
 const TrustSafety:FunctionComponent = () => {
@@ -19,96 +18,47 @@ const TrustSafety:FunctionComponent = () => {
                 								<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
                   									<b className={styles.wandernest}>WanderNest</b>
                 								</div>
-              							</div>
-              							<div className={styles.depth3Frame1}>
-                								<div className={styles.depth4Frame01}>
-                  									<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
-                    										<div className={styles.destinations}>Destinations</div>
-                  									</div>
-                  									<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
-                    										<div className={styles.destinations}>Hotels</div>
-                  									</div>
-                  									<div className={styles.depth5Frame2}>
-                    										<div className={styles.flights} onClick={onDepth4FrameClick}>Flights</div>
-                  									</div>
-                  									<div className={styles.depth4Frame1} onClick={onDepth4FrameClick}>
-                    										<div className={styles.destinations}>Packages</div>
-                  									</div>
-                								</div>
-                								<div className={styles.depth4Frame11}>
-                  									<div className={styles.depth5Frame01} onClick={onDepth4FrameClick}>
-                    										<div className={styles.depth6Frame0}>
-                      											<b className={styles.signUp}>Sign up</b>
-                    										</div>
-                  									</div>
-                  									<div className={styles.depth5Frame11} onClick={onDepth4FrameClick}>
-                    										<div className={styles.depth6Frame0}>
-                      											<b className={styles.signUp}>Log in</b>
-                    										</div>
-                  									</div>
-                  									<img className={styles.depth5Frame21} alt="" src="Depth 5, Frame 2.svg" />
-                								</div>
-              							</div>
-            						</div>
-            						<div className={styles.depth2Frame1}>
-              							<div className={styles.depth3Frame01}>
-                								<div className={styles.depth4Frame02}>
-                  									<div className={styles.depth5Frame02}>
-                    										<div className={styles.depth6Frame02}>
-                      											<div className={styles.trustSafety2}>{`Trust & Safety`}</div>
-                    										</div>
-                    										<div className={styles.depth6Frame1}>
-                      											<div className={styles.yourSafetyIs}>Your safety is our priority.</div>
-                    										</div>
-                  									</div>
-                								</div>
-                								<div className={styles.depth4Frame12}>
-                  									<div className={styles.depth5Frame03}>
-                    										<div className={styles.depth6Frame03}>
-                      											<div className={styles.depth7Frame0}>
-                        												<b className={styles.communityGuidelines}>Community Guidelines</b>
-                      											</div>
-                    										</div>
-                    										<div className={styles.depth6Frame11}>
-                      											<div className={styles.depth7Frame01}>
-                        												<b className={styles.communityGuidelines}>User Verification</b>
-                      											</div>
-                    										</div>
-                    										<div className={styles.depth6Frame2}>
-                      											<div className={styles.depth7Frame02}>
-                        												<b className={styles.communityGuidelines}>Content Moderation</b>
-                      											</div>
-                    										</div>
-                    										<div className={styles.depth6Frame3}>
-                      											<div className={styles.depth7Frame03}>
-                        												<b className={styles.communityGuidelines}>Emergency Support</b>
-                      											</div>
-                    										</div>
-                  									</div>
-                								</div>
-                								<div className={styles.depth4Frame2}>
-                  									<b className={styles.frequentlyAskedQuestions}>Frequently Asked Questions</b>
-                								</div>
-                								<div className={styles.depth4Frame3}>
-                  									<div className={styles.depth5Frame04}>
-                    										<div className={styles.depth6Frame04}>
-                      											<div className={styles.depth5Frame2}>
-                        												<div className={styles.destinations}>What are the Community Guidelines?</div>
-                          													</div>
-                          													<img className={styles.depth7Frame1} alt="" src="Depth 7, Frame 1.svg" />
-                          													</div>
-                          													<div className={styles.depth6Frame12}>
-                            														<div className={styles.ourCommunityGuidelines}>Our Community Guidelines outline the rules and standards to ensure a safe and respectful environment.</div>
-                          													</div>
-                          													</div>
-                          													<div className={styles.depth5Frame04}>
-                            														<div className={styles.depth6Frame04}>
-                              															<div className={styles.depth5Frame2}>
-                                																<div className={styles.destinations}>How do I verify my account?</div>
-                                  																	</div>
-                                  																	<img className={styles.depth7Frame1} alt="" src="Depth 7, Frame 1.svg" />
-                                  																	</div>
-                                  																	</div>
+											return (
+												<div className="min-h-screen bg-white flex flex-col items-center py-8 px-2 md:px-8">
+													{/* Navbar */}
+													<nav className="w-full flex flex-row justify-between items-center mb-8">
+														<div className="flex flex-row items-center gap-2">
+															<img className="h-10 w-10" alt="" src="Depth 4, Frame 0.svg" />
+															<button onClick={onDepth4FrameClick} className="text-xl font-bold text-blue-700">WanderNest</button>
+														</div>
+														<div className="flex flex-row gap-6 items-center">
+															<button onClick={onDepth4FrameClick} className="text-base text-gray-700 hover:text-blue-600">Destinations</button>
+															<button onClick={onDepth4FrameClick} className="text-base text-gray-700 hover:text-blue-600">Hotels</button>
+															<button onClick={onDepth4FrameClick} className="text-base text-gray-700 hover:text-blue-600">Flights</button>
+															<button onClick={onDepth4FrameClick} className="text-base text-gray-700 hover:text-blue-600">Packages</button>
+															<button onClick={onDepth4FrameClick} className="px-4 py-1 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700">Sign up</button>
+															<button onClick={onDepth4FrameClick} className="px-4 py-1 rounded bg-gray-200 text-blue-700 font-semibold hover:bg-gray-300">Log in</button>
+															<img className="h-8 w-8" alt="" src="Depth 5, Frame 2.svg" />
+														</div>
+													</nav>
+													{/* Main Content */}
+													<main className="w-full max-w-3xl flex flex-col gap-8">
+														<section className="bg-blue-50 rounded-lg shadow p-6 flex flex-col items-center">
+															<h1 className="text-2xl md:text-3xl font-bold text-blue-700 mb-2">Trust & Safety</h1>
+															<p className="text-gray-700 text-center mb-4">Your safety is our priority.</p>
+															<div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+																<div className="flex flex-col gap-2">
+																	<b className="text-lg text-blue-700">Community Guidelines</b>
+																	<b className="text-lg text-blue-700">User Verification</b>
+																	<b className="text-lg text-blue-700">Content Moderation</b>
+																	<b className="text-lg text-blue-700">Emergency Support</b>
+																</div>
+																<div className="flex flex-col gap-2">
+																	<b className="text-lg text-blue-700">Frequently Asked Questions</b>
+																	<div className="flex items-center gap-2">
+																		<span className="text-gray-700">What are the Community Guidelines?</span>
+																		<img className="h-6 w-6" alt="" src="Depth 7, Frame 1.svg" />
+																	</div>
+																</div>
+															</div>
+														</section>
+													</main>
+												</div>
                                   																	<div className={styles.depth5Frame04}>
                                     																		<div className={styles.depth6Frame04}>
                                       																			<div className={styles.depth5Frame2}>
