@@ -1,8 +1,6 @@
 "use client"
 import React, { useCallback,useState } from 'react';
 import { FunctionComponent } from 'react';
-import styles from '../Styles/ThingsToDo.module.css';
-import { useNavigate } from 'react-router-dom';
 import Footer from '../Components/Footer';
 import { useAuth } from '../Authentication/auth-context';
 import ProfileDropdown from "../Components/profile-dropdown";

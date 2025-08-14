@@ -1,5 +1,4 @@
 import { FunctionComponent, useCallback, useState } from 'react';
-import styles from '../Styles/rentVehicles.module.css';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../App/Layout';
 

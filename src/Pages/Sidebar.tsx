@@ -1,8 +1,6 @@
 "use client"
 
 import React, { FunctionComponent } from "react"
-import { useNavigate } from "react-router-dom"
-import styles from "../Styles/Sidebar.module.css"
 import { useAuth } from "../Authentication/auth-context" // Using your auth context
 
 

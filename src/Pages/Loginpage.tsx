@@ -4,7 +4,6 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../Authentication/auth-context"
-import styles from "../Styles/Loginpage.module.css"
 
 export default function TravelLogin() {
   const [username, setUsername] = useState("")
@@ -161,33 +160,33 @@ export default function TravelLogin() {
 
   // Remove the isLoggedIn state and related logic since we're using auth context
   return (
-    <div className={styles.container}>
-      <div className={styles.card}>
-        <div className={styles.cardHeader}>
-          <div className={styles.logoContainer} onClick={handleWanderNestClick}>
-            <img src="/Figma_photoes/wandernest.svg" alt="WanderNest Logo" className={styles.logo} />
-            <button type="button" className={styles.wanderNestButton}>
+    <div className="min-h-screen flex items-center justify-center p-4 bg-cover bg-center bg-no-repeat bg-fixed" style={{backgroundImage: "url('/Figma_photoes/travel-background.jpg')"}}>
+      <div className="w-full max-w-[28rem] bg-white/95 backdrop-blur-[8px] rounded-2xl shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)] p-8 border border-white/20">
+        <div className="flex items-center justify-start gap-4 mb-6 pb-4 border-b border-[#e5e7eb]">
+          <div className="flex items-center gap-4 cursor-pointer transition-transform duration-200 hover:scale-105 p-2 rounded-lg hover:bg-[rgba(5,150,105,0.1)]" onClick={handleWanderNestClick}>
+            <img src="/Figma_photoes/wandernest.svg" alt="WanderNest Logo" className="w-10 h-10 object-contain rounded-lg" />
+            <button type="button" className="bg-none border-none text-xl font-bold text-[#1f2937] cursor-pointer py-2 transition-colors duration-150 hover:text-[#059669] focus:outline-none focus:text-[#059669]">
               WanderNest
             </button>
           </div>
         </div>
 
-        <div className={styles.header}>
-          <h1 className={styles.title}>Welcome back</h1>
-          <p className={styles.subtitle}>We're so excited to see you again!</p>
+        <div className="text-center mb-8">
+          <h1 className="text-[1.875rem] font-bold text-[#111827] m-0 mb-2 leading-[1.2]">Welcome back</h1>
+          <p className="text-[#6b7280] text-base m-0 leading-[1.5]">We're so excited to see you again!</p>
         </div>
 
-        {error && <div className={styles.errorMessage}>{error}</div>}
+        {error && <div className="bg-[#fef2f2] border border-[#fecaca] text-[#dc2626] p-3 rounded-md mb-4 text-sm text-center">{error}</div>}
 
-        <form className={styles.form} onSubmit={handleSubmit}>
-          <div className={styles.field}>
-            <label htmlFor="username" className={styles.label}>
+        <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="username" className="text-sm font-medium text-[#374151]">
               Username
             </label>
             <input
               id="username"
               type="text"
-              className={styles.input}
+              className="h-12 px-3 border border-[#d1d5db] rounded-md text-base transition-all duration-150 bg-white/90 focus:outline-none focus:border-[#059669] focus:shadow-[0_0_0_3px_rgba(5,150,105,0.1)] placeholder:text-[#9ca3af]"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
@@ -195,14 +194,14 @@ export default function TravelLogin() {
             />
           </div>
 
-          <div className={styles.field}>
-            <label htmlFor="password" className={styles.label}>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="password" className="text-sm font-medium text-[#374151]">
               Password
             </label>
             <input
               id="password"
               type="password"
-              className={styles.input}
+              className="h-12 px-3 border border-[#d1d5db] rounded-md text-base transition-all duration-150 bg-white/90 focus:outline-none focus:border-[#059669] focus:shadow-[0_0_0_3px_rgba(5,150,105,0.1)] placeholder:text-[#9ca3af]"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -210,19 +209,19 @@ export default function TravelLogin() {
             />
           </div>
 
-          <div className={styles.forgotPassword}>
-            <span className={styles.link} onClick={() => navigate('/fpass')} style={{ cursor: 'pointer' }}>
+          <div className="text-left -mt-2">
+            <span className="text-sm text-[#059669] no-underline transition-colors duration-150 bg-none border-none cursor-pointer hover:text-[#047857] hover:underline" onClick={() => navigate('/fpass')}>
               Forget your password?
             </span>
           </div>
 
-          <button type="submit" className={styles.button} disabled={isLoading}>
+          <button type="submit" className="w-full h-12 bg-[#059669] text-white border-none rounded-md text-base font-medium cursor-pointer transition-all duration-150 hover:bg-[#047857] hover:-translate-y-px focus:outline-none focus:shadow-[0_0_0_3px_rgba(5,150,105,0.3)] disabled:bg-[#9ca3af] disabled:cursor-not-allowed disabled:transform-none" disabled={isLoading}>
             {isLoading ? "Logging in..." : "Log in"}
           </button>
 
-          <div className={styles.footer}>
+          <div className="text-center text-sm text-[#6b7280] mt-4">
             Don't have an account?{" "}
-            <a href="/signup" className={styles.signupLink}>
+            <a href="/signup" className="text-[#059669] no-underline font-medium transition-colors duration-150 bg-none border-none cursor-pointer text-sm p-0 m-0 hover:text-[#047857] hover:underline">
               Sign up
             </a>
           </div>
