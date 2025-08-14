@@ -2,6 +2,7 @@
 
 import type React from "react"
 import { useEffect, useState } from "react"
+import styles from "../Styles/ProfileSettings.module.css"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../Authentication/auth-context"
 import DatePicker from "react-datepicker"

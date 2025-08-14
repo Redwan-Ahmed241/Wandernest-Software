@@ -1,6 +1,6 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-// Tailwind conversion: all styles are now inline utility classes
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import styles from '../Styles/Footer.module.css';
 
 const Footer: React.FC = () => {
   const navigate = useNavigate();
@@ -35,7 +35,7 @@ const Footer: React.FC = () => {
           </div>
         </div>
       </div>
-    </footer>
+    </div>
   );
 };
 

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react"
 import { useLocation, useNavigate } from 'react-router-dom';
+import styles from '../Styles/ConfirmBook.module.css';
 import Layout from '../App/Layout';
 import { useAuth } from "../Authentication/auth-context"
 import { useBooking } from "../Context/booking-context"

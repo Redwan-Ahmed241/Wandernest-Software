@@ -2,6 +2,7 @@
 import type { FunctionComponent } from "react"
 import { useCallback, useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
+import styles from "../Styles/HotelsRooms.module.css"
 import Layout from "../App/Layout"
 import { useAuth } from "../Authentication/auth-context"
 
