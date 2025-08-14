@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import styles from '../Styles/PlanATrip.module.css';
 import Layout from '../App/Layout';
 import Sidebar from './Sidebar';
 

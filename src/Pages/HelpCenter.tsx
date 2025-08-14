@@ -1,5 +1,4 @@
 import { FunctionComponent, useCallback } from 'react';
-import styles from '../Styles/HelpCenter.module.css';
 
 
 const HelpCenter:FunctionComponent = () => {

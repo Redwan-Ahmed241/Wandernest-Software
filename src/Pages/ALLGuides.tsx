@@ -4,7 +4,6 @@ import type React from "react"
 
 import { type FunctionComponent, useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import styles from "../Styles/DashboardHome.module.css"
 import Layout from "../App/Layout"
 import Sidebar from "./Sidebar"
 import { useAuth } from "../Authentication/auth-context"

@@ -1,6 +1,5 @@
 import { FunctionComponent, useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from '../Styles/Packages.module.css';
 import Layout from '../App/Layout';
 import { useAuth } from "../Authentication/auth-context";
 

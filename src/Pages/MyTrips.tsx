@@ -2,7 +2,6 @@
 
 import type { FunctionComponent } from "react"
 import { useState, useEffect } from "react"
-import styles from "../Styles/MyTrips.module.css"
 import Layout from "../App/Layout"
 import { useNavigate } from "react-router-dom"
 import Sidebar from "./Sidebar"

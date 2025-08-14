@@ -2,7 +2,6 @@
 
 import { type FunctionComponent, useState, useEffect } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
-import styles from "../Styles/ConfirmBook.module.css"
 import Layout from "../App/Layout"
 import Sidebar from "./Sidebar"
 import { useAuth } from "../Authentication/auth-context"
