@@ -159,31 +159,6 @@ const PlanATrip: React.FC = () => {
       </div>
     </Layout>
   );
-                      className="bg-theme-light rounded-2xl shadow p-6 flex flex-col items-center gap-4 hover:shadow-lg transition-shadow duration-200"
-                      key={idx}
-                      tabIndex={0}
-                    >
-                      <img
-                        src={act.image}
-                        alt={act.title}
-                        className="w-24 h-24 object-cover rounded-xl mb-2"
-                      />
-                      <div className="flex flex-col items-center gap-1">
-                        <div className="font-semibold text-theme-primary text-lg">{act.title}</div>
-                        <div className="text-theme-accent text-base">{act.time}</div>
-                        <div className="text-gray-600 text-center text-base">{act.description}</div>
-                        <button className="mt-2 bg-theme-accent text-white rounded-lg px-4 py-2 font-semibold shadow hover:bg-theme-accent-dark transition-colors duration-200">Add to Itinerary</button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            </main>
-          </div>
-        </div>
-      </div>
-    </Layout>
-  );
 };
 
 export default PlanATrip;
