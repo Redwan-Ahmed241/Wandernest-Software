@@ -136,7 +136,9 @@ const MyTrips: FunctionComponent = () => {
   // Show loading while auth is loading
   if (authLoading) {
     return (
-    </Layout>
+      <Layout>
+        <div className="flex items-center justify-center h-48">
+          <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-primary border-solid mx-auto" />
           <span className="ml-4 text-primary-dark text-lg">Loading...</span>
         </div>
       </Layout>
