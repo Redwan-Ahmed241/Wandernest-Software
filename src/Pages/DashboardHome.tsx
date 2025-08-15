@@ -4,12 +4,11 @@ import type React from "react";
 
 import { type FunctionComponent, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "../Styles/DashboardHome.module.css";
 import Layout from "../App/Layout";
 import Sidebar from "./Sidebar";
 import { useAuth } from "../Authentication/auth-context";
 import { useBooking } from "../Context/booking-context";
-// Tailwind CSS used for all styling. Centralized color theme via tailwind.config.js
+
 // Success notification component
 const BookingNotification: React.FC = () => {
   const [notification, setNotification] = useState<{
@@ -40,11 +39,12 @@ const BookingNotification: React.FC = () => {
   if (!notification.show) return null;
 
   return (
-    <div className={styles.successNotification}>
-      <div className={styles.notificationContent}>
-        <span className={styles.successIcon}>🎉</span>
+    <div className="fixed top-4 right-4 z-50 bg-green-500 text-white p-4 rounded-lg shadow-lg">
+      <div className="flex items-center gap-2">
+        <span className="text-xl">🎉</span>
         <span>{notification.message}</span>
         <button
+          className="ml-2 text-white hover:text-gray-200"
           onClick={() => setNotification((prev) => ({ ...prev, show: false }))}
         >
           ×
@@ -113,19 +113,19 @@ const DashboardHome: FunctionComponent = () => {
       <BookingNotification />
       <div style={{ display: "flex" }}>
         <Sidebar />
-        <div className={styles.dashboardHome}>
-          <div className={styles.dashboardWrapper}>
-            <div className={styles.dashboard1}>
-              <div className={styles.depth0Frame0}>
-                <div className={styles.depth1Frame0}>
-                  <div className={styles.depth2Frame1}>
-                    <div className={styles.depth3Frame02}>
+        <div className="min-h-screen bg-white text-primary-dark font-jakarta p-6 flex-1">
+          <div className="max-w-7xl mx-auto">
+            <div className="space-y-8">
+              <div className="space-y-6">
+                <div className="space-y-4">
+                  <div className="space-y-6">
+                    <div className="space-y-8">
                       {/* Welcome Section */}
-                      <div className={styles.welcomeSection}>
-                        <div className={styles.depth4Frame02}>
-                          <div className={styles.depth5Frame03}>
-                            <div className={styles.depth6Frame02}>
-                              <div className={styles.welcomeBack}>
+                      <div className="bg-gradient-to-r from-primary to-primary-dark text-white rounded-xl p-6">
+                        <div className="space-y-2">
+                          <div className="space-y-1">
+                            <div className="space-y-1">
+                              <div className="text-2xl font-bold">
                                 Welcome back,{" "}
                                 {user?.first_name ||
                                   user?.username ||
@@ -133,8 +133,8 @@ const DashboardHome: FunctionComponent = () => {
                                 ! 👋
                               </div>
                             </div>
-                            <div className={styles.depth6Frame11}>
-                              <div className={styles.readyForYour}>
+                            <div className="space-y-1">
+                              <div className="text-lg opacity-90">
                                 Ready for your next adventure?
                               </div>
                             </div>
@@ -143,48 +143,48 @@ const DashboardHome: FunctionComponent = () => {
                       </div>
 
                       {/* Stats Cards */}
-                      <div className={styles.statsSection}>
-                        <div className={styles.statsGrid}>
-                          <div className={styles.statCard}>
-                            <div className={styles.statIcon}>📊</div>
-                            <div className={styles.statContent}>
-                              <div className={styles.statNumber}>
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                          <div className="bg-accent-light rounded-xl shadow-md p-6 flex items-center gap-4">
+                            <div className="text-3xl">📊</div>
+                            <div className="space-y-1">
+                              <div className="text-2xl font-bold text-primary">
                                 {stats.totalBookings}
                               </div>
-                              <div className={styles.statLabel}>
+                              <div className="text-sm text-primary-dark">
                                 Total Bookings
                               </div>
                             </div>
                           </div>
-                          <div className={styles.statCard}>
-                            <div className={styles.statIcon}>✈️</div>
-                            <div className={styles.statContent}>
-                              <div className={styles.statNumber}>
+                          <div className="bg-accent-light rounded-xl shadow-md p-6 flex items-center gap-4">
+                            <div className="text-3xl">✈️</div>
+                            <div className="space-y-1">
+                              <div className="text-2xl font-bold text-primary">
                                 {stats.upcomingTrips}
                               </div>
-                              <div className={styles.statLabel}>
+                              <div className="text-sm text-primary-dark">
                                 Upcoming Trips
                               </div>
                             </div>
                           </div>
-                          <div className={styles.statCard}>
-                            <div className={styles.statIcon}>💰</div>
-                            <div className={styles.statContent}>
-                              <div className={styles.statNumber}>
+                          <div className="bg-accent-light rounded-xl shadow-md p-6 flex items-center gap-4">
+                            <div className="text-3xl">💰</div>
+                            <div className="space-y-1">
+                              <div className="text-2xl font-bold text-primary">
                                 {formatCurrency(stats.totalSpent)}
                               </div>
-                              <div className={styles.statLabel}>
+                              <div className="text-sm text-primary-dark">
                                 Total Spent
                               </div>
                             </div>
                           </div>
-                          <div className={styles.statCard}>
-                            <div className={styles.statIcon}>🏆</div>
-                            <div className={styles.statContent}>
-                              <div className={styles.statNumber}>
+                          <div className="bg-accent-light rounded-xl shadow-md p-6 flex items-center gap-4">
+                            <div className="text-3xl">🏆</div>
+                            <div className="space-y-1">
+                              <div className="text-2xl font-bold text-primary">
                                 {stats.completedTrips}
                               </div>
-                              <div className={styles.statLabel}>
+                              <div className="text-sm text-primary-dark">
                                 Completed Trips
                               </div>
                             </div>
@@ -193,14 +193,14 @@ const DashboardHome: FunctionComponent = () => {
                       </div>
 
                       {/* Recent Bookings */}
-                      <div className={styles.section}>
-                        <div className={styles.sectionHeader}>
-                          <h2 className={styles.sectionTitle}>
-                            <span className={styles.sectionIcon}>📋</span>
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <h2 className="text-xl font-bold text-primary flex items-center gap-2">
+                            <span className="text-2xl">📋</span>
                             Recent Bookings
                           </h2>
                           <button
-                            className={styles.viewAllButton}
+                            className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
                             onClick={() => navigate("/my-trips")}
                           >
                             View All
@@ -208,55 +208,60 @@ const DashboardHome: FunctionComponent = () => {
                         </div>
 
                         {isLoading ? (
-                          <div className={styles.loadingSpinner}>
+                          <div className="flex items-center justify-center py-8">
                             Loading bookings...
                           </div>
                         ) : recentBookings.length === 0 ? (
-                          <div className={styles.emptyState}>
-                            <div className={styles.emptyIcon}>📝</div>
+                          <div className="text-center py-8 space-y-4">
+                            <div className="text-4xl">📝</div>
                             <p>No bookings yet</p>
                             <button
-                              className={styles.ctaButton}
+                              className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
                               onClick={() => navigate("/packages")}
                             >
                               Book Your First Trip
                             </button>
                           </div>
                         ) : (
-                          <div className={styles.bookingsList}>
+                          <div className="space-y-4">
                             {recentBookings.map((booking) => (
                               <div
                                 key={booking.id}
-                                className={styles.bookingCard}
+                                className="bg-accent-light rounded-xl p-4 flex items-center gap-4 hover:shadow-md transition-shadow"
                               >
-                                <div className={styles.bookingImage}>
+                                <div className="w-20 h-16 rounded-lg overflow-hidden flex-shrink-0">
                                   <img
                                     src={
                                       booking.image ||
                                       "/placeholder.svg?height=60&width=80"
                                     }
                                     alt={booking.title}
+                                    className="w-full h-full object-cover"
                                   />
                                 </div>
-                                <div className={styles.bookingInfo}>
-                                  <div className={styles.bookingTitle}>
+                                <div className="flex-1 space-y-1">
+                                  <div className="font-semibold text-primary">
                                     {booking.title}
                                   </div>
-                                  <div className={styles.bookingLocation}>
+                                  <div className="text-sm text-primary-dark">
                                     📍 {booking.location}
                                   </div>
-                                  <div className={styles.bookingDate}>
+                                  <div className="text-sm text-primary-dark">
                                     {formatDate(booking.startDate)} -{" "}
                                     {formatDate(booking.endDate)}
                                   </div>
                                 </div>
-                                <div className={styles.bookingMeta}>
-                                  <div className={styles.bookingPrice}>
+                                <div className="text-right space-y-2">
+                                  <div className="font-bold text-primary">
                                     {formatCurrency(booking.price)}
                                   </div>
                                   <div
-                                    className={`${styles.bookingStatus} ${
-                                      styles[booking.status]
+                                    className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                                      booking.status === "confirmed"
+                                        ? "bg-green-100 text-green-800"
+                                        : booking.status === "cancelled"
+                                        ? "bg-red-100 text-red-800"
+                                        : "bg-gray-100 text-gray-800"
                                     }`}
                                   >
                                     {booking.status
@@ -273,35 +278,35 @@ const DashboardHome: FunctionComponent = () => {
 
                       {/* Upcoming Trips */}
                       {upcomingTrips.length > 0 && (
-                        <div className={styles.section}>
-                          <div className={styles.sectionHeader}>
-                            <h2 className={styles.sectionTitle}>
-                              <span className={styles.sectionIcon}>🗓️</span>
+                        <div className="space-y-4">
+                          <div className="flex items-center justify-between">
+                            <h2 className="text-xl font-bold text-primary flex items-center gap-2">
+                              <span className="text-2xl">🗓️</span>
                               Upcoming Trips
                             </h2>
                           </div>
-                          <div className={styles.upcomingTripsGrid}>
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {upcomingTrips.map((trip) => (
-                              <div key={trip.id} className={styles.tripCard}>
+                              <div key={trip.id} className="bg-accent-light rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow">
                                 <img
                                   src={
                                     trip.image ||
                                     "/placeholder.svg?height=120&width=200"
                                   }
                                   alt={trip.title}
-                                  className={styles.tripImage}
+                                  className="w-full h-32 object-cover"
                                 />
-                                <div className={styles.tripInfo}>
-                                  <div className={styles.tripTitle}>
+                                <div className="p-4 space-y-2">
+                                  <div className="font-semibold text-primary">
                                     {trip.title}
                                   </div>
-                                  <div className={styles.tripLocation}>
+                                  <div className="text-sm text-primary-dark">
                                     📍 {trip.location}
                                   </div>
-                                  <div className={styles.tripDate}>
+                                  <div className="text-sm text-primary-dark">
                                     🗓️ {formatDate(trip.startDate)}
                                   </div>
-                                  <div className={styles.tripTravelers}>
+                                  <div className="text-sm text-primary-dark">
                                     👥 {trip.travelers} traveler
                                     {trip.travelers > 1 ? "s" : ""}
                                   </div>
