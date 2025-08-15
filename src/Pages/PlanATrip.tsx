@@ -35,6 +35,7 @@ const PlanATrip: React.FC = () => {
   const daysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate();
   const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1);
   const firstDayOfWeek = new Date(calendarYear, calendarMonth, 1).getDay();
+  
   // Calendar navigation
   const handlePrevMonth = () => {
     if (calendarMonth === 0) {
