@@ -310,6 +310,5 @@ const MyTrips: FunctionComponent = () => {
       </div>
     </Layout>
 }
-}
 
 export default MyTrips
