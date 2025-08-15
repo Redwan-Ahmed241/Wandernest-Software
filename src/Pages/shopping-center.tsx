@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import "../Styles/page-styles.css";
 import Layout from "../App/Layout";
 export default function ShoppingCenters() {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -127,21 +126,12 @@ export default function ShoppingCenters() {
 
   return (
     <Layout>
-      <div className="page-container">
-        <div className="page-content">
-          {/* Header Section */}
-          <div className="page-header">
-            <div className="header-content">
-              <h1 className="page-title">Shopping Centers</h1>
-              <p className="page-subtitle">
-                Shop at the best locations and discover amazing deals
-              </p>
-            </div>
-            <button className="view-all-btn">View Map</button>
-          </div>
-
-          {/* Search and Filters */}
-          <div className="search-filter-section">
+      <div className="min-h-screen bg-gradient-to-br from-primary-100 to-primary-300 py-8 px-4">
+        <div className="max-w-6xl mx-auto bg-white rounded-lg shadow p-6">
+          <h1 className="text-3xl font-bold text-primary-700 mb-8">
+            Shopping Centers
+          </h1>
+          <div className="flex flex-wrap gap-4 mb-6 justify-center">
             <div className="search-bar">
               <div className="search-input-container">
                 <svg
@@ -206,9 +196,7 @@ export default function ShoppingCenters() {
               </select>
             </div>
           </div>
-
-          {/* Shopping Centers Grid */}
-          <div className="cards-grid">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredCenters.map((center) => (
               <div key={center.id} className="shopping-card">
                 <div className="card-image">

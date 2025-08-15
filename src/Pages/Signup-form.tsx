@@ -4,7 +4,6 @@ import type React from "react";
 import Footer from "../Components/Footer";
 import { useCallback } from "react";
 import { useState } from "react";
-import "../Styles/signup-form.css";
 import { useNavigate } from "react-router-dom";
 interface FormData {
   username: string;
@@ -255,244 +254,241 @@ export default function SignupForm() {
           <b className={"wandernest"}>WanderNest</b>
         </div>
       </div>
-      <div className="container">
-        <div className="form-wrapper">
-          <div className="card">
-            <div className="card-header">
-              <h1 className="card-title">Create Account</h1>
-              <p className="card-description">
-                Fill in your information to get started
-              </p>
+      <div className="min-h-screen bg-gradient-to-br from-primary-100 to-primary-300 py-8 px-4">
+        <div className="max-w-xl mx-auto bg-white rounded-lg shadow p-6">
+          <h1 className="text-2xl font-bold text-primary-700 mb-6">
+            Create Account
+          </h1>
+          <form className="space-y-4" onSubmit={handleSubmit}>
+            {apiError && (
+              <div className="mt-3 text-red-600 text-center font-medium">
+                {apiError}
+              </div>
+            )}
+
+            {/* Personal Information */}
+            <div className="section">
+              <h3 className="section-title">Personal Information</h3>
+
+              <div className="field-group">
+                <label htmlFor="username" className="label">
+                  Username
+                </label>
+                <input
+                  id="username"
+                  name="username"
+                  className={`input ${errors.username ? "input-error" : ""}`}
+                  placeholder="Enter your username"
+                  value={formData.username}
+                  onChange={handleChange}
+                  required
+                />
+                {errors.username && (
+                  <span className="text-red-600 text-sm mt-1">
+                    {errors.username}
+                  </span>
+                )}
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="field-group">
+                  <label htmlFor="first_name" className="label">
+                    First Name
+                  </label>
+                  <input
+                    id="first_name"
+                    name="first_name"
+                    className={`input ${
+                      errors.first_name ? "input-error" : ""
+                    }`}
+                    placeholder="Enter your first name"
+                    value={formData.first_name}
+                    onChange={handleChange}
+                    required
+                  />
+                  {errors.first_name && (
+                    <span className="text-red-600 text-sm mt-1">
+                      {errors.first_name}
+                    </span>
+                  )}
+                </div>
+                <div className="field-group">
+                  <label htmlFor="last_name" className="label">
+                    Last Name
+                  </label>
+                  <input
+                    id="last_name"
+                    name="last_name"
+                    className={`input ${errors.last_name ? "input-error" : ""}`}
+                    placeholder="Enter your last name"
+                    value={formData.last_name}
+                    onChange={handleChange}
+                    required
+                  />
+                  {errors.last_name && (
+                    <span className="text-red-600 text-sm mt-1">
+                      {errors.last_name}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-4">
+                <div className="field-group col-span-2">
+                  <label htmlFor="country" className="label">
+                    Country
+                  </label>
+                  <input
+                    id="country"
+                    name="country"
+                    className={`input ${errors.country ? "input-error" : ""}`}
+                    placeholder="Enter your country"
+                    value={formData.country}
+                    onChange={handleChange}
+                    required
+                  />
+                  {errors.country && (
+                    <span className="text-red-600 text-sm mt-1">
+                      {errors.country}
+                    </span>
+                  )}
+                </div>
+                <div className="field-group">
+                  <label htmlFor="age" className="label">
+                    Age <span className="optional-text">(Optional)</span>
+                  </label>
+                  <input
+                    id="age"
+                    name="age"
+                    type="number"
+                    min="13"
+                    max="120"
+                    className={`input ${errors.age ? "input-error" : ""}`}
+                    placeholder="Age"
+                    value={formData.age || ""}
+                    onChange={handleChange}
+                  />
+                  {errors.age && (
+                    <span className="text-red-600 text-sm mt-1">
+                      {errors.age}
+                    </span>
+                  )}
+                </div>
+              </div>
             </div>
-            <div className="card-content">
-              <form className="form" onSubmit={handleSubmit}>
-                {apiError && <div className="error-message">{apiError}</div>}
 
-                {/* Personal Information */}
-                <div className="section">
-                  <h3 className="section-title">Personal Information</h3>
+            {/* Contact Information */}
+            <div className="section">
+              <h3 className="section-title">Contact Information</h3>
 
-                  <div className="field-group">
-                    <label htmlFor="username" className="label">
-                      Username
-                    </label>
-                    <input
-                      id="username"
-                      name="username"
-                      className={`input ${
-                        errors.username ? "input-error" : ""
-                      }`}
-                      placeholder="Enter your username"
-                      value={formData.username}
-                      onChange={handleChange}
-                      required
-                    />
-                    {errors.username && (
-                      <span className="field-error">{errors.username}</span>
-                    )}
-                  </div>
+              <div className="field-group">
+                <label htmlFor="email" className="label">
+                  Email Address
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  className={`input ${errors.email ? "input-error" : ""}`}
+                  placeholder="Enter your email address"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+                {errors.email && (
+                  <span className="text-red-600 text-sm mt-1">
+                    {errors.email}
+                  </span>
+                )}
+              </div>
 
-                  <div className="grid grid-cols-2">
-                    <div className="field-group">
-                      <label htmlFor="first_name" className="label">
-                        First Name
-                      </label>
-                      <input
-                        id="first_name"
-                        name="first_name"
-                        className={`input ${
-                          errors.first_name ? "input-error" : ""
-                        }`}
-                        placeholder="Enter your first name"
-                        value={formData.first_name}
-                        onChange={handleChange}
-                        required
-                      />
-                      {errors.first_name && (
-                        <span className="field-error">{errors.first_name}</span>
-                      )}
-                    </div>
-                    <div className="field-group">
-                      <label htmlFor="last_name" className="label">
-                        Last Name
-                      </label>
-                      <input
-                        id="last_name"
-                        name="last_name"
-                        className={`input ${
-                          errors.last_name ? "input-error" : ""
-                        }`}
-                        placeholder="Enter your last name"
-                        value={formData.last_name}
-                        onChange={handleChange}
-                        required
-                      />
-                      {errors.last_name && (
-                        <span className="field-error">{errors.last_name}</span>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-3">
-                    <div className="field-group col-span-2">
-                      <label htmlFor="country" className="label">
-                        Country
-                      </label>
-                      <select
-                        name="country"
-                        className={`select ${
-                          errors.country ? "input-error" : ""
-                        }`}
-                        value={formData.country}
-                        onChange={handleChange}
-                        required
-                      >
-                        <option value="">Select your country</option>
-                        <option value="Bangladesh">Bangladesh</option>
-                        <option value="United States">United States</option>
-                        <option value="Canada">Canada</option>
-                        <option value="United Kingdom">United Kingdom</option>
-                        <option value="Australia">Australia</option>
-                        <option value="Germany">Germany</option>
-                        <option value="France">France</option>
-                        <option value="Japan">Japan</option>
-                        <option value="Brazil">Brazil</option>
-                        <option value="India">India</option>
-                        <option value="Mexico">Mexico</option>
-                        <option value="Other">Other</option>
-                      </select>
-                      {errors.country && (
-                        <span className="field-error">{errors.country}</span>
-                      )}
-                    </div>
-                    <div className="field-group">
-                      <label htmlFor="age" className="label">
-                        Age <span className="optional-text">(Optional)</span>
-                      </label>
-                      <input
-                        id="age"
-                        name="age"
-                        type="number"
-                        min="13"
-                        max="120"
-                        className={`input ${errors.age ? "input-error" : ""}`}
-                        placeholder="Age"
-                        value={formData.age || ""}
-                        onChange={handleChange}
-                      />
-                      {errors.age && (
-                        <span className="field-error">{errors.age}</span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Contact Information */}
-                <div className="section">
-                  <h3 className="section-title">Contact Information</h3>
-
-                  <div className="field-group">
-                    <label htmlFor="email" className="label">
-                      Email Address
-                    </label>
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      className={`input ${errors.email ? "input-error" : ""}`}
-                      placeholder="Enter your email address"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                    />
-                    {errors.email && (
-                      <span className="field-error">{errors.email}</span>
-                    )}
-                  </div>
-
-                  <div className="field-group">
-                    <label htmlFor="phone" className="label">
-                      Phone Number
-                    </label>
-                    <input
-                      id="phone"
-                      name="phone"
-                      type="tel"
-                      className={`input ${errors.phone ? "input-error" : ""}`}
-                      placeholder="Enter your phone number"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      required
-                    />
-                    {errors.phone && (
-                      <span className="field-error">{errors.phone}</span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Account Security */}
-                <div className="section">
-                  <h3 className="section-title">Account Security</h3>
-
-                  <div className="grid grid-cols-2">
-                    <div className="field-group">
-                      <label htmlFor="password" className="label">
-                        Password
-                      </label>
-                      <input
-                        id="password"
-                        name="password"
-                        type="password"
-                        className={`input ${
-                          errors.password ? "input-error" : ""
-                        }`}
-                        placeholder="Create a password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                      />
-                      {errors.password && (
-                        <span className="field-error">{errors.password}</span>
-                      )}
-                    </div>
-                    <div className="field-group">
-                      <label htmlFor="confirm_password" className="label">
-                        Confirm Password
-                      </label>
-                      <input
-                        id="confirm_password"
-                        name="confirm_password"
-                        type="password"
-                        className={`input ${
-                          errors.confirm_password ? "input-error" : ""
-                        }`}
-                        placeholder="Confirm your password"
-                        value={formData.confirm_password}
-                        onChange={handleChange}
-                        required
-                      />
-                      {errors.confirm_password && (
-                        <span className="field-error">
-                          {errors.confirm_password}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                <button type="submit" className="button" disabled={isLoading}>
-                  {isLoading ? "Creating Account..." : "Create Account"}
-                </button>
-
-                <div className="footer-text">
-                  Already have an account?{" "}
-                  <a href="/login" className="footer-link">
-                    Sign in here
-                  </a>
-                </div>
-              </form>
+              <div className="field-group">
+                <label htmlFor="phone" className="label">
+                  Phone Number
+                </label>
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  className={`input ${errors.phone ? "input-error" : ""}`}
+                  placeholder="Enter your phone number"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required
+                />
+                {errors.phone && (
+                  <span className="text-red-600 text-sm mt-1">
+                    {errors.phone}
+                  </span>
+                )}
+              </div>
             </div>
-          </div>
+
+            {/* Account Security */}
+            <div className="section">
+              <h3 className="section-title">Account Security</h3>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="field-group">
+                  <label htmlFor="password" className="label">
+                    Password
+                  </label>
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    className={`input ${errors.password ? "input-error" : ""}`}
+                    placeholder="Create a password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                  />
+                  {errors.password && (
+                    <span className="text-red-600 text-sm mt-1">
+                      {errors.password}
+                    </span>
+                  )}
+                </div>
+                <div className="field-group">
+                  <label htmlFor="confirm_password" className="label">
+                    Confirm Password
+                  </label>
+                  <input
+                    id="confirm_password"
+                    name="confirm_password"
+                    type="password"
+                    className={`input ${
+                      errors.confirm_password ? "input-error" : ""
+                    }`}
+                    placeholder="Confirm your password"
+                    value={formData.confirm_password}
+                    onChange={handleChange}
+                    required
+                  />
+                  {errors.confirm_password && (
+                    <span className="text-red-600 text-sm mt-1">
+                      {errors.confirm_password}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-primary-500 text-white py-2 rounded font-semibold hover:bg-primary-600 transition"
+              disabled={isLoading}
+            >
+              {isLoading ? "Creating Account..." : "Create Account"}
+            </button>
+
+            <div className="footer-text">
+              Already have an account?{" "}
+              <a href="/login" className="footer-link">
+                Sign in here
+              </a>
+            </div>
+          </form>
         </div>
       </div>
       <Footer />

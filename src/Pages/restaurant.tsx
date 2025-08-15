@@ -1,6 +1,6 @@
-import React, { FunctionComponent, useCallback, useState } from "react";
+import type { FunctionComponent } from "react";
+import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "../Styles/restaurant.module.css";
 import Layout from "../App/Layout";
 
 const FILTERS = [
@@ -95,83 +95,86 @@ const Restaurant: FunctionComponent = () => {
 
   return (
     <Layout>
-      <div className={styles.restaurant}>
-        <div className={styles.restaurants}>
-          <div className={styles.depth0Frame0}>
-            <div className={styles.depth1Frame0}>
-              <div className={styles.groupParent}>
-                <h1 className={styles.topRatedEateries}>
-                  Top-Rated Eateries Across Bangladesh
-                </h1>
-              </div>
-              {/* Search Bar */}
-              <div className={styles.searchBarContainer}>
-                <img
-                  src="/figma_photos/search.svg"
-                  alt="search"
-                  className={styles.searchIconInside}
-                />
-                <input
-                  type="text"
-                  className={styles.searchInput}
-                  placeholder="Search restaurants or cuisines"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                />
-              </div>
-              {/* Price Range */}
-              <div className={styles.priceRangeContainer}>
-                <span className={styles.priceRangeLabel}>Max Price:</span>
-                <input
-                  type="range"
-                  min={0}
-                  max={1000}
-                  step={10}
-                  value={priceRange}
-                  onChange={(e) => setPriceRange(Number(e.target.value))}
-                  className={styles.priceRangeInput}
-                />
-                <span className={styles.priceRangeValue}>৳{priceRange}</span>
-              </div>
-              {/* Filter Buttons */}
-              <div className={styles.filterButtonsContainer}>
-                {FILTERS.map((f) => (
-                  <button
-                    key={f.value}
-                    className={
-                      styles.filterButton +
-                      (selectedFilter === f.value ? " " + styles.selected : "")
-                    }
-                    onClick={() => setSelectedFilter(f.value)}
-                    type="button"
-                  >
-                    {f.label}
-                  </button>
-                ))}
-              </div>
-              {/* Restaurant Cards Grid */}
-              <div className={styles.depth5Frame04}>
-                {filteredRestaurants.map((r) => (
-                  <div className={styles.depth6Frame09} key={r.name}>
-                    <img className={styles.cardImage} alt="" src={r.image} />
-                    <div className={styles.cardContent}>
-                      <div className={styles.cardTitle}>
-                        {r.name}{" "}
-                        <span style={{ fontWeight: 400, color: "#888" }}>
-                          ({r.location})
-                        </span>
-                      </div>
-                      <div className={styles.cardDescription}>
-                        {r.rating} · {r.cuisine}
-                      </div>
-                      {r.price && (
-                        <div className={styles.priceTag}>৳{r.price}</div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
+      <div className="min-h-screen bg-gradient-to-br from-primary-100 to-primary-300 py-8 px-4">
+        <div className="max-w-4xl mx-auto bg-white rounded-lg shadow p-6">
+          <h1 className="text-2xl font-bold text-primary-700 mb-6">
+            Restaurants
+          </h1>
+          <div className="flex flex-wrap gap-4 mb-6 justify-center">
+            {/* Search Bar */}
+            <div className="relative w-full max-w-md mx-auto mb-4">
+              <input
+                type="text"
+                className="w-full p-3 pl-10 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary-500"
+                placeholder="Search restaurants or cuisines"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <img
+                src="/figma_photos/search.svg"
+                alt="search"
+                className="absolute left-3 top-3 w-5 h-5"
+              />
             </div>
+            {/* Price Range */}
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-primary-700">Max Price:</span>
+              <input
+                type="range"
+                min={0}
+                max={1000}
+                step={10}
+                value={priceRange}
+                onChange={(e) => setPriceRange(Number(e.target.value))}
+                className="w-full h-2 bg-primary-200 rounded-lg appearance-none cursor-pointer"
+              />
+              <span className="text-sm text-primary-700">৳{priceRange}</span>
+            </div>
+            {/* Filter Buttons */}
+            <div className="flex flex-wrap gap-2">
+              {FILTERS.map((f) => (
+                <button
+                  key={f.value}
+                  className={`px-4 py-2 rounded-lg font-semibold transition-all flex items-center gap-2 ${
+                    selectedFilter === f.value
+                      ? "bg-primary-600 text-white shadow-md"
+                      : "bg-primary-100 text-primary-700 hover:bg-primary-200"
+                  }`}
+                  onClick={() => setSelectedFilter(f.value)}
+                  type="button"
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          {/* Restaurant Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {filteredRestaurants.map((r, idx) => (
+              <div
+                key={idx}
+                className="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden flex flex-col"
+              >
+                <img
+                  src={r.image}
+                  alt={r.name}
+                  className="w-full h-40 object-cover"
+                />
+                <div className="p-4 flex-1 flex flex-col justify-between">
+                  <div className="text-lg font-bold text-primary-700 mb-1">
+                    {r.name}
+                  </div>
+                  <div className="text-sm text-primary-500 mb-2">
+                    {r.location}
+                  </div>
+                  <div className="text-gray-700 mb-2">{r.cuisine}</div>
+                  <div className="text-yellow-600 font-semibold mb-2">
+                    {r.rating}
+                  </div>
+                  <div className="text-green-600 font-bold">৳{r.price}</div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

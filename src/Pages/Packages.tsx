@@ -1,6 +1,5 @@
 import { FunctionComponent, useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "../Styles/Packages.module.css";
 import Layout from "../App/Layout";
 import { useAuth } from "../Authentication/auth-context";
 
@@ -428,252 +427,192 @@ const Packages: FunctionComponent = () => {
 
   return (
     <Layout>
-      <div className={styles.packages}>
-        {/* Header Section: Flexbox for label and button */}
-        <div className={styles.groupParent}>
-          <div className={styles.tourPackages2}>Tour Packages</div>
-          <button
-            className={styles.createCustomPackage}
-            onClick={() => navigate("/create-package")}
-          >
-            Create custom package
-          </button>
-        </div>
-        {/* Search Bar: Centered below header */}
-        <div className={styles.searchBarContainer}>
-          <img
-            src="/figma_photos/search.svg"
-            alt="search"
-            className={styles.searchIconInside}
-          />
-          <input
-            type="text"
-            className={styles.searchInput}
-            placeholder="Search destinations"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-        {/* Filters and packages remain unchanged */}
-        <div className={styles.tourPackagesWrapper}>
-          <div className={styles.tourPackages}>
-            <div className={styles.tourPackages1}>
-              <div className={styles.depth0Frame0}>
-                <div className={styles.depth1Frame0}>
-                  <div className={styles.depth2Frame1}>
-                    <div className={styles.depth3Frame01}>
-                      <div
-                        className={styles.depth4Frame2}
-                        ref={filterDropdownRef}
-                      >
-                        {/* Render Destination and Budget filters */}
-                        {/* Destination filter (dynamic) */}
-                        <div className={styles.depth5Frame03}>
-                          <div
-                            className={
-                              styles.depth6Frame03 +
-                              (selectedFilters["Destination"] &&
-                              selectedFilters["Destination"] !== "All"
-                                ? " " + styles.selected
-                                : "")
-                            }
-                            onClick={() => handleFilterClick("Destination")}
-                            style={{ cursor: "pointer", position: "relative" }}
-                          >
-                            <div className={styles.destinations}>
-                              {selectedFilters["Destination"] &&
-                              selectedFilters["Destination"] !== "All"
-                                ? selectedFilters["Destination"]
-                                : "Destination"}
-                            </div>
-                            <img
-                              className={styles.depth6Frame1}
-                              alt=""
-                              src="/figma_photos/darrow.svg"
-                            />
-                            {openFilter === "Destination" && (
-                              <div className={styles.filterDropdown}>
-                                {destinationOptions.map((option) => (
-                                  <div
-                                    key={option}
-                                    className={
-                                      styles.filterDropdownOption +
-                                      (selectedFilters["Destination"] ===
-                                        option ||
-                                      (!selectedFilters["Destination"] &&
-                                        option === "All")
-                                        ? " " + styles.selected
-                                        : "")
-                                    }
-                                    onClick={() =>
-                                      handleOptionSelect("Destination", option)
-                                    }
-                                  >
-                                    {option}
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                        {/* Budget filter (static) */}
-                        <div className={styles.depth5Frame03}>
-                          <div
-                            className={
-                              styles.depth6Frame03 +
-                              (selectedFilters["Budget"] &&
-                              selectedFilters["Budget"] !== "All"
-                                ? " " + styles.selected
-                                : "")
-                            }
-                            onClick={() => handleFilterClick("Budget")}
-                            style={{ cursor: "pointer", position: "relative" }}
-                          >
-                            <div className={styles.destinations}>
-                              {selectedFilters["Budget"] &&
-                              selectedFilters["Budget"] !== "All"
-                                ? selectedFilters["Budget"]
-                                : "Budget"}
-                            </div>
-                            <img
-                              className={styles.depth6Frame1}
-                              alt=""
-                              src="/figma_photos/darrow.svg"
-                            />
-                            {openFilter === "Budget" && (
-                              <div className={styles.filterDropdown}>
-                                {FILTER_OPTIONS.Budget.map((option) => (
-                                  <div
-                                    key={option}
-                                    className={
-                                      styles.filterDropdownOption +
-                                      (selectedFilters["Budget"] === option ||
-                                      (!selectedFilters["Budget"] &&
-                                        option === "All")
-                                        ? " " + styles.selected
-                                        : "")
-                                    }
-                                    onClick={() =>
-                                      handleOptionSelect("Budget", option)
-                                    }
-                                  >
-                                    {option}
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                      <div className={styles.depth4Frame3}>
-                        <div className={styles.depth5Frame04}>
-                          {loading && (
-                            <div
-                              style={{
-                                textAlign: "center",
-                                padding: "2rem",
-                                color: "#666",
-                              }}
-                            >
-                              Loading packages...
-                            </div>
-                          )}
-                          {error && (
-                            <div
-                              style={{
-                                textAlign: "center",
-                                padding: "2rem",
-                                color: "red",
-                              }}
-                            >
-                              {error}
-                            </div>
-                          )}
-                          {!loading &&
-                            !error &&
-                            filteredPackages.map((pkg) => (
-                              <div
-                                className={styles.depth6Frame07}
-                                key={pkg.id}
-                                onClick={() =>
-                                  navigate(
-                                    `/packages/${encodeURIComponent(pkg.title)}`
-                                  )
-                                }
-                                style={{ cursor: "pointer" }}
-                              >
-                                <img
-                                  className={styles.depth7Frame01}
-                                  alt=""
-                                  src={pkg.image_url}
-                                />
-                                <div className={styles.depth7Frame11}>
-                                  <div className={styles.depth7Frame11}>
-                                    <div
-                                      className={
-                                        styles.sundarbansWildlifeExpedition
-                                      }
-                                    >
-                                      {pkg.title}
-                                    </div>
-                                  </div>
-                                  <div className={styles.depth8Frame1}>
-                                    <div className={styles.exploreTheWorlds}>
-                                      {pkg.subtitle}
-                                    </div>
-                                  </div>
-                                  <div className={styles.cardPrice}>
-                                    ৳{Number(pkg.price).toLocaleString()}
-                                  </div>
-                                  <button
-                                    className={styles.createCustomPackage}
-                                    type="button"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      if (!isAuthenticated) {
-                                        navigate("/login");
-                                      } else {
-                                        navigate("/confirm-book", {
-                                          state: { pkg },
-                                        });
-                                      }
-                                    }}
-                                  >
-                                    Book Now
-                                  </button>
-                                </div>
-                              </div>
-                            ))}
-                        </div>
-                        {!loading &&
-                          !error &&
-                          filteredPackages.length === 0 && (
-                            <div
-                              style={{
-                                textAlign: "center",
-                                padding: "2rem",
-                                color: "#666",
-                              }}
-                            >
-                              No packages found matching your criteria.
-                            </div>
-                          )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+      <div className="min-h-screen bg-gradient-to-br from-primary-100 to-primary-300 py-8 px-4">
+        <div className="max-w-6xl mx-auto bg-white rounded-lg shadow p-6">
+          <h1 className="text-3xl font-bold text-primary-700 mb-8">Packages</h1>
+          {/* Filter Section */}
+          <div className="flex flex-wrap gap-4 mb-6 justify-center">
+            {/* Destination filter (dynamic) */}
+            <div className="relative">
+              <div
+                className={
+                  "cursor-pointer py-2 px-4 rounded-lg border " +
+                  (selectedFilters["Destination"] &&
+                  selectedFilters["Destination"] !== "All"
+                    ? "bg-primary-600 text-white"
+                    : "bg-white text-primary-700")
+                }
+                onClick={() => handleFilterClick("Destination")}
+              >
+                {selectedFilters["Destination"] &&
+                selectedFilters["Destination"] !== "All"
+                  ? selectedFilters["Destination"]
+                  : "Destination"}
+                <img
+                  className="inline-block ml-2"
+                  alt=""
+                  src="/figma_photos/darrow.svg"
+                />
               </div>
+              {openFilter === "Destination" && (
+                <div
+                  className="absolute z-10 mt-1 w-full rounded-lg bg-white shadow-lg"
+                  ref={filterDropdownRef}
+                >
+                  {destinationOptions.map((option) => (
+                    <div
+                      key={option}
+                      className={
+                        "cursor-pointer select-none py-2 px-4 rounded-lg transition-all duration-200 " +
+                        (selectedFilters["Destination"] === option ||
+                        (!selectedFilters["Destination"] && option === "All")
+                          ? "bg-primary-600 text-white"
+                          : "text-primary-700 hover:bg-primary-100")
+                      }
+                      onClick={() => handleOptionSelect("Destination", option)}
+                    >
+                      {option}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            {/* Budget filter (static) */}
+            <div className="relative">
+              <div
+                className={
+                  "cursor-pointer py-2 px-4 rounded-lg border " +
+                  (selectedFilters["Budget"] &&
+                  selectedFilters["Budget"] !== "All"
+                    ? "bg-primary-600 text-white"
+                    : "bg-white text-primary-700")
+                }
+                onClick={() => handleFilterClick("Budget")}
+              >
+                {selectedFilters["Budget"] &&
+                selectedFilters["Budget"] !== "All"
+                  ? selectedFilters["Budget"]
+                  : "Budget"}
+                <img
+                  className="inline-block ml-2"
+                  alt=""
+                  src="/figma_photos/darrow.svg"
+                />
+              </div>
+              {openFilter === "Budget" && (
+                <div
+                  className="absolute z-10 mt-1 w-full rounded-lg bg-white shadow-lg"
+                  ref={filterDropdownRef}
+                >
+                  {FILTER_OPTIONS.Budget.map((option) => (
+                    <div
+                      key={option}
+                      className={
+                        "cursor-pointer select-none py-2 px-4 rounded-lg transition-all duration-200 " +
+                        (selectedFilters["Budget"] === option ||
+                        (!selectedFilters["Budget"] && option === "All")
+                          ? "bg-primary-600 text-white"
+                          : "text-primary-700 hover:bg-primary-100")
+                      }
+                      onClick={() => handleOptionSelect("Budget", option)}
+                    >
+                      {option}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
+          {/* Packages Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {loading && (
+              <div
+                style={{
+                  textAlign: "center",
+                  padding: "2rem",
+                  color: "#666",
+                }}
+              >
+                Loading packages...
+              </div>
+            )}
+            {error && (
+              <div
+                style={{
+                  textAlign: "center",
+                  padding: "2rem",
+                  color: "red",
+                }}
+              >
+                {error}
+              </div>
+            )}
+            {!loading &&
+              !error &&
+              filteredPackages.map((pkg) => (
+                <div
+                  className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transition-transform transform hover:scale-105"
+                  key={pkg.id}
+                  onClick={() =>
+                    navigate(`/packages/${encodeURIComponent(pkg.title)}`)
+                  }
+                >
+                  <img
+                    className="w-full h-48 object-cover"
+                    alt=""
+                    src={pkg.image_url}
+                  />
+                  <div className="p-4">
+                    <div className="text-lg font-semibold text-primary-700">
+                      {pkg.title}
+                    </div>
+                    <div className="text-sm text-gray-500 mb-2">
+                      {pkg.subtitle}
+                    </div>
+                    <div className="text-xl font-bold text-primary-600">
+                      ৳{Number(pkg.price).toLocaleString()}
+                    </div>
+                    <button
+                      className="mt-4 w-full py-2 rounded-lg bg-primary-600 text-white font-semibold transition-all duration-200 hover:bg-primary-700"
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (!isAuthenticated) {
+                          navigate("/login");
+                        } else {
+                          navigate("/confirm-book", {
+                            state: { pkg },
+                          });
+                        }
+                      }}
+                    >
+                      Book Now
+                    </button>
+                  </div>
+                </div>
+              ))}
+          </div>
+          {/* No packages found message */}
+          {!loading && !error && filteredPackages.length === 0 && (
+            <div
+              style={{
+                textAlign: "center",
+                padding: "2rem",
+                color: "#666",
+              }}
+            >
+              No packages found matching your criteria.
+            </div>
+          )}
         </div>
-        <BookNowModal
-          open={modalOpen}
-          onClose={() => setModalOpen(false)}
-          pkg={selectedPackage}
-          onConfirm={handleConfirmPackage}
-          loading={confirmLoading}
-        />
       </div>
+      <BookNowModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        pkg={selectedPackage}
+        onConfirm={handleConfirmPackage}
+        loading={confirmLoading}
+      />
     </Layout>
   );
 };

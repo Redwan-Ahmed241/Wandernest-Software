@@ -66,14 +66,21 @@ const ProfileDropdown: React.FC = () => {
   };
 
   return (
-    <div className={styles.profileDropdown} ref={dropdownRef}>
-      <div className={styles.profileButton} onClick={() => setIsOpen(!isOpen)}>
-        <div className={styles.avatar}>{getInitials()}</div>
-        <span className={styles.username}>
+    <div className="relative" ref={dropdownRef}>
+      <div
+        className="flex items-center gap-2 cursor-pointer px-3 py-2 rounded-lg bg-white shadow hover:bg-gray-100 transition"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <div className="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center font-bold text-lg shadow">
+          {getInitials()}
+        </div>
+        <span className="ml-2 font-medium text-gray-800">
           {user?.first_name || user?.username}
         </span>
         <svg
-          className={`${styles.chevron} ${isOpen ? styles.chevronUp : ""}`}
+          className={`ml-2 w-4 h-4 text-gray-500 transition-transform ${
+            isOpen ? "rotate-180" : ""
+          }`}
           width="12"
           height="12"
           viewBox="0 0 12 12"
@@ -88,29 +95,29 @@ const ProfileDropdown: React.FC = () => {
       </div>
 
       {isOpen && (
-        <div className={styles.dropdownMenu}>
-          <div className={styles.userInfo}>
-            <div className={styles.userName}>
+        <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg z-50 border border-gray-200 animate-fade-in">
+          <div className="px-4 py-3">
+            <div className="font-semibold text-gray-900">
               {user?.first_name} {user?.last_name}
             </div>
-            <div className={styles.userEmail}>{user?.email}</div>
+            <div className="text-sm text-gray-500">{user?.email}</div>
           </div>
-          <hr className={styles.divider} />
+          <hr className="my-2 border-t border-gray-200" />
           <div
-            className={styles.dropdownItem}
+            className="px-4 py-2 cursor-pointer hover:bg-primary/10 text-gray-800 transition rounded"
             onClick={() => navigate("/dashboard")}
           >
             Dashboard
           </div>
           <div
-            className={styles.dropdownItem}
+            className="px-4 py-2 cursor-pointer hover:bg-primary/10 text-gray-800 transition rounded"
             onClick={() => navigate("/profile-settings")}
           >
             Profile Settings
           </div>
-          <hr className={styles.divider} />
+          <hr className="my-2 border-t border-gray-200" />
           <div
-            className={styles.dropdownItem + " " + styles.logout}
+            className="px-4 py-2 cursor-pointer text-red-600 hover:bg-red-50 transition rounded font-semibold"
             onClick={handleLogout}
           >
             Logout

@@ -58,4 +58,3 @@ const Footer: React.FC = () => {
 };
 
 export default Footer;
-<div className={styles.aboutUs}>Terms of Service</div>;

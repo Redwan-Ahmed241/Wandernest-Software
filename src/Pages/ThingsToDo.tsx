@@ -1,7 +1,6 @@
 "use client";
 import React, { useCallback, useState } from "react";
-import { FunctionComponent } from "react";
-import styles from "../Styles/ThingsToDo.module.css";
+import type { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
 import Footer from "../Components/Footer";
 import { useAuth } from "../Authentication/auth-context";
@@ -118,234 +117,166 @@ const ThingsToDo: FunctionComponent = () => {
 
   return (
     <Layout>
-      <div className={styles.thingsToDo}>
-        <div className={styles.depth0Frame0}>
-          <div className={styles.depth1Frame0}>
-            <div className={styles.depth2Frame0}>
-              <div className={styles.depth3Frame0}>
-                <div
-                  className={styles.depth4Frame0}
-                  onClick={() => navigate("/homepage")}
+      <div className="min-h-screen bg-gradient-to-br from-primary-100 to-primary-300 py-8 px-4">
+        <div className="max-w-5xl mx-auto bg-white rounded-lg shadow p-6">
+          {/* Navbar */}
+          <nav className="flex flex-row justify-between items-center mb-8">
+            <div className="flex flex-row items-center gap-2">
+              <img
+                className="h-10 w-10"
+                alt="Logo"
+                src="/figma_photos/wandernest.svg"
+              />
+              <button
+                onClick={goHome}
+                className="text-xl font-bold text-primary-700"
+              >
+                WanderNest
+              </button>
+            </div>
+            <div className="flex flex-row gap-6 items-center">
+              <button
+                onClick={() => navigate("/destinations")}
+                className="text-base text-gray-700 hover:text-primary-600"
+              >
+                Destinations
+              </button>
+              <button
+                onClick={() => navigate("/hotels-rooms")}
+                className="text-base text-gray-700 hover:text-primary-600"
+              >
+                Hotels
+              </button>
+              <button
+                disabled
+                className="text-base text-gray-400 cursor-not-allowed"
+              >
+                Flights{" "}
+                <span className="bg-yellow-500 text-white text-xs px-2 py-1 rounded ml-1">
+                  Upcoming
+                </span>
+              </button>
+              <button
+                onClick={() => navigate("/Packages")}
+                className="text-base text-gray-700 hover:text-primary-600"
+              >
+                Packages
+              </button>
+              {isAuthenticated ? (
+                <ProfileDropdown />
+              ) : (
+                <>
+                  <button className="px-4 py-1 rounded bg-primary-500 text-white font-semibold hover:bg-primary-600">
+                    Sign up
+                  </button>
+                  <button className="px-4 py-1 rounded bg-gray-200 text-primary-700 font-semibold hover:bg-gray-300">
+                    Log in
+                  </button>
+                </>
+              )}
+              <span title="Notifications">
+                <Bell
+                  size={26}
+                  className="ml-4 text-yellow-400 cursor-pointer"
+                />
+              </span>
+            </div>
+          </nav>
+          <h1 className="text-3xl font-bold text-primary-700 mb-6">
+            Things to do
+          </h1>
+          {/* Search Section */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <label className="block font-medium mb-1">
+                Search for activities
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={activityQuery}
+                  onChange={handleActivityChange}
+                  placeholder="e.g., hiking, museums"
+                  className="border rounded px-3 py-2 w-full focus:outline-none focus:ring focus:border-primary-400"
+                />
+                <button
+                  className="bg-primary-500 text-white px-4 py-2 rounded hover:bg-primary-600 transition"
+                  type="button"
                 >
-                  <img
-                    className={styles.depth5Frame0}
-                    alt=""
-                    src="/figma_photos/wandernest.svg"
-                  />
-                  <div className={styles.depth5Frame1}>
-                    <b className={styles.wandernest}>WanderNest</b>
-                  </div>
-                </div>
-                <div className={styles.depth4Frame1}>
-                  <div
-                    className={styles.depth5Frame01}
-                    onClick={onDepth4FrameClick}
-                  >
-                    <div className={styles.stay}>Stay</div>
-                  </div>
-                  <div
-                    className={styles.depth5Frame01}
-                    onClick={onDepth4FrameClick}
-                  >
-                    <div className={styles.stay}>Eat</div>
-                  </div>
-                </div>
-              </div>
-              <div className={styles.navbarWrapper}>
-                <div className={styles.navbar}>
-                  <div className={styles.depth3Frame0}>
-                    <img
-                      className={styles.depth4Frame0}
-                      alt="Logo"
-                      src="/figma_photos/wandernest.svg"
-                    />
-                    <div className={styles.depth4Frame1} onClick={goHome}>
-                      <b className={styles.wandernest}>WanderNest</b>
-                    </div>
-                  </div>
-
-                  <div className={styles.depth3Frame1}>
-                    <div className={styles.depth4Frame01}>
-                      <div
-                        className={styles.depth4Frame1}
-                        onClick={() => navigate("/destinations")}
-                      >
-                        <div className={styles.destinations}>Destinations</div>
-                      </div>
-                      <div
-                        className={styles.depth4Frame1}
-                        onClick={() => navigate("/hotels-rooms")}
-                      >
-                        <div className={styles.destinations}>Hotels</div>
-                      </div>
-                      <div
-                        className={styles.depth5Frame2}
-                        title="This feature is coming soon!"
-                      >
-                        <div
-                          className={styles.flights}
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "6px",
-                            color: "#999",
-                            cursor: "not-allowed",
-                          }}
-                        >
-                          Flights
-                          <span
-                            style={{
-                              backgroundColor: "#ff9800",
-                              color: "white",
-                              fontSize: "0.65rem",
-                              padding: "2px 6px",
-                              borderRadius: "6px",
-                              textTransform: "uppercase",
-                            }}
-                          >
-                            Upcoming
-                          </span>
-                        </div>
-                      </div>
-
-                      <div
-                        className={styles.depth4Frame1}
-                        onClick={() => navigate("/Packages")}
-                      >
-                        <div className={styles.destinations}>Packages</div>
-                      </div>
-                    </div>
-
-                    <div className={styles.depth4Frame11}>
-                      {!loading && (
-                        <>
-                          {isAuthenticated ? (
-                            // Show profile dropdown when authenticated
-                            <ProfileDropdown />
-                          ) : (
-                            // Show login/signup buttons when not authenticated
-                            <>
-                              <div
-                                className={styles.depth5Frame01}
-                                onClick={() => navigate("/signup")}
-                              >
-                                <div className={styles.depth6Frame0}>
-                                  <b className={styles.signUp}>Sign up</b>
-                                </div>
-                              </div>
-                              <div
-                                className={styles.depth5Frame11}
-                                onClick={() => navigate("/login")}
-                              >
-                                <div className={styles.depth6Frame0}>
-                                  <b className={styles.signUp}>Log in</b>
-                                </div>
-                              </div>
-                            </>
-                          )}
-                        </>
-                      )}
-                      <span title="Notifications">
-                        <Bell
-                          size={26}
-                          style={{
-                            marginLeft: 16,
-                            color: "#FFD700",
-                            verticalAlign: "middle",
-                            cursor: "pointer",
-                          }}
-                        />
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                  Search
+                </button>
               </div>
             </div>
-            <div className={styles.depth2Frame1}>
-              <div className={styles.depth3Frame01}>
-                <div className={styles.depth4Frame02}>
-                  <b className={styles.thingsToDo1}>Things to do</b>
-                </div>
-                <div className={styles.depth4Frame12}>
-                  {/* Search for Activities */}
-                  <div className={styles.searchLabel}>
-                    Search for activities
-                  </div>
-                  <div className={styles.searchContainer}>
-                    <input
-                      type="text"
-                      value={activityQuery}
-                      onChange={handleActivityChange}
-                      placeholder="e.g., hiking, museums"
-                      className={styles.searchInput}
-                    />
-                    <button className={styles.searchButton} type="button">
-                      Search
-                    </button>
-                  </div>
-                  {/* Search for Locations */}
-                  <div className={styles.searchLabel}>Select location</div>
-                  <div className={styles.searchContainer}>
-                    <input
-                      type="text"
-                      value={locationQuery}
-                      onChange={handleLocationChange}
-                      placeholder="e.g., Dhaka, Cox's Bazar"
-                      className={styles.searchInput}
-                    />
-                    <button className={styles.searchButton} type="button">
-                      Search
-                    </button>
-                  </div>
-                </div>
+            <div>
+              <label className="block font-medium mb-1">Select location</label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={locationQuery}
+                  onChange={handleLocationChange}
+                  placeholder="e.g., Dhaka, Cox's Bazar"
+                  className="border rounded px-3 py-2 w-full focus:outline-none focus:ring focus:border-primary-400"
+                />
+                <button
+                  className="bg-primary-500 text-white px-4 py-2 rounded hover:bg-primary-600 transition"
+                  type="button"
+                >
+                  Search
+                </button>
               </div>
             </div>
           </div>
-        </div>
-        {/* Pill-shaped filter labels as buttons */}
-        <div className={styles.pillFilterRow}>
-          {filterCategories.map((cat) => (
-            <div
-              key={cat}
-              className={
-                cat === selectedCategory ? styles.activePill : styles.pill
-              }
-              onClick={() => handleCategoryClick(cat)}
-              style={{ cursor: "pointer", userSelect: "none" }}
-            >
-              {cat}
-            </div>
-          ))}
-        </div>
-        {/* Card Grid Section */}
-        <div className={styles.cardGrid}>
-          {filteredCards.length === 0 ? (
-            <div
-              style={{
-                gridColumn: "1/-1",
-                textAlign: "center",
-                color: "#888",
-                padding: 32,
-              }}
-            >
-              No activities found.
-            </div>
-          ) : (
-            filteredCards.map((card, idx) => (
-              <div className={styles.depth6Frame07} key={idx}>
-                <img className={styles.cardImage} alt="" src={card.image} />
-                <div className={styles.cardContent}>
-                  <div className={styles.cardTitle}>{card.title}</div>
-                  <div className={styles.cardLocation}>{card.location}</div>
-                  <div className={styles.immerseYourselfIn}>
-                    {card.description}
+          {/* Pill-shaped filter labels as buttons */}
+          <div className="flex flex-wrap gap-2 mb-8">
+            {filterCategories.map((cat) => (
+              <button
+                key={cat}
+                className={`px-4 py-2 rounded-full font-medium border ${
+                  cat === selectedCategory
+                    ? "bg-primary-500 text-white border-primary-500"
+                    : "bg-gray-100 text-gray-700 border-gray-300"
+                } transition`}
+                onClick={() => handleCategoryClick(cat)}
+                style={{ userSelect: "none" }}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+          {/* Card Grid Section */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            {filteredCards.length === 0 ? (
+              <div className="col-span-full text-center text-gray-500 py-12">
+                No activities found.
+              </div>
+            ) : (
+              filteredCards.map((card, idx) => (
+                <div
+                  key={idx}
+                  className="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden flex flex-col"
+                >
+                  <img
+                    className="w-full h-40 object-cover"
+                    alt=""
+                    src={card.image}
+                  />
+                  <div className="p-4 flex-1 flex flex-col justify-between">
+                    <div className="text-lg font-bold text-primary-700 mb-1">
+                      {card.title}
+                    </div>
+                    <div className="text-sm text-primary-500 mb-2">
+                      {card.location}
+                    </div>
+                    <div className="text-gray-700 mb-2">{card.description}</div>
                   </div>
                 </div>
-              </div>
-            ))
-          )}
+              ))
+            )}
+          </div>
+          <div className="mt-12">
+            <Footer />
+          </div>
         </div>
-        <Footer />
       </div>
     </Layout>
   );

@@ -1,221 +1,240 @@
-"use client"
+"use client";
 
-import { type FunctionComponent, useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
-import styles from "../Styles/CreatePackage.module.css"
-import Layout from "../App/Layout"
-import Sidebar from "./Sidebar"
-import { useAuth } from "../Authentication/auth-context"
+import { type FunctionComponent, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+// Tailwind CSS used for all styling. Centralized color theme via tailwind.config.js
+import Layout from "../App/Layout";
+import Sidebar from "./Sidebar";
+import { useAuth } from "../Authentication/auth-context";
 
 interface PackageOption {
-  id: string
-  name: string
-  description: string
-  image: string
-  price: number
+  id: string;
+  name: string;
+  description: string;
+  image: string;
+  price: number;
 }
 
 interface CreatePackageData {
-  title: string
-  from_location: string
-  to_location: string
-  start_date: string
-  end_date: string
-  travelers_count: number
-  budget: number
-  transport_id: string | null
-  hotel_id: string | null
-  guide_id: string | null
+  title: string;
+  from_location: string;
+  to_location: string;
+  start_date: string;
+  end_date: string;
+  travelers_count: number;
+  budget: number;
+  transport_id: string | null;
+  hotel_id: string | null;
+  guide_id: string | null;
   preferences: {
-    skip_transport: boolean
-    skip_hotel: boolean
-    skip_vehicle: boolean
-    skip_guide: boolean
-  }
+    skip_transport: boolean;
+    skip_hotel: boolean;
+    skip_vehicle: boolean;
+    skip_guide: boolean;
+  };
 }
 
 const CreatePackage: FunctionComponent = () => {
-  const navigate = useNavigate()
-  const { isAuthenticated, loading: authLoading } = useAuth()
-  const today = new Date()
+  const navigate = useNavigate();
+  const { isAuthenticated, loading: authLoading } = useAuth();
+  const today = new Date();
 
   // Form state
-  const [from, setFrom] = useState("")
-  const [to, setTo] = useState("")
-  const [startDate, setStartDate] = useState("")
-  const [endDate, setEndDate] = useState("")
-  const [travelers, setTravelers] = useState(1)
-  const [budget, setBudget] = useState("")
-  const [showStartCalendar, setShowStartCalendar] = useState(false)
-  const [showEndCalendar, setShowEndCalendar] = useState(false)
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [travelers, setTravelers] = useState(1);
+  const [budget, setBudget] = useState("");
+  const [showStartCalendar, setShowStartCalendar] = useState(false);
+  const [showEndCalendar, setShowEndCalendar] = useState(false);
 
   // Package options state
-  const [transportOptions, setTransportOptions] = useState<PackageOption[]>([])
-  const [hotelOptions, setHotelOptions] = useState<PackageOption[]>([])
-  const [guideOptions, setGuideOptions] = useState<PackageOption[]>([])
+  const [transportOptions, setTransportOptions] = useState<PackageOption[]>([]);
+  const [hotelOptions, setHotelOptions] = useState<PackageOption[]>([]);
+  const [guideOptions, setGuideOptions] = useState<PackageOption[]>([]);
 
   // Selection state
-  const [selectedTransport, setSelectedTransport] = useState<string | null>(null)
-  const [selectedHotel, setSelectedHotel] = useState<string | null>(null)
-  const [selectedGuide, setSelectedGuide] = useState<string | null>(null)
+  const [selectedTransport, setSelectedTransport] = useState<string | null>(
+    null
+  );
+  const [selectedHotel, setSelectedHotel] = useState<string | null>(null);
+  const [selectedGuide, setSelectedGuide] = useState<string | null>(null);
 
   // Skip state
-  const [skipTransport, setSkipTransport] = useState(false)
-  const [skipHotel, setSkipHotel] = useState(false)
-  const [skipGuide, setSkipGuide] = useState(false)
+  const [skipTransport, setSkipTransport] = useState(false);
+  const [skipHotel, setSkipHotel] = useState(false);
+  const [skipGuide, setSkipGuide] = useState(false);
 
   // Loading and error states
-  const [isLoadingOptions, setIsLoadingOptions] = useState(true)
-  const [isCreatingPackage, setIsCreatingPackage] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [isLoadingOptions, setIsLoadingOptions] = useState(true);
+  const [isCreatingPackage, setIsCreatingPackage] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Calendar state
-  const [startCalendarMonth, setStartCalendarMonth] = useState(today.getMonth())
-  const [startCalendarYear, setStartCalendarYear] = useState(today.getFullYear())
-  const [endCalendarMonth, setEndCalendarMonth] = useState(today.getMonth())
-  const [endCalendarYear, setEndCalendarYear] = useState(today.getFullYear())
+  const [startCalendarMonth, setStartCalendarMonth] = useState(
+    today.getMonth()
+  );
+  const [startCalendarYear, setStartCalendarYear] = useState(
+    today.getFullYear()
+  );
+  const [endCalendarMonth, setEndCalendarMonth] = useState(today.getMonth());
+  const [endCalendarYear, setEndCalendarYear] = useState(today.getFullYear());
 
   // Fetch package options on component mount
   useEffect(() => {
     if (!authLoading && isAuthenticated) {
-      fetchPackageOptions()
+      fetchPackageOptions();
     }
-  }, [authLoading, isAuthenticated])
+  }, [authLoading, isAuthenticated]);
 
   const fetchPackageOptions = async () => {
     try {
-      setIsLoadingOptions(true)
-      setError(null)
+      setIsLoadingOptions(true);
+      setError(null);
 
-      const token = localStorage.getItem("token")
+      const token = localStorage.getItem("token");
       const headers = {
         "Content-Type": "application/json",
         ...(token && { Authorization: `Token ${token}` }),
-      }
+      };
 
       // Updated to use your actual API endpoints
       const [transport, hotels, guides] = await Promise.all([
-        fetch("https://wander-nest-ad3s.onrender.com/api/packages/transport-options/", { headers }),
-        fetch("https://wander-nest-ad3s.onrender.com/api/packages/create/hotel-options/", { headers }),
-        fetch("https://wander-nest-ad3s.onrender.com/api/packages/guide-options/", { headers }),
-      ])
+        fetch(
+          "https://wander-nest-ad3s.onrender.com/api/packages/transport-options/",
+          { headers }
+        ),
+        fetch(
+          "https://wander-nest-ad3s.onrender.com/api/packages/create/hotel-options/",
+          { headers }
+        ),
+        fetch(
+          "https://wander-nest-ad3s.onrender.com/api/packages/guide-options/",
+          { headers }
+        ),
+      ]);
 
-      const transportData = await transport.json()
-      const hotelsData = await hotels.json()
-      const guidesData = await guides.json()
+      const transportData = await transport.json();
+      const hotelsData = await hotels.json();
+      const guidesData = await guides.json();
 
-      setTransportOptions(transportData.results || transportData)
-      setHotelOptions(hotelsData.results || hotelsData)
-      setGuideOptions(guidesData.results || guidesData)
+      setTransportOptions(transportData.results || transportData);
+      setHotelOptions(hotelsData.results || hotelsData);
+      setGuideOptions(guidesData.results || guidesData);
     } catch (error) {
-      console.error("Error fetching package options:", error)
-      setError("Failed to load package options")
+      console.error("Error fetching package options:", error);
+      setError("Failed to load package options");
     } finally {
-      setIsLoadingOptions(false)
+      setIsLoadingOptions(false);
     }
-  }
+  };
 
   // Calendar utilities
   const getDaysInMonth = (year: number, month: number) => {
-    return new Date(year, month + 1, 0).getDate()
-  }
+    return new Date(year, month + 1, 0).getDate();
+  };
 
   const getDaysArray = (year: number, month: number) => {
-    const daysInMonth = getDaysInMonth(year, month)
-    return Array.from({ length: daysInMonth }, (_, i) => i + 1)
-  }
+    const daysInMonth = getDaysInMonth(year, month);
+    return Array.from({ length: daysInMonth }, (_, i) => i + 1);
+  };
 
   // Check if date is in the past
   const isPastDate = (year: number, month: number, day: number) => {
-    const date = new Date(year, month, day)
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
-    return date < today
-  }
+    const date = new Date(year, month, day);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return date < today;
+  };
 
   // Date handlers with past date validation
   const handleStartDateSelect = (day: number) => {
     if (isPastDate(startCalendarYear, startCalendarMonth, day)) {
-      return // Don't allow past dates
+      return; // Don't allow past dates
     }
-    const selectedDate = `${startCalendarYear}-${(startCalendarMonth + 1).toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`
-    setStartDate(selectedDate)
-    setShowStartCalendar(false)
-  }
+    const selectedDate = `${startCalendarYear}-${(startCalendarMonth + 1)
+      .toString()
+      .padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
+    setStartDate(selectedDate);
+    setShowStartCalendar(false);
+  };
 
   const handleEndDateSelect = (day: number) => {
     if (isPastDate(endCalendarYear, endCalendarMonth, day)) {
-      return // Don't allow past dates
+      return; // Don't allow past dates
     }
     // Also check if end date is before start date
-    const selectedEndDate = new Date(endCalendarYear, endCalendarMonth, day)
-    const startDateObj = new Date(startDate)
+    const selectedEndDate = new Date(endCalendarYear, endCalendarMonth, day);
+    const startDateObj = new Date(startDate);
     if (startDate && selectedEndDate <= startDateObj) {
-      return // Don't allow end date before or same as start date
+      return; // Don't allow end date before or same as start date
     }
-    const selectedDate = `${endCalendarYear}-${(endCalendarMonth + 1).toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`
-    setEndDate(selectedDate)
-    setShowEndCalendar(false)
-  }
+    const selectedDate = `${endCalendarYear}-${(endCalendarMonth + 1)
+      .toString()
+      .padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
+    setEndDate(selectedDate);
+    setShowEndCalendar(false);
+  };
 
   // Calendar navigation functions
   const handleStartPrevMonth = () => {
     if (startCalendarMonth === 0) {
-      setStartCalendarMonth(11)
-      setStartCalendarYear(startCalendarYear - 1)
+      setStartCalendarMonth(11);
+      setStartCalendarYear(startCalendarYear - 1);
     } else {
-      setStartCalendarMonth(startCalendarMonth - 1)
+      setStartCalendarMonth(startCalendarMonth - 1);
     }
-  }
+  };
 
   const handleStartNextMonth = () => {
     if (startCalendarMonth === 11) {
-      setStartCalendarMonth(0)
-      setStartCalendarYear(startCalendarYear + 1)
+      setStartCalendarMonth(0);
+      setStartCalendarYear(startCalendarYear + 1);
     } else {
-      setStartCalendarMonth(startCalendarMonth + 1)
+      setStartCalendarMonth(startCalendarMonth + 1);
     }
-  }
+  };
 
   const handleEndPrevMonth = () => {
     if (endCalendarMonth === 0) {
-      setEndCalendarMonth(11)
-      setEndCalendarYear(endCalendarYear - 1)
+      setEndCalendarMonth(11);
+      setEndCalendarYear(endCalendarYear - 1);
     } else {
-      setEndCalendarMonth(endCalendarMonth - 1)
+      setEndCalendarMonth(endCalendarMonth - 1);
     }
-  }
+  };
 
   const handleEndNextMonth = () => {
     if (endCalendarMonth === 11) {
-      setEndCalendarMonth(0)
-      setEndCalendarYear(endCalendarYear + 1)
+      setEndCalendarMonth(0);
+      setEndCalendarYear(endCalendarYear + 1);
     } else {
-      setEndCalendarMonth(endCalendarMonth + 1)
+      setEndCalendarMonth(endCalendarMonth + 1);
     }
-  }
+  };
 
   // Selection handlers
   const handleOptionSelect = (
     optionId: string,
     currentSelection: string | null,
     setSelection: (id: string | null) => void,
-    isSkipped: boolean,
+    isSkipped: boolean
   ) => {
     if (!isSkipped) {
-      setSelection(currentSelection === optionId ? null : optionId)
+      setSelection(currentSelection === optionId ? null : optionId);
     }
-  }
+  };
 
   // Skip handlers
   const handleSkip = (
     isSkipped: boolean,
     setSkip: (skip: boolean) => void,
-    setSelection: (id: string | null) => void,
+    setSelection: (id: string | null) => void
   ) => {
-    setSkip(!isSkipped)
-    if (!isSkipped) setSelection(null)
-  }
+    setSkip(!isSkipped);
+    if (!isSkipped) setSelection(null);
+  };
 
   // Form validation
   const isFormValid = () => {
@@ -227,19 +246,19 @@ const CreatePackage: FunctionComponent = () => {
       travelers > 0 &&
       budget.trim() !== "" &&
       new Date(startDate) < new Date(endDate)
-    )
-  }
+    );
+  };
 
   // Package creation
   const handleCreatePackage = async () => {
     if (!isFormValid()) {
-      alert("Please fill in all required fields and ensure dates are valid.")
-      return
+      alert("Please fill in all required fields and ensure dates are valid.");
+      return;
     }
 
     try {
-      setIsCreatingPackage(true)
-      setError(null)
+      setIsCreatingPackage(true);
+      setError(null);
 
       const packageData: CreatePackageData = {
         title: `${from} to ${to} Package`,
@@ -258,31 +277,34 @@ const CreatePackage: FunctionComponent = () => {
           skip_vehicle: false,
           skip_guide: skipGuide,
         },
-      }
+      };
 
       // Updated to use your actual create endpoint
-      const response = await fetch("https://wander-nest-ad3s.onrender.com/api/packages/create/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(packageData),
-      })
+      const response = await fetch(
+        "https://wander-nest-ad3s.onrender.com/api/packages/create/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify(packageData),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const createdPackage = await response.json()
-      navigate(`/package/${createdPackage.id}`)
+      const createdPackage = await response.json();
+      navigate(`/package/${createdPackage.id}`);
     } catch (error) {
-      console.error("Error creating package:", error)
-      setError("Failed to create package. Please try again.")
+      console.error("Error creating package:", error);
+      setError("Failed to create package. Please try again.");
     } finally {
-      setIsCreatingPackage(false)
+      setIsCreatingPackage(false);
     }
-  }
+  };
 
   // Show loading while auth is loading
   if (authLoading) {
@@ -295,13 +317,13 @@ const CreatePackage: FunctionComponent = () => {
           </div>
         </div>
       </Layout>
-    )
+    );
   }
 
   // Redirect if not authenticated
   if (!isAuthenticated) {
-    navigate("/login")
-    return null
+    navigate("/login");
+    return null;
   }
 
   return (
@@ -311,7 +333,9 @@ const CreatePackage: FunctionComponent = () => {
         <div className={styles.flexGrow}>
           <div className={styles.createPackage}>
             <div className={styles.headerSection}>
-              <div className={styles.createYourCustom}>Create Your Custom Package</div>
+              <div className={styles.createYourCustom}>
+                Create Your Custom Package
+              </div>
 
               {error && <div className={styles.errorMessage}>{error}</div>}
 
@@ -321,7 +345,12 @@ const CreatePackage: FunctionComponent = () => {
                   {/* Row 1: From and To */}
                   <div className={styles.compactInputGroup}>
                     <label className={styles.enhancedInputLabel}>
-                      <svg className={styles.labelIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg
+                        className={styles.labelIcon}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -349,7 +378,12 @@ const CreatePackage: FunctionComponent = () => {
 
                   <div className={styles.compactInputGroup}>
                     <label className={styles.enhancedInputLabel}>
-                      <svg className={styles.labelIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg
+                        className={styles.labelIcon}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -376,9 +410,17 @@ const CreatePackage: FunctionComponent = () => {
                   </div>
 
                   {/* Row 2: Start Date and End Date */}
-                  <div className={styles.compactInputGroup} style={{ position: "relative" }}>
+                  <div
+                    className={styles.compactInputGroup}
+                    style={{ position: "relative" }}
+                  >
                     <label className={styles.enhancedInputLabel}>
-                      <svg className={styles.labelIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg
+                        className={styles.labelIcon}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -409,7 +451,10 @@ const CreatePackage: FunctionComponent = () => {
                             ←
                           </button>
                           <span>
-                            {new Date(startCalendarYear, startCalendarMonth).toLocaleString("default", {
+                            {new Date(
+                              startCalendarYear,
+                              startCalendarMonth
+                            ).toLocaleString("default", {
                               month: "long",
                             })}{" "}
                             {startCalendarYear}
@@ -423,27 +468,50 @@ const CreatePackage: FunctionComponent = () => {
                           </button>
                         </div>
                         <div className={styles.enhancedCalendarGrid}>
-                          {getDaysArray(startCalendarYear, startCalendarMonth).map((day) => {
-                            const isDisabled = isPastDate(startCalendarYear, startCalendarMonth, day)
+                          {getDaysArray(
+                            startCalendarYear,
+                            startCalendarMonth
+                          ).map((day) => {
+                            const isDisabled = isPastDate(
+                              startCalendarYear,
+                              startCalendarMonth,
+                              day
+                            );
                             return (
                               <div
                                 key={day}
-                                className={`${styles.enhancedCalendarDay} ${isDisabled ? styles.disabled : ""}`}
-                                onClick={() => !isDisabled && handleStartDateSelect(day)}
-                                style={{ cursor: isDisabled ? "not-allowed" : "pointer" }}
+                                className={`${styles.enhancedCalendarDay} ${
+                                  isDisabled ? styles.disabled : ""
+                                }`}
+                                onClick={() =>
+                                  !isDisabled && handleStartDateSelect(day)
+                                }
+                                style={{
+                                  cursor: isDisabled
+                                    ? "not-allowed"
+                                    : "pointer",
+                                }}
                               >
                                 {day}
                               </div>
-                            )
+                            );
                           })}
                         </div>
                       </div>
                     )}
                   </div>
 
-                  <div className={styles.compactInputGroup} style={{ position: "relative" }}>
+                  <div
+                    className={styles.compactInputGroup}
+                    style={{ position: "relative" }}
+                  >
                     <label className={styles.enhancedInputLabel}>
-                      <svg className={styles.labelIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg
+                        className={styles.labelIcon}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -474,7 +542,10 @@ const CreatePackage: FunctionComponent = () => {
                             ←
                           </button>
                           <span>
-                            {new Date(endCalendarYear, endCalendarMonth).toLocaleString("default", { month: "long" })}{" "}
+                            {new Date(
+                              endCalendarYear,
+                              endCalendarMonth
+                            ).toLocaleString("default", { month: "long" })}{" "}
                             {endCalendarYear}
                           </span>
                           <button
@@ -486,21 +557,40 @@ const CreatePackage: FunctionComponent = () => {
                           </button>
                         </div>
                         <div className={styles.enhancedCalendarGrid}>
-                          {getDaysArray(endCalendarYear, endCalendarMonth).map((day) => {
-                            const isDisabled =
-                              isPastDate(endCalendarYear, endCalendarMonth, day) ||
-                              (startDate && new Date(endCalendarYear, endCalendarMonth, day) <= new Date(startDate))
-                            return (
-                              <div
-                                key={day}
-                                className={`${styles.enhancedCalendarDay} ${isDisabled ? styles.disabled : ""}`}
-                                onClick={() => !isDisabled && handleEndDateSelect(day)}
-                                style={{ cursor: isDisabled ? "not-allowed" : "pointer" }}
-                              >
-                                {day}
-                              </div>
-                            )
-                          })}
+                          {getDaysArray(endCalendarYear, endCalendarMonth).map(
+                            (day) => {
+                              const isDisabled =
+                                isPastDate(
+                                  endCalendarYear,
+                                  endCalendarMonth,
+                                  day
+                                ) ||
+                                (startDate &&
+                                  new Date(
+                                    endCalendarYear,
+                                    endCalendarMonth,
+                                    day
+                                  ) <= new Date(startDate));
+                              return (
+                                <div
+                                  key={day}
+                                  className={`${styles.enhancedCalendarDay} ${
+                                    isDisabled ? styles.disabled : ""
+                                  }`}
+                                  onClick={() =>
+                                    !isDisabled && handleEndDateSelect(day)
+                                  }
+                                  style={{
+                                    cursor: isDisabled
+                                      ? "not-allowed"
+                                      : "pointer",
+                                  }}
+                                >
+                                  {day}
+                                </div>
+                              );
+                            }
+                          )}
                         </div>
                       </div>
                     )}
@@ -509,7 +599,12 @@ const CreatePackage: FunctionComponent = () => {
                   {/* Row 3: Travelers and Budget */}
                   <div className={styles.compactInputGroup}>
                     <label className={styles.enhancedInputLabel}>
-                      <svg className={styles.labelIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg
+                        className={styles.labelIcon}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -526,14 +621,21 @@ const CreatePackage: FunctionComponent = () => {
                       max="20"
                       placeholder="1"
                       value={travelers}
-                      onChange={(e) => setTravelers(Number.parseInt(e.target.value) || 1)}
+                      onChange={(e) =>
+                        setTravelers(Number.parseInt(e.target.value) || 1)
+                      }
                       required
                     />
                   </div>
 
                   <div className={styles.compactInputGroup}>
                     <label className={styles.enhancedInputLabel}>
-                      <svg className={styles.labelIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg
+                        className={styles.labelIcon}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -567,34 +669,64 @@ const CreatePackage: FunctionComponent = () => {
                 {/* Transport Section */}
                 <div className={styles.sectionContainer}>
                   <div className={styles.sectionHeader}>
-                    <span className={styles.sectionTitle}>Select Transport</span>
+                    <span className={styles.sectionTitle}>
+                      Select Transport
+                    </span>
                     <button
                       type="button"
                       className={styles.skipButton}
-                      onClick={() => handleSkip(skipTransport, setSkipTransport, setSelectedTransport)}
+                      onClick={() =>
+                        handleSkip(
+                          skipTransport,
+                          setSkipTransport,
+                          setSelectedTransport
+                        )
+                      }
                     >
                       {skipTransport ? "Include" : "Skip"}
                     </button>
                   </div>
-                  <div className={`${styles.cardsGrid} ${skipTransport ? styles.sectionDisabled : ""}`}>
+                  <div
+                    className={`${styles.cardsGrid} ${
+                      skipTransport ? styles.sectionDisabled : ""
+                    }`}
+                  >
                     {transportOptions.map((option) => (
                       <div
                         key={option.id}
-                        className={`${styles.card} ${selectedTransport === option.id ? styles.selectedCard : ""}`}
+                        className={`${styles.card} ${
+                          selectedTransport === option.id
+                            ? styles.selectedCard
+                            : ""
+                        }`}
                         onClick={() =>
-                          handleOptionSelect(option.id, selectedTransport, setSelectedTransport, skipTransport)
+                          handleOptionSelect(
+                            option.id,
+                            selectedTransport,
+                            setSelectedTransport,
+                            skipTransport
+                          )
                         }
                       >
                         <img
                           className={styles.cardImage}
                           alt={option.name}
-                          src={option.image || "/placeholder.svg?height=200&width=300"}
+                          src={
+                            option.image ||
+                            "/placeholder.svg?height=200&width=300"
+                          }
                         />
                         <div className={styles.cardContent}>
                           <div className={styles.cardTitle}>{option.name}</div>
-                          <div className={styles.cardDescription}>{option.description}</div>
-                          <div className={styles.cardPrice}>৳{option.price}</div>
-                          {selectedTransport === option.id && <span className={styles.selectedMark}>✔</span>}
+                          <div className={styles.cardDescription}>
+                            {option.description}
+                          </div>
+                          <div className={styles.cardPrice}>
+                            ৳{option.price}
+                          </div>
+                          {selectedTransport === option.id && (
+                            <span className={styles.selectedMark}>✔</span>
+                          )}
                         </div>
                       </div>
                     ))}
@@ -608,28 +740,52 @@ const CreatePackage: FunctionComponent = () => {
                     <button
                       type="button"
                       className={styles.skipButton}
-                      onClick={() => handleSkip(skipHotel, setSkipHotel, setSelectedHotel)}
+                      onClick={() =>
+                        handleSkip(skipHotel, setSkipHotel, setSelectedHotel)
+                      }
                     >
                       {skipHotel ? "Include" : "Skip"}
                     </button>
                   </div>
-                  <div className={`${styles.cardsGrid} ${skipHotel ? styles.sectionDisabled : ""}`}>
+                  <div
+                    className={`${styles.cardsGrid} ${
+                      skipHotel ? styles.sectionDisabled : ""
+                    }`}
+                  >
                     {hotelOptions.map((option) => (
                       <div
                         key={option.id}
-                        className={`${styles.card} ${selectedHotel === option.id ? styles.selectedCard : ""}`}
-                        onClick={() => handleOptionSelect(option.id, selectedHotel, setSelectedHotel, skipHotel)}
+                        className={`${styles.card} ${
+                          selectedHotel === option.id ? styles.selectedCard : ""
+                        }`}
+                        onClick={() =>
+                          handleOptionSelect(
+                            option.id,
+                            selectedHotel,
+                            setSelectedHotel,
+                            skipHotel
+                          )
+                        }
                       >
                         <img
                           className={styles.cardImage}
                           alt={option.name}
-                          src={option.image || "/placeholder.svg?height=200&width=300"}
+                          src={
+                            option.image ||
+                            "/placeholder.svg?height=200&width=300"
+                          }
                         />
                         <div className={styles.cardContent}>
                           <div className={styles.cardTitle}>{option.name}</div>
-                          <div className={styles.cardDescription}>{option.description}</div>
-                          <div className={styles.cardPrice}>৳{option.price}/night</div>
-                          {selectedHotel === option.id && <span className={styles.selectedMark}>✔</span>}
+                          <div className={styles.cardDescription}>
+                            {option.description}
+                          </div>
+                          <div className={styles.cardPrice}>
+                            ৳{option.price}/night
+                          </div>
+                          {selectedHotel === option.id && (
+                            <span className={styles.selectedMark}>✔</span>
+                          )}
                         </div>
                       </div>
                     ))}
@@ -643,28 +799,52 @@ const CreatePackage: FunctionComponent = () => {
                     <button
                       type="button"
                       className={styles.skipButton}
-                      onClick={() => handleSkip(skipGuide, setSkipGuide, setSelectedGuide)}
+                      onClick={() =>
+                        handleSkip(skipGuide, setSkipGuide, setSelectedGuide)
+                      }
                     >
                       {skipGuide ? "Include" : "Skip"}
                     </button>
                   </div>
-                  <div className={`${styles.cardsGrid} ${skipGuide ? styles.sectionDisabled : ""}`}>
+                  <div
+                    className={`${styles.cardsGrid} ${
+                      skipGuide ? styles.sectionDisabled : ""
+                    }`}
+                  >
                     {guideOptions.map((option) => (
                       <div
                         key={option.id}
-                        className={`${styles.card} ${selectedGuide === option.id ? styles.selectedCard : ""}`}
-                        onClick={() => handleOptionSelect(option.id, selectedGuide, setSelectedGuide, skipGuide)}
+                        className={`${styles.card} ${
+                          selectedGuide === option.id ? styles.selectedCard : ""
+                        }`}
+                        onClick={() =>
+                          handleOptionSelect(
+                            option.id,
+                            selectedGuide,
+                            setSelectedGuide,
+                            skipGuide
+                          )
+                        }
                       >
                         <img
                           className={styles.cardImage}
                           alt={option.name}
-                          src={option.image || "/placeholder.svg?height=200&width=300"}
+                          src={
+                            option.image ||
+                            "/placeholder.svg?height=200&width=300"
+                          }
                         />
                         <div className={styles.cardContent}>
                           <div className={styles.cardTitle}>{option.name}</div>
-                          <div className={styles.cardDescription}>{option.description}</div>
-                          <div className={styles.cardPrice}>৳{option.price}/day</div>
-                          {selectedGuide === option.id && <span className={styles.selectedMark}>✔</span>}
+                          <div className={styles.cardDescription}>
+                            {option.description}
+                          </div>
+                          <div className={styles.cardPrice}>
+                            ৳{option.price}/day
+                          </div>
+                          {selectedGuide === option.id && (
+                            <span className={styles.selectedMark}>✔</span>
+                          )}
                         </div>
                       </div>
                     ))}
@@ -676,7 +856,8 @@ const CreatePackage: FunctionComponent = () => {
             {/* Confirm section */}
             <div className={styles.confirmSection}>
               <div className={styles.reviewText}>
-                Review your package details and proceed to create your custom travel package.
+                Review your package details and proceed to create your custom
+                travel package.
               </div>
               <button
                 type="button"
@@ -691,7 +872,7 @@ const CreatePackage: FunctionComponent = () => {
         </div>
       </div>
     </Layout>
-  )
-}
+  );
+};
 
-export default CreatePackage
+export default CreatePackage;

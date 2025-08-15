@@ -1,5 +1,5 @@
 import { FunctionComponent, useCallback, useState } from "react";
-import styles from "../Styles/ALLguides.module.css";
+// Tailwind CSS used for all styling. Centralized color theme via tailwind.config.js
 import { useNavigate } from "react-router-dom";
 import Layout from "../App/Layout";
 const AllGuides: FunctionComponent = () => {
