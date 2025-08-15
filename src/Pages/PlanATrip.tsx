@@ -202,4 +202,7 @@ const PlanATrip: React.FC = () => {
         </div>
       </div>
     </Layout>
+  );
+};
+
 export default PlanATrip;
