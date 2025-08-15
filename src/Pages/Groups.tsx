@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "../Styles/Group.module.css";
+// Tailwind CSS used for all styling. Centralized color theme via tailwind.config.js
 import Footer from "../Components/Footer";
 import Navbar from "../Components/Navbar";
 import { useAuth } from "../Authentication/auth-context";

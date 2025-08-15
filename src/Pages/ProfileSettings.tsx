@@ -2,7 +2,6 @@
 
 import type React from "react";
 import { useEffect, useState } from "react";
-import styles from "../Styles/ProfileSettings.module.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Authentication/auth-context";
 import DatePicker from "react-datepicker";
@@ -148,180 +147,115 @@ const ProfileSettings: React.FC = () => {
 
   if (!profile)
     return (
-      <div className={styles.profileSettingsWrapper}>
-        <div className={styles.skeletonProfile}>
-          <div className={styles.skeletonPic} />
-          <div className={styles.skeletonFields}>
-            <div className={styles.skeletonField} />
-            <div className={styles.skeletonField} />
-            <div className={styles.skeletonField} />
+      <div className="min-h-screen bg-gradient-to-br from-primary-100 to-primary-300 py-8 px-4">
+        <div className="max-w-2xl mx-auto bg-white rounded-lg shadow p-6">
+          <h1 className="text-2xl font-bold text-primary-700 mb-6">
+            Profile Settings
+          </h1>
+          <div className="animate-pulse flex flex-col space-y-4">
+            <div className="flex flex-col">
+              <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+              <div className="h-4 bg-gray-200 rounded w-full"></div>
+            </div>
+            <div className="flex flex-col">
+              <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+              <div className="h-4 bg-gray-200 rounded w-full"></div>
+            </div>
+            <div className="flex flex-col">
+              <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+              <div className="h-4 bg-gray-200 rounded w-full"></div>
+            </div>
           </div>
         </div>
       </div>
     );
 
   return (
-    <div className={styles.profileSettingsWrapper}>
-      <h2 className={styles.title}>Profile Settings</h2>
-      {error && <div className={styles.error}>{error}</div>}
-      <div className={styles.profileCard}>
-        <div className={styles.profilePicSection}>
-          <div className={styles.profilePicWrapper}>
-            <img
-              src={
-                picFile
-                  ? URL.createObjectURL(picFile)
-                  : profile.profile_image || "/figma_photos/wandernest.svg"
-              }
-              alt="Profile"
-              className={styles.profilePic}
-            />
-            {editMode && (
-              <label className={styles.profilePicOverlay} title="Change Photo">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handlePicChange}
-                  className={styles.fileInput}
-                />
-                <span className={styles.cameraIcon}>📷</span>
-              </label>
-            )}
+    <div className="min-h-screen bg-gradient-to-br from-primary-100 to-primary-300 py-8 px-4">
+      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow p-6">
+        <h1 className="text-2xl font-bold text-primary-700 mb-6">
+          Profile Settings
+        </h1>
+        {error && (
+          <div className="mb-4 text-red-600 font-medium text-center">
+            {error}
           </div>
-        </div>
-        <div className={styles.profileInfoSection}>
-          <div className={styles.fieldGroup}>
-            <label className={styles.fieldLabel}>Email:</label>
-            <span className={styles.fieldValue}>{profile.email || "-"}</span>
-          </div>
-          <div className={styles.fieldGroup}>
-            <label className={styles.fieldLabel}>Phone:</label>
-            {editMode ? (
-              <input
-                name="phone"
-                value={form.phone || ""}
-                onChange={handleChange}
-                className={styles.inputField}
-                placeholder="Enter phone number"
-              />
-            ) : (
-              <span className={styles.fieldValue}>{profile.phone || "-"}</span>
-            )}
-          </div>
-          <div className={styles.fieldGroup}>
-            <label className={styles.fieldLabel}>Country:</label>
-            {editMode ? (
-              <input
-                name="country"
-                value={form.country || ""}
-                onChange={handleChange}
-                className={styles.inputField}
-                placeholder="Enter country"
-              />
-            ) : (
-              <span className={styles.fieldValue}>
-                {profile.country || "-"}
-              </span>
-            )}
-          </div>
-          <div className={styles.fieldGroup}>
-            <label className={styles.fieldLabel}>Age:</label>
-            {editMode ? (
-              <input
-                name="age"
-                type="number"
-                value={form.age || ""}
-                onChange={handleChange}
-                className={styles.inputField}
-              />
-            ) : (
-              <span className={styles.fieldValue}>{profile.email}</span>
-            )}
-          </div>
-          <div className={styles.fieldGroup}>
-            <label className={styles.fieldLabel}>Phone Number:</label>
-            {editMode ? (
-              <input
-                name="phonenumber"
-                type="tel"
-                value={form.phonenumber || ""}
-                onChange={handleChange}
-                placeholder="+1234567890"
-                className={styles.inputField}
-              />
-            ) : (
-              <span className={styles.fieldValue}>
-                {profile.phonenumber || "-"}
-              </span>
-            )}
-          </div>
-          <div className={styles.fieldGroup}>
-            <label className={styles.fieldLabel}>Passport Number:</label>
-            {editMode ? (
-              <input
-                name="passport_no"
-                value={form.passport_no || ""}
-                onChange={handleChange}
-                className={styles.inputField}
-                placeholder="Enter passport number"
-              />
-            ) : (
-              <span className={styles.fieldValue}>
-                {profile.passport_no || "-"}
-              </span>
-            )}
-          </div>
-          <div className={styles.fieldGroup}>
-            <label className={styles.fieldLabel}>Date of Birth:</label>
-            {editMode ? (
-              <DatePicker
-                selected={dobPicker}
-                onChange={handleDateChange}
-                dateFormat="yyyy-MM-dd"
-                maxDate={new Date()}
-                showYearDropdown
-                scrollableYearDropdown
-                yearDropdownItemNumber={100}
-                placeholderText="Select date"
-                className={styles.inputField}
-                name="date_of_birth"
-                id="date_of_birth"
-                autoComplete="off"
-              />
-            ) : (
-              <span className={styles.fieldValue}>
-                {profile.date_of_birth || "-"}
-              </span>
-            )}
-          </div>
-        </div>
-      </div>
-      <div className={styles.buttonGroup}>
-        {editMode ? (
-          <>
-            <button
-              onClick={handleSave}
-              disabled={saving}
-              className={`${styles.button} ${styles.saveButton}`}
-            >
-              {saving ? "Saving..." : "Save Changes"}
-            </button>
-            <button
-              onClick={() => setEditMode(false)}
-              disabled={saving}
-              className={`${styles.button} ${styles.cancelButton}`}
-            >
-              Cancel
-            </button>
-          </>
-        ) : (
-          <button
-            onClick={() => setEditMode(true)}
-            className={`${styles.button} ${styles.editButton}`}
-          >
-            Edit Profile
-          </button>
         )}
+        <form className="space-y-4">
+          <div className="flex flex-col">
+            <label className="font-medium mb-1">Phone</label>
+            <input
+              name="phone"
+              value={form.phone || ""}
+              onChange={handleChange}
+              className="border rounded px-3 py-2 focus:outline-none focus:ring focus:border-primary-400"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="font-medium mb-1">Country</label>
+            <input
+              name="country"
+              value={form.country || ""}
+              onChange={handleChange}
+              className="border rounded px-3 py-2 focus:outline-none focus:ring focus:border-primary-400"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="font-medium mb-1">Age</label>
+            <input
+              name="age"
+              type="number"
+              value={form.age || ""}
+              onChange={handleChange}
+              className="border rounded px-3 py-2 focus:outline-none focus:ring focus:border-primary-400"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="font-medium mb-1">Passport No</label>
+            <input
+              name="passport_no"
+              value={form.passport_no || ""}
+              onChange={handleChange}
+              className="border rounded px-3 py-2 focus:outline-none focus:ring focus:border-primary-400"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="font-medium mb-1">Date of Birth</label>
+            <input
+              name="date_of_birth"
+              type="date"
+              value={form.date_of_birth || ""}
+              onChange={handleChange}
+              className="border rounded px-3 py-2 focus:outline-none focus:ring focus:border-primary-400"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="font-medium mb-1">Email</label>
+            <input
+              name="email"
+              type="email"
+              value={form.email || ""}
+              onChange={handleChange}
+              className="border rounded px-3 py-2 focus:outline-none focus:ring focus:border-primary-400"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="font-medium mb-1">Profile Image</label>
+            <input
+              name="profile_image"
+              type="file"
+              onChange={handlePicChange}
+              className="border rounded px-3 py-2 focus:outline-none focus:ring focus:border-primary-400"
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-primary-500 text-white py-2 rounded font-semibold hover:bg-primary-600 transition"
+            disabled={saving}
+          >
+            {saving ? "Saving..." : "Save Changes"}
+          </button>
+        </form>
       </div>
     </div>
   );

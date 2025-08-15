@@ -1,30 +1,30 @@
-"use client"
+"use client";
 
-import { type FunctionComponent, useState, useEffect } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
-import styles from "../Styles/ConfirmBook.module.css"
-import Layout from "../App/Layout"
-import Sidebar from "./Sidebar"
-import { useAuth } from "../Authentication/auth-context"
-import { useBooking } from "../Context/booking-context"
+import { type FunctionComponent, useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+// Tailwind CSS used for all styling. Centralized color theme via tailwind.config.js
+import Layout from "../App/Layout";
+import Sidebar from "./Sidebar";
+import { useAuth } from "../Authentication/auth-context";
+import { useBooking } from "../Context/booking-context";
 
 interface BookingFormData {
-  from: string
-  to: string
-  startDate: string
-  endDate: string
-  travelers: number
-  budget: string
-  specialRequests?: string
+  from: string;
+  to: string;
+  startDate: string;
+  endDate: string;
+  travelers: number;
+  budget: string;
+  specialRequests?: string;
 }
 
 const ConfirmBook: FunctionComponent = () => {
-  const location = useLocation()
-  const navigate = useNavigate()
-  const { isAuthenticated, loading: authLoading } = useAuth()
-  const { addBooking } = useBooking()
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { isAuthenticated, loading: authLoading } = useAuth();
+  const { addBooking } = useBooking();
 
-  const packageData = location.state?.pkg
+  const packageData = location.state?.pkg;
 
   const [formData, setFormData] = useState<BookingFormData>({
     from: "",
@@ -34,42 +34,45 @@ const ConfirmBook: FunctionComponent = () => {
     travelers: 1,
     budget: packageData?.price || "",
     specialRequests: "",
-  })
+  });
 
-  const [isProcessing, setIsProcessing] = useState(false)
-  const [error, setError] = useState("")
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (!packageData) {
-      navigate("/packages")
+      navigate("/packages");
     }
-  }, [packageData, navigate])
+  }, [packageData, navigate]);
 
-  const handleInputChange = (field: keyof BookingFormData, value: string | number) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-  }
+  const handleInputChange = (
+    field: keyof BookingFormData,
+    value: string | number
+  ) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
   const calculateNights = () => {
-    if (!formData.startDate || !formData.endDate) return 0
-    const start = new Date(formData.startDate)
-    const end = new Date(formData.endDate)
-    return Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))
-  }
+    if (!formData.startDate || !formData.endDate) return 0;
+    const start = new Date(formData.startDate);
+    const end = new Date(formData.endDate);
+    return Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+  };
 
-  const totalPrice = Number(formData.budget) * formData.travelers
+  const totalPrice = Number(formData.budget) * formData.travelers;
 
   const handleConfirmBooking = async () => {
     if (!formData.startDate || !formData.endDate || !formData.from) {
-      setError("Please fill in all required fields")
-      return
+      setError("Please fill in all required fields");
+      return;
     }
 
-    setIsProcessing(true)
-    setError("")
+    setIsProcessing(true);
+    setError("");
 
     try {
       // Simulate payment processing
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
       // Add booking to context (immediate update)
       addBooking({
@@ -82,17 +85,17 @@ const ConfirmBook: FunctionComponent = () => {
         status: "confirmed",
         travelers: formData.travelers,
         image: packageData.image_url,
-      })
+      });
 
       // Navigate to dashboard to see the update
-      navigate("/dashboard")
+      navigate("/dashboard");
     } catch (error) {
-      console.error("Booking failed:", error)
-      setError("Booking failed. Please try again.")
+      console.error("Booking failed:", error);
+      setError("Booking failed. Please try again.");
     } finally {
-      setIsProcessing(false)
+      setIsProcessing(false);
     }
-  }
+  };
 
   // Show loading while auth is loading
   if (authLoading) {
@@ -105,13 +108,13 @@ const ConfirmBook: FunctionComponent = () => {
           </div>
         </div>
       </Layout>
-    )
+    );
   }
 
   // Redirect if not authenticated
   if (!isAuthenticated) {
-    navigate("/login")
-    return null
+    navigate("/login");
+    return null;
   }
 
   if (!packageData) {
@@ -121,11 +124,13 @@ const ConfirmBook: FunctionComponent = () => {
           <Sidebar />
           <div style={{ flex: 1, padding: "40px", textAlign: "center" }}>
             <div>Package not found</div>
-            <button onClick={() => navigate("/packages")}>Back to Packages</button>
+            <button onClick={() => navigate("/packages")}>
+              Back to Packages
+            </button>
           </div>
         </div>
       </Layout>
-    )
+    );
   }
 
   return (
@@ -136,20 +141,31 @@ const ConfirmBook: FunctionComponent = () => {
           <div className={styles.container}>
             <div className={styles.header}>
               <h1 className={styles.pageTitle}>Confirm Your Booking</h1>
-              <p className={styles.subtitle}>Review and confirm your package details</p>
+              <p className={styles.subtitle}>
+                Review and confirm your package details
+              </p>
             </div>
 
             <div className={styles.bookingContent}>
               {/* Package Summary */}
               <div className={styles.packageSummary}>
                 <div className={styles.packageImage}>
-                  <img src={packageData.image_url || "/placeholder.svg?height=200&width=300"} alt={packageData.title} />
+                  <img
+                    src={
+                      packageData.image_url ||
+                      "/placeholder.svg?height=200&width=300"
+                    }
+                    alt={packageData.title}
+                  />
                 </div>
                 <div className={styles.packageInfo}>
                   <h2 className={styles.packageTitle}>{packageData.title}</h2>
-                  <div className={styles.packagePrice}>৳{Number(packageData.price).toLocaleString()} per person</div>
+                  <div className={styles.packagePrice}>
+                    ৳{Number(packageData.price).toLocaleString()} per person
+                  </div>
                   <div className={styles.packageDescription}>
-                    Experience the beauty of {packageData.title} with our carefully curated package.
+                    Experience the beauty of {packageData.title} with our
+                    carefully curated package.
                   </div>
                 </div>
               </div>
@@ -168,14 +184,21 @@ const ConfirmBook: FunctionComponent = () => {
                       className={styles.formInput}
                       placeholder="Departure city"
                       value={formData.from}
-                      onChange={(e) => handleInputChange("from", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("from", e.target.value)
+                      }
                       required
                     />
                   </div>
 
                   <div className={styles.formGroup}>
                     <label className={styles.formLabel}>To</label>
-                    <input type="text" className={styles.formInput} value={formData.to} readOnly />
+                    <input
+                      type="text"
+                      className={styles.formInput}
+                      value={formData.to}
+                      readOnly
+                    />
                   </div>
 
                   <div className={styles.formGroup}>
@@ -184,7 +207,9 @@ const ConfirmBook: FunctionComponent = () => {
                       type="date"
                       className={styles.formInput}
                       value={formData.startDate}
-                      onChange={(e) => handleInputChange("startDate", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("startDate", e.target.value)
+                      }
                       min={new Date().toISOString().split("T")[0]}
                       required
                     />
@@ -196,43 +221,60 @@ const ConfirmBook: FunctionComponent = () => {
                       type="date"
                       className={styles.formInput}
                       value={formData.endDate}
-                      onChange={(e) => handleInputChange("endDate", e.target.value)}
-                      min={formData.startDate || new Date().toISOString().split("T")[0]}
+                      onChange={(e) =>
+                        handleInputChange("endDate", e.target.value)
+                      }
+                      min={
+                        formData.startDate ||
+                        new Date().toISOString().split("T")[0]
+                      }
                       required
                     />
                   </div>
 
                   <div className={styles.formGroup}>
-                    <label className={styles.formLabel}>Number of Travelers</label>
+                    <label className={styles.formLabel}>
+                      Number of Travelers
+                    </label>
                     <input
                       type="number"
                       className={styles.formInput}
                       min="1"
                       max="20"
                       value={formData.travelers}
-                      onChange={(e) => handleInputChange("travelers", Number(e.target.value))}
+                      onChange={(e) =>
+                        handleInputChange("travelers", Number(e.target.value))
+                      }
                     />
                   </div>
 
                   <div className={styles.formGroup}>
-                    <label className={styles.formLabel}>Budget per Person (BDT)</label>
+                    <label className={styles.formLabel}>
+                      Budget per Person (BDT)
+                    </label>
                     <input
                       type="number"
                       className={styles.formInput}
                       value={formData.budget}
-                      onChange={(e) => handleInputChange("budget", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("budget", e.target.value)
+                      }
                       readOnly
                     />
                   </div>
                 </div>
 
                 <div className={styles.formGroup}>
-                  <label className={styles.formLabel}>Special Requests (Optional)</label>
+                  <label className={styles.formLabel}>
+                    Special Requests (Optional)
+                  </label>
                   <textarea
                     className={styles.formTextarea}
                     placeholder="Any special requirements or requests..."
                     value={formData.specialRequests}
-                    onChange={(e) => handleInputChange("specialRequests", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("specialRequests", e.target.value)
+                    }
                     rows={3}
                   />
                 </div>
@@ -253,7 +295,8 @@ const ConfirmBook: FunctionComponent = () => {
                   <div className={styles.summaryRow}>
                     <span>Travelers:</span>
                     <span>
-                      {formData.travelers} person{formData.travelers > 1 ? "s" : ""}
+                      {formData.travelers} person
+                      {formData.travelers > 1 ? "s" : ""}
                     </span>
                   </div>
                   <div className={styles.summaryRow}>
@@ -273,15 +316,26 @@ const ConfirmBook: FunctionComponent = () => {
 
               {/* Action Buttons */}
               <div className={styles.actionButtons}>
-                <button className={styles.backButton} onClick={() => navigate("/packages")} disabled={isProcessing}>
+                <button
+                  className={styles.backButton}
+                  onClick={() => navigate("/packages")}
+                  disabled={isProcessing}
+                >
                   Back to Packages
                 </button>
                 <button
                   className={styles.confirmButton}
                   onClick={handleConfirmBooking}
-                  disabled={isProcessing || !formData.startDate || !formData.endDate || !formData.from}
+                  disabled={
+                    isProcessing ||
+                    !formData.startDate ||
+                    !formData.endDate ||
+                    !formData.from
+                  }
                 >
-                  {isProcessing ? "Processing..." : `Confirm Booking - ৳${totalPrice.toLocaleString()}`}
+                  {isProcessing
+                    ? "Processing..."
+                    : `Confirm Booking - ৳${totalPrice.toLocaleString()}`}
                 </button>
               </div>
             </div>
@@ -289,7 +343,7 @@ const ConfirmBook: FunctionComponent = () => {
         </div>
       </div>
     </Layout>
-  )
-}
+  );
+};
 
-export default ConfirmBook
+export default ConfirmBook;

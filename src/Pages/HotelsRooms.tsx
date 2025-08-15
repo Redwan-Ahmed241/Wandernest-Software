@@ -2,7 +2,7 @@
 import type { FunctionComponent } from "react";
 import { useCallback, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "../Styles/HotelsRooms.module.css";
+// Tailwind CSS used for all styling. Centralized color theme via tailwind.config.js
 import Layout from "../App/Layout";
 import { useAuth } from "../Authentication/auth-context";
 
@@ -81,6 +81,7 @@ const AMENITY_LINKS = [
     icon: "/figma_photos/shop.svg",
     route: "/shopping-centers",
   },
+  // ...other amenities
 ];
 
 const MEDIA_BASE = "https://wander-nest-ad3s.onrender.com";
@@ -246,61 +247,79 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
   };
 
   return (
-    <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-        <div className={styles.modalHeader}>
-          <h2>Book {hotel.name}</h2>
-          <button className={styles.modalClose} onClick={onClose}>
-            ×
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex justify-between items-center border-b pb-2 mb-4">
+          <h2 className="text-xl font-bold text-primary-700">
+            Book {hotel.name}
+          </h2>
+          <button
+            className="text-2xl font-bold text-gray-500 hover:text-red-500"
+            onClick={onClose}
+          >
+            &times;
           </button>
         </div>
-        <div className={styles.hotelSummary}>
+        <div className="flex gap-4 mb-4">
           <img
             src={
               hotel.image_url ||
               "https://via.placeholder.com/400x200?text=Hotel+Image"
             }
             alt={hotel.name}
-            className={styles.modalImage}
+            className="w-40 h-28 object-cover rounded-lg border"
           />
-          <div className={styles.hotelInfo}>
-            <h3>{hotel.name}</h3>
-            <p>{hotel.location}</p>
-            <p className={styles.hotelPrice}>৳{hotel.price}/night</p>
+          <div>
+            <h3 className="text-lg font-semibold text-primary-600">
+              {hotel.name}
+            </h3>
+            <p className="text-sm text-gray-600">{hotel.location}</p>
+            <p className="text-base font-bold text-green-600">
+              ৳{hotel.price}/night
+            </p>
           </div>
         </div>
-        <form onSubmit={handlePayment} className={styles.bookingForm}>
-          <div className={styles.formGroup}>
-            <label>Full Name *</label>
+        <form onSubmit={handlePayment} className="space-y-4">
+          <div className="flex flex-col">
+            <label className="font-medium mb-1">Full Name *</label>
             <input
               name="name"
               value={form.name}
               onChange={handleChange}
               required
+              className="border rounded px-3 py-2 focus:outline-none focus:ring focus:border-primary-400"
             />
           </div>
-          <div className={styles.formGroup}>
-            <label>Email *</label>
+          <div className="flex flex-col">
+            <label className="font-medium mb-1">Email *</label>
             <input
               name="email"
               type="email"
               value={form.email}
               onChange={handleChange}
               required
+              className="border rounded px-3 py-2 focus:outline-none focus:ring focus:border-primary-400"
             />
           </div>
-          <div className={styles.formGroup}>
-            <label>Phone *</label>
+          <div className="flex flex-col">
+            <label className="font-medium mb-1">Phone *</label>
             <input
               name="phone"
               value={form.phone}
               onChange={handleChange}
               required
+              className="border rounded px-3 py-2 focus:outline-none focus:ring focus:border-primary-400"
             />
           </div>
-          <div className={styles.formRow}>
-            <div className={styles.formGroup}>
-              <label>Check-in Date *</label>
+          <div className="flex gap-4">
+            <div className="flex flex-col flex-1">
+              <label className="font-medium mb-1">Check-in Date *</label>
               <input
                 name="checkin"
                 type="date"
@@ -308,10 +327,11 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
                 onChange={handleChange}
                 min={new Date().toISOString().split("T")[0]}
                 required
+                className="border rounded px-3 py-2 focus:outline-none focus:ring focus:border-primary-400"
               />
             </div>
-            <div className={styles.formGroup}>
-              <label>Guests</label>
+            <div className="flex flex-col flex-1">
+              <label className="font-medium mb-1">Guests</label>
               <input
                 name="guests"
                 type="number"
@@ -319,37 +339,24 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
                 value={form.guests}
                 onChange={handleChange}
                 required
+                className="border rounded px-3 py-2 focus:outline-none focus:ring focus:border-primary-400"
               />
             </div>
           </div>
-          <div
-            style={{
-              background: "#f8f9fa",
-              padding: 12,
-              borderRadius: 6,
-              border: "1px solid #dee2e6",
-              marginBottom: 10,
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <span style={{ fontWeight: 600 }}>Total Amount:</span>
-              <span style={{ color: "#23a36c", fontWeight: 700, fontSize: 18 }}>
+          <div className="bg-gray-100 p-3 rounded border mb-2">
+            <div className="flex justify-between items-center">
+              <span className="font-semibold">Total Amount:</span>
+              <span className="text-green-600 font-bold text-lg">
                 ৳{(hotel?.price || 0) * form.guests}
               </span>
             </div>
-            <div style={{ fontSize: 14, color: "#666", marginTop: 4 }}>
+            <div className="text-sm text-gray-500 mt-1">
               ৳{hotel?.price || 0} × {form.guests} guests
             </div>
           </div>
           <button
             type="submit"
-            className={styles.bookButton}
+            className="w-full bg-primary-500 text-white py-2 rounded font-semibold hover:bg-primary-600 transition"
             disabled={isProcessingPayment}
           >
             {isProcessingPayment
@@ -357,7 +364,11 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
               : `Pay ৳${(hotel?.price || 0) * form.guests} & Book Hotel`}
           </button>
         </form>
-        {error && <div className={styles.errorMessage}>{error}</div>}
+        {error && (
+          <div className="mt-3 text-red-600 text-center font-medium">
+            {error}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -597,244 +608,176 @@ const HotelsRooms: FunctionComponent = () => {
 
   return (
     <Layout>
-      <div className={styles.hotelsContainer}>
-        {/* Header Section */}
-        <div className={styles.groupParent}>
-          <div className={styles.tourPackages2}>Hotels & Rooms</div>
+      <div className="min-h-screen bg-gradient-to-br from-primary-100 to-primary-300 py-8 px-4">
+        <div className="flex justify-center mb-8">
+          <h1 className="text-3xl font-bold text-primary-700">
+            Hotels & Rooms
+          </h1>
         </div>
-
-        {/* Search Bar */}
-        <div className={styles.searchBarContainer}>
+        <div className="flex items-center justify-center mb-6">
           <img
             src="/figma_photos/search.svg"
             alt="search"
-            className={styles.searchIconInside}
+            className="w-6 h-6 mr-2"
           />
           <input
             type="text"
-            className={styles.searchInput}
+            className="border rounded px-4 py-2 w-80 focus:outline-none focus:ring focus:border-primary-400"
             placeholder="Search hotels, locations..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-
-        {/* Filters and Hotels Grid */}
-        <div className={styles.tourPackagesWrapper}>
-          <div className={styles.tourPackages}>
-            <div className={styles.tourPackages1}>
-              <div className={styles.depth0Frame0}>
-                <div className={styles.depth1Frame0}>
-                  <div className={styles.depth2Frame1}>
-                    <div className={styles.depth3Frame01}>
-                      {/* Filters */}
+        <div className="mb-8">
+          <div
+            className="flex flex-wrap gap-4 justify-center mb-6"
+            ref={filterDropdownRef}
+          >
+            {Object.keys(dynamicFilterOptions).map((filter) => (
+              <div key={filter} className="relative">
+                <button
+                  className={`px-4 py-2 rounded border bg-white shadow hover:bg-primary-100 transition font-medium ${
+                    selectedFilters[filter as FilterKey] &&
+                    selectedFilters[filter as FilterKey] !== "All"
+                      ? "border-primary-500 text-primary-700"
+                      : "border-gray-300 text-gray-700"
+                  }`}
+                  onClick={() => handleFilterClick(filter as FilterKey)}
+                >
+                  {selectedFilters[filter as FilterKey] &&
+                  selectedFilters[filter as FilterKey] !== "All"
+                    ? selectedFilters[filter as FilterKey]
+                    : filter}
+                  <img
+                    src="/figma_photos/darrow.svg"
+                    alt=""
+                    className={`inline-block ml-2 w-4 h-4 ${
+                      openFilter === (filter as FilterKey) ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                {openFilter === (filter as FilterKey) && (
+                  <div className="absolute left-0 mt-2 w-40 bg-white border rounded shadow z-10">
+                    {(
+                      dynamicFilterOptions[filter as FilterKey] as string[]
+                    ).map((option: string) => (
                       <div
-                        className={styles.depth4Frame2}
-                        ref={filterDropdownRef}
+                        key={option}
+                        className={`px-3 py-2 cursor-pointer hover:bg-primary-50 ${
+                          selectedFilters[filter as FilterKey] === option ||
+                          (!selectedFilters[filter as FilterKey] &&
+                            option === "All")
+                            ? "bg-primary-100 font-semibold"
+                            : ""
+                        }`}
+                        onClick={() =>
+                          handleOptionSelect(filter as FilterKey, option)
+                        }
                       >
-                        {Object.keys(dynamicFilterOptions).map((filter) => (
-                          <div key={filter} className={styles.depth5Frame03}>
-                            <div
-                              className={
-                                styles.depth6Frame03 +
-                                (selectedFilters[filter as FilterKey] &&
-                                selectedFilters[filter as FilterKey] !== "All"
-                                  ? " " + styles.selected
-                                  : "")
-                              }
-                              onClick={() =>
-                                handleFilterClick(filter as FilterKey)
-                              }
-                              style={{
-                                cursor: "pointer",
-                                position: "relative",
-                              }}
-                            >
-                              <div className={styles.destinations}>
-                                {selectedFilters[filter as FilterKey] &&
-                                selectedFilters[filter as FilterKey] !== "All"
-                                  ? selectedFilters[filter as FilterKey]
-                                  : filter}
-                              </div>
-                              <img
-                                className={
-                                  styles.depth6Frame1 +
-                                  (openFilter === (filter as FilterKey)
-                                    ? " " + styles.arrowOpen
-                                    : "")
-                                }
-                                alt=""
-                                src="/figma_photos/darrow.svg"
-                              />
-                              {openFilter === (filter as FilterKey) && (
-                                <div className={styles.filterDropdown}>
-                                  {(
-                                    dynamicFilterOptions[
-                                      filter as FilterKey
-                                    ] as string[]
-                                  ).map((option: string) => (
-                                    <div
-                                      key={option}
-                                      className={
-                                        styles.filterDropdownOption +
-                                        (selectedFilters[
-                                          filter as FilterKey
-                                        ] === option ||
-                                        (!selectedFilters[
-                                          filter as FilterKey
-                                        ] &&
-                                          option === "All")
-                                          ? " " + styles.selected
-                                          : "")
-                                      }
-                                      onClick={() =>
-                                        handleOptionSelect(
-                                          filter as FilterKey,
-                                          option
-                                        )
-                                      }
-                                    >
-                                      {option}
-                                    </div>
-                                  ))}
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        ))}
+                        {option}
                       </div>
-
-                      {/* Hotels Grid */}
-                      <div className={styles.depth4Frame3}>
-                        <div className={styles.depth5Frame04}>
-                          {isLoadingHotels && (
-                            <div
-                              style={{
-                                textAlign: "center",
-                                padding: "2rem",
-                                color: "#666",
-                              }}
-                            >
-                              Loading hotels...
-                            </div>
-                          )}
-                          {searchError && (
-                            <div
-                              style={{
-                                textAlign: "center",
-                                padding: "2rem",
-                                color: "red",
-                              }}
-                            >
-                              {searchError}
-                            </div>
-                          )}
-                          {!isLoadingHotels &&
-                            !searchError &&
-                            filteredHotels.map((hotel) => (
-                              <div
-                                className={styles.depth6Frame07}
-                                key={hotel.id}
-                                onClick={() => onHotelClick(hotel.id)}
-                                style={{ cursor: "pointer" }}
-                              >
-                                <img
-                                  className={styles.depth7Frame01}
-                                  alt=""
-                                  src={hotel.image_url}
-                                />
-                                <div className={styles.depth7Frame11}>
-                                  <div className={styles.depth7Frame11}>
-                                    <div
-                                      className={
-                                        styles.sundarbansWildlifeExpedition
-                                      }
-                                    >
-                                      {hotel.name}
-                                    </div>
-                                  </div>
-                                  <div className={styles.depth8Frame1}>
-                                    <div className={styles.exploreTheWorlds}>
-                                      {hotel.description}
-                                    </div>
-                                  </div>
-                                  <div className={styles.hotelMeta}>
-                                    <span className={styles.hotelLocation}>
-                                      {hotel.location}
-                                    </span>
-                                    {hotel.star > 0 && (
-                                      <span className={styles.hotelRating}>
-                                        {"⭐".repeat(hotel.star)} {hotel.star}{" "}
-                                        Star
-                                      </span>
-                                    )}
-                                  </div>
-                                  <div className={styles.cardPrice}>
-                                    ৳{hotel.price.toLocaleString()}/night
-                                  </div>
-                                  <button
-                                    className={styles.createCustomPackage}
-                                    type="button"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      handleBookHotel(hotel);
-                                    }}
-                                  >
-                                    Book Now
-                                  </button>
-                                </div>
-                              </div>
-                            ))}
-                        </div>
-                        {!isLoadingHotels &&
-                          !searchError &&
-                          filteredHotels.length === 0 && (
-                            <div
-                              style={{
-                                textAlign: "center",
-                                padding: "2rem",
-                                color: "#666",
-                              }}
-                            >
-                              No hotels found matching your criteria.
-                            </div>
-                          )}
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {isLoadingHotels && (
+              <div className="col-span-full text-center py-8 text-gray-500">
+                Loading hotels...
+              </div>
+            )}
+            {searchError && (
+              <div className="col-span-full text-center py-8 text-red-500">
+                {searchError}
+              </div>
+            )}
+            {!isLoadingHotels &&
+              !searchError &&
+              filteredHotels.map((hotel) => (
+                <div
+                  key={hotel.id}
+                  className="bg-white rounded-lg shadow hover:shadow-lg transition cursor-pointer overflow-hidden flex flex-col"
+                  onClick={() => onHotelClick(hotel.id)}
+                >
+                  <img
+                    src={hotel.image_url}
+                    alt=""
+                    className="w-full h-40 object-cover"
+                  />
+                  <div className="p-4 flex-1 flex flex-col justify-between">
+                    <div>
+                      <h2 className="text-lg font-bold text-primary-700 mb-1">
+                        {hotel.name}
+                      </h2>
+                      <p className="text-sm text-gray-600 mb-2">
+                        {hotel.description}
+                      </p>
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-xs text-primary-500 bg-primary-100 px-2 py-1 rounded">
+                          {hotel.location}
+                        </span>
+                        {hotel.star > 0 && (
+                          <span className="text-xs text-yellow-600 bg-yellow-100 px-2 py-1 rounded">
+                            {"⭐".repeat(hotel.star)} {hotel.star} Star
+                          </span>
+                        )}
                       </div>
+                    </div>
+                    <div className="flex items-center justify-between mt-2">
+                      <span className="text-lg font-bold text-green-600">
+                        ৳{hotel.price.toLocaleString()}/night
+                      </span>
+                      <button
+                        type="button"
+                        className="bg-primary-500 text-white px-4 py-2 rounded hover:bg-primary-600 transition"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleBookHotel(hotel);
+                        }}
+                      >
+                        Book Now
+                      </button>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              ))}
+            {!isLoadingHotels &&
+              !searchError &&
+              filteredHotels.length === 0 && (
+                <div className="col-span-full text-center py-8 text-gray-500">
+                  No hotels found matching your criteria.
+                </div>
+              )}
           </div>
         </div>
-
-        {/* Local Amenities */}
-        <div className={styles.amenitiesSection}>
-          <h2 className={styles.sectionTitle}>Local Amenities and Guides</h2>
-          <div className={styles.amenitiesGrid}>
+        <div className="mt-12">
+          <h2 className="text-2xl font-bold text-primary-700 mb-6 text-center">
+            Local Amenities and Guides
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {AMENITY_LINKS.map((amenity) => (
               <div
                 key={amenity.key}
-                className={styles.amenityCard}
+                className="bg-white rounded-lg shadow flex items-center gap-4 p-4 cursor-pointer hover:bg-primary-50 transition"
                 onClick={() => navigate(amenity.route)}
               >
                 <img
                   src={amenity.icon || "/placeholder.svg"}
                   alt={amenity.title}
-                  className={styles.amenityIcon}
+                  className="w-16 h-16 object-contain"
                 />
-                <div className={styles.amenityInfo}>
-                  <h3 className={styles.amenityTitle}>{amenity.title}</h3>
-                  <p className={styles.amenityDescription}>
-                    {amenity.description}
-                  </p>
+                <div>
+                  <h3 className="text-lg font-semibold text-primary-600">
+                    {amenity.title}
+                  </h3>
+                  <p className="text-sm text-gray-600">{amenity.description}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
-
-        {/* Booking Modal */}
         {isBookingModalOpen && selectedHotel && (
           <BookingModal
             hotel={selectedHotel}
