@@ -43,6 +43,17 @@ const PlanATrip: React.FC = () => {
     } else {
       setCalendarMonth(calendarMonth - 1);
     }
+  };
+
+  const handleNextMonth = () => {
+    if (calendarMonth === 11) {
+      setCalendarMonth(0);
+      setCalendarYear(calendarYear + 1);
+    } else {
+      setCalendarMonth(calendarMonth + 1);
+    }
+  };
+
   return (
     <Layout>
       <div className="min-h-screen bg-theme-bg flex flex-col items-center justify-center py-8">
