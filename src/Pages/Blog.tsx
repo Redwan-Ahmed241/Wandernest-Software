@@ -67,7 +67,6 @@ const Blogs:FunctionComponent = () => {
 							<Footer />
 						</div>
 					</div>
-    		</div>
 		);
 };
 

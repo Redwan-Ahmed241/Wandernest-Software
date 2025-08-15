@@ -208,7 +208,6 @@ const HiringGuide: FunctionComponent = () => {
             </div>
           </div>
         </div>
-      </div>
     </Layout>
   );
 }
