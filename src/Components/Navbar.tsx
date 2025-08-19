@@ -5,129 +5,187 @@ import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Authentication/auth-context";
 import ProfileDropdown from "./profile-dropdown";
-// Tailwind conversion: remove CSS module import
-import { Bell } from "react-feather";
+import { Bell, Menu, X } from "react-feather";
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const { isAuthenticated, loading } = useAuth();
-  const [,] = useState(false);
-  const _notifications = [
-    { id: 1, text: "Your booking is confirmed!" },
-    { id: 2, text: "New travel package available." },
-    { id: 3, text: "Your visa application was approved." },
-  ]; // TODO: Replace with real user notifications from API
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const goHome = useCallback(() => {
     navigate("/");
   }, [navigate]);
 
+  const navItems = [
+    { label: "Destinations", path: "/destinations", available: true },
+    { label: "Hotels", path: "/hotels-rooms", available: true },
+    { label: "Flights", path: "/flights", available: false, badge: "Coming Soon" },
+    { label: "Packages", path: "/packages", available: true },
+    { label: "Things to Do", path: "/things-to-do", available: true },
+  ];
+
   return (
-    <div className="sticky top-0 z-[100] bg-white w-full border-b border-[#e5e8eb]">
-      <div className="w-full max-w-[1440px] mx-auto border-b border-[#e5e8eb] box-border flex flex-row items-center justify-between py-3 px-10 bg-white relative z-[1000]">
-        <div className="flex flex-row items-center justify-start gap-4 cursor-pointer group">
-          <img
-            className="w-8 h-8 transition-transform duration-300 ease-in-out hover:scale-110"
-            alt="Logo"
-            src="/Figma_photos/wandernest.svg"
-          />
-          <div
-            className="flex flex-col items-start justify-start cursor-pointer"
+    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <div 
+            className="flex items-center gap-3 cursor-pointer group"
             onClick={goHome}
           >
-            <b className="text-[18px] leading-[23px] font-['Plus Jakarta Sans'] text-[#0d1c1c] text-left transition-colors duration-300 group-hover:text-[#4a6b5b]">
+            <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-dark rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
+              <img
+                src="/figma_photos/wandernest.svg"
+                alt="WanderNest"
+                className="w-6 h-6 filter brightness-0 invert"
+              />
+            </div>
+            <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-transparent">
               WanderNest
-            </b>
-          </div>
-        </div>
-
-        <div className="flex-1 flex flex-row items-center justify-end gap-8 flex-wrap">
-          <div className="h-10 flex flex-row items-center justify-start gap-9 flex-wrap">
-            <div
-              className="flex flex-col items-start justify-start cursor-pointer"
-              onClick={() => navigate("/destinations")}
-            >
-              <div className="text-[14px] leading-[21px] font-medium font-['Plus Jakarta Sans'] text-[#0d1c1c] cursor-pointer transition-all duration-300 hover:bg-[rgba(106,177,135,0.18)] hover:rounded-[14px] hover:shadow-[0_8px_32px_0_rgba(106,177,135,0.25),0_1.5px_8px_0_rgba(78,148,79,0.1)] hover:scale-105">
-                Destinations
-              </div>
-            </div>
-            <div
-              className="flex flex-col items-start justify-start cursor-pointer"
-              onClick={() => navigate("/hotels-rooms")}
-            >
-              <div className="text-[14px] leading-[21px] font-medium font-['Plus Jakarta Sans'] text-[#0d1c1c] cursor-pointer transition-all duration-300 hover:bg-[rgba(106,177,135,0.18)] hover:rounded-[14px] hover:shadow-[0_8px_32px_0_rgba(106,177,135,0.25),0_1.5px_8px_0_rgba(78,148,79,0.1)] hover:scale-105">
-                Hotels
-              </div>
-            </div>
-            <div
-              className="flex flex-col items-start justify-start"
-              title="This feature is coming soon!"
-            >
-              <div className="flex items-center gap-[6px] text-[#999] cursor-not-allowed text-[14px] leading-[21px] font-medium font-['Plus Jakarta Sans']">
-                Flights
-                <span className="bg-[#ff9800] text-white text-[0.65rem] px-[6px] py-[2px] rounded-[6px] uppercase">
-                  Upcoming
-                </span>
-              </div>
-            </div>
-            <div
-              className="flex flex-col items-start justify-start cursor-pointer"
-              onClick={() => navigate("/Packages")}
-            >
-              <div className="text-[14px] leading-[21px] font-medium font-['Plus Jakarta Sans'] text-[#0d1c1c] cursor-pointer transition-all duration-300 hover:bg-[rgba(106,177,135,0.18)] hover:rounded-[14px] hover:shadow-[0_8px_32px_0_rgba(106,177,135,0.25),0_1.5px_8px_0_rgba(78,148,79,0.1)] hover:scale-105">
-                Packages
-              </div>
-            </div>
+            </span>
           </div>
 
-          <div className="flex flex-row items-center justify-start gap-2">
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            {navItems.map((item) => (
+              <div key={item.label} className="relative">
+                {item.available ? (
+                  <button
+                    onClick={() => navigate(item.path)}
+                    className="text-gray-700 hover:text-primary font-medium transition-all duration-200 hover:scale-105 px-3 py-2 rounded-lg hover:bg-primary/10"
+                  >
+                    {item.label}
+                  </button>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-400 font-medium px-3 py-2">
+                      {item.label}
+                    </span>
+                    <span className="bg-gradient-to-r from-orange-400 to-orange-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
+                      {item.badge}
+                    </span>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop Auth & Actions */}
+          <div className="hidden md:flex items-center space-x-4">
             {!loading && (
               <>
                 {isAuthenticated ? (
-                  // Show profile dropdown when authenticated
-                  <ProfileDropdown />
+                  <div className="flex items-center space-x-3">
+                    <button className="relative p-2 text-gray-600 hover:text-primary transition-colors duration-200">
+                      <Bell size={20} />
+                      <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
+                    </button>
+                    <ProfileDropdown />
+                  </div>
                 ) : (
-                  // Show login/signup buttons when not authenticated
-                  <>
-                    <div
-                      className="w-[84px] h-10 rounded-[12px] flex items-center justify-center px-4 box-border flex-shrink-0 cursor-pointer transition-all duration-300 bg-[#abb79a] hover:bg-[rgba(106,177,135,0.18)] hover:rounded-[14px] hover:shadow-[0_8px_32px_0_rgba(106,177,135,0.25),0_1.5px_8px_0_rgba(78,148,79,0.1)] hover:scale-105"
-                      onClick={() => navigate("/signup")}
-                    >
-                      <div className="flex flex-col items-center justify-start">
-                        <b className="text-[14px] leading-[21px] font-['Plus Jakarta Sans'] text-[#0d1c1c] text-center whitespace-nowrap overflow-hidden text-ellipsis transition-all duration-300 hover:bg-[rgba(106,177,135,0.18)] hover:rounded-[14px] hover:shadow-[0_8px_32px_0_rgba(106,177,135,0.25),0_1.5px_8px_0_rgba(78,148,79,0.1)] hover:scale-105">
-                          Sign up
-                        </b>
-                      </div>
-                    </div>
-                    <div
-                      className="w-[84px] h-10 rounded-[12px] flex items-center justify-center px-4 box-border flex-shrink-0 cursor-pointer transition-all duration-300 bg-[#e8f2f2] hover:bg-[rgba(106,177,135,0.18)] hover:rounded-[14px] hover:shadow-[0_8px_32px_0_rgba(106,177,135,0.25),0_1.5px_8px_0_rgba(78,148,79,0.1)] hover:scale-105"
+                  <div className="flex items-center space-x-3">
+                    <button
                       onClick={() => navigate("/login")}
+                      className="px-4 py-2 text-gray-700 font-medium hover:text-primary transition-colors duration-200"
                     >
-                      <div className="flex flex-col items-center justify-start">
-                        <b className="text-[14px] leading-[21px] font-['Plus Jakarta Sans'] text-[#0d1c1c] text-center whitespace-nowrap overflow-hidden text-ellipsis transition-all duration-300 hover:bg-[rgba(106,177,135,0.18)] hover:rounded-[14px] hover:shadow-[0_8px_32px_0_rgba(106,177,135,0.25),0_1.5px_8px_0_rgba(78,148,79,0.1)] hover:scale-105">
-                          Log in
-                        </b>
-                      </div>
-                    </div>
-                  </>
+                      Log in
+                    </button>
+                    <button
+                      onClick={() => navigate("/signup")}
+                      className="px-6 py-2 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105"
+                    >
+                      Sign up
+                    </button>
+                  </div>
                 )}
               </>
             )}
-            <span title="Notifications">
-              <Bell
-                size={26}
-                style={{
-                  marginLeft: 16,
-                  color: "#FFD700",
-                  verticalAlign: "middle",
-                  cursor: "pointer",
-                }}
-              />
-            </span>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="md:hidden">
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-2 text-gray-600 hover:text-primary transition-colors duration-200"
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden border-t border-gray-200 bg-white/95 backdrop-blur-md">
+            <div className="px-2 pt-2 pb-3 space-y-1">
+              {navItems.map((item) => (
+                <div key={item.label}>
+                  {item.available ? (
+                    <button
+                      onClick={() => {
+                        navigate(item.path);
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="block w-full text-left px-3 py-2 text-gray-700 hover:text-primary hover:bg-primary/10 rounded-lg font-medium transition-all duration-200"
+                    >
+                      {item.label}
+                    </button>
+                  ) : (
+                    <div className="flex items-center justify-between px-3 py-2">
+                      <span className="text-gray-400 font-medium">{item.label}</span>
+                      <span className="bg-gradient-to-r from-orange-400 to-orange-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
+                        {item.badge}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              ))}
+              
+              {!loading && (
+                <div className="pt-4 border-t border-gray-200 mt-4">
+                  {isAuthenticated ? (
+                    <div className="space-y-2">
+                      <button
+                        onClick={() => {
+                          navigate("/dashboard");
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className="block w-full text-left px-3 py-2 text-gray-700 hover:text-primary hover:bg-primary/10 rounded-lg font-medium transition-all duration-200"
+                      >
+                        Dashboard
+                      </button>
+                      <div className="px-3 py-2">
+                        <ProfileDropdown />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      <button
+                        onClick={() => {
+                          navigate("/login");
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className="block w-full text-left px-3 py-2 text-gray-700 hover:text-primary hover:bg-primary/10 rounded-lg font-medium transition-all duration-200"
+                      >
+                        Log in
+                      </button>
+                      <button
+                        onClick={() => {
+                          navigate("/signup");
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className="block w-full px-3 py-2 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
+                      >
+                        Sign up
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
-    </div>
+    </nav>
   );
 };
 
