@@ -4,7 +4,7 @@ import { useCallback, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../App/Layout";
 import { useAuth } from "../Authentication/auth-context";
-import { Search, MapPin, Star, ArrowRight, Filter, Wifi, Car, Coffee, Utensils } from "react-feather";
+import { Search, MapPin, Star, ArrowRight, Filter, Wifi, Truck, Coffee, Utensils } from "react-feather";
 
 // Define interfaces
 interface Hotel {
@@ -56,7 +56,7 @@ const AMENITY_LINKS = [
     key: "transport",
     title: "Public Transport",
     description: "Find transport options",
-    icon: <Car className="w-8 h-8" />,
+    icon: <Truck className="w-8 h-8" />,
     route: "/public-transport",
     color: "from-green-500 to-emerald-500"
   },
@@ -713,7 +713,7 @@ const HotelsRooms: FunctionComponent = () => {
                           <span>WiFi</span>
                         </div>
                         <div className="flex items-center gap-1 text-xs bg-gray-100 px-2 py-1 rounded-full">
-                          <Car className="w-3 h-3" />
+                          <Truck className="w-3 h-3" />
                           <span>Parking</span>
                         </div>
                         <div className="flex items-center gap-1 text-xs bg-gray-100 px-2 py-1 rounded-full">
