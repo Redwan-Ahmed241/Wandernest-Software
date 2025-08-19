@@ -2,9 +2,9 @@ import { FunctionComponent, useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../App/Layout";
 import { useAuth } from "../Authentication/auth-context";
+import { Search, MapPin, Star, ArrowRight, Filter, Calendar, Users } from "react-feather";
 
 const FILTER_OPTIONS = {
-  // Destination will be generated dynamically
   Budget: ["All", "< 4000৳", "4000–6000৳", "6000+৳"],
 };
 
@@ -24,274 +24,18 @@ interface Package {
 
 const _MEDIA_BASE = "https://wander-nest-ad3s.onrender.com";
 
-// Modal component for booking (full form)
-const BookNowModal = ({ open, onClose, pkg, onConfirm, loading }: any) => {
-  const [from, setFrom] = useState(pkg?.from || "");
-  const [to, setTo] = useState(pkg?.title || "");
-  const [startDate, setStartDate] = useState(pkg?.startDate || "");
-  const [endDate, setEndDate] = useState(pkg?.endDate || "");
-  const [travelers, setTravelers] = useState(1);
-  const [budget, setBudget] = useState(pkg?.price || "");
-
-  useEffect(() => {
-    if (pkg) {
-      setFrom(pkg.from || "");
-      setTo(pkg.title || "");
-      setStartDate(pkg.startDate || "");
-      setEndDate(pkg.endDate || "");
-      setTravelers(1);
-      setBudget(pkg.price || "");
-    }
-  }, [pkg]);
-
-  if (!open || !pkg) return null;
-  return (
-    <div className="modalOverlay" style={{ alignItems: "center" }}>
-      <div
-        className="modalContent"
-        style={{
-          maxHeight: "90vh",
-          overflowY: "auto",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-        }}
-      >
-        <button
-          onClick={onClose}
-          style={{
-            position: "absolute",
-            top: 12,
-            right: 12,
-            background: "none",
-            border: "none",
-            fontSize: 20,
-            cursor: "pointer",
-          }}
-        >
-          ×
-        </button>
-        <h2 style={{ marginBottom: 16 }}>Book Package</h2>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            onConfirm({ from, to, startDate, endDate, travelers, budget });
-          }}
-        >
-          <div style={{ marginBottom: 12 }}>
-            <label>
-              <b>From:</b>
-            </label>
-            <input
-              type="text"
-              value={from}
-              onChange={(e) => setFrom(e.target.value)}
-              style={{ width: "100%" }}
-              required
-            />
-          </div>
-          <div style={{ marginBottom: 12 }}>
-            <label>
-              <b>To:</b>
-            </label>
-            <input
-              type="text"
-              value={to}
-              onChange={(e) => setTo(e.target.value)}
-              style={{ width: "100%" }}
-              required
-            />
-          </div>
-          <div style={{ marginBottom: 12 }}>
-            <label>
-              <b>Start Date:</b>
-            </label>
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              style={{ width: "100%" }}
-              required
-            />
-          </div>
-          <div style={{ marginBottom: 12 }}>
-            <label>
-              <b>End Date:</b>
-            </label>
-            <input
-              type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              style={{ width: "100%" }}
-              required
-            />
-          </div>
-          <div style={{ marginBottom: 12 }}>
-            <label>
-              <b>Number of Travelers:</b>
-            </label>
-            <input
-              type="number"
-              min="1"
-              max="20"
-              value={travelers}
-              onChange={(e) => setTravelers(Number(e.target.value))}
-              style={{ width: "100%" }}
-              required
-            />
-          </div>
-          <div style={{ marginBottom: 12 }}>
-            <label>
-              <b>Budget (BDT):</b>
-            </label>
-            <input
-              type="number"
-              min="0"
-              step="100"
-              value={budget}
-              onChange={(e) => setBudget(e.target.value)}
-              style={{ width: "100%" }}
-              required
-            />
-          </div>
-          {/* Add more fields as needed, or make some read-only if required */}
-          <button
-            style={{
-              marginTop: 24,
-              width: "100%",
-              padding: "10px 0",
-              background: "#0a7cff",
-              color: "#fff",
-              border: "none",
-              borderRadius: 4,
-              fontWeight: 600,
-              fontSize: 16,
-              cursor: "pointer",
-            }}
-            type="submit"
-            disabled={loading}
-          >
-            {loading ? "Processing..." : "Confirm Package"}
-          </button>
-        </form>
-      </div>
-    </div>
-  );
-};
-
 // Helper to extract place name from package title
 function extractPlaceName(title: string): string {
-  // Try to extract the first part before a special character or the first 2 words
-  // e.g. "Cox's Bazar Beach Retreat" => "Cox's Bazar"
   if (!title) return "";
-  // Try to match known patterns
   const knownPlaces = [
-    "Cox's Bazar",
-    "Chittagong",
-    "Dhaka",
-    "St. Martin",
-    "Sundarbans",
-    "Sylhet",
-    "Rangamati",
-    "Bandarban",
-    "Srimangal",
-    "Panchagarh",
-    "Khulna",
-    "Rajshahi",
-    "Barisal",
-    "Mymensingh",
-    "Comilla",
-    "Jessore",
-    "Dinajpur",
-    "Bogra",
-    "Pabna",
-    "Noakhali",
-    "Tangail",
-    "Jamalpur",
-    "Narayanganj",
-    "Gazipur",
-    "Narsingdi",
-    "Kushtia",
-    "Faridpur",
-    "Satkhira",
-    "Bhola",
-    "Patuakhali",
-    "Bagerhat",
-    "Meherpur",
-    "Lalmonirhat",
-    "Kurigram",
-    "Sherpur",
-    "Habiganj",
-    "Netrokona",
-    "Sunamganj",
-    "Moulvibazar",
-    "Chuadanga",
-    "Magura",
-    "Jhalokathi",
-    "Pirojpur",
-    "Narail",
-    "Shariatpur",
-    "Madaripur",
-    "Gopalganj",
-    "Munshiganj",
-    "Manikganj",
-    "Rajbari",
-    "Nilphamari",
-    "Gaibandha",
-    "Thakurgaon",
-    "Joypurhat",
-    "Naogaon",
-    "Chapainawabganj",
-    "Sirajganj",
-    "Kishoreganj",
-    "Brahmanbaria",
-    "Lakshmipur",
-    "Chandpur",
-    "Feni",
-    "Laxmipur",
-    "Shatkhira",
-    "Bhola",
-    "Patuakhali",
-    "Bagerhat",
-    "Meherpur",
-    "Lalmonirhat",
-    "Kurigram",
-    "Sherpur",
-    "Habiganj",
-    "Netrokona",
-    "Sunamganj",
-    "Moulvibazar",
-    "Chuadanga",
-    "Magura",
-    "Jhalokathi",
-    "Pirojpur",
-    "Narail",
-    "Shariatpur",
-    "Madaripur",
-    "Gopalganj",
-    "Munshiganj",
-    "Manikganj",
-    "Rajbari",
-    "Nilphamari",
-    "Gaibandha",
-    "Thakurgaon",
-    "Joypurhat",
-    "Naogaon",
-    "Chapainawabganj",
-    "Sirajganj",
-    "Kishoreganj",
-    "Brahmanbaria",
-    "Lakshmipur",
-    "Chandpur",
-    "Feni",
-    "Laxmipur",
+    "Cox's Bazar", "Chittagong", "Dhaka", "St. Martin", "Sundarbans", "Sylhet",
+    "Rangamati", "Bandarban", "Srimangal", "Panchagarh", "Khulna"
   ];
   for (const place of knownPlaces) {
     if (title.toLowerCase().includes(place.toLowerCase())) {
       return place;
     }
   }
-  // Fallback: take the first 2 words
   return title.split(" ").slice(0, 2).join(" ");
 }
 
@@ -306,10 +50,6 @@ const Packages: FunctionComponent = () => {
   const [packages, setPackages] = useState<Package[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
-  const [confirmLoading, setConfirmLoading] = useState(false);
-  const [, setConfirmError] = useState("");
   const { isAuthenticated } = useAuth();
 
   // Fetch packages from API
@@ -318,11 +58,8 @@ const Packages: FunctionComponent = () => {
       setLoading(true);
       setError("");
       try {
-        const response = await fetch(
-          "https://wander-nest-ad3s.onrender.com/api/packages/all/"
-        );
+        const response = await fetch("https://wander-nest-ad3s.onrender.com/api/packages/all/");
         const data = await response.json();
-        // Handle paginated response structure
         const packagesData = data.results || (Array.isArray(data) ? data : []);
         setPackages(packagesData);
       } catch (err) {
@@ -361,7 +98,6 @@ const Packages: FunctionComponent = () => {
 
   const handleOptionSelect = (filter: FilterKey, option: string) => {
     if (option === "All") {
-      // Remove the filter for this category
       const { [filter]: _, ...rest } = selectedFilters;
       setSelectedFilters(rest);
     } else {
@@ -372,247 +108,296 @@ const Packages: FunctionComponent = () => {
 
   // Filter packages by search and selected filters
   const filteredPackages = packages.filter((pkg) => {
-    const matchesSearch = pkg.title
-      .toLowerCase()
-      .includes(search.toLowerCase());
-    const matchesFilters = Object.entries(selectedFilters).every(
-      ([filter, value]) => {
-        if (filter === "Destination") {
-          return extractPlaceName(pkg.title) === value || value === "All";
-        }
-        if (filter === "Budget") {
-          const price = Number(pkg.price);
-          if (value === "< 4000৳") return price < 4000;
-          if (value === "4000–6000৳") return price >= 4000 && price <= 6000;
-          if (value === "6000+৳") return price > 6000;
-          return true;
-        }
+    const matchesSearch = pkg.title.toLowerCase().includes(search.toLowerCase());
+    const matchesFilters = Object.entries(selectedFilters).every(([filter, value]) => {
+      if (filter === "Destination") {
+        return extractPlaceName(pkg.title) === value || value === "All";
+      }
+      if (filter === "Budget") {
+        const price = Number(pkg.price);
+        if (value === "< 4000৳") return price < 4000;
+        if (value === "4000–6000৳") return price >= 4000 && price <= 6000;
+        if (value === "6000+৳") return price > 6000;
         return true;
       }
-    );
+      return true;
+    });
     return matchesSearch && matchesFilters;
   });
 
-  // Handler for Book Now
-  const _handleBookNow = (pkg: Package) => {
-    setSelectedPackage(pkg);
-    setModalOpen(true);
-    setConfirmError("");
-  };
-
-  // Handler for Confirm Package (SSLCommerz API call stub)
-  const handleConfirmPackage = async (formData: any) => {
-    setConfirmLoading(true);
-    setConfirmError("");
-    try {
-      // TODO: Replace with real SSLCommerz API call
-      // Example: await fetch('/api/sslcommerz/checkout', { method: 'POST', body: JSON.stringify(formData) })
-      await new Promise((res) => setTimeout(res, 1500)); // Simulate network
-      setModalOpen(false);
-      alert("Package booking initiated! (SSLCommerz)");
-    } catch (err) {
-      setConfirmError("Failed to confirm package. Please try again.");
-    } finally {
-      setConfirmLoading(false);
-    }
-  };
-
-  // Dynamic Destination options (place names only)
+  // Dynamic Destination options
   const destinationOptions = [
     "All",
-    ...Array.from(
-      new Set(packages.map((pkg) => extractPlaceName(pkg.title)))
-    ).sort(),
+    ...Array.from(new Set(packages.map((pkg) => extractPlaceName(pkg.title)))).sort(),
   ];
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-primary-100 to-primary-300 py-8 px-4">
-        <div className="max-w-6xl mx-auto bg-white rounded-lg shadow p-6">
-          <h1 className="text-3xl font-bold text-primary-700 mb-8">Packages</h1>
-          {/* Filter Section */}
-          <div className="flex flex-wrap gap-4 mb-6 justify-center">
-            {/* Destination filter (dynamic) */}
-            <div className="relative">
-              <div
-                className={
-                  "cursor-pointer py-2 px-4 rounded-lg border " +
-                  (selectedFilters["Destination"] &&
-                  selectedFilters["Destination"] !== "All"
-                    ? "bg-primary-600 text-white"
-                    : "bg-white text-primary-700")
-                }
-                onClick={() => handleFilterClick("Destination")}
-              >
-                {selectedFilters["Destination"] &&
-                selectedFilters["Destination"] !== "All"
-                  ? selectedFilters["Destination"]
-                  : "Destination"}
-                <img
-                  className="inline-block ml-2"
-                  alt=""
-                  src="/figma_photos/darrow.svg"
+      <div className="min-h-screen bg-gray-50">
+        {/* Hero Section */}
+        <section className="relative py-20 bg-gradient-to-br from-primary via-primary-dark to-primary overflow-hidden">
+          <div className="absolute inset-0 bg-black/20"></div>
+          <div 
+            className="absolute inset-0 bg-cover bg-center opacity-30"
+            style={{
+              backgroundImage: "url('https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=1920')"
+            }}
+          ></div>
+          
+          <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
+            <h1 className="text-5xl md:text-6xl font-bold mb-6">
+              Travel
+              <span className="block bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent">
+                Packages
+              </span>
+            </h1>
+            <p className="text-xl md:text-2xl text-gray-100 max-w-2xl mx-auto mb-8">
+              Discover curated travel experiences designed for unforgettable adventures
+            </p>
+            
+            {/* Search Bar */}
+            <div className="max-w-2xl mx-auto relative">
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <input
+                  type="text"
+                  placeholder="Search packages..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/95 backdrop-blur-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-accent/30 shadow-xl"
                 />
               </div>
-              {openFilter === "Destination" && (
-                <div
-                  className="absolute z-10 mt-1 w-full rounded-lg bg-white shadow-lg"
-                  ref={filterDropdownRef}
-                >
-                  {destinationOptions.map((option) => (
-                    <div
-                      key={option}
-                      className={
-                        "cursor-pointer select-none py-2 px-4 rounded-lg transition-all duration-200 " +
-                        (selectedFilters["Destination"] === option ||
-                        (!selectedFilters["Destination"] && option === "All")
-                          ? "bg-primary-600 text-white"
-                          : "text-primary-700 hover:bg-primary-100")
-                      }
-                      onClick={() => handleOptionSelect("Destination", option)}
-                    >
-                      {option}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-            {/* Budget filter (static) */}
-            <div className="relative">
-              <div
-                className={
-                  "cursor-pointer py-2 px-4 rounded-lg border " +
-                  (selectedFilters["Budget"] &&
-                  selectedFilters["Budget"] !== "All"
-                    ? "bg-primary-600 text-white"
-                    : "bg-white text-primary-700")
-                }
-                onClick={() => handleFilterClick("Budget")}
-              >
-                {selectedFilters["Budget"] &&
-                selectedFilters["Budget"] !== "All"
-                  ? selectedFilters["Budget"]
-                  : "Budget"}
-                <img
-                  className="inline-block ml-2"
-                  alt=""
-                  src="/figma_photos/darrow.svg"
-                />
-              </div>
-              {openFilter === "Budget" && (
-                <div
-                  className="absolute z-10 mt-1 w-full rounded-lg bg-white shadow-lg"
-                  ref={filterDropdownRef}
-                >
-                  {FILTER_OPTIONS.Budget.map((option) => (
-                    <div
-                      key={option}
-                      className={
-                        "cursor-pointer select-none py-2 px-4 rounded-lg transition-all duration-200 " +
-                        (selectedFilters["Budget"] === option ||
-                        (!selectedFilters["Budget"] && option === "All")
-                          ? "bg-primary-600 text-white"
-                          : "text-primary-700 hover:bg-primary-100")
-                      }
-                      onClick={() => handleOptionSelect("Budget", option)}
-                    >
-                      {option}
-                    </div>
-                  ))}
-                </div>
-              )}
             </div>
           </div>
-          {/* Packages Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {loading && (
-              <div
-                style={{
-                  textAlign: "center",
-                  padding: "2rem",
-                  color: "#666",
-                }}
-              >
-                Loading packages...
-              </div>
-            )}
-            {error && (
-              <div
-                style={{
-                  textAlign: "center",
-                  padding: "2rem",
-                  color: "red",
-                }}
-              >
-                {error}
-              </div>
-            )}
-            {!loading &&
-              !error &&
-              filteredPackages.map((pkg) => (
-                <div
-                  className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transition-transform transform hover:scale-105"
-                  key={pkg.id}
-                  onClick={() =>
-                    navigate(`/packages/${encodeURIComponent(pkg.title)}`)
-                  }
+        </section>
+
+        {/* Filters Section */}
+        <section className="py-8 bg-white border-b border-gray-200">
+          <div className="max-w-6xl mx-auto px-4">
+            <div className="flex flex-wrap justify-center gap-4" ref={filterDropdownRef}>
+              {/* Destination filter */}
+              <div className="relative">
+                <button
+                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${
+                    selectedFilters["Destination"] && selectedFilters["Destination"] !== "All"
+                      ? "bg-primary text-white shadow-lg scale-105"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105"
+                  }`}
+                  onClick={() => handleFilterClick("Destination")}
                 >
-                  <img
-                    className="w-full h-48 object-cover"
-                    alt=""
-                    src={pkg.image_url}
-                  />
-                  <div className="p-4">
-                    <div className="text-lg font-semibold text-primary-700">
-                      {pkg.title}
-                    </div>
-                    <div className="text-sm text-gray-500 mb-2">
-                      {pkg.subtitle}
-                    </div>
-                    <div className="text-xl font-bold text-primary-600">
-                      ৳{Number(pkg.price).toLocaleString()}
-                    </div>
-                    <button
-                      className="mt-4 w-full py-2 rounded-lg bg-primary-600 text-white font-semibold transition-all duration-200 hover:bg-primary-700"
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (!isAuthenticated) {
-                          navigate("/login");
-                        } else {
-                          navigate("/confirm-book", {
-                            state: { pkg },
-                          });
-                        }
-                      }}
-                    >
-                      Book Now
-                    </button>
+                  <MapPin className="w-4 h-4" />
+                  {selectedFilters["Destination"] && selectedFilters["Destination"] !== "All"
+                    ? selectedFilters["Destination"]
+                    : "Destination"}
+                  <span className={`transform transition-transform duration-200 ${openFilter === "Destination" ? "rotate-180" : ""}`}>
+                    ▼
+                  </span>
+                </button>
+                {openFilter === "Destination" && (
+                  <div className="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 rounded-xl shadow-xl z-10 overflow-hidden">
+                    {destinationOptions.map((option) => (
+                      <button
+                        key={option}
+                        className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 ${
+                          selectedFilters["Destination"] === option ||
+                          (!selectedFilters["Destination"] && option === "All")
+                            ? "bg-primary/10 text-primary font-semibold"
+                            : "text-gray-700"
+                        }`}
+                        onClick={() => handleOptionSelect("Destination", option)}
+                      >
+                        {option}
+                      </button>
+                    ))}
                   </div>
-                </div>
-              ))}
-          </div>
-          {/* No packages found message */}
-          {!loading && !error && filteredPackages.length === 0 && (
-            <div
-              style={{
-                textAlign: "center",
-                padding: "2rem",
-                color: "#666",
-              }}
-            >
-              No packages found matching your criteria.
+                )}
+              </div>
+
+              {/* Budget filter */}
+              <div className="relative">
+                <button
+                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${
+                    selectedFilters["Budget"] && selectedFilters["Budget"] !== "All"
+                      ? "bg-primary text-white shadow-lg scale-105"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105"
+                  }`}
+                  onClick={() => handleFilterClick("Budget")}
+                >
+                  <Filter className="w-4 h-4" />
+                  {selectedFilters["Budget"] && selectedFilters["Budget"] !== "All"
+                    ? selectedFilters["Budget"]
+                    : "Budget"}
+                  <span className={`transform transition-transform duration-200 ${openFilter === "Budget" ? "rotate-180" : ""}`}>
+                    ▼
+                  </span>
+                </button>
+                {openFilter === "Budget" && (
+                  <div className="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 rounded-xl shadow-xl z-10 overflow-hidden">
+                    {FILTER_OPTIONS.Budget.map((option) => (
+                      <button
+                        key={option}
+                        className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 ${
+                          selectedFilters["Budget"] === option ||
+                          (!selectedFilters["Budget"] && option === "All")
+                            ? "bg-primary/10 text-primary font-semibold"
+                            : "text-gray-700"
+                        }`}
+                        onClick={() => handleOptionSelect("Budget", option)}
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
-          )}
-        </div>
+          </div>
+        </section>
+
+        {/* Packages Grid */}
+        <section className="py-16">
+          <div className="max-w-6xl mx-auto px-4">
+            {loading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {Array.from({ length: 9 }).map((_, index) => (
+                  <div key={index} className="bg-white rounded-2xl overflow-hidden shadow-lg animate-pulse">
+                    <div className="h-64 bg-gray-200"></div>
+                    <div className="p-6 space-y-4">
+                      <div className="h-6 bg-gray-200 rounded"></div>
+                      <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                      <div className="h-8 bg-gray-200 rounded w-1/2"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : error ? (
+              <div className="text-center py-16">
+                <div className="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <span className="text-3xl">⚠️</span>
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Error Loading Packages</h3>
+                <p className="text-red-600 mb-6">{error}</p>
+                <button
+                  onClick={() => window.location.reload()}
+                  className="px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary-dark transition-all duration-200"
+                >
+                  Try Again
+                </button>
+              </div>
+            ) : filteredPackages.length === 0 ? (
+              <div className="text-center py-16">
+                <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Search className="w-12 h-12 text-gray-400" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">No packages found</h3>
+                <p className="text-gray-600 mb-6">Try adjusting your search or filter criteria</p>
+                <button
+                  onClick={() => {
+                    setSearch("");
+                    setSelectedFilters({});
+                  }}
+                  className="px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary-dark transition-all duration-200"
+                >
+                  Clear Filters
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {filteredPackages.map((pkg) => (
+                  <div
+                    key={pkg.id}
+                    className="group bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105"
+                    onClick={() => navigate(`/packages/${encodeURIComponent(pkg.title)}`)}
+                  >
+                    <div className="relative overflow-hidden">
+                      <img
+                        className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+                        alt={pkg.title}
+                        src={pkg.image_url || "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=600"}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
+                        <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                        <span className="text-sm font-semibold">4.8</span>
+                      </div>
+                      <div className="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                        <div className="flex items-center justify-between text-white">
+                          <div className="flex items-center gap-2">
+                            <Calendar className="w-4 h-4" />
+                            <span className="text-sm font-medium">{pkg.days} Days</span>
+                          </div>
+                          <div className="text-accent font-bold text-xl">৳{Number(pkg.price).toLocaleString()}</div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
+                        {pkg.title}
+                      </h3>
+                      <p className="text-gray-600 mb-4 line-clamp-2 leading-relaxed">
+                        {pkg.subtitle || "Experience the beauty and culture of this amazing destination"}
+                      </p>
+                      
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-4 text-sm text-gray-500">
+                          <span className="flex items-center gap-1">
+                            <MapPin className="w-4 h-4" />
+                            {extractPlaceName(pkg.title)}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Calendar className="w-4 h-4" />
+                            {pkg.days} Days
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div className="text-2xl font-bold text-primary">
+                          ৳{Number(pkg.price).toLocaleString()}
+                        </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (!isAuthenticated) {
+                              navigate("/login");
+                            } else {
+                              navigate("/confirm-book", { state: { pkg } });
+                            }
+                          }}
+                          className="px-6 py-2 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2"
+                        >
+                          Book Now
+                          <ArrowRight className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* Call to Action */}
+        <section className="py-16 bg-gradient-to-r from-accent via-accent-light to-accent">
+          <div className="max-w-4xl mx-auto px-4 text-center">
+            <h2 className="text-3xl md:text-4xl font-bold text-primary-dark mb-6">
+              Can't Find the Perfect Package?
+            </h2>
+            <p className="text-lg text-primary-dark/80 mb-8 max-w-2xl mx-auto">
+              Create your own custom travel package tailored to your preferences and budget
+            </p>
+            <button
+              onClick={() => navigate("/create-packages")}
+              className="px-8 py-4 bg-primary text-white font-bold text-lg rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2 mx-auto"
+            >
+              <Users className="w-5 h-5" />
+              Create Custom Package
+            </button>
+          </div>
+        </section>
       </div>
-      <BookNowModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        pkg={selectedPackage}
-        onConfirm={handleConfirmPackage}
-        loading={confirmLoading}
-      />
     </Layout>
   );
 };
