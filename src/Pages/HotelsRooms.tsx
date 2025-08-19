@@ -1,10 +1,10 @@
 "use client";
 import type { FunctionComponent } from "react";
-import { useCallback, useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../App/Layout";
 import { useAuth } from "../Authentication/auth-context";
-import { Search, MapPin, Star, ArrowRight, Filter, Wifi, Truck, Coffee, Utensils } from "react-feather";
+import { Search, MapPin, Star, ArrowRight, Filter, Wifi, Truck, Coffee, ShoppingBag } from "react-feather";
 
 // Define interfaces
 interface Hotel {
@@ -40,7 +40,7 @@ const AMENITY_LINKS = [
     key: "restaurants",
     title: "Local Restaurants",
     description: "Discover popular dining spots",
-    icon: <Utensils className="w-8 h-8" />,
+    icon: <Coffee className="w-8 h-8" />,
     route: "/restaurant",
     color: "from-orange-500 to-red-500"
   },
@@ -64,7 +64,7 @@ const AMENITY_LINKS = [
     key: "shopping",
     title: "Shopping Centers",
     description: "Shop at the best locations",
-    icon: <Coffee className="w-8 h-8" />,
+    icon: <ShoppingBag className="w-8 h-8" />,
     route: "/shopping-centers",
     color: "from-purple-500 to-pink-500"
   },
@@ -166,7 +166,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
       let data;
       try {
         data = JSON.parse(responseText);
-      } catch (parseError) {
+      } catch {
         throw new Error("Invalid response format from server");
       }
 
@@ -182,11 +182,11 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
       } else {
         throw new Error("Payment gateway URL not received. Please try again.");
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       let errorMessage = "Payment failed. Please try again.";
-      if (err.name === "TypeError" && err.message.includes("fetch")) {
+      if (err instanceof TypeError && err.message.includes("fetch")) {
         errorMessage = "Network error. Please check your connection and try again.";
-      } else if (err.message) {
+      } else if (err instanceof Error && err.message) {
         errorMessage = err.message;
       }
       setError(errorMessage);
