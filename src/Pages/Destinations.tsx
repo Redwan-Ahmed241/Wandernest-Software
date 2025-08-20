@@ -7,7 +7,8 @@ import {
   useState,
 } from "react";
 import { useNavigate } from "react-router-dom";
-import Layout from "../App/Layout";
+replace
+import Layout from "../Components/Layout";
 import { getDestinations } from "../App/api-services";
 import { MapPin, Star, ArrowRight, Search, Filter } from "react-feather";
 
@@ -60,13 +61,13 @@ const Destinations: FunctionComponent = () => {
   }, []);
 
   const filteredDestinations = destinations.filter((dest) => {
-    const matchesSearch = !searchQuery || 
+    const matchesSearch = !searchQuery ||
       dest.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       dest.description?.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    const matchesCategory = selectedCategory === "all" || 
+
+    const matchesCategory = selectedCategory === "all" ||
       dest.category?.toLowerCase() === selectedCategory;
-    
+
     return matchesSearch && matchesCategory;
   });
 
@@ -76,13 +77,13 @@ const Destinations: FunctionComponent = () => {
         {/* Hero Section */}
         <section className="relative py-20 bg-gradient-to-br from-primary via-primary-dark to-primary overflow-hidden">
           <div className="absolute inset-0 bg-black/20"></div>
-          <div 
+          <div
             className="absolute inset-0 bg-cover bg-center opacity-30"
             style={{
               backgroundImage: "url('https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=1920')"
             }}
           ></div>
-          
+
           <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
               Discover Amazing
@@ -93,7 +94,7 @@ const Destinations: FunctionComponent = () => {
             <p className="text-xl md:text-2xl text-gray-100 max-w-2xl mx-auto mb-8">
               From pristine beaches to ancient forests, explore Bangladesh's most captivating places
             </p>
-            
+
             {/* Search Bar */}
             <div className="max-w-2xl mx-auto relative">
               <div className="relative">
@@ -118,11 +119,10 @@ const Destinations: FunctionComponent = () => {
                 <button
                   key={category.id}
                   onClick={() => setSelectedCategory(category.id)}
-                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${
-                    selectedCategory === category.id
+                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${selectedCategory === category.id
                       ? "bg-primary text-white shadow-lg scale-105"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105"
-                  }`}
+                    }`}
                 >
                   <span className="text-lg">{category.icon}</span>
                   {category.label}
@@ -217,7 +217,7 @@ const Destinations: FunctionComponent = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="p-6">
                       <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
                         {dest.name || dest.title}

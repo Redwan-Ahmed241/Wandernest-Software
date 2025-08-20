@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Layout from "../App/Layout";
+replace
+import Layout from "../Components/Layout";
 export default function PublicTransport() {
   const [selectedTransportType, setSelectedTransportType] = useState("all");
 
@@ -72,8 +73,8 @@ export default function PublicTransport() {
     selectedTransportType === "all"
       ? transportOptions
       : transportOptions.filter(
-          (option) => option.type.toLowerCase() === selectedTransportType
-        );
+        (option) => option.type.toLowerCase() === selectedTransportType
+      );
 
   return (
     <Layout>

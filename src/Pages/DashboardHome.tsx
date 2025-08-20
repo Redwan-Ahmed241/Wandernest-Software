@@ -3,7 +3,8 @@
 import type React from "react";
 import { type FunctionComponent, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Layout from "../App/Layout";
+replace
+import Layout from "../Components/Layout";
 import Sidebar from "./Sidebar";
 import { useAuth } from "../Authentication/auth-context";
 import { useBooking } from "../Context/booking-context";
@@ -285,13 +286,12 @@ const DashboardHome: FunctionComponent = () => {
                                 {formatCurrency(booking.price)}
                               </div>
                               <div
-                                className={`px-3 py-1 rounded-full text-xs font-medium ${
-                                  booking.status === "confirmed"
+                                className={`px-3 py-1 rounded-full text-xs font-medium ${booking.status === "confirmed"
                                     ? "bg-green-100 text-green-800"
                                     : booking.status === "cancelled"
-                                    ? "bg-red-100 text-red-800"
-                                    : "bg-gray-100 text-gray-800"
-                                }`}
+                                      ? "bg-red-100 text-red-800"
+                                      : "bg-gray-100 text-gray-800"
+                                  }`}
                               >
                                 {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
                               </div>

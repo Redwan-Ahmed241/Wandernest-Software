@@ -2,7 +2,8 @@
 
 import type { FunctionComponent } from "react";
 import { useState, useEffect } from "react";
-import Layout from "../App/Layout";
+replace
+import Layout from "../Components/Layout";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import { tripsAPI, type Trip, type ItineraryItem } from "../App/api";
@@ -178,33 +179,30 @@ const MyTrips: FunctionComponent = () => {
             <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-2">
               <div className="flex gap-2">
                 <button
-                  className={`flex-1 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
-                    activeTab === "upcoming"
+                  className={`flex-1 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${activeTab === "upcoming"
                       ? "bg-primary text-white shadow-md"
                       : "text-gray-600 hover:bg-gray-50"
-                  }`}
+                    }`}
                   onClick={() => handleTabChange("upcoming")}
                 >
                   <span className="mr-2">✈️</span>
                   Upcoming ({bookingTrips.filter(() => activeTab === "upcoming").length})
                 </button>
                 <button
-                  className={`flex-1 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
-                    activeTab === "past"
+                  className={`flex-1 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${activeTab === "past"
                       ? "bg-primary text-white shadow-md"
                       : "text-gray-600 hover:bg-gray-50"
-                  }`}
+                    }`}
                   onClick={() => handleTabChange("past")}
                 >
                   <span className="mr-2">📋</span>
                   Past
                 </button>
                 <button
-                  className={`flex-1 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
-                    activeTab === "cancelled"
+                  className={`flex-1 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${activeTab === "cancelled"
                       ? "bg-primary text-white shadow-md"
                       : "text-gray-600 hover:bg-gray-50"
-                  }`}
+                    }`}
                   onClick={() => handleTabChange("cancelled")}
                 >
                   <span className="mr-2">❌</span>
@@ -301,13 +299,12 @@ const MyTrips: FunctionComponent = () => {
                         </div>
                         <div className="text-right">
                           <div
-                            className={`px-4 py-2 rounded-full font-semibold text-sm ${
-                              selectedTrip.status === "confirmed"
+                            className={`px-4 py-2 rounded-full font-semibold text-sm ${selectedTrip.status === "confirmed"
                                 ? "bg-green-500 text-white"
                                 : selectedTrip.status === "cancelled"
-                                ? "bg-red-500 text-white"
-                                : "bg-gray-500 text-white"
-                            }`}
+                                  ? "bg-red-500 text-white"
+                                  : "bg-gray-500 text-white"
+                              }`}
                           >
                             {selectedTrip.status.charAt(0).toUpperCase() + selectedTrip.status.slice(1)}
                           </div>
@@ -319,22 +316,20 @@ const MyTrips: FunctionComponent = () => {
                     <div className="border-b border-gray-100 p-6">
                       <div className="flex gap-2">
                         <button
-                          className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
-                            activeView === "overview"
+                          className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${activeView === "overview"
                               ? "bg-primary text-white shadow-md"
                               : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                          }`}
+                            }`}
                           onClick={() => setActiveView("overview")}
                         >
                           <span className="mr-2">📊</span>
                           Overview
                         </button>
                         <button
-                          className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
-                            activeView === "itinerary"
+                          className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${activeView === "itinerary"
                               ? "bg-primary text-white shadow-md"
                               : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                          }`}
+                            }`}
                           onClick={() => setActiveView("itinerary")}
                         >
                           <span className="mr-2">🗓️</span>
