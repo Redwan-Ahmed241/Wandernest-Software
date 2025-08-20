@@ -25,11 +25,11 @@ const Navbar: React.FC = () => {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm">
+    <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div 
+          <div
             className="flex items-center gap-3 cursor-pointer group"
             onClick={goHome}
           >
@@ -92,7 +92,7 @@ const Navbar: React.FC = () => {
                     </button>
                     <button
                       onClick={() => navigate("/signup")}
-                      className="px-6 py-2 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105"
+                      className="px-6 py-2 bg-gradient-to-r from-accent to-primary-light text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105"
                     >
                       Sign up
                     </button>
@@ -115,7 +115,7 @@ const Navbar: React.FC = () => {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden border-t border-gray-200 bg-white/95 backdrop-blur-md">
+          <div className="md:hidden border-t border-gray-200 bg-white">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {navItems.map((item) => (
                 <div key={item.label}>
@@ -139,7 +139,7 @@ const Navbar: React.FC = () => {
                   )}
                 </div>
               ))}
-              
+
               {!loading && (
                 <div className="pt-4 border-t border-gray-200 mt-4">
                   {isAuthenticated ? (
