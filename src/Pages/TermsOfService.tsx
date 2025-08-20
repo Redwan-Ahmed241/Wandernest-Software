@@ -1,6 +1,5 @@
 import type { FunctionComponent } from "react";
 import { useCallback } from "react";
-replace
 import Layout from "../Components/Layout";
 
 const TermsOfService: FunctionComponent = () => {

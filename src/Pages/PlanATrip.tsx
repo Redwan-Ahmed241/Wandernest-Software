@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-replace
 import Layout from "../Components/Layout";
 
 const weekDays = ["S", "M", "T", "W", "T", "F", "S"];
@@ -143,12 +142,12 @@ const PlanATrip: React.FC = () => {
                       onClick={() => !isPast && setSelectedDay(day)}
                       disabled={isPast}
                       className={`h-12 rounded-lg font-medium transition-all duration-200 ${isPast
-                          ? "text-gray-300 cursor-not-allowed"
-                          : isSelected
-                            ? "bg-primary text-white shadow-lg scale-105"
-                            : isToday
-                              ? "bg-blue-100 text-blue-600 border-2 border-blue-300"
-                              : "text-gray-700 hover:bg-gray-100"
+                        ? "text-gray-300 cursor-not-allowed"
+                        : isSelected
+                          ? "bg-primary text-white shadow-lg scale-105"
+                          : isToday
+                            ? "bg-blue-100 text-blue-600 border-2 border-blue-300"
+                            : "text-gray-700 hover:bg-gray-100"
                         }`}
                     >
                       {day}
@@ -233,8 +232,8 @@ const PlanATrip: React.FC = () => {
                   <div
                     key={idx}
                     className={`bg-white rounded-2xl shadow-lg border-2 transition-all duration-300 overflow-hidden cursor-pointer transform hover:scale-105 ${isSelected
-                        ? "border-primary shadow-xl"
-                        : "border-gray-100 hover:border-gray-200 hover:shadow-xl"
+                      ? "border-primary shadow-xl"
+                      : "border-gray-100 hover:border-gray-200 hover:shadow-xl"
                       }`}
                     onClick={() => toggleActivity(activity.title)}
                   >
@@ -273,8 +272,8 @@ const PlanATrip: React.FC = () => {
                       <p className="text-gray-600 mb-4">{activity.description}</p>
                       <button
                         className={`w-full py-3 rounded-xl font-semibold transition-all duration-200 ${isSelected
-                            ? "bg-primary text-white shadow-md"
-                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                          ? "bg-primary text-white shadow-md"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                           }`}
                       >
                         {isSelected ? "Added to Itinerary" : "Add to Itinerary"}

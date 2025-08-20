@@ -3,7 +3,6 @@
 import type React from "react";
 import { type FunctionComponent, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-replace
 import Layout from "../Components/Layout";
 import Sidebar from "./Sidebar";
 import { useAuth } from "../Authentication/auth-context";
@@ -125,7 +124,8 @@ const DashboardHome: FunctionComponent = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <h1 className="text-3xl font-bold mb-2">
-                    Welcome back, {user?.first_name || user?.username || "Traveler"}! 👋
+                    Welcome back,{" "}
+                    {user?.first_name || user?.username || "Traveler"}! 👋
                   </h1>
                   <p className="text-xl opacity-90">
                     Ready for your next adventure?
@@ -245,8 +245,12 @@ const DashboardHome: FunctionComponent = () => {
                           <span className="text-3xl">📝</span>
                         </div>
                         <div>
-                          <h3 className="text-lg font-semibold text-gray-900 mb-2">No bookings yet</h3>
-                          <p className="text-gray-500 mb-4">Start planning your first adventure</p>
+                          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                            No bookings yet
+                          </h3>
+                          <p className="text-gray-500 mb-4">
+                            Start planning your first adventure
+                          </p>
                           <button
                             className="px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary-dark transition-all duration-200 font-medium shadow-lg"
                             onClick={() => navigate("/packages")}
@@ -264,7 +268,10 @@ const DashboardHome: FunctionComponent = () => {
                           >
                             <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 shadow-md">
                               <img
-                                src={booking.image || "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=400"}
+                                src={
+                                  booking.image ||
+                                  "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=400"
+                                }
                                 alt={booking.title}
                                 className="w-full h-full object-cover"
                               />
@@ -278,7 +285,8 @@ const DashboardHome: FunctionComponent = () => {
                                 {booking.location}
                               </p>
                               <p className="text-sm text-gray-500">
-                                {formatDate(booking.startDate)} - {formatDate(booking.endDate)}
+                                {formatDate(booking.startDate)} -{" "}
+                                {formatDate(booking.endDate)}
                               </p>
                             </div>
                             <div className="text-right space-y-2">
@@ -286,14 +294,16 @@ const DashboardHome: FunctionComponent = () => {
                                 {formatCurrency(booking.price)}
                               </div>
                               <div
-                                className={`px-3 py-1 rounded-full text-xs font-medium ${booking.status === "confirmed"
+                                className={`px-3 py-1 rounded-full text-xs font-medium ${
+                                  booking.status === "confirmed"
                                     ? "bg-green-100 text-green-800"
                                     : booking.status === "cancelled"
-                                      ? "bg-red-100 text-red-800"
-                                      : "bg-gray-100 text-gray-800"
-                                  }`}
+                                    ? "bg-red-100 text-red-800"
+                                    : "bg-gray-100 text-gray-800"
+                                }`}
                               >
-                                {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+                                {booking.status.charAt(0).toUpperCase() +
+                                  booking.status.slice(1)}
                               </div>
                             </div>
                           </div>
@@ -346,9 +356,15 @@ const DashboardHome: FunctionComponent = () => {
                     </h3>
                     <div className="space-y-4">
                       {upcomingTrips.map((trip) => (
-                        <div key={trip.id} className="border border-gray-100 rounded-lg overflow-hidden hover:shadow-md transition-all duration-200">
+                        <div
+                          key={trip.id}
+                          className="border border-gray-100 rounded-lg overflow-hidden hover:shadow-md transition-all duration-200"
+                        >
                           <img
-                            src={trip.image || "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=400"}
+                            src={
+                              trip.image ||
+                              "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=400"
+                            }
                             alt={trip.title}
                             className="w-full h-24 object-cover"
                           />
@@ -364,7 +380,8 @@ const DashboardHome: FunctionComponent = () => {
                               🗓️ {formatDate(trip.startDate)}
                             </p>
                             <p className="text-xs text-gray-500">
-                              👥 {trip.travelers} traveler{trip.travelers > 1 ? "s" : ""}
+                              👥 {trip.travelers} traveler
+                              {trip.travelers > 1 ? "s" : ""}
                             </p>
                           </div>
                         </div>
@@ -382,7 +399,10 @@ const DashboardHome: FunctionComponent = () => {
                   <div className="space-y-3 text-sm">
                     <div className="flex items-start gap-2">
                       <span className="text-primary">•</span>
-                      <span>Book accommodations 2-3 weeks in advance for better rates</span>
+                      <span>
+                        Book accommodations 2-3 weeks in advance for better
+                        rates
+                      </span>
                     </div>
                     <div className="flex items-start gap-2">
                       <span className="text-primary">•</span>

@@ -2,7 +2,6 @@
 import type { FunctionComponent } from "react";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-replace
 import Layout from "../Components/Layout";
 import { useAuth } from "../Authentication/auth-context";
 import { Search, MapPin, Star, ArrowRight, Filter, Wifi, Truck, Coffee, ShoppingBag } from "react-feather";
@@ -585,8 +584,8 @@ const HotelsRooms: FunctionComponent = () => {
                 <div key={filter} className="relative">
                   <button
                     className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${selectedFilters[filter as FilterKey] && selectedFilters[filter as FilterKey] !== "All"
-                        ? "bg-primary text-white shadow-lg scale-105"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105"
+                      ? "bg-primary text-white shadow-lg scale-105"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105"
                       }`}
                     onClick={() => handleFilterClick(filter as FilterKey)}
                   >
@@ -604,9 +603,9 @@ const HotelsRooms: FunctionComponent = () => {
                         <button
                           key={option}
                           className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 ${selectedFilters[filter as FilterKey] === option ||
-                              (!selectedFilters[filter as FilterKey] && option === "All")
-                              ? "bg-primary/10 text-primary font-semibold"
-                              : "text-gray-700"
+                            (!selectedFilters[filter as FilterKey] && option === "All")
+                            ? "bg-primary/10 text-primary font-semibold"
+                            : "text-gray-700"
                             }`}
                           onClick={() => handleOptionSelect(filter as FilterKey, option)}
                         >

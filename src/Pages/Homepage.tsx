@@ -2,7 +2,6 @@
 
 import { type FunctionComponent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-replace
 import Layout from "../Components/Layout";
 import { ArrowRight, MapPin, Star, Users, Shield, Clock } from "react-feather";
 

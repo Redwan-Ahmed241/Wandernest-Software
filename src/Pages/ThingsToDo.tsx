@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import type { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
-replace
 import Layout from "../Components/Layout";
 import { Search, MapPin, Star, ArrowRight, Filter } from "react-feather";
 
@@ -176,8 +175,8 @@ const ThingsToDo: FunctionComponent = () => {
                 <button
                   key={cat.id}
                   className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${cat.id === selectedCategory
-                      ? "bg-primary text-white shadow-lg scale-105"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105"
+                    ? "bg-primary text-white shadow-lg scale-105"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105"
                     }`}
                   onClick={() => setSelectedCategory(cat.id)}
                 >

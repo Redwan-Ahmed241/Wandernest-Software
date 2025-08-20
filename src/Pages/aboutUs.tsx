@@ -1,4 +1,4 @@
-import Layout from "../App/Layout";
+import Layout from "../Components/Layout";
 
 const teamMembers = [
   {

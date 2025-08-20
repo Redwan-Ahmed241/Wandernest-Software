@@ -7,7 +7,6 @@ import {
   useState,
 } from "react";
 import { useNavigate } from "react-router-dom";
-replace
 import Layout from "../Components/Layout";
 import { getDestinations } from "../App/api-services";
 import { MapPin, Star, ArrowRight, Search, Filter } from "react-feather";
@@ -40,7 +39,7 @@ const Destinations: FunctionComponent = () => {
     { id: "mountain", label: "Mountains", icon: "⛰️" },
     { id: "forest", label: "Forests", icon: "🌲" },
     { id: "historical", label: "Historical", icon: "🏛️" },
-    { id: "cultural", label: "Cultural", icon: "🎭" }
+    { id: "cultural", label: "Cultural", icon: "🎭" },
   ];
 
   useEffect(() => {
@@ -61,11 +60,13 @@ const Destinations: FunctionComponent = () => {
   }, []);
 
   const filteredDestinations = destinations.filter((dest) => {
-    const matchesSearch = !searchQuery ||
+    const matchesSearch =
+      !searchQuery ||
       dest.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       dest.description?.toLowerCase().includes(searchQuery.toLowerCase());
 
-    const matchesCategory = selectedCategory === "all" ||
+    const matchesCategory =
+      selectedCategory === "all" ||
       dest.category?.toLowerCase() === selectedCategory;
 
     return matchesSearch && matchesCategory;
@@ -80,7 +81,8 @@ const Destinations: FunctionComponent = () => {
           <div
             className="absolute inset-0 bg-cover bg-center opacity-30"
             style={{
-              backgroundImage: "url('https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=1920')"
+              backgroundImage:
+                "url('https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=1920')",
             }}
           ></div>
 
@@ -92,7 +94,8 @@ const Destinations: FunctionComponent = () => {
               </span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-100 max-w-2xl mx-auto mb-8">
-              From pristine beaches to ancient forests, explore Bangladesh's most captivating places
+              From pristine beaches to ancient forests, explore Bangladesh's
+              most captivating places
             </p>
 
             {/* Search Bar */}
@@ -119,10 +122,11 @@ const Destinations: FunctionComponent = () => {
                 <button
                   key={category.id}
                   onClick={() => setSelectedCategory(category.id)}
-                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${selectedCategory === category.id
+                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${
+                    selectedCategory === category.id
                       ? "bg-primary text-white shadow-lg scale-105"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105"
-                    }`}
+                  }`}
                 >
                   <span className="text-lg">{category.icon}</span>
                   {category.label}
@@ -138,7 +142,10 @@ const Destinations: FunctionComponent = () => {
             {loading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {Array.from({ length: 9 }).map((_, index) => (
-                  <div key={index} className="bg-white rounded-2xl overflow-hidden shadow-lg animate-pulse">
+                  <div
+                    key={index}
+                    className="bg-white rounded-2xl overflow-hidden shadow-lg animate-pulse"
+                  >
                     <div className="h-64 bg-gray-200"></div>
                     <div className="p-6 space-y-4">
                       <div className="h-6 bg-gray-200 rounded"></div>
@@ -153,7 +160,9 @@ const Destinations: FunctionComponent = () => {
                 <div className="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-3xl">⚠️</span>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">Error Loading Destinations</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  Error Loading Destinations
+                </h3>
                 <p className="text-red-600 mb-6">{error}</p>
                 <button
                   onClick={() => window.location.reload()}
@@ -167,8 +176,12 @@ const Destinations: FunctionComponent = () => {
                 <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <Search className="w-12 h-12 text-gray-400" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">No destinations found</h3>
-                <p className="text-gray-600 mb-6">Try adjusting your search or filter criteria</p>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  No destinations found
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Try adjusting your search or filter criteria
+                </p>
                 <button
                   onClick={() => {
                     setSearchQuery("");
@@ -192,11 +205,15 @@ const Destinations: FunctionComponent = () => {
                   >
                     <div className="relative overflow-hidden">
                       <img
-                        src={dest.image_url || "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=600"}
+                        src={
+                          dest.image_url ||
+                          "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=600"
+                        }
                         alt={dest.name || dest.title}
                         className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
                         onError={(e) => {
-                          e.currentTarget.src = "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=600";
+                          e.currentTarget.src =
+                            "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=600";
                         }}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -208,7 +225,9 @@ const Destinations: FunctionComponent = () => {
                         <div className="flex items-center justify-between text-white">
                           <div className="flex items-center gap-2">
                             <MapPin className="w-4 h-4" />
-                            <span className="text-sm font-medium">Bangladesh</span>
+                            <span className="text-sm font-medium">
+                              Bangladesh
+                            </span>
                           </div>
                           <div className="flex items-center gap-1 text-accent font-semibold">
                             <span>Explore</span>
@@ -223,7 +242,9 @@ const Destinations: FunctionComponent = () => {
                         {dest.name || dest.title}
                       </h3>
                       <p className="text-gray-600 line-clamp-2 leading-relaxed">
-                        {dest.subtitle || dest.description || "Discover the beauty and culture of this amazing destination"}
+                        {dest.subtitle ||
+                          dest.description ||
+                          "Discover the beauty and culture of this amazing destination"}
                       </p>
                     </div>
                   </div>
@@ -240,7 +261,8 @@ const Destinations: FunctionComponent = () => {
               Can't Find What You're Looking For?
             </h2>
             <p className="text-lg text-primary-dark/80 mb-8 max-w-2xl mx-auto">
-              Let us create a custom travel package tailored to your preferences and budget
+              Let us create a custom travel package tailored to your preferences
+              and budget
             </p>
             <button
               onClick={() => navigate("/plan-a-trip")}

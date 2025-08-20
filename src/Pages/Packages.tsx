@@ -1,6 +1,5 @@
 import { FunctionComponent, useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-replace
 import Layout from "../Components/Layout";
 import { useAuth } from "../Authentication/auth-context";
 import { Search, MapPin, Star, ArrowRight, Filter, Calendar, Users } from "react-feather";
@@ -180,8 +179,8 @@ const Packages: FunctionComponent = () => {
               <div className="relative">
                 <button
                   className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${selectedFilters["Destination"] && selectedFilters["Destination"] !== "All"
-                      ? "bg-primary text-white shadow-lg scale-105"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105"
+                    ? "bg-primary text-white shadow-lg scale-105"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105"
                     }`}
                   onClick={() => handleFilterClick("Destination")}
                 >
@@ -199,9 +198,9 @@ const Packages: FunctionComponent = () => {
                       <button
                         key={option}
                         className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 ${selectedFilters["Destination"] === option ||
-                            (!selectedFilters["Destination"] && option === "All")
-                            ? "bg-primary/10 text-primary font-semibold"
-                            : "text-gray-700"
+                          (!selectedFilters["Destination"] && option === "All")
+                          ? "bg-primary/10 text-primary font-semibold"
+                          : "text-gray-700"
                           }`}
                         onClick={() => handleOptionSelect("Destination", option)}
                       >
@@ -216,8 +215,8 @@ const Packages: FunctionComponent = () => {
               <div className="relative">
                 <button
                   className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${selectedFilters["Budget"] && selectedFilters["Budget"] !== "All"
-                      ? "bg-primary text-white shadow-lg scale-105"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105"
+                    ? "bg-primary text-white shadow-lg scale-105"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105"
                     }`}
                   onClick={() => handleFilterClick("Budget")}
                 >
@@ -235,9 +234,9 @@ const Packages: FunctionComponent = () => {
                       <button
                         key={option}
                         className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 ${selectedFilters["Budget"] === option ||
-                            (!selectedFilters["Budget"] && option === "All")
-                            ? "bg-primary/10 text-primary font-semibold"
-                            : "text-gray-700"
+                          (!selectedFilters["Budget"] && option === "All")
+                          ? "bg-primary/10 text-primary font-semibold"
+                          : "text-gray-700"
                           }`}
                         onClick={() => handleOptionSelect("Budget", option)}
                       >

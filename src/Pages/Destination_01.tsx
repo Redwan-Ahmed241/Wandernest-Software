@@ -2,7 +2,6 @@
 
 import { type FunctionComponent, useState, useEffect } from "react";
 // Tailwind conversion: removed CSS module import
-replace
 import Layout from "../Components/Layout";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -296,8 +295,8 @@ const DestinationPage: FunctionComponent = () => {
         <div className="flex gap-2 justify-center mt-6 mb-8">
           <button
             className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${activeTab === "overview"
-                ? "bg-theme-accent text-white shadow"
-                : "bg-theme-light text-theme-primary hover:bg-theme-accent/10"
+              ? "bg-theme-accent text-white shadow"
+              : "bg-theme-light text-theme-primary hover:bg-theme-accent/10"
               }`}
             onClick={() => setActiveTab("overview")}
           >
@@ -305,8 +304,8 @@ const DestinationPage: FunctionComponent = () => {
           </button>
           <button
             className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${activeTab === "attractions"
-                ? "bg-theme-accent text-white shadow"
-                : "bg-theme-light text-theme-primary hover:bg-theme-accent/10"
+              ? "bg-theme-accent text-white shadow"
+              : "bg-theme-light text-theme-primary hover:bg-theme-accent/10"
               }`}
             onClick={() => setActiveTab("attractions")}
           >
@@ -314,8 +313,8 @@ const DestinationPage: FunctionComponent = () => {
           </button>
           <button
             className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${activeTab === "experiences"
-                ? "bg-theme-accent text-white shadow"
-                : "bg-theme-light text-theme-primary hover:bg-theme-accent/10"
+              ? "bg-theme-accent text-white shadow"
+              : "bg-theme-light text-theme-primary hover:bg-theme-accent/10"
               }`}
             onClick={() => setActiveTab("experiences")}
           >
@@ -324,8 +323,8 @@ const DestinationPage: FunctionComponent = () => {
           {weatherData && (
             <button
               className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${activeTab === "weather"
-                  ? "bg-theme-accent text-white shadow"
-                  : "bg-theme-light text-theme-primary hover:bg-theme-accent/10"
+                ? "bg-theme-accent text-white shadow"
+                : "bg-theme-light text-theme-primary hover:bg-theme-accent/10"
                 }`}
               onClick={() => setActiveTab("weather")}
             >
