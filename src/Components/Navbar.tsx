@@ -25,7 +25,7 @@ const Navbar: React.FC = () => {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+    <nav className="fixed top-0 left-0 right-0 z-[1000] bg-white border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -33,9 +33,9 @@ const Navbar: React.FC = () => {
             className="flex items-center gap-3 cursor-pointer group"
             onClick={goHome}
           >
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-dark rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
+            <div className="relative z-10 w-10 h-10 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300" style={{ background: "linear-gradient(135deg, #4a6b5b 0%, #0d1c1c 100%)" }}>
               <img
-                src="/figma_photos/wandernest.svg"
+                src="/Figma_photos/wandernest.svg"
                 alt="WanderNest"
                 className="w-6 h-6 filter brightness-0 invert"
               />
@@ -92,7 +92,7 @@ const Navbar: React.FC = () => {
                     </button>
                     <button
                       onClick={() => navigate("/signup")}
-                      className="px-6 py-2 bg-gradient-to-r from-accent to-primary-light text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105"
+                      className="relative z-10 px-6 py-2 bg-[#6ab187] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105"
                     >
                       Sign up
                     </button>
