@@ -3,7 +3,6 @@
 import { type FunctionComponent, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // Tailwind CSS used for all styling. Centralized color theme via tailwind.config.js
-replace
 import Layout from "../Components/Layout";
 import Sidebar from "./Sidebar";
 import { useAuth } from "../Authentication/auth-context";
@@ -481,8 +480,9 @@ const CreatePackage: FunctionComponent = () => {
                             return (
                               <div
                                 key={day}
-                                className={`${styles.enhancedCalendarDay} ${isDisabled ? styles.disabled : ""
-                                  }`}
+                                className={`${styles.enhancedCalendarDay} ${
+                                  isDisabled ? styles.disabled : ""
+                                }`}
                                 onClick={() =>
                                   !isDisabled && handleStartDateSelect(day)
                                 }
@@ -574,8 +574,9 @@ const CreatePackage: FunctionComponent = () => {
                               return (
                                 <div
                                   key={day}
-                                  className={`${styles.enhancedCalendarDay} ${isDisabled ? styles.disabled : ""
-                                    }`}
+                                  className={`${styles.enhancedCalendarDay} ${
+                                    isDisabled ? styles.disabled : ""
+                                  }`}
                                   onClick={() =>
                                     !isDisabled && handleEndDateSelect(day)
                                   }
@@ -686,16 +687,18 @@ const CreatePackage: FunctionComponent = () => {
                     </button>
                   </div>
                   <div
-                    className={`${styles.cardsGrid} ${skipTransport ? styles.sectionDisabled : ""
-                      }`}
+                    className={`${styles.cardsGrid} ${
+                      skipTransport ? styles.sectionDisabled : ""
+                    }`}
                   >
                     {transportOptions.map((option) => (
                       <div
                         key={option.id}
-                        className={`${styles.card} ${selectedTransport === option.id
+                        className={`${styles.card} ${
+                          selectedTransport === option.id
                             ? styles.selectedCard
                             : ""
-                          }`}
+                        }`}
                         onClick={() =>
                           handleOptionSelect(
                             option.id,
@@ -745,14 +748,16 @@ const CreatePackage: FunctionComponent = () => {
                     </button>
                   </div>
                   <div
-                    className={`${styles.cardsGrid} ${skipHotel ? styles.sectionDisabled : ""
-                      }`}
+                    className={`${styles.cardsGrid} ${
+                      skipHotel ? styles.sectionDisabled : ""
+                    }`}
                   >
                     {hotelOptions.map((option) => (
                       <div
                         key={option.id}
-                        className={`${styles.card} ${selectedHotel === option.id ? styles.selectedCard : ""
-                          }`}
+                        className={`${styles.card} ${
+                          selectedHotel === option.id ? styles.selectedCard : ""
+                        }`}
                         onClick={() =>
                           handleOptionSelect(
                             option.id,
@@ -802,14 +807,16 @@ const CreatePackage: FunctionComponent = () => {
                     </button>
                   </div>
                   <div
-                    className={`${styles.cardsGrid} ${skipGuide ? styles.sectionDisabled : ""
-                      }`}
+                    className={`${styles.cardsGrid} ${
+                      skipGuide ? styles.sectionDisabled : ""
+                    }`}
                   >
                     {guideOptions.map((option) => (
                       <div
                         key={option.id}
-                        className={`${styles.card} ${selectedGuide === option.id ? styles.selectedCard : ""
-                          }`}
+                        className={`${styles.card} ${
+                          selectedGuide === option.id ? styles.selectedCard : ""
+                        }`}
                         onClick={() =>
                           handleOptionSelect(
                             option.id,

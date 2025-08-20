@@ -2,7 +2,6 @@
 
 import type { FunctionComponent } from "react";
 import { useState, useEffect } from "react";
-replace
 import Layout from "../Components/Layout";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
@@ -17,7 +16,9 @@ interface ExtendedTrip extends Trip {
 }
 
 const MyTrips: FunctionComponent = () => {
-  const [activeTab, setActiveTab] = useState<"upcoming" | "past" | "cancelled">("upcoming");
+  const [activeTab, setActiveTab] = useState<"upcoming" | "past" | "cancelled">(
+    "upcoming"
+  );
   const [activeView, setActiveView] = useState("overview");
   const [trips, setTrips] = useState<Trip[]>([]);
   const [selectedTrip, setSelectedTrip] = useState<ExtendedTrip | null>(null);
@@ -36,8 +37,10 @@ const MyTrips: FunctionComponent = () => {
       const startDate = new Date(booking.startDate);
       const endDate = new Date(booking.endDate);
 
-      if (activeTab === "upcoming") return startDate > now && booking.status === "confirmed";
-      if (activeTab === "past") return endDate < now && booking.status === "confirmed";
+      if (activeTab === "upcoming")
+        return startDate > now && booking.status === "confirmed";
+      if (activeTab === "past")
+        return endDate < now && booking.status === "confirmed";
       if (activeTab === "cancelled") return booking.status === "cancelled";
       return false;
     })
@@ -48,7 +51,11 @@ const MyTrips: FunctionComponent = () => {
       end_date: booking.endDate,
       location: booking.location,
       status: booking.status,
-      duration: `${Math.ceil((new Date(booking.endDate).getTime() - new Date(booking.startDate).getTime()) / (1000 * 60 * 60 * 24))} days`,
+      duration: `${Math.ceil(
+        (new Date(booking.endDate).getTime() -
+          new Date(booking.startDate).getTime()) /
+          (1000 * 60 * 60 * 24)
+      )} days`,
       activities_count: Math.floor(Math.random() * 10) + 1,
       check_in_time: "3:00 PM",
       weather: "Sunny, 28°C",
@@ -179,30 +186,34 @@ const MyTrips: FunctionComponent = () => {
             <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-2">
               <div className="flex gap-2">
                 <button
-                  className={`flex-1 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${activeTab === "upcoming"
+                  className={`flex-1 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+                    activeTab === "upcoming"
                       ? "bg-primary text-white shadow-md"
                       : "text-gray-600 hover:bg-gray-50"
-                    }`}
+                  }`}
                   onClick={() => handleTabChange("upcoming")}
                 >
                   <span className="mr-2">✈️</span>
-                  Upcoming ({bookingTrips.filter(() => activeTab === "upcoming").length})
+                  Upcoming (
+                  {bookingTrips.filter(() => activeTab === "upcoming").length})
                 </button>
                 <button
-                  className={`flex-1 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${activeTab === "past"
+                  className={`flex-1 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+                    activeTab === "past"
                       ? "bg-primary text-white shadow-md"
                       : "text-gray-600 hover:bg-gray-50"
-                    }`}
+                  }`}
                   onClick={() => handleTabChange("past")}
                 >
                   <span className="mr-2">📋</span>
                   Past
                 </button>
                 <button
-                  className={`flex-1 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${activeTab === "cancelled"
+                  className={`flex-1 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+                    activeTab === "cancelled"
                       ? "bg-primary text-white shadow-md"
                       : "text-gray-600 hover:bg-gray-50"
-                    }`}
+                  }`}
                   onClick={() => handleTabChange("cancelled")}
                 >
                   <span className="mr-2">❌</span>
@@ -225,7 +236,9 @@ const MyTrips: FunctionComponent = () => {
                   <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
                     <span className="text-2xl">⚠️</span>
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900">Error Loading Trips</h3>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Error Loading Trips
+                  </h3>
                   <p className="text-red-600 text-center">{error}</p>
                   <button
                     className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition-all duration-200 font-medium"
@@ -271,8 +284,10 @@ const MyTrips: FunctionComponent = () => {
                     <select
                       value={selectedTrip?.id || ""}
                       onChange={(e) => {
-                        const trip = allTrips.find((t) => t.id === e.target.value);
-                        setSelectedTrip(trip as ExtendedTrip || null);
+                        const trip = allTrips.find(
+                          (t) => t.id === e.target.value
+                        );
+                        setSelectedTrip((trip as ExtendedTrip) || null);
                       }}
                       className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                     >
@@ -292,21 +307,26 @@ const MyTrips: FunctionComponent = () => {
                     <div className="bg-gradient-to-r from-primary to-primary-dark text-white p-6">
                       <div className="flex items-center justify-between">
                         <div>
-                          <h2 className="text-2xl font-bold mb-2">{selectedTrip.title}</h2>
+                          <h2 className="text-2xl font-bold mb-2">
+                            {selectedTrip.title}
+                          </h2>
                           <p className="text-lg opacity-90">
-                            {formatDate(selectedTrip.start_date)} - {formatDate(selectedTrip.end_date)}
+                            {formatDate(selectedTrip.start_date)} -{" "}
+                            {formatDate(selectedTrip.end_date)}
                           </p>
                         </div>
                         <div className="text-right">
                           <div
-                            className={`px-4 py-2 rounded-full font-semibold text-sm ${selectedTrip.status === "confirmed"
+                            className={`px-4 py-2 rounded-full font-semibold text-sm ${
+                              selectedTrip.status === "confirmed"
                                 ? "bg-green-500 text-white"
                                 : selectedTrip.status === "cancelled"
-                                  ? "bg-red-500 text-white"
-                                  : "bg-gray-500 text-white"
-                              }`}
+                                ? "bg-red-500 text-white"
+                                : "bg-gray-500 text-white"
+                            }`}
                           >
-                            {selectedTrip.status.charAt(0).toUpperCase() + selectedTrip.status.slice(1)}
+                            {selectedTrip.status.charAt(0).toUpperCase() +
+                              selectedTrip.status.slice(1)}
                           </div>
                         </div>
                       </div>
@@ -316,20 +336,22 @@ const MyTrips: FunctionComponent = () => {
                     <div className="border-b border-gray-100 p-6">
                       <div className="flex gap-2">
                         <button
-                          className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${activeView === "overview"
+                          className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+                            activeView === "overview"
                               ? "bg-primary text-white shadow-md"
                               : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                            }`}
+                          }`}
                           onClick={() => setActiveView("overview")}
                         >
                           <span className="mr-2">📊</span>
                           Overview
                         </button>
                         <button
-                          className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${activeView === "itinerary"
+                          className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+                            activeView === "itinerary"
                               ? "bg-primary text-white shadow-md"
                               : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                            }`}
+                          }`}
                           onClick={() => setActiveView("itinerary")}
                         >
                           <span className="mr-2">🗓️</span>
@@ -348,8 +370,12 @@ const MyTrips: FunctionComponent = () => {
                                 <span className="text-2xl text-white">📅</span>
                               </div>
                               <div>
-                                <h3 className="font-bold text-gray-900 mb-1">Duration</h3>
-                                <p className="text-gray-600">{selectedTrip.duration}</p>
+                                <h3 className="font-bold text-gray-900 mb-1">
+                                  Duration
+                                </h3>
+                                <p className="text-gray-600">
+                                  {selectedTrip.duration}
+                                </p>
                               </div>
                             </div>
                           </div>
@@ -360,8 +386,12 @@ const MyTrips: FunctionComponent = () => {
                                 <span className="text-2xl text-white">📍</span>
                               </div>
                               <div>
-                                <h3 className="font-bold text-gray-900 mb-1">Location</h3>
-                                <p className="text-gray-600">{selectedTrip.location}</p>
+                                <h3 className="font-bold text-gray-900 mb-1">
+                                  Location
+                                </h3>
+                                <p className="text-gray-600">
+                                  {selectedTrip.location}
+                                </p>
                               </div>
                             </div>
                           </div>
@@ -372,8 +402,12 @@ const MyTrips: FunctionComponent = () => {
                                 <span className="text-2xl text-white">🎯</span>
                               </div>
                               <div>
-                                <h3 className="font-bold text-gray-900 mb-1">Activities</h3>
-                                <p className="text-gray-600">{selectedTrip.activities_count} planned</p>
+                                <h3 className="font-bold text-gray-900 mb-1">
+                                  Activities
+                                </h3>
+                                <p className="text-gray-600">
+                                  {selectedTrip.activities_count} planned
+                                </p>
                               </div>
                             </div>
                           </div>
@@ -384,8 +418,12 @@ const MyTrips: FunctionComponent = () => {
                                 <span className="text-2xl text-white">🏨</span>
                               </div>
                               <div>
-                                <h3 className="font-bold text-gray-900 mb-1">Check-in</h3>
-                                <p className="text-gray-600">{selectedTrip.check_in_time}</p>
+                                <h3 className="font-bold text-gray-900 mb-1">
+                                  Check-in
+                                </h3>
+                                <p className="text-gray-600">
+                                  {selectedTrip.check_in_time}
+                                </p>
                               </div>
                             </div>
                           </div>
@@ -396,8 +434,12 @@ const MyTrips: FunctionComponent = () => {
                                 <span className="text-2xl text-white">🌤️</span>
                               </div>
                               <div>
-                                <h3 className="font-bold text-gray-900 mb-1">Weather</h3>
-                                <p className="text-gray-600">{selectedTrip.weather}</p>
+                                <h3 className="font-bold text-gray-900 mb-1">
+                                  Weather
+                                </h3>
+                                <p className="text-gray-600">
+                                  {selectedTrip.weather}
+                                </p>
                               </div>
                             </div>
                           </div>
@@ -408,9 +450,14 @@ const MyTrips: FunctionComponent = () => {
                                 <span className="text-2xl text-white">💰</span>
                               </div>
                               <div>
-                                <h3 className="font-bold text-gray-900 mb-1">Total Cost</h3>
+                                <h3 className="font-bold text-gray-900 mb-1">
+                                  Total Cost
+                                </h3>
                                 <p className="text-gray-600">
-                                  ৳{(selectedTrip as any)?.price?.toLocaleString() || "N/A"}
+                                  ৳
+                                  {(
+                                    selectedTrip as any
+                                  )?.price?.toLocaleString() || "N/A"}
                                 </p>
                               </div>
                             </div>
@@ -422,7 +469,9 @@ const MyTrips: FunctionComponent = () => {
                             <div className="flex items-center justify-center py-12">
                               <div className="flex flex-col items-center gap-4">
                                 <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-                                <p className="text-gray-600">Loading itinerary...</p>
+                                <p className="text-gray-600">
+                                  Loading itinerary...
+                                </p>
                               </div>
                             </div>
                           ) : itinerary.length === 0 ? (
@@ -431,16 +480,23 @@ const MyTrips: FunctionComponent = () => {
                                 <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                                   <span className="text-3xl">📋</span>
                                 </div>
-                                <p className="text-gray-500">No itinerary items found for this trip.</p>
+                                <p className="text-gray-500">
+                                  No itinerary items found for this trip.
+                                </p>
                               </div>
                             </div>
                           ) : (
                             <div className="space-y-6">
                               {itinerary.map((item, index) => (
-                                <div key={item.id} className="flex gap-6 items-start">
+                                <div
+                                  key={item.id}
+                                  className="flex gap-6 items-start"
+                                >
                                   <div className="flex flex-col items-center">
                                     <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center shadow-lg">
-                                      <span className="text-xl text-white">{item.icon}</span>
+                                      <span className="text-xl text-white">
+                                        {item.icon}
+                                      </span>
                                     </div>
                                     {index < itinerary.length - 1 && (
                                       <div className="w-1 h-16 bg-gradient-to-b from-primary to-primary-light mt-2"></div>
@@ -449,12 +505,16 @@ const MyTrips: FunctionComponent = () => {
                                   <div className="flex-1">
                                     <div className="bg-gray-50 rounded-xl p-6 border border-gray-100 hover:shadow-md transition-all duration-200">
                                       <div className="flex items-center justify-between mb-3">
-                                        <h3 className="font-bold text-gray-900 text-lg">{item.title}</h3>
+                                        <h3 className="font-bold text-gray-900 text-lg">
+                                          {item.title}
+                                        </h3>
                                         <span className="text-sm text-gray-500 bg-white px-3 py-1 rounded-full">
                                           {formatDateTime(item.date_time)}
                                         </span>
                                       </div>
-                                      <p className="text-gray-600">{item.description}</p>
+                                      <p className="text-gray-600">
+                                        {item.description}
+                                      </p>
                                     </div>
                                   </div>
                                 </div>

@@ -1,7 +1,6 @@
 import type { FunctionComponent } from "react";
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
-replace
 import Layout from "../Components/Layout";
 
 const RentVehicles: FunctionComponent = () => {

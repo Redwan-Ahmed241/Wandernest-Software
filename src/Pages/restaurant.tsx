@@ -1,7 +1,6 @@
 import type { FunctionComponent } from "react";
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
-replace
 import Layout from "../Components/Layout";
 
 const FILTERS = [
@@ -137,8 +136,8 @@ const Restaurant: FunctionComponent = () => {
                 <button
                   key={f.value}
                   className={`px-4 py-2 rounded-lg font-semibold transition-all flex items-center gap-2 ${selectedFilter === f.value
-                      ? "bg-primary-600 text-white shadow-md"
-                      : "bg-primary-100 text-primary-700 hover:bg-primary-200"
+                    ? "bg-primary-600 text-white shadow-md"
+                    : "bg-primary-100 text-primary-700 hover:bg-primary-200"
                     }`}
                   onClick={() => setSelectedFilter(f.value)}
                   type="button"
