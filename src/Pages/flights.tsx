@@ -5,7 +5,8 @@ import type { FunctionComponent } from "react";
 import { useCallback, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // Tailwind CSS used for all styling. Centralized color theme via tailwind.config.js
-import Layout from "../App/Layout";
+replace
+import Layout from "../Components/Layout";
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useAuth } from "../Authentication/auth-context";
@@ -68,12 +69,12 @@ interface Flight {
   cancellation_policy: string;
   refund_policy?: string;
   status:
-    | "scheduled"
-    | "delayed"
-    | "cancelled"
-    | "boarding"
-    | "departed"
-    | "arrived";
+  | "scheduled"
+  | "delayed"
+  | "cancelled"
+  | "boarding"
+  | "departed"
+  | "arrived";
   gate?: string;
   terminal?: string;
   is_active: boolean;
@@ -114,11 +115,11 @@ interface PassengerDetails {
   passenger_type: "adult" | "child" | "infant";
   seat_preference: "window" | "aisle" | "middle";
   meal_preference:
-    | "vegetarian"
-    | "non_vegetarian"
-    | "halal"
-    | "kosher"
-    | "vegan";
+  | "vegetarian"
+  | "non_vegetarian"
+  | "halal"
+  | "kosher"
+  | "vegan";
 }
 
 interface BookingRequest {
@@ -644,10 +645,10 @@ const BookingModal: React.FC<{
         phone: contactPhone,
         emergency_contact: emergencyContactName
           ? {
-              name: emergencyContactName,
-              phone: emergencyContactPhone,
-              relationship: emergencyContactRelationship,
-            }
+            name: emergencyContactName,
+            phone: emergencyContactPhone,
+            relationship: emergencyContactRelationship,
+          }
           : undefined,
       },
       special_requests: specialRequests,
@@ -908,7 +909,7 @@ const BookingModal: React.FC<{
                     <label>
                       Passport Number{" "}
                       {passenger.nationality !== "Bangladeshi" &&
-                      passenger.nationality
+                        passenger.nationality
                         ? "*"
                         : ""}
                     </label>
@@ -937,7 +938,7 @@ const BookingModal: React.FC<{
                     <label>
                       Passport Expiry{" "}
                       {passenger.nationality !== "Bangladeshi" &&
-                      passenger.nationality
+                        passenger.nationality
                         ? "*"
                         : ""}
                     </label>
@@ -1038,8 +1039,8 @@ const BookingModal: React.FC<{
               {isLoading
                 ? "Booking..."
                 : `Confirm Booking (${flight.currency} ${(
-                    flight.current_price * passengers
-                  ).toLocaleString()})`}
+                  flight.current_price * passengers
+                ).toLocaleString()})`}
             </button>
           </div>
         </form>
@@ -1427,9 +1428,9 @@ const Flights: FunctionComponent = () => {
                         const exactMatch = airports.find(
                           (airport) =>
                             airport.city.toLowerCase() ===
-                              e.target.value.toLowerCase() ||
+                            e.target.value.toLowerCase() ||
                             airport.name.toLowerCase() ===
-                              e.target.value.toLowerCase()
+                            e.target.value.toLowerCase()
                         );
                         if (exactMatch) {
                           setFromAirport(exactMatch.code);
@@ -1502,9 +1503,9 @@ const Flights: FunctionComponent = () => {
                         const exactMatch = airports.find(
                           (airport) =>
                             airport.city.toLowerCase() ===
-                              e.target.value.toLowerCase() ||
+                            e.target.value.toLowerCase() ||
                             airport.name.toLowerCase() ===
-                              e.target.value.toLowerCase()
+                            e.target.value.toLowerCase()
                         );
                         if (exactMatch) {
                           setToAirport(exactMatch.code);
@@ -1650,9 +1651,8 @@ const Flights: FunctionComponent = () => {
                       </div>
                       {flight.status !== "scheduled" && (
                         <div
-                          className={`${styles.flightStatus} ${
-                            styles[flight.status]
-                          }`}
+                          className={`${styles.flightStatus} ${styles[flight.status]
+                            }`}
                         >
                           {flight.status.toUpperCase()}
                         </div>
@@ -1745,11 +1745,11 @@ const Flights: FunctionComponent = () => {
                       {flight.available_seats <= 0
                         ? "Sold Out"
                         : flight.status !== "scheduled"
-                        ? flight.status.charAt(0).toUpperCase() +
+                          ? flight.status.charAt(0).toUpperCase() +
                           flight.status.slice(1)
-                        : isAuthenticated
-                        ? "Book Now"
-                        : "Login to Book"}
+                          : isAuthenticated
+                            ? "Book Now"
+                            : "Login to Book"}
                     </button>
                   </div>
                 </div>

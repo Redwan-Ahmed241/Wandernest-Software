@@ -1,6 +1,7 @@
 import { FunctionComponent, useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Layout from "../App/Layout";
+replace
+import Layout from "../Components/Layout";
 import { useAuth } from "../Authentication/auth-context";
 import { Search, MapPin, Star, ArrowRight, Filter, Calendar, Users } from "react-feather";
 
@@ -137,13 +138,13 @@ const Packages: FunctionComponent = () => {
         {/* Hero Section */}
         <section className="relative py-20 bg-gradient-to-br from-primary via-primary-dark to-primary overflow-hidden">
           <div className="absolute inset-0 bg-black/20"></div>
-          <div 
+          <div
             className="absolute inset-0 bg-cover bg-center opacity-30"
             style={{
               backgroundImage: "url('https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=1920')"
             }}
           ></div>
-          
+
           <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
               Travel
@@ -154,7 +155,7 @@ const Packages: FunctionComponent = () => {
             <p className="text-xl md:text-2xl text-gray-100 max-w-2xl mx-auto mb-8">
               Discover curated travel experiences designed for unforgettable adventures
             </p>
-            
+
             {/* Search Bar */}
             <div className="max-w-2xl mx-auto relative">
               <div className="relative">
@@ -178,11 +179,10 @@ const Packages: FunctionComponent = () => {
               {/* Destination filter */}
               <div className="relative">
                 <button
-                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${
-                    selectedFilters["Destination"] && selectedFilters["Destination"] !== "All"
+                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${selectedFilters["Destination"] && selectedFilters["Destination"] !== "All"
                       ? "bg-primary text-white shadow-lg scale-105"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105"
-                  }`}
+                    }`}
                   onClick={() => handleFilterClick("Destination")}
                 >
                   <MapPin className="w-4 h-4" />
@@ -198,12 +198,11 @@ const Packages: FunctionComponent = () => {
                     {destinationOptions.map((option) => (
                       <button
                         key={option}
-                        className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 ${
-                          selectedFilters["Destination"] === option ||
-                          (!selectedFilters["Destination"] && option === "All")
+                        className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 ${selectedFilters["Destination"] === option ||
+                            (!selectedFilters["Destination"] && option === "All")
                             ? "bg-primary/10 text-primary font-semibold"
                             : "text-gray-700"
-                        }`}
+                          }`}
                         onClick={() => handleOptionSelect("Destination", option)}
                       >
                         {option}
@@ -216,11 +215,10 @@ const Packages: FunctionComponent = () => {
               {/* Budget filter */}
               <div className="relative">
                 <button
-                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${
-                    selectedFilters["Budget"] && selectedFilters["Budget"] !== "All"
+                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${selectedFilters["Budget"] && selectedFilters["Budget"] !== "All"
                       ? "bg-primary text-white shadow-lg scale-105"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105"
-                  }`}
+                    }`}
                   onClick={() => handleFilterClick("Budget")}
                 >
                   <Filter className="w-4 h-4" />
@@ -236,12 +234,11 @@ const Packages: FunctionComponent = () => {
                     {FILTER_OPTIONS.Budget.map((option) => (
                       <button
                         key={option}
-                        className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 ${
-                          selectedFilters["Budget"] === option ||
-                          (!selectedFilters["Budget"] && option === "All")
+                        className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 ${selectedFilters["Budget"] === option ||
+                            (!selectedFilters["Budget"] && option === "All")
                             ? "bg-primary/10 text-primary font-semibold"
                             : "text-gray-700"
-                        }`}
+                          }`}
                         onClick={() => handleOptionSelect("Budget", option)}
                       >
                         {option}
@@ -330,7 +327,7 @@ const Packages: FunctionComponent = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="p-6">
                       <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
                         {pkg.title}
@@ -338,7 +335,7 @@ const Packages: FunctionComponent = () => {
                       <p className="text-gray-600 mb-4 line-clamp-2 leading-relaxed">
                         {pkg.subtitle || "Experience the beauty and culture of this amazing destination"}
                       </p>
-                      
+
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-4 text-sm text-gray-500">
                           <span className="flex items-center gap-1">

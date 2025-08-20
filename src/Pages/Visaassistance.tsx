@@ -3,7 +3,8 @@
 import type { FunctionComponent } from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Layout from "../App/Layout";
+replace
+import Layout from "../Components/Layout";
 import Sidebar from "./Sidebar";
 import {
   visaAPI,

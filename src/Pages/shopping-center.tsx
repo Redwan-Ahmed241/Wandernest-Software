@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Layout from "../App/Layout";
+replace
+import Layout from "../Components/Layout";
 export default function ShoppingCenters() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [search, setSearch] = useState("");

@@ -1,6 +1,7 @@
 import { FunctionComponent, useState } from "react";
 // Tailwind conversion: remove CSS import
-import Layout from "../App/Layout";
+replace
+import Layout from "../Components/Layout";
 
 interface ReviewProps {
   name: string;
@@ -132,82 +133,82 @@ const HiringGuide: FunctionComponent = () => {
               <li>Cultural immersion experiences</li>
               <li>Eco-friendly tourism</li>
             </ul>
-            </div>
-          </div>
-
-          <div className="mb-8">
-            <h2 className="text-lg font-bold text-primary mb-2">Rating Distribution</h2>
-            <div className="space-y-2">
-              {[5, 4, 3, 2, 1].map((stars) => (
-                <div key={stars} className="flex items-center gap-2">
-                  <div className="flex gap-1">
-                    {[...Array(stars)].map((_, i) => (
-                      <img key={i} className="w-4 h-4" alt="★" src="/figma_photos/star.svg" />
-                    ))}
-                  </div>
-                  <div className="flex-1 h-3 bg-accent-light rounded overflow-hidden">
-                    <div style={{ width: `${[72, 20, 5, 2, 1][5 - stars]}%`, backgroundColor: stars === 5 ? '#abb79a' : '#e8decf' }} className="h-3 rounded" />
-                  </div>
-                  <div className="text-xs text-primary-dark">{[72, 20, 5, 2, 1][5 - stars]}%</div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="mb-8">
-            <h2 className="text-lg font-bold text-primary mb-2">Client Reviews</h2>
-            <Review
-              name="Mizan Rahman"
-              date="September 15, 2023"
-              rating={5}
-              comment="Nadir's knowledge of the Sundarbans is incredible! He showed us tigers on our very first day. His passion for wildlife conservation is inspiring. Would book again in a heartbeat!"
-              likes={10}
-              dislikes={1}
-              avatar="/figma_photos/OIF.jpeg"
-            />
-            <Review
-              name="Kabbo Haque"
-              date="September 5, 2023"
-              rating={5}
-              comment="Our family had an amazing experience with Nadir. He tailored the tour to include activities for both kids and adults. His stories about the Sundarbans made the trip unforgettable!"
-              likes={15}
-              dislikes={2}
-              avatar="/figma_photos/OIP (9).jpeg"
-            />
-            <Review
-              name="Tasnim Ahmed"
-              date="August 22, 2023"
-              rating={4}
-              comment="Professional and knowledgeable guide. The boat tour was well-organized and Nadir pointed out wildlife we would have completely missed on our own. Only wish we had more time!"
-              likes={8}
-              dislikes={0}
-              avatar="/figma_photos/OIP (10).jpeg"
-            />
-            <div className="flex gap-2 flex-wrap mt-4">
-              {pageNumbers.map((num, idx) =>
-                num === "..." ? (
-                  <span key={idx} className="px-2 text-gray-400">...</span>
-                ) : (
-                  <span
-                    key={num}
-                    className={`px-3 py-1 rounded-lg cursor-pointer text-sm font-semibold ${num === currentPage ? 'bg-primary text-white' : 'bg-accent-light text-primary-dark hover:bg-primary-light'}`}
-                    onClick={() => typeof num === "number" && setCurrentPage(num)}
-                  >
-                    {num}
-                  </span>
-                )
-              )}
-              {currentPage < totalPages && (
-                <span
-                  className="px-3 py-1 rounded-lg cursor-pointer text-sm font-semibold bg-accent-light text-primary-dark hover:bg-primary-light"
-                  onClick={() => setCurrentPage(currentPage + 1)}
-                >
-                  Next
-                </span>
-              )}
-            </div>
           </div>
         </div>
+
+        <div className="mb-8">
+          <h2 className="text-lg font-bold text-primary mb-2">Rating Distribution</h2>
+          <div className="space-y-2">
+            {[5, 4, 3, 2, 1].map((stars) => (
+              <div key={stars} className="flex items-center gap-2">
+                <div className="flex gap-1">
+                  {[...Array(stars)].map((_, i) => (
+                    <img key={i} className="w-4 h-4" alt="★" src="/figma_photos/star.svg" />
+                  ))}
+                </div>
+                <div className="flex-1 h-3 bg-accent-light rounded overflow-hidden">
+                  <div style={{ width: `${[72, 20, 5, 2, 1][5 - stars]}%`, backgroundColor: stars === 5 ? '#abb79a' : '#e8decf' }} className="h-3 rounded" />
+                </div>
+                <div className="text-xs text-primary-dark">{[72, 20, 5, 2, 1][5 - stars]}%</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mb-8">
+          <h2 className="text-lg font-bold text-primary mb-2">Client Reviews</h2>
+          <Review
+            name="Mizan Rahman"
+            date="September 15, 2023"
+            rating={5}
+            comment="Nadir's knowledge of the Sundarbans is incredible! He showed us tigers on our very first day. His passion for wildlife conservation is inspiring. Would book again in a heartbeat!"
+            likes={10}
+            dislikes={1}
+            avatar="/figma_photos/OIF.jpeg"
+          />
+          <Review
+            name="Kabbo Haque"
+            date="September 5, 2023"
+            rating={5}
+            comment="Our family had an amazing experience with Nadir. He tailored the tour to include activities for both kids and adults. His stories about the Sundarbans made the trip unforgettable!"
+            likes={15}
+            dislikes={2}
+            avatar="/figma_photos/OIP (9).jpeg"
+          />
+          <Review
+            name="Tasnim Ahmed"
+            date="August 22, 2023"
+            rating={4}
+            comment="Professional and knowledgeable guide. The boat tour was well-organized and Nadir pointed out wildlife we would have completely missed on our own. Only wish we had more time!"
+            likes={8}
+            dislikes={0}
+            avatar="/figma_photos/OIP (10).jpeg"
+          />
+          <div className="flex gap-2 flex-wrap mt-4">
+            {pageNumbers.map((num, idx) =>
+              num === "..." ? (
+                <span key={idx} className="px-2 text-gray-400">...</span>
+              ) : (
+                <span
+                  key={num}
+                  className={`px-3 py-1 rounded-lg cursor-pointer text-sm font-semibold ${num === currentPage ? 'bg-primary text-white' : 'bg-accent-light text-primary-dark hover:bg-primary-light'}`}
+                  onClick={() => typeof num === "number" && setCurrentPage(num)}
+                >
+                  {num}
+                </span>
+              )
+            )}
+            {currentPage < totalPages && (
+              <span
+                className="px-3 py-1 rounded-lg cursor-pointer text-sm font-semibold bg-accent-light text-primary-dark hover:bg-primary-light"
+                onClick={() => setCurrentPage(currentPage + 1)}
+              >
+                Next
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
     </Layout>
   );
 }

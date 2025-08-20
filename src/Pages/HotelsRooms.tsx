@@ -2,7 +2,8 @@
 import type { FunctionComponent } from "react";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import Layout from "../App/Layout";
+replace
+import Layout from "../Components/Layout";
 import { useAuth } from "../Authentication/auth-context";
 import { Search, MapPin, Star, ArrowRight, Filter, Wifi, Truck, Coffee, ShoppingBag } from "react-feather";
 
@@ -285,7 +286,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
                 />
               </div>
             </div>
-            
+
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Number of Guests</label>
               <input
@@ -375,7 +376,7 @@ const HotelsRooms: FunctionComponent = () => {
         )
       );
       setLocationOptions(["All", ...locs.filter((l) => l && l !== "All")]);
-      
+
       const stars = Array.from(
         new Set(
           hotels
@@ -438,12 +439,12 @@ const HotelsRooms: FunctionComponent = () => {
           hotel.image_url && hotel.image_url.startsWith("http")
             ? hotel.image_url
             : hotel.image_url
-            ? `${MEDIA_BASE}${hotel.image_url}`
-            : hotel.image && hotel.image.startsWith("http")
-            ? hotel.image
-            : hotel.image
-            ? `${MEDIA_BASE}${hotel.image}`
-            : "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=600",
+              ? `${MEDIA_BASE}${hotel.image_url}`
+              : hotel.image && hotel.image.startsWith("http")
+                ? hotel.image
+                : hotel.image
+                  ? `${MEDIA_BASE}${hotel.image}`
+                  : "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=600",
         price:
           typeof hotel.price === "string"
             ? parseFloat(hotel.price.replace(/[^\d.]/g, "")) || 0
@@ -542,13 +543,13 @@ const HotelsRooms: FunctionComponent = () => {
         {/* Hero Section */}
         <section className="relative py-20 bg-gradient-to-br from-primary via-primary-dark to-primary overflow-hidden">
           <div className="absolute inset-0 bg-black/20"></div>
-          <div 
+          <div
             className="absolute inset-0 bg-cover bg-center opacity-30"
             style={{
               backgroundImage: "url('https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=1920')"
             }}
           ></div>
-          
+
           <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
               Hotels &
@@ -559,7 +560,7 @@ const HotelsRooms: FunctionComponent = () => {
             <p className="text-xl md:text-2xl text-gray-100 max-w-2xl mx-auto mb-8">
               Find the perfect place to stay during your Bangladesh adventure
             </p>
-            
+
             {/* Search Bar */}
             <div className="max-w-2xl mx-auto relative">
               <div className="relative">
@@ -583,11 +584,10 @@ const HotelsRooms: FunctionComponent = () => {
               {Object.keys(dynamicFilterOptions).map((filter) => (
                 <div key={filter} className="relative">
                   <button
-                    className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${
-                      selectedFilters[filter as FilterKey] && selectedFilters[filter as FilterKey] !== "All"
+                    className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${selectedFilters[filter as FilterKey] && selectedFilters[filter as FilterKey] !== "All"
                         ? "bg-primary text-white shadow-lg scale-105"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105"
-                    }`}
+                      }`}
                     onClick={() => handleFilterClick(filter as FilterKey)}
                   >
                     <Filter className="w-4 h-4" />
@@ -603,12 +603,11 @@ const HotelsRooms: FunctionComponent = () => {
                       {(dynamicFilterOptions[filter as FilterKey] as string[]).map((option: string) => (
                         <button
                           key={option}
-                          className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 ${
-                            selectedFilters[filter as FilterKey] === option ||
-                            (!selectedFilters[filter as FilterKey] && option === "All")
+                          className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 ${selectedFilters[filter as FilterKey] === option ||
+                              (!selectedFilters[filter as FilterKey] && option === "All")
                               ? "bg-primary/10 text-primary font-semibold"
                               : "text-gray-700"
-                          }`}
+                            }`}
                           onClick={() => handleOptionSelect(filter as FilterKey, option)}
                         >
                           {option}
@@ -697,7 +696,7 @@ const HotelsRooms: FunctionComponent = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="p-6">
                       <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
                         {hotel.name}
@@ -705,7 +704,7 @@ const HotelsRooms: FunctionComponent = () => {
                       <p className="text-gray-600 mb-4 line-clamp-2 leading-relaxed">
                         {hotel.description}
                       </p>
-                      
+
                       {/* Amenities */}
                       <div className="flex flex-wrap gap-2 mb-4">
                         <div className="flex items-center gap-1 text-xs bg-gray-100 px-2 py-1 rounded-full">
@@ -759,7 +758,7 @@ const HotelsRooms: FunctionComponent = () => {
                 Discover what's around your hotel
               </p>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {AMENITY_LINKS.map((amenity) => (
                 <div

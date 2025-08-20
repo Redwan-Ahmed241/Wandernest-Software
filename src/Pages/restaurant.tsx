@@ -1,7 +1,8 @@
 import type { FunctionComponent } from "react";
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Layout from "../App/Layout";
+replace
+import Layout from "../Components/Layout";
 
 const FILTERS = [
   { label: "Popular", value: "popular" },
@@ -135,11 +136,10 @@ const Restaurant: FunctionComponent = () => {
               {FILTERS.map((f) => (
                 <button
                   key={f.value}
-                  className={`px-4 py-2 rounded-lg font-semibold transition-all flex items-center gap-2 ${
-                    selectedFilter === f.value
+                  className={`px-4 py-2 rounded-lg font-semibold transition-all flex items-center gap-2 ${selectedFilter === f.value
                       ? "bg-primary-600 text-white shadow-md"
                       : "bg-primary-100 text-primary-700 hover:bg-primary-200"
-                  }`}
+                    }`}
                   onClick={() => setSelectedFilter(f.value)}
                   type="button"
                 >

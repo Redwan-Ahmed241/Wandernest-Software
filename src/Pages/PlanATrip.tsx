@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import Layout from "../App/Layout";
+replace
+import Layout from "../Components/Layout";
 
 const weekDays = ["S", "M", "T", "W", "T", "F", "S"];
 
@@ -37,11 +38,11 @@ const PlanATrip: React.FC = () => {
   const [calendarYear, setCalendarYear] = useState(today.getFullYear());
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
-  
+
   const daysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate();
   const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1);
   const firstDayOfWeek = new Date(calendarYear, calendarMonth, 1).getDay();
-  
+
   // Calendar navigation
   const handlePrevMonth = () => {
     if (calendarMonth === 0) {
@@ -67,8 +68,8 @@ const PlanATrip: React.FC = () => {
   ];
 
   const toggleActivity = (activityTitle: string) => {
-    setSelectedActivities(prev => 
-      prev.includes(activityTitle) 
+    setSelectedActivities(prev =>
+      prev.includes(activityTitle)
         ? prev.filter(a => a !== activityTitle)
         : [...prev, activityTitle]
     );
@@ -129,27 +130,26 @@ const PlanATrip: React.FC = () => {
                 {Array.from({ length: firstDayOfWeek }).map((_, i) => (
                   <div key={`empty-${i}`} className="h-12"></div>
                 ))}
-                
+
                 {/* Calendar days */}
                 {daysArray.map((day) => {
                   const isToday = day === today.getDate() && calendarMonth === today.getMonth() && calendarYear === today.getFullYear();
                   const isSelected = selectedDay === day;
                   const isPast = new Date(calendarYear, calendarMonth, day) < new Date(today.getFullYear(), today.getMonth(), today.getDate());
-                  
+
                   return (
                     <button
                       key={day}
                       onClick={() => !isPast && setSelectedDay(day)}
                       disabled={isPast}
-                      className={`h-12 rounded-lg font-medium transition-all duration-200 ${
-                        isPast
+                      className={`h-12 rounded-lg font-medium transition-all duration-200 ${isPast
                           ? "text-gray-300 cursor-not-allowed"
                           : isSelected
-                          ? "bg-primary text-white shadow-lg scale-105"
-                          : isToday
-                          ? "bg-blue-100 text-blue-600 border-2 border-blue-300"
-                          : "text-gray-700 hover:bg-gray-100"
-                      }`}
+                            ? "bg-primary text-white shadow-lg scale-105"
+                            : isToday
+                              ? "bg-blue-100 text-blue-600 border-2 border-blue-300"
+                              : "text-gray-700 hover:bg-gray-100"
+                        }`}
                     >
                       {day}
                     </button>
@@ -232,11 +232,10 @@ const PlanATrip: React.FC = () => {
                 return (
                   <div
                     key={idx}
-                    className={`bg-white rounded-2xl shadow-lg border-2 transition-all duration-300 overflow-hidden cursor-pointer transform hover:scale-105 ${
-                      isSelected 
-                        ? "border-primary shadow-xl" 
+                    className={`bg-white rounded-2xl shadow-lg border-2 transition-all duration-300 overflow-hidden cursor-pointer transform hover:scale-105 ${isSelected
+                        ? "border-primary shadow-xl"
                         : "border-gray-100 hover:border-gray-200 hover:shadow-xl"
-                    }`}
+                      }`}
                     onClick={() => toggleActivity(activity.title)}
                   >
                     <div className="relative">
@@ -263,7 +262,7 @@ const PlanATrip: React.FC = () => {
                         </div>
                       )}
                     </div>
-                    
+
                     <div className="p-6">
                       <div className="flex items-center justify-between mb-3">
                         <h3 className="text-lg font-bold text-gray-900">{activity.title}</h3>
@@ -273,11 +272,10 @@ const PlanATrip: React.FC = () => {
                       </div>
                       <p className="text-gray-600 mb-4">{activity.description}</p>
                       <button
-                        className={`w-full py-3 rounded-xl font-semibold transition-all duration-200 ${
-                          isSelected
+                        className={`w-full py-3 rounded-xl font-semibold transition-all duration-200 ${isSelected
                             ? "bg-primary text-white shadow-md"
                             : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                        }`}
+                          }`}
                       >
                         {isSelected ? "Added to Itinerary" : "Add to Itinerary"}
                       </button>

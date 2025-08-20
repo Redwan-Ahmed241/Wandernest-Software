@@ -2,7 +2,8 @@
 
 import { type FunctionComponent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Layout from "../App/Layout";
+replace
+import Layout from "../Components/Layout";
 import { ArrowRight, MapPin, Star, Users, Shield, Clock } from "react-feather";
 
 const FEATURED_API_URL = "https://wander-nest-ad3s.onrender.com/api/home/destinations/";
@@ -91,13 +92,13 @@ const HomePage: FunctionComponent = () => {
         <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
           {/* Background with overlay */}
           <div className="absolute inset-0 bg-gradient-to-br from-primary/90 via-primary-dark/80 to-primary/90"></div>
-          <div 
+          <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
             style={{
               backgroundImage: "url('https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=1920')"
             }}
           ></div>
-          
+
           {/* Hero Content */}
           <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">

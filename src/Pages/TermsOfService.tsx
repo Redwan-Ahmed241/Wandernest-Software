@@ -1,6 +1,7 @@
 import type { FunctionComponent } from "react";
 import { useCallback } from "react";
-import Layout from "../App/Layout";
+replace
+import Layout from "../Components/Layout";
 
 const TermsOfService: FunctionComponent = () => {
   const onDepth4FrameClick = useCallback(() => {

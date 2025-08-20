@@ -3,7 +3,8 @@
 import type React from "react";
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import Layout from "../App/Layout";
+replace
+import Layout from "../Components/Layout";
 import Sidebar from "./Sidebar";
 import { useAuth } from "../Authentication/auth-context";
 // Tailwind CSS used for all styling. Centralized color theme via tailwind.config.js
@@ -212,10 +213,10 @@ const Community: React.FC = () => {
             prev.map((group) =>
               group.id === groupId
                 ? {
-                    ...group,
-                    member_count: group.member_count + 1,
-                    is_member: true,
-                  }
+                  ...group,
+                  member_count: group.member_count + 1,
+                  is_member: true,
+                }
                 : group
             )
           );

@@ -2,7 +2,8 @@
 import React, { useState } from "react";
 import type { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
-import Layout from "../App/Layout";
+replace
+import Layout from "../Components/Layout";
 import { Search, MapPin, Star, ArrowRight, Filter } from "react-feather";
 
 const cardData = [
@@ -119,13 +120,13 @@ const ThingsToDo: FunctionComponent = () => {
         {/* Hero Section */}
         <section className="relative py-20 bg-gradient-to-br from-primary via-primary-dark to-primary overflow-hidden">
           <div className="absolute inset-0 bg-black/20"></div>
-          <div 
+          <div
             className="absolute inset-0 bg-cover bg-center opacity-30"
             style={{
               backgroundImage: "url('https://images.pexels.com/photos/2662116/pexels-photo-2662116.jpeg?auto=compress&cs=tinysrgb&w=1920')"
             }}
           ></div>
-          
+
           <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
               Things to
@@ -174,11 +175,10 @@ const ThingsToDo: FunctionComponent = () => {
               {filterCategories.map((cat) => (
                 <button
                   key={cat.id}
-                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${
-                    cat.id === selectedCategory
+                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${cat.id === selectedCategory
                       ? "bg-primary text-white shadow-lg scale-105"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105"
-                  }`}
+                    }`}
                   onClick={() => setSelectedCategory(cat.id)}
                 >
                   <span className="text-lg">{cat.icon}</span>
@@ -241,7 +241,7 @@ const ThingsToDo: FunctionComponent = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="p-6">
                       <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
                         {card.title}
