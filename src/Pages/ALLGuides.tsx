@@ -1,6 +1,6 @@
 import type { FunctionComponent } from "react";
 import { useCallback, useState } from "react";
-replace
+
 import Layout from "../Components/Layout";
 
 const AllGuides: FunctionComponent = () => {
@@ -58,12 +58,17 @@ const AllGuides: FunctionComponent = () => {
             </div>
             <div className="w-[435.9px] flex flex-col items-center justify-start text-[11.7px]">
               <p className="text-[1.15rem] leading-[1.5] text-[#f8f9fa] text-center mb-[18px] drop-shadow">
-                Find the best guides for your next adventure with detailed information.
+                Find the best guides for your next adventure with detailed
+                information.
               </p>
             </div>
             <div className="flex items-center bg-white rounded-full shadow-md px-4 w-full max-w-[480px] my-6 mb-8 border border-[#e8f2e8] transition-[border] h-14 focus-within:ring-2 focus-within:ring-[#179c6a]">
               <div className="w-[22px] h-[60px] opacity-70 mr-2 flex items-center">
-                <img src="/Figma_photos/search.svg" alt="search" className="h-[1.5em] w-auto block" />
+                <img
+                  src="/Figma_photos/search.svg"
+                  alt="search"
+                  className="h-[1.5em] w-auto block"
+                />
               </div>
               <div className="flex-1 flex items-center">
                 <input
@@ -102,8 +107,12 @@ const AllGuides: FunctionComponent = () => {
                       {g.title}
                     </b>
                     <div className="text-left">
-                      <div className="text-[#a1824a] text-[1.05rem] mb-1">Service Area: {g.area}</div>
-                      <div className="text-[#a1824a] text-[1rem]">Fare: {g.fare} | Timing: {g.timing}</div>
+                      <div className="text-[#a1824a] text-[1.05rem] mb-1">
+                        Service Area: {g.area}
+                      </div>
+                      <div className="text-[#a1824a] text-[1rem]">
+                        Fare: {g.fare} | Timing: {g.timing}
+                      </div>
                     </div>
                   </div>
                   <button
