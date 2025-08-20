@@ -1,64 +1,72 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
-import { AuthProvider, useAuth } from "./Authentication/auth-context"
-import { BookingProvider } from "./Context/booking-context"
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { AuthProvider, useAuth } from "./Authentication/auth-context";
+import { BookingProvider } from "./Context/booking-context";
 
 // All your existing imports
-import ThingsToDo from "./Pages/ThingsToDo"
-import HotelsRooms from "./Pages/HotelsRooms"
-import Destinations from "./Pages/Destinations"
-import PlanATrip from "./Pages/PlanATrip"
-import AboutUs from "./Pages/aboutUs"
-import AllGuides from "./Pages/ALLGuides"
-import Blogs from "./Pages/Blog"
-import Flights from "./Pages/flights"
-import Groups from "./Pages/Groups"
-import Guides from "./Pages/hiringGuides"
-import LoginPage from "./Pages/Loginpage"
-import Destination01 from "./Pages/Destination_01"
-import HomePage from "./Pages/Homepage"
-import RentVehicles from "./Pages/rentVehicles"
-import Restaurant from "./Pages/restaurant"
-import Support from "./Pages/support"
-import VisaAssistance from "./Pages/Visaassistance"
-import Navbar from "./Components/Navbar"
-import Footer from "./Components/Footer"
-import Layout from "./App/Layout"
-import MyTrips from "./Pages/MyTrips"
+import ThingsToDo from "./Pages/ThingsToDo";
+import HotelsRooms from "./Pages/HotelsRooms";
+import Destinations from "./Pages/Destinations";
+import PlanATrip from "./Pages/PlanATrip";
+import AboutUs from "./Pages/aboutUs";
+import AllGuides from "./Pages/ALLGuides";
+import Blogs from "./Pages/Blog";
+import Flights from "./Pages/flights";
+import Groups from "./Pages/Groups";
+import Guides from "./Pages/hiringGuides";
+import LoginPage from "./Pages/Loginpage";
+import Destination01 from "./Pages/Destination_01";
+import HomePage from "./Pages/Homepage";
+import RentVehicles from "./Pages/rentVehicles";
+import Restaurant from "./Pages/restaurant";
+import Support from "./Pages/support";
+import VisaAssistance from "./Pages/Visaassistance";
+import Navbar from "./Components/Navbar";
+import Footer from "./Components/Footer";
+import Layout from "./Components/Layout";
+import MyTrips from "./Pages/MyTrips";
 
-import Packages from "./Pages/Packages"
-import CreatePackage from "./Pages/CreatePackages"
-import SignupForm from "./Pages/Signup-form"
-import ShoppingCenters from "./Pages/shopping-center"
-import PublicTransport from "./Pages/public-transport"
-import DashboardHome from "./Pages/DashboardHome"
-import ProfileDropdown from "./Components/profile-dropdown"
-import Community from "./Pages/Community"
-import ProfileSettings from './Pages/ProfileSettings'
-import "./global.css"
-import ConfirmBook from "./Pages/confirm_book"
-import FPass from "./Pages/fpass"
+import Packages from "./Pages/Packages";
+import CreatePackage from "./Pages/CreatePackages";
+import SignupForm from "./Pages/Signup-form";
+import ShoppingCenters from "./Pages/shopping-center";
+import PublicTransport from "./Pages/public-transport";
+import DashboardHome from "./Pages/DashboardHome";
+import ProfileDropdown from "./Components/profile-dropdown";
+import Community from "./Pages/Community";
+import ProfileSettings from "./Pages/ProfileSettings";
+import "./global.css";
+import ConfirmBook from "./Pages/confirm_book";
+import FPass from "./Pages/fpass";
 
-import ResetPassword from "./Pages/reset-password"
-
+import ResetPassword from "./Pages/reset-password";
 
 // Protected Route Component
-const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { isAuthenticated, loading } = useAuth()
+const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
-    return <div style={{ padding: "20px", textAlign: "center" }}>Loading...</div>
+    return (
+      <div style={{ padding: "20px", textAlign: "center" }}>Loading...</div>
+    );
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />
+    return <Navigate to="/login" replace />;
   }
 
-  return <>{children}</>
-}
+  return <>{children}</>;
+};
 
 // Routes Component (needs to be inside AuthProvider)
 const AppRoutes: React.FC = () => {
@@ -89,12 +97,12 @@ const AppRoutes: React.FC = () => {
       <Route path="/create-packages" element={<CreatePackage />} />
       <Route path="/profile" element={<ProfileSettings />} />
       <Route path="/confirm-book" element={<ConfirmBook />} />
-      
+
       {/* Redirects */}
       {/* Auth Routes */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupForm />} />
-    
+
       {/* Protected Routes */}
       <Route
         path="/dashboard"
@@ -144,13 +152,15 @@ const AppRoutes: React.FC = () => {
       <Route path="/fpass" element={<FPass />} />
 
       {/* New Route */}
-      
 
       {/* New Route for password reset confirmation */}
-      <Route path="/reset-password/:uidb64/:token/" element={<ResetPassword />} />
+      <Route
+        path="/reset-password/:uidb64/:token/"
+        element={<ResetPassword />}
+      />
     </Routes>
-  )
-}
+  );
+};
 
 function App() {
   return (
@@ -161,7 +171,7 @@ function App() {
         </Router>
       </BookingProvider>
     </AuthProvider>
-  )
+  );
 }
 
-export default App
+export default App;
