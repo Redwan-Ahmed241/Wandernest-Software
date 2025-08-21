@@ -12,7 +12,7 @@ const Footer: React.FC = () => {
         { label: "Careers", path: "/careers" },
         { label: "Press", path: "/press" },
         { label: "Blog", path: "/blogs" },
-      ]
+      ],
     },
     {
       title: "Support",
@@ -21,7 +21,7 @@ const Footer: React.FC = () => {
         { label: "Contact Us", path: "/contact" },
         { label: "Trust & Safety", path: "/trust-safety" },
         { label: "Emergency", path: "/emergency" },
-      ]
+      ],
     },
     {
       title: "Legal",
@@ -30,7 +30,7 @@ const Footer: React.FC = () => {
         { label: "Privacy Policy", path: "/privacy" },
         { label: "Cookie Policy", path: "/cookies" },
         { label: "Accessibility", path: "/accessibility" },
-      ]
+      ],
     },
     {
       title: "Services",
@@ -39,28 +39,28 @@ const Footer: React.FC = () => {
         { label: "Hotels", path: "/hotels-rooms" },
         { label: "Packages", path: "/packages" },
         { label: "Visa Assistance", path: "/visa-assistance" },
-      ]
-    }
+      ],
+    },
   ];
 
   const socialLinks = [
-    { 
-      name: "Facebook", 
-      icon: "/figma_photos/facebook.svg", 
+    {
+      name: "Facebook",
+      icon: "/Figma_photos/facebook.svg",
       url: "https://facebook.com/wandernest",
-      hoverColor: "hover:text-blue-600"
+      hoverColor: "hover:text-blue-600",
     },
-    { 
-      name: "Twitter", 
-      icon: "/figma_photos/twitter.svg", 
+    {
+      name: "Twitter",
+      icon: "/Figma_photos/twitter.svg",
       url: "https://twitter.com/wandernest",
-      hoverColor: "hover:text-blue-400"
+      hoverColor: "hover:text-blue-400",
     },
-    { 
-      name: "Instagram", 
-      icon: "/figma_photos/insta.svg", 
+    {
+      name: "Instagram",
+      icon: "/Figma_photos/insta.svg",
       url: "https://instagram.com/wandernest",
-      hoverColor: "hover:text-pink-600"
+      hoverColor: "hover:text-pink-600",
     },
   ];
 
@@ -74,7 +74,7 @@ const Footer: React.FC = () => {
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-dark rounded-xl flex items-center justify-center shadow-lg">
                 <img
-                  src="/figma_photos/wandernest.svg"
+                  src="/Figma_photos/wandernest.svg"
                   alt="WanderNest"
                   className="w-7 h-7 filter brightness-0 invert"
                 />
@@ -84,7 +84,8 @@ const Footer: React.FC = () => {
               </span>
             </div>
             <p className="text-gray-300 leading-relaxed">
-              Discover Bangladesh's hidden gems and create unforgettable memories with our curated travel experiences.
+              Discover Bangladesh's hidden gems and create unforgettable
+              memories with our curated travel experiences.
             </p>
             <div className="flex space-x-4">
               {socialLinks.map((social) => (
@@ -95,7 +96,11 @@ const Footer: React.FC = () => {
                   rel="noopener noreferrer"
                   className={`w-10 h-10 bg-gray-700 rounded-lg flex items-center justify-center transition-all duration-200 hover:bg-gray-600 hover:scale-110 ${social.hoverColor}`}
                 >
-                  <img src={social.icon} alt={social.name} className="w-5 h-5" />
+                  <img
+                    src={social.icon}
+                    alt={social.name}
+                    className="w-5 h-5"
+                  />
                 </a>
               ))}
             </div>
@@ -104,7 +109,9 @@ const Footer: React.FC = () => {
           {/* Footer Links */}
           {footerSections.map((section) => (
             <div key={section.title} className="space-y-4">
-              <h3 className="text-lg font-semibold text-white">{section.title}</h3>
+              <h3 className="text-lg font-semibold text-white">
+                {section.title}
+              </h3>
               <ul className="space-y-3">
                 {section.links.map((link) => (
                   <li key={link.label}>

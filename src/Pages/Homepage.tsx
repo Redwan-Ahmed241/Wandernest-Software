@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 import Layout from "../Components/Layout";
 import { ArrowRight, MapPin, Star, Users, Shield, Clock } from "react-feather";
 
-const FEATURED_API_URL = "https://wander-nest-ad3s.onrender.com/api/home/destinations/";
+const FEATURED_API_URL =
+  "https://wander-nest-ad3s.onrender.com/api/home/destinations/";
 
 const HomePage: FunctionComponent = () => {
   const [destinations, setDestinations] = useState<any[]>([]);
@@ -59,29 +60,29 @@ const HomePage: FunctionComponent = () => {
       title: "Visa Assistance",
       description: "Fast and reliable visa processing with expert guidance",
       color: "from-blue-500 to-blue-600",
-      path: "/visa-assistance"
+      path: "/visa-assistance",
     },
     {
       icon: <MapPin className="w-8 h-8" />,
       title: "Travel Planner",
       description: "Customize your perfect trip with our AI-powered planner",
       color: "from-green-500 to-green-600",
-      path: "/plan-a-trip"
+      path: "/plan-a-trip",
     },
     {
       icon: <Clock className="w-8 h-8" />,
       title: "24/7 Support",
       description: "Round-the-clock assistance during your travels",
       color: "from-purple-500 to-purple-600",
-      path: "/support"
-    }
+      path: "/support",
+    },
   ];
 
   const stats = [
     { number: "50K+", label: "Happy Travelers", icon: "👥" },
     { number: "200+", label: "Destinations", icon: "🗺️" },
     { number: "1000+", label: "Hotels", icon: "🏨" },
-    { number: "4.9", label: "Average Rating", icon: "⭐" }
+    { number: "4.9", label: "Average Rating", icon: "⭐" },
   ];
 
   return (
@@ -94,21 +95,20 @@ const HomePage: FunctionComponent = () => {
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
             style={{
-              backgroundImage: "url('https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=1920')"
+              backgroundImage:
+                "url('https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=1920')",
             }}
           ></div>
 
           {/* Hero Content */}
           <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-              Explore
-              <span className="block bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent">
-                Bangladesh
-              </span>
-              with WanderNest
+              <span className="block bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent"></span>
+              Explore Bangladesh with WanderNest
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-gray-100 max-w-2xl mx-auto leading-relaxed">
-              Discover the beauty, culture, and adventure of Bangladesh with our expertly crafted travel experiences
+              Discover the beauty, culture, and adventure of Bangladesh with our
+              expertly crafted travel experiences
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
@@ -141,7 +141,9 @@ const HomePage: FunctionComponent = () => {
                   <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary-dark rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
                     <span className="text-2xl">{stat.icon}</span>
                   </div>
-                  <div className="text-3xl md:text-4xl font-bold text-primary mb-2">{stat.number}</div>
+                  <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
+                    {stat.number}
+                  </div>
                   <div className="text-gray-600 font-medium">{stat.label}</div>
                 </div>
               ))}
@@ -157,7 +159,8 @@ const HomePage: FunctionComponent = () => {
                 Featured Destinations
               </h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Discover the most popular and breathtaking destinations in Bangladesh
+                Discover the most popular and breathtaking destinations in
+                Bangladesh
               </p>
             </div>
 
@@ -170,56 +173,61 @@ const HomePage: FunctionComponent = () => {
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {loading ? (
-                Array.from({ length: 6 }).map((_, index) => (
-                  <div key={index} className="bg-gray-100 rounded-2xl overflow-hidden animate-pulse">
-                    <div className="h-64 bg-gray-200"></div>
-                    <div className="p-6 space-y-3">
-                      <div className="h-6 bg-gray-200 rounded"></div>
-                      <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                destinations.map((place, index) => (
-                  <div
-                    key={place.id || index}
-                    className="group bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105"
-                    onClick={() => handleCardClick(place)}
-                  >
-                    <div className="relative overflow-hidden">
-                      <img
-                        src={place.image_url || "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=600"}
-                        alt={place.name}
-                        className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                      <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
-                        <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                        <span className="text-sm font-semibold">4.8</span>
+              {loading
+                ? Array.from({ length: 6 }).map((_, index) => (
+                    <div
+                      key={index}
+                      className="bg-gray-100 rounded-2xl overflow-hidden animate-pulse"
+                    >
+                      <div className="h-64 bg-gray-200"></div>
+                      <div className="p-6 space-y-3">
+                        <div className="h-6 bg-gray-200 rounded"></div>
+                        <div className="h-4 bg-gray-200 rounded w-3/4"></div>
                       </div>
                     </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
-                        {place.name}
-                      </h3>
-                      <p className="text-gray-600 mb-4 line-clamp-2">
-                        {place.description || "Experience the beauty and culture of this amazing destination"}
-                      </p>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2 text-gray-500">
-                          <MapPin className="w-4 h-4" />
-                          <span className="text-sm">Bangladesh</span>
+                  ))
+                : destinations.map((place, index) => (
+                    <div
+                      key={place.id || index}
+                      className="group bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105"
+                      onClick={() => handleCardClick(place)}
+                    >
+                      <div className="relative overflow-hidden">
+                        <img
+                          src={
+                            place.image_url ||
+                            "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=600"
+                          }
+                          alt={place.name}
+                          className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
+                          <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                          <span className="text-sm font-semibold">4.8</span>
                         </div>
-                        <div className="flex items-center gap-1 text-primary font-semibold group-hover:gap-2 transition-all duration-200">
-                          <span>Explore</span>
-                          <ArrowRight className="w-4 h-4" />
+                      </div>
+                      <div className="p-6">
+                        <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
+                          {place.name}
+                        </h3>
+                        <p className="text-gray-600 mb-4 line-clamp-2">
+                          {place.description ||
+                            "Experience the beauty and culture of this amazing destination"}
+                        </p>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2 text-gray-500">
+                            <MapPin className="w-4 h-4" />
+                            <span className="text-sm">Bangladesh</span>
+                          </div>
+                          <div className="flex items-center gap-1 text-primary font-semibold group-hover:gap-2 transition-all duration-200">
+                            <span>Explore</span>
+                            <ArrowRight className="w-4 h-4" />
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))
-              )}
+                  ))}
             </div>
 
             {!loading && destinations.length === 0 && !error && (
@@ -227,8 +235,12 @@ const HomePage: FunctionComponent = () => {
                 <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <MapPin className="w-12 h-12 text-gray-400" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">No destinations found</h3>
-                <p className="text-gray-600">Check back later for amazing destinations</p>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  No destinations found
+                </h3>
+                <p className="text-gray-600">
+                  Check back later for amazing destinations
+                </p>
               </div>
             )}
           </div>
@@ -253,7 +265,9 @@ const HomePage: FunctionComponent = () => {
                   className="group bg-white rounded-2xl shadow-lg p-8 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105"
                   onClick={() => navigate(service.path)}
                 >
-                  <div className={`w-16 h-16 bg-gradient-to-br ${service.color} rounded-2xl flex items-center justify-center mb-6 text-white shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110`}>
+                  <div
+                    className={`w-16 h-16 bg-gradient-to-br ${service.color} rounded-2xl flex items-center justify-center mb-6 text-white shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110`}
+                  >
                     {service.icon}
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-primary transition-colors duration-200">
@@ -279,7 +293,8 @@ const HomePage: FunctionComponent = () => {
               Ready to Start Your Adventure?
             </h2>
             <p className="text-xl mb-8 text-gray-100 max-w-2xl mx-auto">
-              Join thousands of travelers who have discovered the magic of Bangladesh with WanderNest
+              Join thousands of travelers who have discovered the magic of
+              Bangladesh with WanderNest
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
@@ -318,25 +333,34 @@ const HomePage: FunctionComponent = () => {
                   name: "Sarah Ahmed",
                   location: "Dhaka",
                   rating: 5,
-                  comment: "WanderNest made our Cox's Bazar trip absolutely perfect. The attention to detail was incredible!",
-                  avatar: "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150"
+                  comment:
+                    "WanderNest made our Cox's Bazar trip absolutely perfect. The attention to detail was incredible!",
+                  avatar:
+                    "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150",
                 },
                 {
                   name: "Michael Chen",
                   location: "Singapore",
                   rating: 5,
-                  comment: "As a foreign visitor, WanderNest's visa assistance and local guides were invaluable. Highly recommended!",
-                  avatar: "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150"
+                  comment:
+                    "As a foreign visitor, WanderNest's visa assistance and local guides were invaluable. Highly recommended!",
+                  avatar:
+                    "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150",
                 },
                 {
                   name: "Fatima Rahman",
                   location: "Chittagong",
                   rating: 5,
-                  comment: "The Sundarbans tour was a once-in-a-lifetime experience. Professional service from start to finish.",
-                  avatar: "https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=150"
-                }
+                  comment:
+                    "The Sundarbans tour was a once-in-a-lifetime experience. Professional service from start to finish.",
+                  avatar:
+                    "https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=150",
+                },
               ].map((testimonial, index) => (
-                <div key={index} className="bg-gray-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
+                <div
+                  key={index}
+                  className="bg-gray-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300"
+                >
                   <div className="flex items-center gap-4 mb-6">
                     <img
                       src={testimonial.avatar}
@@ -344,13 +368,18 @@ const HomePage: FunctionComponent = () => {
                       className="w-16 h-16 rounded-full object-cover shadow-md"
                     />
                     <div>
-                      <h4 className="font-bold text-gray-900">{testimonial.name}</h4>
+                      <h4 className="font-bold text-gray-900">
+                        {testimonial.name}
+                      </h4>
                       <p className="text-gray-600">{testimonial.location}</p>
                     </div>
                   </div>
                   <div className="flex gap-1 mb-4">
                     {Array.from({ length: testimonial.rating }).map((_, i) => (
-                      <Star key={i} className="w-5 h-5 text-yellow-500 fill-current" />
+                      <Star
+                        key={i}
+                        className="w-5 h-5 text-yellow-500 fill-current"
+                      />
                     ))}
                   </div>
                   <p className="text-gray-700 italic leading-relaxed">
