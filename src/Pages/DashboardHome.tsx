@@ -115,7 +115,7 @@ const DashboardHome: FunctionComponent = () => {
   return (
     <Layout>
       <BookingNotification />
-      <div className="flex min-h-screen bg-gray-50">
+      <div className="flex bg-gray-50" style={{ minHeight: 'calc(100vh - 64px)' }}>
         <Sidebar />
         <div className="flex-1 p-8">
           <div className="max-w-7xl mx-auto space-y-8">
