@@ -22,8 +22,7 @@ const Navbar: React.FC = () => {
     {
       label: "Flights",
       path: "/flights",
-      available: false,
-      badge: "Coming Soon",
+      available: true,
     },
     { label: "Packages", path: "/packages", available: true },
     { label: "Things to Do", path: "/things-to-do", available: true },
