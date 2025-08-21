@@ -584,8 +584,8 @@ const HotelsRooms: FunctionComponent = () => {
                 <div key={filter} className="relative">
                   <button
                     className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${selectedFilters[filter as FilterKey] && selectedFilters[filter as FilterKey] !== "All"
-                      ? "bg-primary text-white shadow-lg scale-105"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105"
+                      ? "bg-[#4a6b5b] text-white shadow-lg scale-105 hover:bg-[#0d1c1c]"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105 active:bg-gray-300"
                       }`}
                     onClick={() => handleFilterClick(filter as FilterKey)}
                   >
@@ -732,7 +732,7 @@ const HotelsRooms: FunctionComponent = () => {
                             e.stopPropagation();
                             handleBookHotel(hotel);
                           }}
-                          className="px-6 py-2 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2"
+                          className="px-6 py-2 bg-[#4a6b5b] text-white font-semibold rounded-xl shadow-md hover:shadow-lg hover:bg-[#0d1c1c] transition-all duration-200 hover:scale-105 flex items-center gap-2"
                         >
                           Book Now
                           <ArrowRight className="w-4 h-4" />
