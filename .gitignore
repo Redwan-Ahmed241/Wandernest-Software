@@ -1,3 +1,5 @@
+# Ignore project timeline file
+WanderNest_Timeline.txt
 # Logs
 logs
 *.log
