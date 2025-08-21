@@ -19,7 +19,12 @@ const Navbar: React.FC = () => {
   const navItems = [
     { label: "Destinations", path: "/destinations", available: true },
     { label: "Hotels", path: "/hotels-rooms", available: true },
-    { label: "Flights", path: "/flights", available: false, badge: "Coming Soon" },
+    {
+      label: "Flights",
+      path: "/flights",
+      available: false,
+      badge: "Coming Soon",
+    },
     { label: "Packages", path: "/packages", available: true },
     { label: "Things to Do", path: "/things-to-do", available: true },
   ];
@@ -33,14 +38,19 @@ const Navbar: React.FC = () => {
             className="flex items-center gap-3 cursor-pointer group"
             onClick={goHome}
           >
-            <div className="relative z-10 w-10 h-10 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300" style={{ background: "linear-gradient(135deg, #4a6b5b 0%, #0d1c1c 100%)" }}>
+            <div
+              className="relative z-10 w-10 h-10 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300"
+              style={{
+                background: "linear-gradient(135deg, #4a6b5b 0%, #0d1c1c 100%)",
+              }}
+            >
               <img
                 src="/Figma_photos/wandernest.svg"
                 alt="WanderNest"
                 className="w-6 h-6 filter brightness-0 invert"
               />
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-transparent">
+            <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-black">
               WanderNest
             </span>
           </div>
@@ -131,7 +141,9 @@ const Navbar: React.FC = () => {
                     </button>
                   ) : (
                     <div className="flex items-center justify-between px-3 py-2">
-                      <span className="text-gray-400 font-medium">{item.label}</span>
+                      <span className="text-gray-400 font-medium">
+                        {item.label}
+                      </span>
                       <span className="bg-gradient-to-r from-orange-400 to-orange-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
                         {item.badge}
                       </span>

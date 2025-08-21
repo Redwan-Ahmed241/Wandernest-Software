@@ -163,10 +163,6 @@ export default function TravelLogin() {
     }
   };
 
-  const _handleLogout = () => {
-    // This function is no longer needed since we're using auth context
-  };
-
   const handleWanderNestClick = () => {
     navigate("/");
   };
@@ -181,7 +177,7 @@ export default function TravelLogin() {
             onClick={handleWanderNestClick}
           >
             <img
-              src="/figma_photos/wandernest.svg"
+              src="/Figma_photos/wandernest.svg"
               alt="WanderNest Logo"
               className="w-10 h-10"
             />
