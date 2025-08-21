@@ -287,28 +287,28 @@ const HomePage: FunctionComponent = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 bg-gradient-to-r from-primary via-primary-dark to-primary">
-          <div className="max-w-4xl mx-auto px-4 text-center text-white">
+        <section className="py-20 bg-gradient-to-r from-primary-dark via-primary to-primary">
+          <div className="max-w-4xl mx-auto px-4 text-center text-primary-dark">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Ready to Start Your Adventure?
             </h2>
-            <p className="text-xl mb-8 text-gray-100 max-w-2xl mx-auto">
+            <p className="text-xl mb-8 text-primary-dark max-w-2xl mx-auto">
               Join thousands of travelers who have discovered the magic of
               Bangladesh with WanderNest
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
                 onClick={() => navigate("/packages")}
-                className="px-8 py-4 bg-white text-primary font-bold text-lg rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2"
+                className="px-8 py-4 bg-primary-light text-white font-bold text-lg rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2"
               >
-                <Users className="w-5 h-5" />
+                <Users className="w-5 h-5 text-white" />
                 Browse Packages
               </button>
               <button
                 onClick={() => navigate("/plan-a-trip")}
-                className="px-8 py-4 border-2 border-white text-white font-bold text-lg rounded-xl hover:bg-white hover:text-primary transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2"
+                className="px-8 py-4 border-2 border-primary-light text-primary-dark font-bold text-lg rounded-xl hover:bg-primary-light hover:text-white transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2"
               >
-                <MapPin className="w-5 h-5" />
+                <MapPin className="w-5 h-5 text-primary-dark group-hover:text-white" />
                 Plan Custom Trip
               </button>
             </div>
