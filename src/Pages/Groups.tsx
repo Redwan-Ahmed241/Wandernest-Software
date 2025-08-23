@@ -111,7 +111,9 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
     }
   }, [isAuthenticated, loading, navigate]);
   if (loading || !isAuthenticated) {
-    return <div style={{ padding: 40, textAlign: "center" }}>Loading...</div>;
+    return <div className="flex justify-center items-center min-h-screen">
+      <div className="text-lg text-gray-600">Loading...</div>
+    </div>;
   }
   return <>{children}</>;
 };
@@ -166,86 +168,78 @@ const Groups: React.FC = () => {
   return (
     <ProtectedRoute>
       <Navbar />
-      <div className={styles.groupDetailWrapper}>
+      <div className="min-h-screen bg-gray-50">
         {/* Banner and group name */}
-        <div className={styles.groupBannerSection}>
+        <div className="relative w-full">
           <img
             src={group.banner}
             alt={group.name}
-            className={styles.groupBanner}
+            className="w-full h-64 md:h-80 object-cover"
           />
-          <div className={styles.groupBannerName}>
+          <div className="absolute bottom-6 left-6 flex items-center text-white text-2xl md:text-3xl font-bold bg-black bg-opacity-50 px-4 py-2 rounded-lg">
             <img
               src="/figma_photos/wandernest.svg"
               alt="group icon"
-              style={{
-                width: 32,
-                height: 32,
-                borderRadius: "50%",
-                marginRight: 12,
-                verticalAlign: "middle",
-                background: "#fff",
-                padding: 2,
-              }}
+              className="w-8 h-8 rounded-full mr-3 bg-white p-0.5"
             />
             {group.name}
           </div>
         </div>
-        <div className={styles.groupMainContent}>
+        <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left: Main content */}
-          <div className={styles.groupMainLeft}>
+          <div className="lg:col-span-2 space-y-6">
             {/* Member avatars */}
-            <div className={styles.groupAvatarsRow}>
+            <div className="flex flex-wrap gap-2 p-4 bg-white rounded-lg shadow-sm">
               {group.members.slice(0, 10).map((m) => (
                 <img
                   key={m.id}
                   src={m.avatar}
                   alt={m.name}
-                  className={styles.groupAvatar}
+                  className="w-10 h-10 rounded-full object-cover border-2 border-gray-200 hover:border-primary transition-colors duration-200"
                 />
               ))}
             </div>
             {/* Tabs */}
-            <div className={styles.groupTabsRow}>
+            <div className="flex space-x-1 bg-gray-100 rounded-lg p-1">
               {TABS.map((tab) => (
                 <button
                   key={tab.label}
                   className={
                     activeTab === tab.label
-                      ? styles.groupTabActive
-                      : styles.groupTab
+                      ? "flex-1 px-4 py-2 rounded-md bg-white text-primary font-medium shadow-sm transition-all duration-200"
+                      : "flex-1 px-4 py-2 rounded-md text-gray-600 hover:text-primary hover:bg-white hover:shadow-sm transition-all duration-200"
                   }
                   onClick={() => setActiveTab(tab.label)}
                 >
-                  <span style={{ marginRight: 6 }}>{tab.icon}</span>
+                  <span className="mr-2">{tab.icon}</span>
                   {tab.label}
                 </button>
               ))}
             </div>
             {/* Tab content */}
-            <div className={styles.groupTabContent}>
+            <div className="space-y-4">
               {activeTab === "Discussion" && (
                 <>
                   {/* Post input (joined users) */}
                   {isJoined && (
-                    <div className={styles.groupPostInputRow}>
+                    <div className="flex items-center gap-3 p-4 bg-white rounded-lg shadow-sm border border-gray-200">
                       <img
                         src={currentUser.avatar}
                         alt="user"
-                        className={styles.groupAvatar}
+                        className="w-10 h-10 rounded-full object-cover"
                       />
-                      <span style={{ fontSize: "1.2rem", marginRight: 6 }}>
+                      <span className="text-xl mr-1">
                         ✏️
                       </span>
                       <input
-                        className={styles.groupPostInput}
-                        placeholder={"Share your thoughts..."}
+                        className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                        placeholder="Share your thoughts..."
                         value={postInput}
                         onChange={(e) => setPostInput(e.target.value)}
                         disabled={false}
                       />
                       <button
-                        className={styles.groupPostButton}
+                        className="px-6 py-2 bg-primary text-white rounded-full hover:bg-primary-dark transition-colors duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"
                         disabled={!postInput.trim()}
                         onClick={handlePost}
                       >
@@ -254,38 +248,34 @@ const Groups: React.FC = () => {
                     </div>
                   )}
                   {pendingMessage && (
-                    <div style={{ color: "#b0b0b0", marginBottom: 12 }}>
+                    <div className="text-gray-500 mb-3 px-4">
                       {pendingMessage}
                     </div>
                   )}
                   {/* Admin: Pending posts */}
                   {isAdmin && pendingPosts.length > 0 && (
-                    <div className={styles.groupPendingPostsSection}>
-                      <div
-                        className={styles.groupSidebarTitle}
-                        style={{ marginBottom: 8 }}
-                      >
+                    <div className="mb-6">
+                      <div className="text-lg font-semibold text-gray-900 mb-4">
                         Pending Posts
                       </div>
                       {pendingPosts.map((post) => (
-                        <div key={post.id} className={styles.groupPostCard}>
-                          <div className={styles.groupPostInfo}>
-                            <div className={styles.groupPostTitle}>
+                        <div key={post.id} className="flex bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4 hover:shadow-md transition-shadow duration-200">
+                          <div className="flex-1 pr-4">
+                            <div className="font-semibold text-gray-900 mb-1">
                               {post.title}
                             </div>
-                            <div className={styles.groupPostMeta}>
+                            <div className="text-sm text-gray-600 mb-3">
                               Posted by {post.author} - {post.time}
                             </div>
-                            <div style={{ display: "flex", gap: 8 }}>
+                            <div className="flex gap-2">
                               <button
-                                className={styles.groupPostButton}
+                                className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors duration-200"
                                 onClick={() => handleApprove(post.id)}
                               >
                                 Approve
                               </button>
                               <button
-                                className={styles.groupPostButton}
-                                style={{ background: "#e57373" }}
+                                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors duration-200"
                                 onClick={() => handleReject(post.id)}
                               >
                                 Reject
@@ -295,33 +285,33 @@ const Groups: React.FC = () => {
                           <img
                             src={post.image}
                             alt={post.title}
-                            className={styles.groupPostImage}
+                            className="w-24 h-24 object-cover rounded-lg"
                           />
                         </div>
                       ))}
                     </div>
                   )}
                   {/* Approved posts list */}
-                  <div className={styles.groupPostsList}>
+                  <div className="space-y-4">
                     {posts
                       .filter((p) => p.status === "approved")
                       .map((post) => (
-                        <div key={post.id} className={styles.groupPostCard}>
-                          <div className={styles.groupPostInfo}>
-                            <div className={styles.groupPostTitle}>
+                        <div key={post.id} className="flex bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200 group">
+                          <div className="flex-1 pr-4">
+                            <div className="font-semibold text-gray-900 mb-1 group-hover:text-primary transition-colors duration-200">
                               {post.title}
                             </div>
-                            <div className={styles.groupPostMeta}>
+                            <div className="text-sm text-gray-600 mb-3">
                               Posted by {post.author} - {post.time}
                             </div>
-                            <button className={styles.groupPostDetailsBtn}>
+                            <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-primary hover:text-white transition-colors duration-200">
                               View Details
                             </button>
                           </div>
                           <img
                             src={post.image}
                             alt={post.title}
-                            className={styles.groupPostImage}
+                            className="w-24 h-24 object-cover rounded-lg"
                           />
                         </div>
                       ))}
@@ -329,23 +319,25 @@ const Groups: React.FC = () => {
                 </>
               )}
               {activeTab === "About" && (
-                <div className={styles.groupAboutTab}>{group.about}</div>
+                <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+                  <p className="text-gray-700 leading-relaxed">{group.about}</p>
+                </div>
               )}
               {activeTab === "Featured" && (
-                <div className={styles.groupAboutTab}>
-                  No featured posts yet.
+                <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+                  <p className="text-gray-500 text-center py-8">No featured posts yet.</p>
                 </div>
               )}
               {activeTab === "Members" && (
-                <div className={styles.groupMembersTab}>
-                  {group.members.map((m) => (
-                    <div key={m.id} className={styles.groupMemberRow}>
+                <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+                  {group.members.map((m, index) => (
+                    <div key={m.id} className={`flex items-center gap-3 p-4 hover:bg-gray-50 transition-colors duration-200 ${index !== 0 ? 'border-t border-gray-100' : ''}`}>
                       <img
                         src={m.avatar}
                         alt={m.name}
-                        className={styles.groupAvatar}
+                        className="w-12 h-12 rounded-full object-cover"
                       />
-                      <span>{m.name}</span>
+                      <span className="font-medium text-gray-900">{m.name}</span>
                     </div>
                   ))}
                 </div>
@@ -353,28 +345,31 @@ const Groups: React.FC = () => {
             </div>
           </div>
           {/* Right: Sidebar */}
-          <div className={styles.groupSidebar}>
-            <div className={styles.groupSidebarSection}>
-              <div className={styles.groupSidebarTitle}>About</div>
-              <div className={styles.groupSidebarText}>{group.about}</div>
-              <div className={styles.groupSidebarTitle}>
-                Privacy <span style={{ marginLeft: 4 }}>🔒</span>
+          <div className="space-y-6">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+              <div className="text-lg font-semibold text-gray-900 mb-3">About</div>
+              <div className="text-gray-700 mb-4 leading-relaxed">{group.about}</div>
+              <div className="text-lg font-semibold text-gray-900 mb-2 flex items-center">
+                Privacy <span className="ml-1">🔒</span>
               </div>
-              <div className={styles.groupSidebarText}>{group.privacy}</div>
-              <div className={styles.groupSidebarTitle}>
-                Visibility <span style={{ marginLeft: 4 }}>👁️</span>
+              <div className="text-gray-700 mb-4 leading-relaxed">{group.privacy}</div>
+              <div className="text-lg font-semibold text-gray-900 mb-2 flex items-center">
+                Visibility <span className="ml-1">👁️</span>
               </div>
-              <div className={styles.groupSidebarText}>{group.visibility}</div>
+              <div className="text-gray-700 leading-relaxed">{group.visibility}</div>
             </div>
-            <div className={styles.groupSidebarImages}>
-              {group.images.map((img, i) => (
-                <img
-                  key={i}
-                  src={img}
-                  alt="group"
-                  className={styles.groupSidebarImg}
-                />
-              ))}
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+              <div className="text-lg font-semibold text-gray-900 mb-4">Photos</div>
+              <div className="grid grid-cols-2 gap-3">
+                {group.images.map((img, i) => (
+                  <img
+                    key={i}
+                    src={img}
+                    alt="group"
+                    className="w-full h-24 object-cover rounded-lg hover:opacity-75 transition-opacity duration-200 cursor-pointer"
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
