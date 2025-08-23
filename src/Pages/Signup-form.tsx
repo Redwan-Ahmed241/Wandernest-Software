@@ -5,6 +5,7 @@ import Footer from "../Components/Footer";
 import { useCallback } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 interface FormData {
   username: string;
   first_name: string;
@@ -121,6 +122,7 @@ export default function SignupForm() {
   const goHome = useCallback(() => {
     navigate("/");
   }, [navigate]);
+
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -130,7 +132,6 @@ export default function SignupForm() {
     }
 
     setIsLoading(true);
-    setApiError("");
 
     try {
       // Prepare data for API (exclude confirm_password and convert age to number)
@@ -209,289 +210,335 @@ export default function SignupForm() {
 
   if (isSuccess) {
     return (
-      <>
-        <div className="container">
-          <div className="form-wrapper">
-            <div className="card">
-              <div className="card-header">
-                <h1 className="card-title">Account Created Successfully!</h1>
-                <p className="card-description">
-                  Welcome!to WanderNest Your account has been created.
-                </p>
+      <div className="min-h-screen relative overflow-hidden">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: "url('https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=1920')"
+          }}
+        />
+        
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-green-900/70 via-green-800/50 to-green-900/70" />
+        
+        {/* Content */}
+        <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
+          <div className="w-full max-w-md">
+            <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-8 text-center">
+              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span className="text-4xl">🎉</span>
               </div>
-              <div className="card-content">
-                <div className="success-message">
-                  <p>
-                    Thank you for signing up. You can now log in to your
-                    account.
-                  </p>
-                  <button
-                    onClick={resetSuccess}
-                    className="button"
-                    style={{ marginTop: "1rem" }}
-                  >
-                    Create Another Account
-                  </button>
-                </div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-4">Account Created Successfully!</h1>
+              <p className="text-lg text-gray-600 mb-6">
+                Welcome to WanderNest! Your account has been created and you can now log in.
+              </p>
+              <div className="space-y-4">
+                <button
+                  onClick={() => navigate("/login")}
+                  className="w-full py-3 bg-gradient-to-r from-primary to-primary-dark text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105"
+                >
+                  Go to Login
+                </button>
+                <button
+                  onClick={resetSuccess}
+                  className="w-full py-3 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-all duration-200"
+                >
+                  Create Another Account
+                </button>
               </div>
             </div>
           </div>
         </div>
         <Footer />
-      </>
+      </div>
     );
   }
 
   return (
-    <>
-      <div className={"depth3Frame0"}>
-        <img
-          className={"depth4Frame0"}
-          alt="Logo"
-          src="/figma_photos/wandernest.svg"
-        />
-        <div className={"depth4Frame1"} onClick={goHome}>
-          <b className={"wandernest"}>WanderNest</b>
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: "url('https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=1920')"
+        }}
+      />
+      
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/60" />
+      
+      {/* Content */}
+      <div className="relative z-10 min-h-screen flex flex-col">
+        {/* Header */}
+        <div className="p-6">
+          <div
+            className="inline-flex items-center gap-3 cursor-pointer group"
+            onClick={goHome}
+          >
+            <div className="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
+              <img
+                src="/figma_photos/wandernest.svg"
+                alt="Logo"
+                className="w-7 h-7"
+              />
+            </div>
+            <span className="text-2xl font-bold text-white group-hover:text-accent transition-colors duration-300">
+              WanderNest
+            </span>
+          </div>
         </div>
-      </div>
-      <div className="min-h-screen bg-gradient-to-br from-primary-100 to-primary-300 py-8 px-4">
-        <div className="max-w-xl mx-auto bg-white rounded-lg shadow p-6">
-          <h1 className="text-2xl font-bold text-primary-700 mb-6">
-            Create Account
-          </h1>
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            {apiError && (
-              <div className="mt-3 text-red-600 text-center font-medium">
-                {apiError}
-              </div>
-            )}
 
-            {/* Personal Information */}
-            <div className="section">
-              <h3 className="section-title">Personal Information</h3>
+        {/* Main Content */}
+        <div className="flex-1 flex items-center justify-center p-4">
+          <div className="w-full max-w-2xl">
+            <div className="text-center mb-8">
+              <h1 className="text-4xl font-bold text-white mb-4">Join WanderNest</h1>
+              <p className="text-xl text-white/80">
+                Start your journey to explore Bangladesh's hidden gems
+              </p>
+            </div>
 
-              <div className="field-group">
-                <label htmlFor="username" className="label">
-                  Username
-                </label>
-                <input
-                  id="username"
-                  name="username"
-                  className={`input ${errors.username ? "input-error" : ""}`}
-                  placeholder="Enter your username"
-                  value={formData.username}
-                  onChange={handleChange}
-                  required
-                />
-                {errors.username && (
-                  <span className="text-red-600 text-sm mt-1">
-                    {errors.username}
-                  </span>
+            <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Create Account</h2>
+              
+              <form className="space-y-6" onSubmit={handleSubmit}>
+                {apiError && (
+                  <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
+                    <p className="text-red-600 text-sm font-medium text-center">
+                      {apiError}
+                    </p>
+                  </div>
                 )}
-              </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="field-group">
-                  <label htmlFor="first_name" className="label">
-                    First Name
-                  </label>
-                  <input
-                    id="first_name"
-                    name="first_name"
-                    className={`input ${
-                      errors.first_name ? "input-error" : ""
-                    }`}
-                    placeholder="Enter your first name"
-                    value={formData.first_name}
-                    onChange={handleChange}
-                    required
-                  />
-                  {errors.first_name && (
-                    <span className="text-red-600 text-sm mt-1">
-                      {errors.first_name}
-                    </span>
-                  )}
-                </div>
-                <div className="field-group">
-                  <label htmlFor="last_name" className="label">
-                    Last Name
-                  </label>
-                  <input
-                    id="last_name"
-                    name="last_name"
-                    className={`input ${errors.last_name ? "input-error" : ""}`}
-                    placeholder="Enter your last name"
-                    value={formData.last_name}
-                    onChange={handleChange}
-                    required
-                  />
-                  {errors.last_name && (
-                    <span className="text-red-600 text-sm mt-1">
-                      {errors.last_name}
-                    </span>
-                  )}
-                </div>
-              </div>
+                {/* Personal Information */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2">Personal Information</h3>
 
-              <div className="grid grid-cols-3 gap-4">
-                <div className="field-group col-span-2">
-                  <label htmlFor="country" className="label">
-                    Country
-                  </label>
-                  <input
-                    id="country"
-                    name="country"
-                    className={`input ${errors.country ? "input-error" : ""}`}
-                    placeholder="Enter your country"
-                    value={formData.country}
-                    onChange={handleChange}
-                    required
-                  />
-                  {errors.country && (
-                    <span className="text-red-600 text-sm mt-1">
-                      {errors.country}
-                    </span>
-                  )}
+                  <div>
+                    <label htmlFor="username" className="block text-sm font-semibold text-gray-700 mb-1">
+                      Username
+                    </label>
+                    <input
+                      id="username"
+                      name="username"
+                      className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 ${errors.username ? "border-red-300 bg-red-50" : "border-gray-300 bg-white/90"}`}
+                      placeholder="Enter your username"
+                      value={formData.username}
+                      onChange={handleChange}
+                      required
+                    />
+                    {errors.username && (
+                      <p className="text-red-600 text-sm mt-1 font-medium">
+                        {errors.username}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="first_name" className="block text-sm font-semibold text-gray-700 mb-1">
+                        First Name
+                      </label>
+                      <input
+                        id="first_name"
+                        name="first_name"
+                        className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 ${errors.first_name ? "border-red-300 bg-red-50" : "border-gray-300 bg-white/90"}`}
+                        placeholder="Enter your first name"
+                        value={formData.first_name}
+                        onChange={handleChange}
+                        required
+                      />
+                      {errors.first_name && (
+                        <p className="text-red-600 text-sm mt-1 font-medium">
+                          {errors.first_name}
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      <label htmlFor="last_name" className="block text-sm font-semibold text-gray-700 mb-1">
+                        Last Name
+                      </label>
+                      <input
+                        id="last_name"
+                        name="last_name"
+                        className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 ${errors.last_name ? "border-red-300 bg-red-50" : "border-gray-300 bg-white/90"}`}
+                        placeholder="Enter your last name"
+                        value={formData.last_name}
+                        onChange={handleChange}
+                        required
+                      />
+                      {errors.last_name && (
+                        <p className="text-red-600 text-sm mt-1 font-medium">
+                          {errors.last_name}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="col-span-2">
+                      <label htmlFor="country" className="block text-sm font-semibold text-gray-700 mb-1">
+                        Country
+                      </label>
+                      <input
+                        id="country"
+                        name="country"
+                        className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 ${errors.country ? "border-red-300 bg-red-50" : "border-gray-300 bg-white/90"}`}
+                        placeholder="Enter your country"
+                        value={formData.country}
+                        onChange={handleChange}
+                        required
+                      />
+                      {errors.country && (
+                        <p className="text-red-600 text-sm mt-1 font-medium">
+                          {errors.country}
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      <label htmlFor="age" className="block text-sm font-semibold text-gray-700 mb-1">
+                        Age <span className="text-gray-500 font-normal">(Optional)</span>
+                      </label>
+                      <input
+                        id="age"
+                        name="age"
+                        type="number"
+                        min="13"
+                        max="120"
+                        className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 ${errors.age ? "border-red-300 bg-red-50" : "border-gray-300 bg-white/90"}`}
+                        placeholder="Age"
+                        value={formData.age || ""}
+                        onChange={handleChange}
+                      />
+                      {errors.age && (
+                        <p className="text-red-600 text-sm mt-1 font-medium">
+                          {errors.age}
+                        </p>
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <div className="field-group">
-                  <label htmlFor="age" className="label">
-                    Age <span className="optional-text">(Optional)</span>
-                  </label>
-                  <input
-                    id="age"
-                    name="age"
-                    type="number"
-                    min="13"
-                    max="120"
-                    className={`input ${errors.age ? "input-error" : ""}`}
-                    placeholder="Age"
-                    value={formData.age || ""}
-                    onChange={handleChange}
-                  />
-                  {errors.age && (
-                    <span className="text-red-600 text-sm mt-1">
-                      {errors.age}
-                    </span>
-                  )}
+
+                {/* Contact Information */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2">Contact Information</h3>
+
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-1">
+                      Email Address
+                    </label>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 ${errors.email ? "border-red-300 bg-red-50" : "border-gray-300 bg-white/90"}`}
+                      placeholder="Enter your email address"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                    />
+                    {errors.email && (
+                      <p className="text-red-600 text-sm mt-1 font-medium">
+                        {errors.email}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-1">
+                      Phone Number
+                    </label>
+                    <input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 ${errors.phone ? "border-red-300 bg-red-50" : "border-gray-300 bg-white/90"}`}
+                      placeholder="Enter your phone number"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      required
+                    />
+                    {errors.phone && (
+                      <p className="text-red-600 text-sm mt-1 font-medium">
+                        {errors.phone}
+                      </p>
+                    )}
+                  </div>
                 </div>
-              </div>
+
+                {/* Account Security */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2">Account Security</h3>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-1">
+                        Password
+                      </label>
+                      <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 ${errors.password ? "border-red-300 bg-red-50" : "border-gray-300 bg-white/90"}`}
+                        placeholder="Create a password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                      />
+                      {errors.password && (
+                        <p className="text-red-600 text-sm mt-1 font-medium">
+                          {errors.password}
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      <label htmlFor="confirm_password" className="block text-sm font-semibold text-gray-700 mb-1">
+                        Confirm Password
+                      </label>
+                      <input
+                        id="confirm_password"
+                        name="confirm_password"
+                        type="password"
+                        className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 ${errors.confirm_password ? "border-red-300 bg-red-50" : "border-gray-300 bg-white/90"}`}
+                        placeholder="Confirm your password"
+                        value={formData.confirm_password}
+                        onChange={handleChange}
+                        required
+                      />
+                      {errors.confirm_password && (
+                        <p className="text-red-600 text-sm mt-1 font-medium">
+                          {errors.confirm_password}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full py-3 bg-gradient-to-r from-primary to-primary-dark text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Creating Account..." : "Create Account"}
+                </button>
+
+                <div className="text-center text-sm mt-6">
+                  <span className="text-gray-600">Already have an account? </span>
+                  <button
+                    type="button"
+                    onClick={() => navigate("/login")}
+                    className="text-primary font-bold hover:text-primary-dark transition-colors duration-200"
+                  >
+                    Sign in here
+                  </button>
+                </div>
+              </form>
             </div>
-
-            {/* Contact Information */}
-            <div className="section">
-              <h3 className="section-title">Contact Information</h3>
-
-              <div className="field-group">
-                <label htmlFor="email" className="label">
-                  Email Address
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  className={`input ${errors.email ? "input-error" : ""}`}
-                  placeholder="Enter your email address"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
-                {errors.email && (
-                  <span className="text-red-600 text-sm mt-1">
-                    {errors.email}
-                  </span>
-                )}
-              </div>
-
-              <div className="field-group">
-                <label htmlFor="phone" className="label">
-                  Phone Number
-                </label>
-                <input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  className={`input ${errors.phone ? "input-error" : ""}`}
-                  placeholder="Enter your phone number"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  required
-                />
-                {errors.phone && (
-                  <span className="text-red-600 text-sm mt-1">
-                    {errors.phone}
-                  </span>
-                )}
-              </div>
-            </div>
-
-            {/* Account Security */}
-            <div className="section">
-              <h3 className="section-title">Account Security</h3>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="field-group">
-                  <label htmlFor="password" className="label">
-                    Password
-                  </label>
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    className={`input ${errors.password ? "input-error" : ""}`}
-                    placeholder="Create a password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                  />
-                  {errors.password && (
-                    <span className="text-red-600 text-sm mt-1">
-                      {errors.password}
-                    </span>
-                  )}
-                </div>
-                <div className="field-group">
-                  <label htmlFor="confirm_password" className="label">
-                    Confirm Password
-                  </label>
-                  <input
-                    id="confirm_password"
-                    name="confirm_password"
-                    type="password"
-                    className={`input ${
-                      errors.confirm_password ? "input-error" : ""
-                    }`}
-                    placeholder="Confirm your password"
-                    value={formData.confirm_password}
-                    onChange={handleChange}
-                    required
-                  />
-                  {errors.confirm_password && (
-                    <span className="text-red-600 text-sm mt-1">
-                      {errors.confirm_password}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              className="w-full bg-primary-500 text-white py-2 rounded font-semibold hover:bg-primary-600 transition"
-              disabled={isLoading}
-            >
-              {isLoading ? "Creating Account..." : "Create Account"}
-            </button>
-
-            <div className="footer-text">
-              Already have an account?{" "}
-              <a href="/login" className="footer-link">
-                Sign in here
-              </a>
-            </div>
-          </form>
+          </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
-    </>
-  );
+    );
+  }
 }
