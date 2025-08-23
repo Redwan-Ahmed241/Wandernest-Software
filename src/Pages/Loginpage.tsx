@@ -254,16 +254,16 @@ export default function TravelLogin() {
                 />
               </div>
               
-              <div className="flex justify-end">
+              <div className="flex justify-center">
                 <button
                   type="button"
-                  className="text-sm font-semibold transition-colors duration-200"
+                  className="text-sm font-medium transition-colors duration-200 hover:underline"
                   style={{ color: '#4a6b5b' }}
                   onMouseEnter={(e) => e.currentTarget.style.color = '#0d1c1c'}
                   onMouseLeave={(e) => e.currentTarget.style.color = '#4a6b5b'}
                   onClick={() => navigate("/fpass")}
                 >
-                  Forget your password?
+                  Forgot your password?
                 </button>
               </div>
               
@@ -281,18 +281,20 @@ export default function TravelLogin() {
                 {isLoading ? "Logging in..." : "Log in"}
               </button>
               
-              <div className="text-center text-sm mt-6">
-                <span className="text-gray-600">Don't have an account? </span>
-                <button
-                  type="button"
-                  onClick={() => navigate("/signup")}
-                  className="font-bold transition-colors duration-200"
-                  style={{ color: '#4a6b5b' }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = '#0d1c1c'}
-                  onMouseLeave={(e) => e.currentTarget.style.color = '#4a6b5b'}
-                >
-                  Sign up
-                </button>
+              <div className="text-center mt-6">
+                <p className="text-sm text-gray-600">
+                  Don't have an account?{' '}
+                  <button
+                    type="button"
+                    onClick={() => navigate("/signup")}
+                    className="font-medium transition-colors duration-200 hover:underline"
+                    style={{ color: '#4a6b5b' }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = '#0d1c1c'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = '#4a6b5b'}
+                  >
+                    Sign up
+                  </button>
+                </p>
               </div>
             </form>
           </div>
