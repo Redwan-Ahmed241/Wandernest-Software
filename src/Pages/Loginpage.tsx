@@ -257,7 +257,10 @@ export default function TravelLogin() {
               <div className="flex justify-end">
                 <button
                   type="button"
-                  className="text-sm text-primary font-semibold hover:text-primary-dark transition-colors duration-200"
+                  className="text-sm font-semibold transition-colors duration-200"
+                  style={{ color: '#4a6b5b' }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = '#0d1c1c'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = '#4a6b5b'}
                   onClick={() => navigate("/fpass")}
                 >
                   Forget your password?
@@ -266,7 +269,13 @@ export default function TravelLogin() {
               
               <button
                 type="submit"
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-primary to-primary-dark text-white font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                className="w-full py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                style={{
+                  background: isLoading 
+                    ? 'linear-gradient(to right, #6ab187, #4a6b5b)' 
+                    : 'linear-gradient(to right, #4a6b5b, #0d1c1c)',
+                  color: 'white'
+                }}
                 disabled={isLoading}
               >
                 {isLoading ? "Logging in..." : "Log in"}
@@ -277,7 +286,10 @@ export default function TravelLogin() {
                 <button
                   type="button"
                   onClick={() => navigate("/signup")}
-                  className="text-primary font-bold hover:text-primary-dark transition-colors duration-200"
+                  className="font-bold transition-colors duration-200"
+                  style={{ color: '#4a6b5b' }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = '#0d1c1c'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = '#4a6b5b'}
                 >
                   Sign up
                 </button>
