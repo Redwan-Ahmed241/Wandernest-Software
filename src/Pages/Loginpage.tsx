@@ -4,7 +4,6 @@ import type React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Authentication/auth-context";
-// Tailwind conversion: remove CSS import
 
 export default function TravelLogin() {
   const [username, setUsername] = useState("");
@@ -167,99 +166,125 @@ export default function TravelLogin() {
     navigate("/");
   };
 
-  // Remove the isLoggedIn state and related logic since we're using auth context
   return (
-    <div className="min-h-screen flex items-center justify-center bg-accent-light font-jakarta">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
-        <div className="flex flex-col items-center mb-6">
-          <div
-            className="flex items-center gap-2 cursor-pointer"
-            onClick={handleWanderNestClick}
-          >
-            <img
-              src="/Figma_photos/wandernest.svg"
-              alt="WanderNest Logo"
-              className="w-10 h-10"
-            />
-            <button
-              type="button"
-              className="text-xl font-bold text-primary hover:text-primary-dark transition"
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: "url('https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=1920')"
+        }}
+      />
+      
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/60" />
+      
+      {/* Content */}
+      <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
+        <div className="w-full max-w-md">
+          {/* Logo Section */}
+          <div className="text-center mb-8">
+            <div
+              className="inline-flex items-center gap-3 cursor-pointer group mb-6"
+              onClick={handleWanderNestClick}
             >
-              WanderNest
-            </button>
+              <div className="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
+                <img
+                  src="/Figma_photos/wandernest.svg"
+                  alt="WanderNest Logo"
+                  className="w-7 h-7"
+                />
+              </div>
+              <span className="text-2xl font-bold text-white group-hover:text-accent transition-colors duration-300">
+                WanderNest
+              </span>
+            </div>
+            <div className="text-center">
+              <h1 className="text-3xl font-bold text-white mb-2">Welcome back</h1>
+              <p className="text-lg text-white/80">
+                We're so excited to see you again!
+              </p>
+            </div>
+          </div>
+
+          {/* Login Form */}
+          <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-8">
+            {error && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+                <p className="text-red-600 text-sm font-medium text-center">
+                  {error}
+                </p>
+              </div>
+            )}
+            
+            <form className="space-y-6" onSubmit={handleSubmit}>
+              <div>
+                <label
+                  htmlFor="username"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
+                  Username
+                </label>
+                <input
+                  id="username"
+                  type="text"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white/90"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                  placeholder="Enter your username"
+                />
+              </div>
+              
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
+                  Password
+                </label>
+                <input
+                  id="password"
+                  type="password"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white/90"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  placeholder="Enter your password"
+                />
+              </div>
+              
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  className="text-sm text-primary font-semibold hover:text-primary-dark transition-colors duration-200"
+                  onClick={() => navigate("/fpass")}
+                >
+                  Forget your password?
+                </button>
+              </div>
+              
+              <button
+                type="submit"
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-primary to-primary-dark text-white font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                disabled={isLoading}
+              >
+                {isLoading ? "Logging in..." : "Log in"}
+              </button>
+              
+              <div className="text-center text-sm mt-6">
+                <span className="text-gray-600">Don't have an account? </span>
+                <button
+                  type="button"
+                  onClick={() => navigate("/signup")}
+                  className="text-primary font-bold hover:text-primary-dark transition-colors duration-200"
+                >
+                  Sign up
+                </button>
+              </div>
+            </form>
           </div>
         </div>
-        <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold text-primary mb-2">Welcome back</h1>
-          <p className="text-base text-primary-dark">
-            We're so excited to see you again!
-          </p>
-        </div>
-        {error && (
-          <div className="mb-4 text-red-600 text-sm text-center font-semibold">
-            {error}
-          </div>
-        )}
-        <form className="space-y-6" onSubmit={handleSubmit}>
-          <div>
-            <label
-              htmlFor="username"
-              className="block text-sm font-medium text-primary-dark mb-1"
-            >
-              Username
-            </label>
-            <input
-              id="username"
-              type="text"
-              className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-light text-primary-dark bg-accent-light"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-              placeholder="Enter your username"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-primary-dark mb-1"
-            >
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-light text-primary-dark bg-accent-light"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              placeholder="Enter your password"
-            />
-          </div>
-          <div className="flex justify-end mb-2">
-            <span
-              className="text-sm text-primary cursor-pointer hover:underline"
-              onClick={() => navigate("/fpass")}
-            >
-              Forget your password?
-            </span>
-          </div>
-          <button
-            type="submit"
-            className="w-full py-2 rounded-lg bg-primary text-white font-semibold hover:bg-primary-dark transition"
-            disabled={isLoading}
-          >
-            {isLoading ? "Logging in..." : "Log in"}
-          </button>
-          <div className="text-center text-sm mt-4">
-            Don't have an account?{" "}
-            <a
-              href="/signup"
-              className="text-primary font-semibold hover:underline"
-            >
-              Sign up
-            </a>
-          </div>
-        </form>
       </div>
     </div>
   );
