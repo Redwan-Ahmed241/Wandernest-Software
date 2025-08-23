@@ -70,9 +70,6 @@ const Navbar: React.FC = () => {
                     <span className="text-gray-400 font-medium px-3 py-2">
                       {item.label}
                     </span>
-                    <span className="bg-gradient-to-r from-orange-400 to-orange-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
-                      {item.badge}
-                    </span>
                   </div>
                 )}
               </div>
@@ -142,9 +139,6 @@ const Navbar: React.FC = () => {
                     <div className="flex items-center justify-between px-3 py-2">
                       <span className="text-gray-400 font-medium">
                         {item.label}
-                      </span>
-                      <span className="bg-gradient-to-r from-orange-400 to-orange-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
-                        {item.badge}
                       </span>
                     </div>
                   )}
