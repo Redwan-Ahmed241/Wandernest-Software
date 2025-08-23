@@ -129,24 +129,19 @@ export default function SignupForm() {
       return;
     }
 
-    setIsLoading(true);
-    setApiError("");
+    const apiData = {
+      username: formData.username,
+      first_name: formData.first_name,
+      last_name: formData.last_name,
+      email: formData.email,
+      phone: formData.phone,
+      country: formData.country,
+      age: formData.age || 0,
+      password: formData.password,
+      confirm_password: formData.confirm_password,
+    };
 
     try {
-      // Prepare data for API (exclude confirm_password and convert age to number)
-      const apiData = {
-        username: formData.username,
-        first_name: formData.first_name,
-        last_name: formData.last_name,
-        email: formData.email,
-        phone: formData.phone,
-        country: formData.country,
-        age: formData.age || 0, // Send 0 if age is null
-        password: formData.password,
-        confirm_password: formData.confirm_password, // Include confirm_password as required by API
-      };
-
-      // Replace this with your actual API call
       const response = await fetch(
         "https://wander-nest-ad3s.onrender.com/api/auth/register/",
         {
@@ -162,7 +157,6 @@ export default function SignupForm() {
         const errorData = await response.json();
         console.log("Full errorData:", errorData);
         console.error("API Error Response:", errorData);
-        // Throw the whole error object so it can be displayed
         throw errorData;
       }
 
@@ -170,12 +164,10 @@ export default function SignupForm() {
       console.log("Success:", result);
 
       setIsSuccess(true);
-      // Add this inside the try block after setIsSuccess(true)
       setTimeout(() => {
-        navigate("/login"); // or whatever your login route is
-      }, 2000); // Wait 2 seconds then redirect
+        navigate("/login");
+      }, 2000);
 
-      // Reset form after successful submission
       setFormData({
         username: "",
         first_name: "",
@@ -187,9 +179,8 @@ export default function SignupForm() {
         password: "",
         confirm_password: "",
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error:", error);
-      // Always show the error as a string, even if it's an object
       if (typeof error === "object" && error !== null) {
         setApiError(JSON.stringify(error, null, 2));
       } else if (error instanceof Error && error.message) {
@@ -243,41 +234,55 @@ export default function SignupForm() {
   }
 
   return (
-    <>
-      <div className={"depth3Frame0"}>
-        <img
-          className={"depth4Frame0"}
-          alt="Logo"
-          src="/figma_photos/wandernest.svg"
-        />
-        <div className={"depth4Frame1"} onClick={goHome}>
-          <b className={"wandernest"}>WanderNest</b>
-        </div>
-      </div>
-      <div className="min-h-screen bg-gradient-to-br from-primary-100 to-primary-300 py-8 px-4">
-        <div className="max-w-xl mx-auto bg-white rounded-lg shadow p-6">
-          <h1 className="text-2xl font-bold text-primary-700 mb-6">
-            Create Account
+    <div className="relative min-h-screen w-full flex flex-col justify-center items-center overflow-hidden">
+      {/* Wildlife Background */}
+      <div
+        className="absolute inset-0 w-full h-full bg-cover bg-center z-0"
+        style={{
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80')",
+        }}
+      ></div>
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary-dark/80 via-primary/60 to-transparent z-0"></div>
+      {/* Centered Form Container */}
+      <div className="relative z-10 w-full max-w-xl mx-auto my-16">
+        <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl p-10 transition-all duration-300 flex flex-col gap-6">
+          <h1 className="text-2xl font-bold text-primary-700 mb-2 text-center">
+            <div className="flex flex-col items-center mb-8">
+              <button onClick={goHome} className="focus:outline-none">
+                <img
+                  src="/Figma_photos/wandernest.svg"
+                  alt="WanderNest"
+                  className="w-16 h-16 mb-2 drop-shadow-xl hover:scale-110 transition-transform duration-300"
+                />
+              </button>
+              <span className="text-3xl font-bold text-primary-700 drop-shadow-lg tracking-wide">
+                WanderNest
+              </span>
+            </div>
           </h1>
-          <form className="space-y-4" onSubmit={handleSubmit}>
+          <form className="space-y-6" onSubmit={handleSubmit}>
             {apiError && (
               <div className="mt-3 text-red-600 text-center font-medium">
                 {apiError}
               </div>
             )}
-
             {/* Personal Information */}
-            <div className="section">
-              <h3 className="section-title">Personal Information</h3>
-
-              <div className="field-group">
-                <label htmlFor="username" className="label">
+            <div className="section flex flex-col gap-2">
+              <h3 className="section-title font-semibold text-lg mb-2">
+                Personal Information
+              </h3>
+              <div className="field-group flex flex-col gap-2">
+                <label htmlFor="username" className="label font-medium">
                   Username
                 </label>
                 <input
                   id="username"
                   name="username"
-                  className={`input ${errors.username ? "input-error" : ""}`}
+                  className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${
+                    errors.username ? "border-red-500" : ""
+                  }`}
                   placeholder="Enter your username"
                   value={formData.username}
                   onChange={handleChange}
@@ -289,17 +294,16 @@ export default function SignupForm() {
                   </span>
                 )}
               </div>
-
               <div className="grid grid-cols-2 gap-4">
-                <div className="field-group">
-                  <label htmlFor="first_name" className="label">
+                <div className="field-group flex flex-col gap-2">
+                  <label htmlFor="first_name" className="label font-medium">
                     First Name
                   </label>
                   <input
                     id="first_name"
                     name="first_name"
-                    className={`input ${
-                      errors.first_name ? "input-error" : ""
+                    className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${
+                      errors.first_name ? "border-red-500" : ""
                     }`}
                     placeholder="Enter your first name"
                     value={formData.first_name}
@@ -312,14 +316,16 @@ export default function SignupForm() {
                     </span>
                   )}
                 </div>
-                <div className="field-group">
-                  <label htmlFor="last_name" className="label">
+                <div className="field-group flex flex-col gap-2">
+                  <label htmlFor="last_name" className="label font-medium">
                     Last Name
                   </label>
                   <input
                     id="last_name"
                     name="last_name"
-                    className={`input ${errors.last_name ? "input-error" : ""}`}
+                    className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${
+                      errors.last_name ? "border-red-500" : ""
+                    }`}
                     placeholder="Enter your last name"
                     value={formData.last_name}
                     onChange={handleChange}
@@ -332,16 +338,17 @@ export default function SignupForm() {
                   )}
                 </div>
               </div>
-
               <div className="grid grid-cols-3 gap-4">
-                <div className="field-group col-span-2">
-                  <label htmlFor="country" className="label">
+                <div className="field-group flex flex-col gap-2 col-span-2">
+                  <label htmlFor="country" className="label font-medium">
                     Country
                   </label>
                   <input
                     id="country"
                     name="country"
-                    className={`input ${errors.country ? "input-error" : ""}`}
+                    className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${
+                      errors.country ? "border-red-500" : ""
+                    }`}
                     placeholder="Enter your country"
                     value={formData.country}
                     onChange={handleChange}
@@ -353,9 +360,12 @@ export default function SignupForm() {
                     </span>
                   )}
                 </div>
-                <div className="field-group">
-                  <label htmlFor="age" className="label">
-                    Age <span className="optional-text">(Optional)</span>
+                <div className="field-group flex flex-col gap-2">
+                  <label htmlFor="age" className="label font-medium">
+                    Age{" "}
+                    <span className="optional-text text-gray-500">
+                      (Optional)
+                    </span>
                   </label>
                   <input
                     id="age"
@@ -363,7 +373,9 @@ export default function SignupForm() {
                     type="number"
                     min="13"
                     max="120"
-                    className={`input ${errors.age ? "input-error" : ""}`}
+                    className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${
+                      errors.age ? "border-red-500" : ""
+                    }`}
                     placeholder="Age"
                     value={formData.age || ""}
                     onChange={handleChange}
@@ -376,20 +388,22 @@ export default function SignupForm() {
                 </div>
               </div>
             </div>
-
             {/* Contact Information */}
-            <div className="section">
-              <h3 className="section-title">Contact Information</h3>
-
-              <div className="field-group">
-                <label htmlFor="email" className="label">
+            <div className="section flex flex-col gap-2">
+              <h3 className="section-title font-semibold text-lg mb-2">
+                Contact Information
+              </h3>
+              <div className="field-group flex flex-col gap-2">
+                <label htmlFor="email" className="label font-medium">
                   Email Address
                 </label>
                 <input
                   id="email"
                   name="email"
                   type="email"
-                  className={`input ${errors.email ? "input-error" : ""}`}
+                  className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${
+                    errors.email ? "border-red-500" : ""
+                  }`}
                   placeholder="Enter your email address"
                   value={formData.email}
                   onChange={handleChange}
@@ -401,16 +415,17 @@ export default function SignupForm() {
                   </span>
                 )}
               </div>
-
-              <div className="field-group">
-                <label htmlFor="phone" className="label">
+              <div className="field-group flex flex-col gap-2">
+                <label htmlFor="phone" className="label font-medium">
                   Phone Number
                 </label>
                 <input
                   id="phone"
                   name="phone"
                   type="tel"
-                  className={`input ${errors.phone ? "input-error" : ""}`}
+                  className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${
+                    errors.phone ? "border-red-500" : ""
+                  }`}
                   placeholder="Enter your phone number"
                   value={formData.phone}
                   onChange={handleChange}
@@ -423,21 +438,23 @@ export default function SignupForm() {
                 )}
               </div>
             </div>
-
             {/* Account Security */}
-            <div className="section">
-              <h3 className="section-title">Account Security</h3>
-
+            <div className="section flex flex-col gap-2">
+              <h3 className="section-title font-semibold text-lg mb-2">
+                Account Security
+              </h3>
               <div className="grid grid-cols-2 gap-4">
-                <div className="field-group">
-                  <label htmlFor="password" className="label">
+                <div className="field-group flex flex-col gap-2">
+                  <label htmlFor="password" className="label font-medium">
                     Password
                   </label>
                   <input
                     id="password"
                     name="password"
                     type="password"
-                    className={`input ${errors.password ? "input-error" : ""}`}
+                    className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${
+                      errors.password ? "border-red-500" : ""
+                    }`}
                     placeholder="Create a password"
                     value={formData.password}
                     onChange={handleChange}
@@ -449,16 +466,19 @@ export default function SignupForm() {
                     </span>
                   )}
                 </div>
-                <div className="field-group">
-                  <label htmlFor="confirm_password" className="label">
+                <div className="field-group flex flex-col gap-2">
+                  <label
+                    htmlFor="confirm_password"
+                    className="label font-medium"
+                  >
                     Confirm Password
                   </label>
                   <input
                     id="confirm_password"
                     name="confirm_password"
                     type="password"
-                    className={`input ${
-                      errors.confirm_password ? "input-error" : ""
+                    className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${
+                      errors.confirm_password ? "border-red-500" : ""
                     }`}
                     placeholder="Confirm your password"
                     value={formData.confirm_password}
@@ -473,25 +493,25 @@ export default function SignupForm() {
                 </div>
               </div>
             </div>
-
             <button
               type="submit"
-              className="w-full bg-primary-500 text-white py-2 rounded font-semibold hover:bg-primary-600 transition"
+              className="w-full bg-primary-500 text-white py-3 rounded-lg font-semibold shadow-md hover:bg-primary-600 transition-all duration-200 text-lg"
               disabled={isLoading}
             >
               {isLoading ? "Creating Account..." : "Create Account"}
             </button>
-
-            <div className="footer-text">
+            <div className="footer-text text-center mt-4">
               Already have an account?{" "}
-              <a href="/login" className="footer-link">
+              <a
+                href="/login"
+                className="footer-link text-primary-700 font-semibold hover:underline"
+              >
                 Sign in here
               </a>
             </div>
           </form>
         </div>
       </div>
-      <Footer />
-    </>
+    </div>
   );
 }
