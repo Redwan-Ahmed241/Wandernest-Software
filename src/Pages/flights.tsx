@@ -68,12 +68,12 @@ interface Flight {
   cancellation_policy: string;
   refund_policy?: string;
   status:
-  | "scheduled"
-  | "delayed"
-  | "cancelled"
-  | "boarding"
-  | "departed"
-  | "arrived";
+    | "scheduled"
+    | "delayed"
+    | "cancelled"
+    | "boarding"
+    | "departed"
+    | "arrived";
   gate?: string;
   terminal?: string;
   is_active: boolean;
@@ -114,11 +114,11 @@ interface PassengerDetails {
   passenger_type: "adult" | "child" | "infant";
   seat_preference: "window" | "aisle" | "middle";
   meal_preference:
-  | "vegetarian"
-  | "non_vegetarian"
-  | "halal"
-  | "kosher"
-  | "vegan";
+    | "vegetarian"
+    | "non_vegetarian"
+    | "halal"
+    | "kosher"
+    | "vegan";
 }
 
 interface BookingRequest {
@@ -644,10 +644,10 @@ const BookingModal: React.FC<{
         phone: contactPhone,
         emergency_contact: emergencyContactName
           ? {
-            name: emergencyContactName,
-            phone: emergencyContactPhone,
-            relationship: emergencyContactRelationship,
-          }
+              name: emergencyContactName,
+              phone: emergencyContactPhone,
+              relationship: emergencyContactRelationship,
+            }
           : undefined,
       },
       special_requests: specialRequests,
@@ -663,8 +663,8 @@ const BookingModal: React.FC<{
       <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <h2 className="text-2xl font-bold text-gray-900">Book Flight</h2>
-          <button 
-            className="text-gray-400 hover:text-gray-600 text-2xl font-bold" 
+          <button
+            className="text-gray-400 hover:text-gray-600 text-2xl font-bold"
             onClick={onClose}
           >
             ×
@@ -672,7 +672,9 @@ const BookingModal: React.FC<{
         </div>
 
         <div className="p-6 border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Flight Details</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Flight Details
+          </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="text-sm">
               <strong>Route:</strong> {flight.from_airport.city} →{" "}
@@ -707,10 +709,14 @@ const BookingModal: React.FC<{
         <form onSubmit={handleSubmit} className="p-6">
           {/* Contact Information */}
           <div className="mb-8">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Contact Information</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Contact Information
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Contact Email *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Contact Email *
+                </label>
                 <input
                   type="email"
                   value={contactEmail}
@@ -720,7 +726,9 @@ const BookingModal: React.FC<{
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Contact Phone *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Contact Phone *
+                </label>
                 <input
                   type="tel"
                   value={contactPhone}
@@ -734,7 +742,9 @@ const BookingModal: React.FC<{
             {/* Emergency Contact */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Emergency Contact Name</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Emergency Contact Name
+                </label>
                 <input
                   type="text"
                   value={emergencyContactName}
@@ -743,7 +753,9 @@ const BookingModal: React.FC<{
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Emergency Contact Phone</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Emergency Contact Phone
+                </label>
                 <input
                   type="tel"
                   value={emergencyContactPhone}
@@ -754,7 +766,9 @@ const BookingModal: React.FC<{
             </div>
             <div className="mb-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Relationship</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Relationship
+                </label>
                 <select
                   value={emergencyContactRelationship}
                   onChange={(e) =>
@@ -776,13 +790,22 @@ const BookingModal: React.FC<{
 
           {/* Passenger Details */}
           <div className="mb-8">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Passenger Details</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Passenger Details
+            </h3>
             {passengerDetails.map((passenger, index) => (
-              <div key={index} className="mb-6 p-4 border border-gray-200 rounded-lg">
-                <h4 className="text-md font-semibold text-gray-800 mb-4">Passenger {index + 1}</h4>
+              <div
+                key={index}
+                className="mb-6 p-4 border border-gray-200 rounded-lg"
+              >
+                <h4 className="text-md font-semibold text-gray-800 mb-4">
+                  Passenger {index + 1}
+                </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Title *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Title *
+                    </label>
                     <select
                       value={passenger.title}
                       onChange={(e) =>
@@ -800,7 +823,9 @@ const BookingModal: React.FC<{
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Passenger Type *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Passenger Type *
+                    </label>
                     <select
                       value={passenger.passenger_type}
                       onChange={(e) =>
@@ -822,7 +847,9 @@ const BookingModal: React.FC<{
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      First Name *
+                    </label>
                     <input
                       type="text"
                       value={passenger.first_name}
@@ -838,7 +865,9 @@ const BookingModal: React.FC<{
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Last Name *
+                    </label>
                     <input
                       type="text"
                       value={passenger.last_name}
@@ -856,7 +885,9 @@ const BookingModal: React.FC<{
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Email *
+                    </label>
                     <input
                       type="email"
                       value={passenger.email}
@@ -868,7 +899,9 @@ const BookingModal: React.FC<{
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Phone
+                    </label>
                     <input
                       type="tel"
                       value={passenger.phone}
@@ -881,7 +914,9 @@ const BookingModal: React.FC<{
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Date of Birth *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Date of Birth *
+                    </label>
                     <input
                       type="date"
                       value={passenger.date_of_birth}
@@ -897,7 +932,9 @@ const BookingModal: React.FC<{
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Nationality *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Nationality *
+                    </label>
                     <select
                       value={passenger.nationality}
                       onChange={(e) =>
@@ -924,7 +961,7 @@ const BookingModal: React.FC<{
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Passport Number{" "}
                       {passenger.nationality !== "Bangladeshi" &&
-                        passenger.nationality
+                      passenger.nationality
                         ? "*"
                         : ""}
                     </label>
@@ -954,7 +991,7 @@ const BookingModal: React.FC<{
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Passport Expiry{" "}
                       {passenger.nationality !== "Bangladeshi" &&
-                        passenger.nationality
+                      passenger.nationality
                         ? "*"
                         : ""}
                     </label>
@@ -979,7 +1016,9 @@ const BookingModal: React.FC<{
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Seat Preference</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Seat Preference
+                    </label>
                     <select
                       value={passenger.seat_preference}
                       onChange={(e) =>
@@ -998,7 +1037,9 @@ const BookingModal: React.FC<{
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Meal Preference</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Meal Preference
+                    </label>
                     <select
                       value={passenger.meal_preference}
                       onChange={(e) =>
@@ -1032,7 +1073,9 @@ const BookingModal: React.FC<{
 
           {/* Special Requests */}
           <div className="mb-8">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Special Requests (Optional)</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Special Requests (Optional)
+            </h3>
             <textarea
               value={specialRequests}
               onChange={(e) => setSpecialRequests(e.target.value)}
@@ -1140,7 +1183,7 @@ const Flights: FunctionComponent = () => {
         condition: "Partly Cloudy",
         description: "partly cloudy",
         humidity: 65,
-        windSpeed: 15
+        windSpeed: 15,
       },
       {
         city: "Chittagong",
@@ -1148,7 +1191,7 @@ const Flights: FunctionComponent = () => {
         condition: "Sunny",
         description: "clear sky",
         humidity: 70,
-        windSpeed: 12
+        windSpeed: 12,
       },
       {
         city: "Sylhet",
@@ -1156,7 +1199,7 @@ const Flights: FunctionComponent = () => {
         condition: "Rainy",
         description: "light rain",
         humidity: 85,
-        windSpeed: 8
+        windSpeed: 8,
       },
       {
         city: "Rajshahi",
@@ -1164,15 +1207,15 @@ const Flights: FunctionComponent = () => {
         condition: "Hot",
         description: "clear sky",
         humidity: 55,
-        windSpeed: 18
-      }
+        windSpeed: 18,
+      },
     ];
 
     // Mock currency data
     const mockCurrencyRates: CurrencyRate[] = [
       { currency: "USD", rate: 0.0091, change: "+0.5%" },
       { currency: "EUR", rate: 0.0083, change: "+0.2%" },
-      { currency: "CAD", rate: 0.012, change: "-0.1%" }
+      { currency: "CAD", rate: 0.012, change: "-0.1%" },
     ];
 
     // Set mock data
@@ -1191,16 +1234,76 @@ const Flights: FunctionComponent = () => {
       console.error("Failed to load airports:", error);
       // Use mock airports if API fails
       const mockAirports: Airport[] = [
-        { code: "DAC", name: "Hazrat Shahjalal International Airport", city: "Dhaka", country: "Bangladesh", country_code: "BD" },
-        { code: "CGP", name: "Shah Amanat International Airport", city: "Chittagong", country: "Bangladesh", country_code: "BD" },
-        { code: "ZYL", name: "Osmani International Airport", city: "Sylhet", country: "Bangladesh", country_code: "BD" },
-        { code: "RJH", name: "Shah Makhdum Airport", city: "Rajshahi", country: "Bangladesh", country_code: "BD" },
-        { code: "JSR", name: "Jessore Airport", city: "Jessore", country: "Bangladesh", country_code: "BD" },
-        { code: "BZL", name: "Cox's Bazar Airport", city: "Cox's Bazar", country: "Bangladesh", country_code: "BD" },
-        { code: "DXB", name: "Dubai International Airport", city: "Dubai", country: "UAE", country_code: "AE" },
-        { code: "DOH", name: "Hamad International Airport", city: "Doha", country: "Qatar", country_code: "QA" },
-        { code: "KUL", name: "Kuala Lumpur International Airport", city: "Kuala Lumpur", country: "Malaysia", country_code: "MY" },
-        { code: "BKK", name: "Suvarnabhumi Airport", city: "Bangkok", country: "Thailand", country_code: "TH" }
+        {
+          code: "DAC",
+          name: "Hazrat Shahjalal International Airport",
+          city: "Dhaka",
+          country: "Bangladesh",
+          country_code: "BD",
+        },
+        {
+          code: "CGP",
+          name: "Shah Amanat International Airport",
+          city: "Chittagong",
+          country: "Bangladesh",
+          country_code: "BD",
+        },
+        {
+          code: "ZYL",
+          name: "Osmani International Airport",
+          city: "Sylhet",
+          country: "Bangladesh",
+          country_code: "BD",
+        },
+        {
+          code: "RJH",
+          name: "Shah Makhdum Airport",
+          city: "Rajshahi",
+          country: "Bangladesh",
+          country_code: "BD",
+        },
+        {
+          code: "JSR",
+          name: "Jessore Airport",
+          city: "Jessore",
+          country: "Bangladesh",
+          country_code: "BD",
+        },
+        {
+          code: "BZL",
+          name: "Cox's Bazar Airport",
+          city: "Cox's Bazar",
+          country: "Bangladesh",
+          country_code: "BD",
+        },
+        {
+          code: "DXB",
+          name: "Dubai International Airport",
+          city: "Dubai",
+          country: "UAE",
+          country_code: "AE",
+        },
+        {
+          code: "DOH",
+          name: "Hamad International Airport",
+          city: "Doha",
+          country: "Qatar",
+          country_code: "QA",
+        },
+        {
+          code: "KUL",
+          name: "Kuala Lumpur International Airport",
+          city: "Kuala Lumpur",
+          country: "Malaysia",
+          country_code: "MY",
+        },
+        {
+          code: "BKK",
+          name: "Suvarnabhumi Airport",
+          city: "Bangkok",
+          country: "Thailand",
+          country_code: "TH",
+        },
       ];
       setAirports(mockAirports);
     }
@@ -1255,9 +1358,9 @@ const Flights: FunctionComponent = () => {
         { currency: "CAD", rate: 0.012, change: "-0.1%" },
         { currency: "GBP", rate: 0.0072, change: "+0.8%" },
         { currency: "INR", rate: 0.76, change: "-0.3%" },
-        { currency: "AUD", rate: 0.014, change: "+0.1%" }
+        { currency: "AUD", rate: 0.014, change: "+0.1%" },
       ];
-      const filteredRates = mockCurrencyRates.filter(rate => 
+      const filteredRates = mockCurrencyRates.filter((rate) =>
         activeCurrencies.includes(rate.currency)
       );
       setCurrencyRates(filteredRates);
@@ -1470,9 +1573,17 @@ const Flights: FunctionComponent = () => {
         )}
 
         {/* Hero Section */}
-        <div className="relative bg-cover bg-center bg-no-repeat text-white py-16 min-h-[600px] flex items-center" style={{backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/images/flight-hero-bg.jpg)'}}>
+        <div
+          className="relative bg-cover bg-center bg-no-repeat text-white py-16 min-h-[600px] flex items-center"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/images/flight-hero-bg.jpg)",
+          }}
+        >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-4xl font-bold text-center mb-4">Discover Your Next Flight</h1>
+            <h1 className="text-4xl font-bold text-center mb-4">
+              Discover Your Next Flight
+            </h1>
             <p className="text-xl text-center mb-8">
               Search and book flights to your dream destination
             </p>
@@ -1480,7 +1591,9 @@ const Flights: FunctionComponent = () => {
             {/* Flight Search Form */}
             <div className="bg-white rounded-lg shadow-lg p-6 max-w-4xl mx-auto">
               {searchError && (
-                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">{searchError}</div>
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                  {searchError}
+                </div>
               )}
 
               {/* Trip Type Selection */}
@@ -1509,354 +1622,416 @@ const Flights: FunctionComponent = () => {
                 </label>
               </div>
 
-                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                 {/* From Airport Search */}
-                 <div className="relative">
-                   <label className="block text-sm font-medium text-gray-700 mb-2">From</label>
-                   <div className="relative">
-                     <input
-                       type="text"
-                       placeholder="Search city or airport"
-                       value={fromAirportSearch}
-                       onChange={(e) => {
-                         setFromAirportSearch(e.target.value);
-                         setShowFromDropdown(true);
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                {/* From Airport Search */}
+                <div className="relative">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    From
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="Search city or airport"
+                      value={fromAirportSearch}
+                      onChange={(e) => {
+                        setFromAirportSearch(e.target.value);
+                        setShowFromDropdown(true);
 
-                         // Auto-select if exact match found
-                         const exactMatch = airports.find(
-                           (airport) =>
-                             airport.city.toLowerCase() ===
-                             e.target.value.toLowerCase() ||
-                             airport.name.toLowerCase() ===
-                             e.target.value.toLowerCase()
-                         );
-                         if (exactMatch) {
-                           setFromAirport(exactMatch.code);
-                         } else {
-                           setFromAirport(""); // Clear if no exact match
-                         }
-                       }}
-                       onFocus={() => setShowFromDropdown(true)}
-                       className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${
-                         fromAirport === toAirport && fromAirport
-                           ? "border-red-500"
-                           : ""
-                       }`}
-                       required
-                     />
-                     {showFromDropdown && (
-                       <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
-                         {getFilteredAirports(fromAirportSearch).map(
-                           (airport) => (
-                             <div
-                               key={airport.code}
-                               className="flex items-center p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-b-0"
-                               onClick={() => {
-                                 setFromAirport(airport.code);
-                                 setFromAirportSearch(
-                                   `${airport.city} (${airport.code})`
-                                 );
-                                 setShowFromDropdown(false);
+                        // Auto-select if exact match found
+                        const exactMatch = airports.find(
+                          (airport) =>
+                            airport.city.toLowerCase() ===
+                              e.target.value.toLowerCase() ||
+                            airport.name.toLowerCase() ===
+                              e.target.value.toLowerCase()
+                        );
+                        if (exactMatch) {
+                          setFromAirport(exactMatch.code);
+                        } else {
+                          setFromAirport(""); // Clear if no exact match
+                        }
+                      }}
+                      onFocus={() => setShowFromDropdown(true)}
+                      className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${
+                        fromAirport === toAirport && fromAirport
+                          ? "border-red-500"
+                          : ""
+                      }`}
+                      required
+                    />
+                    {showFromDropdown && (
+                      <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+                        {getFilteredAirports(fromAirportSearch).map(
+                          (airport) => (
+                            <div
+                              key={airport.code}
+                              className="flex items-center p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-b-0"
+                              onClick={() => {
+                                setFromAirport(airport.code);
+                                setFromAirportSearch(
+                                  `${airport.city} (${airport.code})`
+                                );
+                                setShowFromDropdown(false);
 
-                                 // Clear "To" field if same airport is selected
-                                 if (toAirport === airport.code) {
-                                   setToAirport("");
-                                   setToAirportSearch("");
-                                 }
-                               }}
-                             >
-                               <div className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm font-semibold mr-3">
-                                 {airport.code}
-                               </div>
-                               <div className="flex-1">
-                                 <div className="font-medium text-gray-900">
-                                   {airport.city}
-                                 </div>
-                                 <div className="text-sm text-gray-500">
-                                   {airport.name}
-                                 </div>
-                               </div>
-                             </div>
-                           )
-                         )}
-                       </div>
-                     )}
-                   </div>
-                 </div>
+                                // Clear "To" field if same airport is selected
+                                if (toAirport === airport.code) {
+                                  setToAirport("");
+                                  setToAirportSearch("");
+                                }
+                              }}
+                            >
+                              <div className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm font-semibold mr-3">
+                                {airport.code}
+                              </div>
+                              <div className="flex-1">
+                                <div className="font-medium text-gray-900">
+                                  {airport.city}
+                                </div>
+                                <div className="text-sm text-gray-500">
+                                  {airport.name}
+                                </div>
+                              </div>
+                            </div>
+                          )
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
 
-                 {/* To Airport Search */}
-                 <div className="relative">
-                   <label className="block text-sm font-medium text-gray-700 mb-2">To</label>
-                   <div className="relative">
-                     <input
-                       type="text"
-                       placeholder="Search city or airport"
-                       value={toAirportSearch}
-                       onChange={(e) => {
-                         setToAirportSearch(e.target.value);
-                         setShowToDropdown(true);
+                {/* To Airport Search */}
+                <div className="relative">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    To
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="Search city or airport"
+                      value={toAirportSearch}
+                      onChange={(e) => {
+                        setToAirportSearch(e.target.value);
+                        setShowToDropdown(true);
 
-                         // Auto-select if exact match found
-                         const exactMatch = airports.find(
-                           (airport) =>
-                             airport.city.toLowerCase() ===
-                             e.target.value.toLowerCase() ||
-                             airport.name.toLowerCase() ===
-                             e.target.value.toLowerCase()
-                         );
-                         if (exactMatch) {
-                           setToAirport(exactMatch.code);
-                         } else {
-                           setToAirport(""); // Clear if no exact match
-                         }
-                       }}
-                       onFocus={() => setShowToDropdown(true)}
-                       className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${
-                         fromAirport === toAirport && toAirport
-                           ? "border-red-500"
-                           : ""
-                       }`}
-                       required
-                     />
-                     {showToDropdown && (
-                       <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
-                         {getFilteredAirports(toAirportSearch).map((airport) => (
-                           <div
-                             key={airport.code}
-                             className="flex items-center p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-b-0"
-                             onClick={() => {
-                               setToAirport(airport.code);
-                               setToAirportSearch(
-                                 `${airport.city} (${airport.code})`
-                               );
-                               setShowToDropdown(false);
+                        // Auto-select if exact match found
+                        const exactMatch = airports.find(
+                          (airport) =>
+                            airport.city.toLowerCase() ===
+                              e.target.value.toLowerCase() ||
+                            airport.name.toLowerCase() ===
+                              e.target.value.toLowerCase()
+                        );
+                        if (exactMatch) {
+                          setToAirport(exactMatch.code);
+                        } else {
+                          setToAirport(""); // Clear if no exact match
+                        }
+                      }}
+                      onFocus={() => setShowToDropdown(true)}
+                      className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${
+                        fromAirport === toAirport && toAirport
+                          ? "border-red-500"
+                          : ""
+                      }`}
+                      required
+                    />
+                    {showToDropdown && (
+                      <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+                        {getFilteredAirports(toAirportSearch).map((airport) => (
+                          <div
+                            key={airport.code}
+                            className="flex items-center p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-b-0"
+                            onClick={() => {
+                              setToAirport(airport.code);
+                              setToAirportSearch(
+                                `${airport.city} (${airport.code})`
+                              );
+                              setShowToDropdown(false);
 
-                               // Clear "From" field if same airport is selected
-                               if (fromAirport === airport.code) {
-                                 setFromAirport("");
-                                 setFromAirportSearch("");
-                               }
-                             }}
-                           >
-                             <div className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm font-semibold mr-3">
-                               {airport.code}
-                             </div>
-                             <div className="flex-1">
-                               <div className="font-medium text-gray-900">
-                                 {airport.city}
-                               </div>
-                               <div className="text-sm text-gray-500">
-                                 {airport.name}
-                               </div>
-                             </div>
-                           </div>
-                         ))}
-                       </div>
-                     )}
-                   </div>
-                 </div>
-               </div>
+                              // Clear "From" field if same airport is selected
+                              if (fromAirport === airport.code) {
+                                setFromAirport("");
+                                setFromAirportSearch("");
+                              }
+                            }}
+                          >
+                            <div className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm font-semibold mr-3">
+                              {airport.code}
+                            </div>
+                            <div className="flex-1">
+                              <div className="font-medium text-gray-900">
+                                {airport.city}
+                              </div>
+                              <div className="text-sm text-gray-500">
+                                {airport.name}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
 
-                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                 <div>
-                   <label className="block text-sm font-medium text-gray-700 mb-2">Departure</label>
-                   <input
-                     type="date"
-                     value={departure}
-                     onChange={(e) => setDeparture(e.target.value)}
-                     min={new Date().toISOString().split("T")[0]}
-                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
-                     required
-                   />
-                 </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Departure
+                  </label>
+                  <input
+                    type="date"
+                    value={departure}
+                    onChange={(e) => setDeparture(e.target.value)}
+                    min={new Date().toISOString().split("T")[0]}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                    required
+                  />
+                </div>
 
-                 {tripType === "round_trip" && (
-                   <div>
-                     <label className="block text-sm font-medium text-gray-700 mb-2">Return</label>
-                     <input
-                       type="date"
-                       value={returnDate}
-                       onChange={(e) => setReturnDate(e.target.value)}
-                       min={departure || new Date().toISOString().split("T")[0]}
-                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
-                       required
-                     />
-                   </div>
-                 )}
+                {tripType === "round_trip" && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Return
+                    </label>
+                    <input
+                      type="date"
+                      value={returnDate}
+                      onChange={(e) => setReturnDate(e.target.value)}
+                      min={departure || new Date().toISOString().split("T")[0]}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                      required
+                    />
+                  </div>
+                )}
 
-                 <div>
-                   <label className="block text-sm font-medium text-gray-700 mb-2">Passengers</label>
-                   <select
-                     value={passengers}
-                     onChange={(e) =>
-                       setPassengers(Number.parseInt(e.target.value))
-                     }
-                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
-                   >
-                     {[1, 2, 3, 4, 5, 6].map((num) => (
-                       <option key={num} value={num}>
-                         {num} {num === 1 ? "Passenger" : "Passengers"}
-                       </option>
-                     ))}
-                   </select>
-                 </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Passengers
+                  </label>
+                  <select
+                    value={passengers}
+                    onChange={(e) =>
+                      setPassengers(Number.parseInt(e.target.value))
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                  >
+                    {[1, 2, 3, 4, 5, 6].map((num) => (
+                      <option key={num} value={num}>
+                        {num} {num === 1 ? "Passenger" : "Passengers"}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-                 <div>
-                   <label className="block text-sm font-medium text-gray-700 mb-2">Class</label>
-                   <select
-                     value={bookingClass}
-                     onChange={(e) => setBookingClass(e.target.value)}
-                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
-                   >
-                     <option value="economy">Economy</option>
-                     <option value="business">Business</option>
-                     <option value="first">First Class</option>
-                   </select>
-                 </div>
-               </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Class
+                  </label>
+                  <select
+                    value={bookingClass}
+                    onChange={(e) => setBookingClass(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                  >
+                    <option value="economy">Economy</option>
+                    <option value="business">Business</option>
+                    <option value="first">First Class</option>
+                  </select>
+                </div>
+              </div>
 
-               <button
-                 className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:shadow-none"
-                 onClick={handleSearchFlights}
-                 disabled={isSearchingFlights}
-               >
-                 {isSearchingFlights ? "Searching..." : "Search Flights"}
-               </button>
+              <button
+                className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:shadow-none"
+                onClick={handleSearchFlights}
+                disabled={isSearchingFlights}
+              >
+                {isSearchingFlights ? "Searching..." : "Search Flights"}
+              </button>
             </div>
           </div>
         </div>
 
-                 {/* Flight Results Section */}
-         {flights.length > 0 && (
-           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-             <h2 className="text-2xl font-bold text-gray-900 mb-6">
-               Available Flights ({flights.length} found)
-             </h2>
-             <div className="space-y-4">
-               {flights.map((flight) => (
-                 <div key={flight.id} className="bg-white rounded-lg shadow-md border border-gray-200 p-6 hover:shadow-lg transition-shadow duration-200">
-                   <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-                     <div className="flex-1">
-                       <div className="flex items-center justify-between mb-4">
-                         <div className="flex items-center space-x-4">
-                           <div className="text-lg font-semibold text-gray-900">
-                             {flight.from_airport.city} → {flight.to_airport.city}
-                           </div>
-                           <div className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                             {flight.flight_number}
-                           </div>
-                         </div>
-                         {flight.status !== "scheduled" && (
-                           <div className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                             flight.status === "delayed" ? "bg-yellow-100 text-yellow-800" :
-                             flight.status === "cancelled" ? "bg-red-100 text-red-800" :
-                             flight.status === "boarding" ? "bg-blue-100 text-blue-800" :
-                             flight.status === "departed" ? "bg-green-100 text-green-800" :
-                             "bg-gray-100 text-gray-800"
-                           }`}>
-                             {flight.status.toUpperCase()}
-                           </div>
-                         )}
-                       </div>
+        {/* Flight Results Section */}
+        {flights.length > 0 && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              Available Flights ({flights.length} found)
+            </h2>
+            <div className="space-y-4">
+              {flights.map((flight) => (
+                <div
+                  key={flight.id}
+                  className="bg-white rounded-lg shadow-md border border-gray-200 p-6 hover:shadow-lg transition-shadow duration-200"
+                >
+                  <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center space-x-4">
+                          <div className="text-lg font-semibold text-gray-900">
+                            {flight.from_airport.city} →{" "}
+                            {flight.to_airport.city}
+                          </div>
+                          <div className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                            {flight.flight_number}
+                          </div>
+                        </div>
+                        {flight.status !== "scheduled" && (
+                          <div
+                            className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                              flight.status === "delayed"
+                                ? "bg-yellow-100 text-yellow-800"
+                                : flight.status === "cancelled"
+                                ? "bg-red-100 text-red-800"
+                                : flight.status === "boarding"
+                                ? "bg-blue-100 text-blue-800"
+                                : flight.status === "departed"
+                                ? "bg-green-100 text-green-800"
+                                : "bg-gray-100 text-gray-800"
+                            }`}
+                          >
+                            {flight.status.toUpperCase()}
+                          </div>
+                        )}
+                      </div>
 
-                       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
-                         <div>
-                           <span className="text-sm font-medium text-gray-500">Airline:</span>
-                           <span className="ml-2 text-sm text-gray-900">{flight.airline.name}</span>
-                         </div>
-                         <div>
-                           <span className="text-sm font-medium text-gray-500">Aircraft:</span>
-                           <span className="ml-2 text-sm text-gray-900">{flight.aircraft.model}</span>
-                         </div>
-                         <div>
-                           <span className="text-sm font-medium text-gray-500">Duration:</span>
-                           <span className="ml-2 text-sm text-gray-900">{flight.duration}</span>
-                         </div>
-                         <div>
-                           <span className="text-sm font-medium text-gray-500">Departure:</span>
-                           <span className="ml-2 text-sm text-gray-900">
-                             {new Date(flight.departure_datetime).toLocaleString()}
-                           </span>
-                         </div>
-                         <div>
-                           <span className="text-sm font-medium text-gray-500">Arrival:</span>
-                           <span className="ml-2 text-sm text-gray-900">
-                             {new Date(flight.arrival_datetime).toLocaleString()}
-                           </span>
-                         </div>
-                         <div>
-                           <span className="text-sm font-medium text-gray-500">Available Seats:</span>
-                           <span className={`ml-2 text-sm font-semibold ${
-                             flight.available_seats <= 5 ? "text-red-600" : "text-green-600"
-                           }`}>
-                             {flight.available_seats} left
-                           </span>
-                         </div>
-                       </div>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+                        <div>
+                          <span className="text-sm font-medium text-gray-500">
+                            Airline:
+                          </span>
+                          <span className="ml-2 text-sm text-gray-900">
+                            {flight.airline.name}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-sm font-medium text-gray-500">
+                            Aircraft:
+                          </span>
+                          <span className="ml-2 text-sm text-gray-900">
+                            {flight.aircraft.model}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-sm font-medium text-gray-500">
+                            Duration:
+                          </span>
+                          <span className="ml-2 text-sm text-gray-900">
+                            {flight.duration}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-sm font-medium text-gray-500">
+                            Departure:
+                          </span>
+                          <span className="ml-2 text-sm text-gray-900">
+                            {new Date(
+                              flight.departure_datetime
+                            ).toLocaleString()}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-sm font-medium text-gray-500">
+                            Arrival:
+                          </span>
+                          <span className="ml-2 text-sm text-gray-900">
+                            {new Date(flight.arrival_datetime).toLocaleString()}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-sm font-medium text-gray-500">
+                            Available Seats:
+                          </span>
+                          <span
+                            className={`ml-2 text-sm font-semibold ${
+                              flight.available_seats <= 5
+                                ? "text-red-600"
+                                : "text-green-600"
+                            }`}
+                          >
+                            {flight.available_seats} left
+                          </span>
+                        </div>
+                      </div>
 
-                       {/* Amenities */}
-                       <div className="flex flex-wrap gap-2">
-                         {flight.meal_included && (
-                           <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">🍽️ Meal</span>
-                         )}
-                         {flight.wifi_available && (
-                           <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">📶 WiFi</span>
-                         )}
-                         {flight.entertainment_available && (
-                           <span className="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full">🎬 Entertainment</span>
-                         )}
-                         {flight.power_outlet_available && (
-                           <span className="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full">🔌 Power</span>
-                         )}
-                       </div>
-                     </div>
+                      {/* Amenities */}
+                      <div className="flex flex-wrap gap-2">
+                        {flight.meal_included && (
+                          <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+                            🍽️ Meal
+                          </span>
+                        )}
+                        {flight.wifi_available && (
+                          <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                            📶 WiFi
+                          </span>
+                        )}
+                        {flight.entertainment_available && (
+                          <span className="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full">
+                            🎬 Entertainment
+                          </span>
+                        )}
+                        {flight.power_outlet_available && (
+                          <span className="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full">
+                            🔌 Power
+                          </span>
+                        )}
+                      </div>
+                    </div>
 
-                     <div className="mt-4 lg:mt-0 lg:ml-6 text-right">
-                       <div className="mb-4">
-                         {flight.base_price !== flight.current_price && (
-                           <div className="text-sm text-gray-500 line-through">
-                             {flight.currency} {flight.base_price.toLocaleString()}
-                           </div>
-                         )}
-                         <div className="text-2xl font-bold text-gray-900">
-                           {flight.currency} {flight.current_price.toLocaleString()}
-                         </div>
-                         <div className="text-sm text-gray-500">per person</div>
-                         {passengers > 1 && (
-                           <div className="text-sm font-semibold text-gray-700 mt-1">
-                             Total: {flight.currency} {(flight.current_price * passengers).toLocaleString()}
-                           </div>
-                         )}
-                       </div>
+                    <div className="mt-4 lg:mt-0 lg:ml-6 text-right">
+                      <div className="mb-4">
+                        {flight.base_price !== flight.current_price && (
+                          <div className="text-sm text-gray-500 line-through">
+                            {flight.currency}{" "}
+                            {flight.base_price.toLocaleString()}
+                          </div>
+                        )}
+                        <div className="text-2xl font-bold text-gray-900">
+                          {flight.currency}{" "}
+                          {flight.current_price.toLocaleString()}
+                        </div>
+                        <div className="text-sm text-gray-500">per person</div>
+                        {passengers > 1 && (
+                          <div className="text-sm font-semibold text-gray-700 mt-1">
+                            Total: {flight.currency}{" "}
+                            {(
+                              flight.current_price * passengers
+                            ).toLocaleString()}
+                          </div>
+                        )}
+                      </div>
 
-                       <button
-                         className={`px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl ${
-                           flight.available_seats <= 0 || flight.status !== "scheduled" || !flight.is_active
-                             ? "bg-gray-300 text-gray-500 cursor-not-allowed shadow-none hover:scale-100"
-                             : "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white"
-                         }`}
-                         onClick={() => handleBookFlight(flight)}
-                         disabled={
-                           flight.available_seats <= 0 ||
-                           flight.status !== "scheduled" ||
-                           !flight.is_active
-                         }
-                       >
-                         {flight.available_seats <= 0
-                           ? "Sold Out"
-                           : flight.status !== "scheduled"
-                             ? flight.status.charAt(0).toUpperCase() + flight.status.slice(1)
-                             : isAuthenticated
-                               ? "Book Now"
-                               : "Sign up"}
-                       </button>
-                     </div>
-                   </div>
-                 </div>
-               ))}
-             </div>
-           </div>
-         )}
+                      <button
+                        className={`px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl ${
+                          flight.available_seats <= 0 ||
+                          flight.status !== "scheduled" ||
+                          !flight.is_active
+                            ? "bg-gray-300 text-gray-500 cursor-not-allowed shadow-none hover:scale-100"
+                            : "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white"
+                        }`}
+                        onClick={() => handleBookFlight(flight)}
+                        disabled={
+                          flight.available_seats <= 0 ||
+                          flight.status !== "scheduled" ||
+                          !flight.is_active
+                        }
+                      >
+                        {flight.available_seats <= 0
+                          ? "Sold Out"
+                          : flight.status !== "scheduled"
+                          ? flight.status.charAt(0).toUpperCase() +
+                            flight.status.slice(1)
+                          : isAuthenticated
+                          ? "Book Now"
+                          : "Sign up"}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Booking Modal */}
         {showBookingModal && selectedFlight && (
@@ -1873,18 +2048,18 @@ const Flights: FunctionComponent = () => {
           />
         )}
 
-                 {/* Booking Error */}
-         {bookingError && (
-           <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-             {bookingError}
-           </div>
-         )}
+        {/* Booking Error */}
+        {bookingError && (
+          <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+            {bookingError}
+          </div>
+        )}
 
-         {/* Weather Forecast Section */}
-         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-           <h2 className="text-2xl font-bold text-gray-900 mb-6">
-             Real-Time Weather Forecast for Bangladesh
-           </h2>
+        {/* Weather Forecast Section */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            Real-Time Weather Forecast for Bangladesh
+          </h2>
 
           {/* Fixed Weather Map */}
           <div className="mb-8">
@@ -1901,7 +2076,9 @@ const Flights: FunctionComponent = () => {
               <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
                 <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
                   <div className="flex items-center justify-between p-4 border-b border-gray-200">
-                    <h3 className="text-xl font-semibold text-gray-900">Bangladesh Weather Map</h3>
+                    <h3 className="text-xl font-semibold text-gray-900">
+                      Bangladesh Weather Map
+                    </h3>
                     <button
                       className="text-gray-400 hover:text-gray-600 text-2xl font-bold"
                       onClick={() => setShowMap(false)}
@@ -1940,7 +2117,10 @@ const Flights: FunctionComponent = () => {
                 placeholder="Search city..."
                 className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
-              <button type="submit" className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+              <button
+                type="submit"
+                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              >
                 Search
               </button>
             </form>
@@ -1968,12 +2148,19 @@ const Flights: FunctionComponent = () => {
           {isLoadingWeather && (
             <p className="text-center text-gray-600">Loading weather...</p>
           )}
-          {weatherError && <p className="text-center text-red-600">{weatherError}</p>}
+          {weatherError && (
+            <p className="text-center text-red-600">{weatherError}</p>
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {weatherData.map((weather, idx) => (
-              <div key={idx} className="bg-white rounded-lg shadow-md p-6 border border-gray-200 hover:shadow-lg transition-shadow duration-200">
-                <h2 className="text-xl font-semibold text-gray-900 mb-2">{weather.city}</h2>
+              <div
+                key={idx}
+                className="bg-white rounded-lg shadow-md p-6 border border-gray-200 hover:shadow-lg transition-shadow duration-200"
+              >
+                <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                  {weather.city}
+                </h2>
                 <div className="text-3xl font-bold text-blue-600 mb-2">
                   {Math.round(weather.temperature)}°C
                 </div>
@@ -1983,8 +2170,12 @@ const Flights: FunctionComponent = () => {
                     ({weather.description})
                   </span>
                 </div>
-                <div className="text-sm text-gray-600">Humidity: {weather.humidity}%</div>
-                <div className="text-sm text-gray-600">Wind: {weather.windSpeed} km/h</div>
+                <div className="text-sm text-gray-600">
+                  Humidity: {weather.humidity}%
+                </div>
+                <div className="text-sm text-gray-600">
+                  Wind: {weather.windSpeed} km/h
+                </div>
               </div>
             ))}
           </div>
@@ -1998,10 +2189,7 @@ const Flights: FunctionComponent = () => {
 
           {/* Currency Search Bar */}
           <div className="flex flex-col sm:flex-row gap-4 mb-6 justify-center">
-            <form
-              onSubmit={handleCurrencySearch}
-              className="flex gap-2"
-            >
+            <form onSubmit={handleCurrencySearch} className="flex gap-2">
               <input
                 type="text"
                 value={currencySearch}
@@ -2009,7 +2197,10 @@ const Flights: FunctionComponent = () => {
                 placeholder="Search currency code (e.g. GBP, INR, AUD)"
                 className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent min-w-[250px]"
               />
-              <button type="submit" className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+              <button
+                type="submit"
+                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              >
                 Search
               </button>
               {activeCurrencies.length > 3 && (
@@ -2042,15 +2233,23 @@ const Flights: FunctionComponent = () => {
                 <table className="w-full">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Currency</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rate (BDT)</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Currency
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Rate (BDT)
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
                     {currencyRates.map((row) => (
                       <tr key={row.currency} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{row.currency}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{(1 / Number(row.rate)).toFixed(2)}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                          {row.currency}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {(1 / Number(row.rate)).toFixed(2)}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -2060,7 +2259,9 @@ const Flights: FunctionComponent = () => {
           )}
 
           {!currencyLoading && !currencyError && currencyRates.length === 0 && (
-            <p className="text-center text-red-600">No currency data available.</p>
+            <p className="text-center text-red-600">
+              No currency data available.
+            </p>
           )}
         </div>
       </div>
