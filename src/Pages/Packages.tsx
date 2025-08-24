@@ -2,7 +2,15 @@ import { FunctionComponent, useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../Components/Layout";
 import { useAuth } from "../Authentication/auth-context";
-import { Search, MapPin, Star, ArrowRight, Filter, Calendar, Users } from "react-feather";
+import {
+  Search,
+  MapPin,
+  Star,
+  ArrowRight,
+  Filter,
+  Calendar,
+  Users,
+} from "react-feather";
 
 const FILTER_OPTIONS = {
   Budget: ["All", "< 4000৳", "4000–6000৳", "6000+৳"],
@@ -28,8 +36,17 @@ const _MEDIA_BASE = "https://wander-nest-ad3s.onrender.com";
 function extractPlaceName(title: string): string {
   if (!title) return "";
   const knownPlaces = [
-    "Cox's Bazar", "Chittagong", "Dhaka", "St. Martin", "Sundarbans", "Sylhet",
-    "Rangamati", "Bandarban", "Srimangal", "Panchagarh", "Khulna"
+    "Cox's Bazar",
+    "Chittagong",
+    "Dhaka",
+    "St. Martin",
+    "Sundarbans",
+    "Sylhet",
+    "Rangamati",
+    "Bandarban",
+    "Srimangal",
+    "Panchagarh",
+    "Khulna",
   ];
   for (const place of knownPlaces) {
     if (title.toLowerCase().includes(place.toLowerCase())) {
@@ -58,7 +75,9 @@ const Packages: FunctionComponent = () => {
       setLoading(true);
       setError("");
       try {
-        const response = await fetch("https://wander-nest-ad3s.onrender.com/api/packages/all/");
+        const response = await fetch(
+          "https://wander-nest-ad3s.onrender.com/api/packages/all/"
+        );
         const data = await response.json();
         const packagesData = data.results || (Array.isArray(data) ? data : []);
         setPackages(packagesData);
@@ -108,27 +127,33 @@ const Packages: FunctionComponent = () => {
 
   // Filter packages by search and selected filters
   const filteredPackages = packages.filter((pkg) => {
-    const matchesSearch = pkg.title.toLowerCase().includes(search.toLowerCase());
-    const matchesFilters = Object.entries(selectedFilters).every(([filter, value]) => {
-      if (filter === "Destination") {
-        return extractPlaceName(pkg.title) === value || value === "All";
-      }
-      if (filter === "Budget") {
-        const price = Number(pkg.price);
-        if (value === "< 4000৳") return price < 4000;
-        if (value === "4000–6000৳") return price >= 4000 && price <= 6000;
-        if (value === "6000+৳") return price > 6000;
+    const matchesSearch = pkg.title
+      .toLowerCase()
+      .includes(search.toLowerCase());
+    const matchesFilters = Object.entries(selectedFilters).every(
+      ([filter, value]) => {
+        if (filter === "Destination") {
+          return extractPlaceName(pkg.title) === value || value === "All";
+        }
+        if (filter === "Budget") {
+          const price = Number(pkg.price);
+          if (value === "< 4000৳") return price < 4000;
+          if (value === "4000–6000৳") return price >= 4000 && price <= 6000;
+          if (value === "6000+৳") return price > 6000;
+          return true;
+        }
         return true;
       }
-      return true;
-    });
+    );
     return matchesSearch && matchesFilters;
   });
 
   // Dynamic Destination options
   const destinationOptions = [
     "All",
-    ...Array.from(new Set(packages.map((pkg) => extractPlaceName(pkg.title)))).sort(),
+    ...Array.from(
+      new Set(packages.map((pkg) => extractPlaceName(pkg.title)))
+    ).sort(),
   ];
 
   return (
@@ -140,7 +165,8 @@ const Packages: FunctionComponent = () => {
           <div
             className="absolute inset-0 bg-cover bg-center opacity-30"
             style={{
-              backgroundImage: "url('https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=1920')"
+              backgroundImage:
+                "url('https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=1920')",
             }}
           ></div>
 
@@ -152,7 +178,8 @@ const Packages: FunctionComponent = () => {
               </span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-100 max-w-2xl mx-auto mb-8">
-              Discover curated travel experiences designed for unforgettable adventures
+              Discover curated travel experiences designed for unforgettable
+              adventures
             </p>
 
             {/* Search Bar */}
@@ -174,21 +201,31 @@ const Packages: FunctionComponent = () => {
         {/* Filters Section */}
         <section className="py-8 bg-white border-b border-gray-200">
           <div className="max-w-6xl mx-auto px-4">
-            <div className="flex flex-wrap justify-center gap-4" ref={filterDropdownRef}>
+            <div
+              className="flex flex-wrap justify-center gap-4"
+              ref={filterDropdownRef}
+            >
               {/* Destination filter */}
               <div className="relative">
                 <button
-                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${selectedFilters["Destination"] && selectedFilters["Destination"] !== "All"
-                    ? "bg-[#4a6b5b] text-white shadow-lg scale-105 hover:bg-[#0d1c1c]"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105 active:bg-gray-300"
-                    }`}
+                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${
+                    selectedFilters["Destination"] &&
+                    selectedFilters["Destination"] !== "All"
+                      ? "bg-[#4a6b5b] text-white shadow-lg scale-105 hover:bg-[#0d1c1c]"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105 active:bg-gray-300"
+                  }`}
                   onClick={() => handleFilterClick("Destination")}
                 >
                   <MapPin className="w-4 h-4" />
-                  {selectedFilters["Destination"] && selectedFilters["Destination"] !== "All"
+                  {selectedFilters["Destination"] &&
+                  selectedFilters["Destination"] !== "All"
                     ? selectedFilters["Destination"]
                     : "Destination"}
-                  <span className={`transform transition-transform duration-200 ${openFilter === "Destination" ? "rotate-180" : ""}`}>
+                  <span
+                    className={`transform transition-transform duration-200 ${
+                      openFilter === "Destination" ? "rotate-180" : ""
+                    }`}
+                  >
                     ▼
                   </span>
                 </button>
@@ -197,12 +234,15 @@ const Packages: FunctionComponent = () => {
                     {destinationOptions.map((option) => (
                       <button
                         key={option}
-                        className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 ${selectedFilters["Destination"] === option ||
+                        className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 ${
+                          selectedFilters["Destination"] === option ||
                           (!selectedFilters["Destination"] && option === "All")
-                          ? "bg-primary/10 text-primary font-semibold"
-                          : "text-gray-700"
-                          }`}
-                        onClick={() => handleOptionSelect("Destination", option)}
+                            ? "bg-primary/10 text-primary font-semibold"
+                            : "text-gray-700"
+                        }`}
+                        onClick={() =>
+                          handleOptionSelect("Destination", option)
+                        }
                       >
                         {option}
                       </button>
@@ -214,17 +254,24 @@ const Packages: FunctionComponent = () => {
               {/* Budget filter */}
               <div className="relative">
                 <button
-                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${selectedFilters["Budget"] && selectedFilters["Budget"] !== "All"
-                    ? "bg-[#4a6b5b] text-white shadow-lg scale-105 hover:bg-[#0d1c1c]"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105 active:bg-gray-300"
-                    }`}
+                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${
+                    selectedFilters["Budget"] &&
+                    selectedFilters["Budget"] !== "All"
+                      ? "bg-[#4a6b5b] text-white shadow-lg scale-105 hover:bg-[#0d1c1c]"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105 active:bg-gray-300"
+                  }`}
                   onClick={() => handleFilterClick("Budget")}
                 >
                   <Filter className="w-4 h-4" />
-                  {selectedFilters["Budget"] && selectedFilters["Budget"] !== "All"
+                  {selectedFilters["Budget"] &&
+                  selectedFilters["Budget"] !== "All"
                     ? selectedFilters["Budget"]
                     : "Budget"}
-                  <span className={`transform transition-transform duration-200 ${openFilter === "Budget" ? "rotate-180" : ""}`}>
+                  <span
+                    className={`transform transition-transform duration-200 ${
+                      openFilter === "Budget" ? "rotate-180" : ""
+                    }`}
+                  >
                     ▼
                   </span>
                 </button>
@@ -233,11 +280,12 @@ const Packages: FunctionComponent = () => {
                     {FILTER_OPTIONS.Budget.map((option) => (
                       <button
                         key={option}
-                        className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 ${selectedFilters["Budget"] === option ||
+                        className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 ${
+                          selectedFilters["Budget"] === option ||
                           (!selectedFilters["Budget"] && option === "All")
-                          ? "bg-primary/10 text-primary font-semibold"
-                          : "text-gray-700"
-                          }`}
+                            ? "bg-primary/10 text-primary font-semibold"
+                            : "text-gray-700"
+                        }`}
                         onClick={() => handleOptionSelect("Budget", option)}
                       >
                         {option}
@@ -256,7 +304,10 @@ const Packages: FunctionComponent = () => {
             {loading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {Array.from({ length: 9 }).map((_, index) => (
-                  <div key={index} className="bg-white rounded-2xl overflow-hidden shadow-lg animate-pulse">
+                  <div
+                    key={index}
+                    className="bg-white rounded-2xl overflow-hidden shadow-lg animate-pulse"
+                  >
                     <div className="h-64 bg-gray-200"></div>
                     <div className="p-6 space-y-4">
                       <div className="h-6 bg-gray-200 rounded"></div>
@@ -271,7 +322,9 @@ const Packages: FunctionComponent = () => {
                 <div className="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-3xl">⚠️</span>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">Error Loading Packages</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  Error Loading Packages
+                </h3>
                 <p className="text-red-600 mb-6">{error}</p>
                 <button
                   onClick={() => window.location.reload()}
@@ -285,8 +338,12 @@ const Packages: FunctionComponent = () => {
                 <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <Search className="w-12 h-12 text-gray-400" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">No packages found</h3>
-                <p className="text-gray-600 mb-6">Try adjusting your search or filter criteria</p>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  No packages found
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Try adjusting your search or filter criteria
+                </p>
                 <button
                   onClick={() => {
                     setSearch("");
@@ -303,13 +360,18 @@ const Packages: FunctionComponent = () => {
                   <div
                     key={pkg.id}
                     className="group bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105"
-                    onClick={() => navigate(`/packages/${encodeURIComponent(pkg.title)}`)}
+                    onClick={() =>
+                      navigate(`/packages/${encodeURIComponent(pkg.title)}`)
+                    }
                   >
                     <div className="relative overflow-hidden">
                       <img
                         className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
                         alt={pkg.title}
-                        src={pkg.image_url || "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=600"}
+                        src={
+                          pkg.image_url ||
+                          "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=600"
+                        }
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
@@ -320,9 +382,13 @@ const Packages: FunctionComponent = () => {
                         <div className="flex items-center justify-between text-white">
                           <div className="flex items-center gap-2">
                             <Calendar className="w-4 h-4" />
-                            <span className="text-sm font-medium">{pkg.days} Days</span>
+                            <span className="text-sm font-medium">
+                              {pkg.days} Days
+                            </span>
                           </div>
-                          <div className="text-accent font-bold text-xl">৳{Number(pkg.price).toLocaleString()}</div>
+                          <div className="text-accent font-bold text-xl">
+                            ৳{Number(pkg.price).toLocaleString()}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -332,7 +398,8 @@ const Packages: FunctionComponent = () => {
                         {pkg.title}
                       </h3>
                       <p className="text-gray-600 mb-4 line-clamp-2 leading-relaxed">
-                        {pkg.subtitle || "Experience the beauty and culture of this amazing destination"}
+                        {pkg.subtitle ||
+                          "Experience the beauty and culture of this amazing destination"}
                       </p>
 
                       <div className="flex items-center justify-between mb-4">
@@ -361,10 +428,10 @@ const Packages: FunctionComponent = () => {
                               navigate("/confirm-book", { state: { pkg } });
                             }
                           }}
-                          className="px-6 py-2 bg-[#4a6b5b] text-white font-semibold rounded-xl shadow-md hover:shadow-lg hover:bg-[#0d1c1c] transition-all duration-200 hover:scale-105 flex items-center gap-2"
+                          className="px-8 py-4 bg-gradient-to-r from-accent to-accent-light text-primary-dark font-bold text-lg rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:brightness-110 flex items-center gap-2"
                         >
                           Book Now
-                          <ArrowRight className="w-4 h-4" />
+                          <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                         </button>
                       </div>
                     </div>
@@ -382,7 +449,8 @@ const Packages: FunctionComponent = () => {
               Can't Find the Perfect Package?
             </h2>
             <p className="text-lg text-primary-dark/80 mb-8 max-w-2xl mx-auto">
-              Create your own custom travel package tailored to your preferences and budget
+              Create your own custom travel package tailored to your preferences
+              and budget
             </p>
             <button
               onClick={() => navigate("/create-packages")}
