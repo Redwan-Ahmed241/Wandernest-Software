@@ -119,14 +119,14 @@ const HomePage: FunctionComponent = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
                 onClick={() => navigate("/packages")}
-                className="px-8 py-4 bg-gradient-to-r from-accent to-accent-light text-primary-dark font-bold text-lg rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:brightness-110 flex items-center justify-center gap-2 group"
+                className="px-8 py-4 bg-white/80 text-black font-semibold text-xl rounded-full shadow-md hover:shadow-lg transition-all duration-200 hover:bg-white focus:outline-none focus:ring-2 focus:ring-accent border border-gray-200 flex items-center justify-center gap-2 group tracking-wide"
               >
                 Start Your Journey
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
               </button>
               <button
                 onClick={() => navigate("/destinations")}
-                className="px-8 py-4 border-2 border-white text-white font-bold text-lg rounded-xl transition-all duration-300 hover:scale-105 hover:bg-white hover:text-primary hover:border-white"
+                className="px-8 py-4 border-2 border-white text-white font-bold text-lg rounded-xl transition-all duration-300 hover:scale-105 hover:bg-white/10 hover:text-accent hover:border-accent focus:outline-none focus:ring-2 focus:ring-accent"
               >
                 Explore Destinations
               </button>
