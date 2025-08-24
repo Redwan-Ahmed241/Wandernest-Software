@@ -33,7 +33,7 @@ import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
 import Layout from "./Components/Layout";
 import MyTrips from "./Pages/MyTrips";
-
+import HelpCenter from "./Pages/HelpCenter";
 import Packages from "./Pages/Packages";
 import CreatePackage from "./Pages/CreatePackages";
 import SignupForm from "./Pages/Signup-form";
@@ -97,7 +97,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/create-packages" element={<CreatePackage />} />
       <Route path="/profile" element={<ProfileSettings />} />
       <Route path="/confirm-book" element={<ConfirmBook />} />
-
+      <Route path="/help-center" element={<HelpCenter />} />
       {/* Redirects */}
       {/* Auth Routes */}
       <Route path="/login" element={<LoginPage />} />

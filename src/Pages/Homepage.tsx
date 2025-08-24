@@ -90,37 +90,43 @@ const HomePage: FunctionComponent = () => {
       <main className="min-h-screen bg-white">
         {/* Hero Section */}
         <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
-          {/* Background with overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/90 via-primary-dark/80 to-primary/90"></div>
+          {/* Background Image */}
           <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
               backgroundImage:
                 "url('https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=1920')",
             }}
           ></div>
+          {/* Overlay for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-br from-black/50 via-black/30 to-black/50"></div>
+          
+          {/* Subtle brand color overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-primary-dark/20"></div>
 
           {/* Hero Content */}
-          <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-              <span className="block bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent"></span>
-              Explore Bangladesh with WanderNest
+          <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight text-white drop-shadow-2xl">
+              Explore Bangladesh with{' '}
+              <span className="bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent">
+                WanderNest
+              </span>
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-gray-100 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-2xl mx-auto leading-relaxed drop-shadow-lg">
               Discover the beauty, culture, and adventure of Bangladesh with our
               expertly crafted travel experiences
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
                 onClick={() => navigate("/packages")}
-                className="px-8 py-4 bg-gradient-to-r from-accent to-accent-light text-primary-dark font-bold text-lg rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2"
+                className="px-8 py-4 bg-gradient-to-r from-accent to-accent-light text-primary-dark font-bold text-lg rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:brightness-110 flex items-center justify-center gap-2 group"
               >
                 Start Your Journey
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
               </button>
               <button
                 onClick={() => navigate("/destinations")}
-                className="px-8 py-4 border-2 border-white text-white font-bold text-lg rounded-xl hover:bg-white hover:text-primary transition-all duration-300 hover:scale-105"
+                className="px-8 py-4 border-2 border-white text-white font-bold text-lg rounded-xl transition-all duration-300 hover:scale-105 hover:bg-white hover:text-primary hover:border-white"
               >
                 Explore Destinations
               </button>
