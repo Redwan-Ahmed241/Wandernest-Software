@@ -84,6 +84,7 @@ const Navbar: React.FC = () => {
               <>
                 {isAuthenticated ? (
                   <div className="flex items-center space-x-3">
+                    <ProfileDropdown />
                     <div className="relative">
                       <button
                         className="relative p-2 text-gray-600 hover:text-primary transition-colors duration-200"
@@ -151,7 +152,6 @@ const Navbar: React.FC = () => {
                         </div>
                       )}
                     </div>
-                    <ProfileDropdown />
                   </div>
                 ) : (
                   <div className="flex items-center space-x-3">
