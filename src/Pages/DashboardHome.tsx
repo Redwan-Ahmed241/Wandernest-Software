@@ -123,17 +123,16 @@ const DashboardHome: FunctionComponent = () => {
             <div className="bg-gradient-to-br from-primary via-primary-dark to-primary-light text-white rounded-2xl p-8 shadow-xl">
               <div className="flex items-center justify-between">
                 <div>
-                  <h1 className="text-3xl font-bold mb-2">
-                    Welcome back,{" "}
-                    {user?.first_name || user?.username || "Traveler"}! 👋
+                  <h1 className="text-4xl font-extrabold mb-2 text-gray-900 drop-shadow-lg">
+                    Welcome back, {user?.first_name || user?.username || "Traveler"}! <span className="align-middle">👋</span>
                   </h1>
-                  <p className="text-xl opacity-90">
+                  <p className="text-xl text-gray-700 font-medium drop-shadow">
                     Ready for your next adventure?
                   </p>
                 </div>
                 <div className="hidden md:block">
-                  <div className="w-24 h-24 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                    <span className="text-4xl">✈️</span>
+                  <div className="w-24 h-24 bg-gradient-to-br from-white via-gray-100 to-white rounded-full flex items-center justify-center shadow-lg">
+                    <span className="text-5xl">✈️</span>
                   </div>
                 </div>
               </div>
@@ -252,7 +251,7 @@ const DashboardHome: FunctionComponent = () => {
                             Start planning your first adventure
                           </p>
                           <button
-                            className="px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary-dark transition-all duration-200 font-medium shadow-lg"
+                            className="px-6 py-3 bg-white text-black font-bold rounded-xl border border-primary/30 shadow-lg hover:bg-white/10 hover:text-accent hover:border-accent hover:shadow-xl transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-accent"
                             onClick={() => navigate("/packages")}
                           >
                             Book Your First Trip
@@ -323,13 +322,6 @@ const DashboardHome: FunctionComponent = () => {
                     Quick Actions
                   </h3>
                   <div className="space-y-3">
-                    <button
-                      className="w-full p-3 bg-gradient-to-r from-primary to-primary-dark text-white rounded-lg hover:shadow-lg transition-all duration-200 font-medium"
-                      onClick={() => navigate("/packages")}
-                    >
-                      <span className="mr-2">🎒</span>
-                      Book New Trip
-                    </button>
                     <button
                       className="w-full p-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all duration-200 font-medium"
                       onClick={() => navigate("/create-packages")}
