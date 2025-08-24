@@ -157,7 +157,7 @@ const Navbar: React.FC = () => {
                   <div className="flex items-center space-x-3">
                     <button
                       onClick={() => navigate("/login")}
-                      className="px-4 py-2 text-gray-700 font-medium hover:text-primary transition-colors duration-200"
+                      className="px-6 py-2 bg-white text-accent font-bold rounded-lg border border-accent/40 shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent hover:bg-transparent hover:text-accent hover:border-accent hover:shadow-lg hover:scale-105"
                     >
                       Log in
                     </button>
