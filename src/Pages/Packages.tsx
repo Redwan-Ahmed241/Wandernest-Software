@@ -428,10 +428,10 @@ const Packages: FunctionComponent = () => {
                               navigate("/confirm-book", { state: { pkg } });
                             }
                           }}
-                          className="px-8 py-4 bg-gradient-to-r from-accent to-accent-light text-primary-dark font-bold text-lg rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:brightness-110 flex items-center gap-2"
+                          className="px-6 py-2 bg-[#6ab187] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2"
                         >
                           Book Now
-                          <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+                          <ArrowRight className="w-5 h-5 transition-transform duration-300" />
                         </button>
                       </div>
                     </div>
