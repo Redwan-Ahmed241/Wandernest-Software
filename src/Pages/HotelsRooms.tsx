@@ -597,37 +597,39 @@ const HotelsRooms: FunctionComponent = () => {
     <Layout>
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
-        <section className="relative py-20 bg-gradient-to-br from-primary via-primary-dark to-primary overflow-hidden">
-          <div className="absolute inset-0 bg-black/20"></div>
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-30"
-            style={{
-              backgroundImage:
-                "url('https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=1920')",
-            }}
-          ></div>
-
+        <section className="relative py-20 overflow-hidden">
+          <div className="absolute inset-0">
+            <img
+              src="https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=1920"
+              alt="Hotels Bangladesh"
+              className="w-full h-full object-cover object-center"
+              style={{ filter: "brightness(0.7) blur(0px)" }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary-dark to-primary opacity-80"></div>
+          </div>
           <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              Hotels &
-              <span className="block bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent">
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 drop-shadow-lg">
+              Hotels & Rooms
+              <span className="block bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent drop-shadow-lg">
                 Accommodations
               </span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-100 max-w-2xl mx-auto mb-8">
+            <p className="text-xl md:text-2xl text-gray-100 max-w-2xl mx-auto mb-8 drop-shadow">
               Find the perfect place to stay during your Bangladesh adventure
             </p>
 
             {/* Search Bar */}
             <div className="max-w-2xl mx-auto relative">
               <div className="relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <span className="absolute left-4 top-1/2 transform -translate-y-1/2 flex items-center pointer-events-none">
+                  <Search className="w-7 h-7 text-gray-700 drop-shadow-lg" />
+                </span>
                 <input
                   type="text"
                   placeholder="Search hotels, locations..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/95 backdrop-blur-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-accent/30 shadow-xl"
+                  className="w-full pl-14 pr-4 py-4 rounded-2xl bg-white/95 backdrop-blur-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-accent/30 shadow-xl"
                 />
               </div>
             </div>
@@ -859,45 +861,6 @@ const HotelsRooms: FunctionComponent = () => {
           </div>
         </section>
 
-        {/* Local Amenities */}
-        <section className="py-16 bg-white">
-          <div className="max-w-6xl mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Local Amenities & Services
-              </h2>
-              <p className="text-lg text-gray-600">
-                Discover what's around your hotel
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {AMENITY_LINKS.map((amenity) => (
-                <div
-                  key={amenity.key}
-                  className="group bg-white rounded-2xl shadow-lg p-6 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105"
-                  onClick={() => navigate(amenity.route)}
-                >
-                  <div
-                    className={`w-16 h-16 bg-gradient-to-br ${amenity.color} rounded-2xl flex items-center justify-center mb-4 text-white shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110`}
-                  >
-                    {amenity.icon}
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
-                    {amenity.title}
-                  </h3>
-                  <p className="text-gray-600 mb-4 text-sm leading-relaxed">
-                    {amenity.description}
-                  </p>
-                  <div className="flex items-center gap-1 text-primary font-semibold group-hover:gap-2 transition-all duration-200">
-                    <span>Explore</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* Booking Modal */}
         {isBookingModalOpen && selectedHotel && (
