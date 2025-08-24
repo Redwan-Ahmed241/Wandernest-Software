@@ -237,6 +237,12 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
               }
               alt={hotel.name}
               className="w-24 h-24 rounded-xl object-cover shadow-md"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                if (target.src !== "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=400") {
+                  target.src = "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=400";
+                }
+              }}
             />
             <div className="flex-1">
               <h3 className="text-xl font-bold text-gray-900 mb-1">
@@ -756,6 +762,12 @@ const HotelsRooms: FunctionComponent = () => {
                         src={hotel.image_url}
                         alt={hotel.name}
                         className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          if (target.src !== "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=600") {
+                            target.src = "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=600";
+                          }
+                        }}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
