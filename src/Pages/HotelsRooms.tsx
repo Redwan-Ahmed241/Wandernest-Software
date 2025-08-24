@@ -4,7 +4,17 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../Components/Layout";
 import { useAuth } from "../Authentication/auth-context";
-import { Search, MapPin, Star, ArrowRight, Filter, Wifi, Truck, Coffee, ShoppingBag } from "react-feather";
+import {
+  Search,
+  MapPin,
+  Star,
+  ArrowRight,
+  Filter,
+  Wifi,
+  Truck,
+  Coffee,
+  ShoppingBag,
+} from "react-feather";
 
 // Define interfaces
 interface Hotel {
@@ -42,7 +52,7 @@ const AMENITY_LINKS = [
     description: "Discover popular dining spots",
     icon: <Coffee className="w-8 h-8" />,
     route: "/restaurant",
-    color: "from-orange-500 to-red-500"
+    color: "from-orange-500 to-red-500",
   },
   {
     key: "attractions",
@@ -50,7 +60,7 @@ const AMENITY_LINKS = [
     description: "Explore nearby places of interest",
     icon: <MapPin className="w-8 h-8" />,
     route: "/things-to-do",
-    color: "from-blue-500 to-indigo-500"
+    color: "from-blue-500 to-indigo-500",
   },
   {
     key: "transport",
@@ -58,7 +68,7 @@ const AMENITY_LINKS = [
     description: "Find transport options",
     icon: <Truck className="w-8 h-8" />,
     route: "/public-transport",
-    color: "from-green-500 to-emerald-500"
+    color: "from-green-500 to-emerald-500",
   },
   {
     key: "shopping",
@@ -66,7 +76,7 @@ const AMENITY_LINKS = [
     description: "Shop at the best locations",
     icon: <ShoppingBag className="w-8 h-8" />,
     route: "/shopping-centers",
-    color: "from-purple-500 to-pink-500"
+    color: "from-purple-500 to-pink-500",
   },
 ];
 
@@ -171,7 +181,11 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
       }
 
       if (!response.ok) {
-        const errorMessage = data?.detail || data?.message || data?.error || `Server error: ${response.status}`;
+        const errorMessage =
+          data?.detail ||
+          data?.message ||
+          data?.error ||
+          `Server error: ${response.status}`;
         throw new Error(errorMessage);
       }
 
@@ -185,7 +199,8 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
     } catch (err: unknown) {
       let errorMessage = "Payment failed. Please try again.";
       if (err instanceof TypeError && err.message.includes("fetch")) {
-        errorMessage = "Network error. Please check your connection and try again.";
+        errorMessage =
+          "Network error. Please check your connection and try again.";
       } else if (err instanceof Error && err.message) {
         errorMessage = err.message;
       }
@@ -200,7 +215,9 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-gray-900">Book {hotel.name}</h2>
+            <h2 className="text-2xl font-bold text-gray-900">
+              Book {hotel.name}
+            </h2>
             <button
               onClick={onClose}
               className="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors duration-200"
@@ -214,12 +231,17 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
           {/* Hotel Info */}
           <div className="flex gap-4 mb-6 p-4 bg-gray-50 rounded-xl">
             <img
-              src={hotel.image_url || "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=400"}
+              src={
+                hotel.image_url ||
+                "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=400"
+              }
               alt={hotel.name}
               className="w-24 h-24 rounded-xl object-cover shadow-md"
             />
             <div className="flex-1">
-              <h3 className="text-xl font-bold text-gray-900 mb-1">{hotel.name}</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-1">
+                {hotel.name}
+              </h3>
               <div className="flex items-center gap-2 text-gray-600 mb-2">
                 <MapPin className="w-4 h-4" />
                 <span>{hotel.location}</span>
@@ -227,10 +249,15 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-1">
                   {Array.from({ length: hotel.star }).map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-yellow-500 fill-current" />
+                    <Star
+                      key={i}
+                      className="w-4 h-4 text-yellow-500 fill-current"
+                    />
                   ))}
                 </div>
-                <span className="text-2xl font-bold text-green-600">৳{hotel.price.toLocaleString()}/night</span>
+                <span className="text-2xl font-bold text-green-600">
+                  ৳{hotel.price.toLocaleString()}/night
+                </span>
               </div>
             </div>
           </div>
@@ -239,7 +266,9 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
           <form onSubmit={handlePayment} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Full Name *</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Full Name *
+                </label>
                 <input
                   name="name"
                   value={form.name}
@@ -250,7 +279,9 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Email *</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Email *
+                </label>
                 <input
                   name="email"
                   type="email"
@@ -262,7 +293,9 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Phone *</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Phone *
+                </label>
                 <input
                   name="phone"
                   value={form.phone}
@@ -273,7 +306,9 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Check-in Date *</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Check-in Date *
+                </label>
                 <input
                   name="checkin"
                   type="date"
@@ -287,7 +322,9 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Number of Guests</label>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Number of Guests
+              </label>
               <input
                 name="guests"
                 type="number"
@@ -302,7 +339,9 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
             {/* Total Amount */}
             <div className="bg-primary/10 rounded-xl p-4">
               <div className="flex items-center justify-between">
-                <span className="text-lg font-semibold text-gray-900">Total Amount:</span>
+                <span className="text-lg font-semibold text-gray-900">
+                  Total Amount:
+                </span>
                 <span className="text-2xl font-bold text-primary">
                   ৳{((hotel?.price || 0) * form.guests).toLocaleString()}
                 </span>
@@ -317,7 +356,11 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
               disabled={isProcessingPayment}
               className="w-full py-4 bg-gradient-to-r from-primary to-primary-dark text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isProcessingPayment ? "Processing Payment..." : `Pay ৳${((hotel?.price || 0) * form.guests).toLocaleString()} & Book Hotel`}
+              {isProcessingPayment
+                ? "Processing Payment..."
+                : `Pay ৳${(
+                    (hotel?.price || 0) * form.guests
+                  ).toLocaleString()} & Book Hotel`}
             </button>
           </form>
 
@@ -412,7 +455,9 @@ const HotelsRooms: FunctionComponent = () => {
     setIsLoadingHotels(true);
     setSearchError("");
     try {
-      const response = await fetch("https://wander-nest-ad3s.onrender.com/api/hotels/");
+      const response = await fetch(
+        "https://wander-nest-ad3s.onrender.com/api/hotels/"
+      );
       if (!response.ok) throw new Error("Failed to fetch hotels");
 
       const data = await response.json();
@@ -438,12 +483,12 @@ const HotelsRooms: FunctionComponent = () => {
           hotel.image_url && hotel.image_url.startsWith("http")
             ? hotel.image_url
             : hotel.image_url
-              ? `${MEDIA_BASE}${hotel.image_url}`
-              : hotel.image && hotel.image.startsWith("http")
-                ? hotel.image
-                : hotel.image
-                  ? `${MEDIA_BASE}${hotel.image}`
-                  : "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=600",
+            ? `${MEDIA_BASE}${hotel.image_url}`
+            : hotel.image && hotel.image.startsWith("http")
+            ? hotel.image
+            : hotel.image
+            ? `${MEDIA_BASE}${hotel.image}`
+            : "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=600",
         price:
           typeof hotel.price === "string"
             ? parseFloat(hotel.price.replace(/[^\d.]/g, "")) || 0
@@ -509,16 +554,22 @@ const HotelsRooms: FunctionComponent = () => {
           return hotel.star === selectedStar;
         }
         if (filter === "Location") {
-          return extractCity(hotel.location).toLowerCase() === value.toLowerCase();
+          return (
+            extractCity(hotel.location).toLowerCase() === value.toLowerCase()
+          );
         }
         if (filter === "Room Type") {
           let hotelRoomTypes: string[] = [];
           if (Array.isArray(hotel.roomTypes)) {
-            hotelRoomTypes = (hotel.roomTypes as string[]).map((rt: string) => rt.trim());
+            hotelRoomTypes = (hotel.roomTypes as string[]).map((rt: string) =>
+              rt.trim()
+            );
           } else if (typeof (hotel.roomTypes as any) === "string") {
             hotelRoomTypes = [(hotel.roomTypes as string).trim()];
           }
-          return hotelRoomTypes.some((rt) => rt.toLowerCase() === value.toLowerCase());
+          return hotelRoomTypes.some(
+            (rt) => rt.toLowerCase() === value.toLowerCase()
+          );
         }
         return true;
       }
@@ -545,7 +596,8 @@ const HotelsRooms: FunctionComponent = () => {
           <div
             className="absolute inset-0 bg-cover bg-center opacity-30"
             style={{
-              backgroundImage: "url('https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=1920')"
+              backgroundImage:
+                "url('https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=1920')",
             }}
           ></div>
 
@@ -579,35 +631,51 @@ const HotelsRooms: FunctionComponent = () => {
         {/* Filters Section */}
         <section className="py-8 bg-white border-b border-gray-200">
           <div className="max-w-6xl mx-auto px-4">
-            <div className="flex flex-wrap justify-center gap-4" ref={filterDropdownRef}>
+            <div
+              className="flex flex-wrap justify-center gap-4"
+              ref={filterDropdownRef}
+            >
               {Object.keys(dynamicFilterOptions).map((filter) => (
                 <div key={filter} className="relative">
                   <button
-                    className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${selectedFilters[filter as FilterKey] && selectedFilters[filter as FilterKey] !== "All"
-                      ? "bg-[#4a6b5b] text-white shadow-lg scale-105 hover:bg-[#0d1c1c]"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105 active:bg-gray-300"
-                      }`}
+                    className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${
+                      selectedFilters[filter as FilterKey] &&
+                      selectedFilters[filter as FilterKey] !== "All"
+                        ? "bg-[#4a6b5b] text-white shadow-lg scale-105 hover:bg-[#0d1c1c]"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105 active:bg-gray-300"
+                    }`}
                     onClick={() => handleFilterClick(filter as FilterKey)}
                   >
                     <Filter className="w-4 h-4" />
-                    {selectedFilters[filter as FilterKey] && selectedFilters[filter as FilterKey] !== "All"
+                    {selectedFilters[filter as FilterKey] &&
+                    selectedFilters[filter as FilterKey] !== "All"
                       ? selectedFilters[filter as FilterKey]
                       : filter}
-                    <span className={`transform transition-transform duration-200 ${openFilter === (filter as FilterKey) ? "rotate-180" : ""}`}>
+                    <span
+                      className={`transform transition-transform duration-200 ${
+                        openFilter === (filter as FilterKey) ? "rotate-180" : ""
+                      }`}
+                    >
                       ▼
                     </span>
                   </button>
                   {openFilter === (filter as FilterKey) && (
                     <div className="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 rounded-xl shadow-xl z-10 overflow-hidden">
-                      {(dynamicFilterOptions[filter as FilterKey] as string[]).map((option: string) => (
+                      {(
+                        dynamicFilterOptions[filter as FilterKey] as string[]
+                      ).map((option: string) => (
                         <button
                           key={option}
-                          className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 ${selectedFilters[filter as FilterKey] === option ||
-                            (!selectedFilters[filter as FilterKey] && option === "All")
-                            ? "bg-primary/10 text-primary font-semibold"
-                            : "text-gray-700"
-                            }`}
-                          onClick={() => handleOptionSelect(filter as FilterKey, option)}
+                          className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 ${
+                            selectedFilters[filter as FilterKey] === option ||
+                            (!selectedFilters[filter as FilterKey] &&
+                              option === "All")
+                              ? "bg-primary/10 text-primary font-semibold"
+                              : "text-gray-700"
+                          }`}
+                          onClick={() =>
+                            handleOptionSelect(filter as FilterKey, option)
+                          }
                         >
                           {option}
                         </button>
@@ -626,7 +694,10 @@ const HotelsRooms: FunctionComponent = () => {
             {isLoadingHotels ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {Array.from({ length: 9 }).map((_, index) => (
-                  <div key={index} className="bg-white rounded-2xl overflow-hidden shadow-lg animate-pulse">
+                  <div
+                    key={index}
+                    className="bg-white rounded-2xl overflow-hidden shadow-lg animate-pulse"
+                  >
                     <div className="h-64 bg-gray-200"></div>
                     <div className="p-6 space-y-4">
                       <div className="h-6 bg-gray-200 rounded"></div>
@@ -641,7 +712,9 @@ const HotelsRooms: FunctionComponent = () => {
                 <div className="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-3xl">⚠️</span>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">Error Loading Hotels</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  Error Loading Hotels
+                </h3>
                 <p className="text-red-600 mb-6">{searchError}</p>
                 <button
                   onClick={fetchHotels}
@@ -655,8 +728,12 @@ const HotelsRooms: FunctionComponent = () => {
                 <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <Search className="w-12 h-12 text-gray-400" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">No hotels found</h3>
-                <p className="text-gray-600 mb-6">Try adjusting your search or filter criteria</p>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  No hotels found
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Try adjusting your search or filter criteria
+                </p>
                 <button
                   onClick={() => {
                     setSearch("");
@@ -683,15 +760,21 @@ const HotelsRooms: FunctionComponent = () => {
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
                         <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                        <span className="text-sm font-semibold">{hotel.star}</span>
+                        <span className="text-sm font-semibold">
+                          {hotel.star}
+                        </span>
                       </div>
                       <div className="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
                         <div className="flex items-center justify-between text-white">
                           <div className="flex items-center gap-2">
                             <MapPin className="w-4 h-4" />
-                            <span className="text-sm font-medium">{hotel.location}</span>
+                            <span className="text-sm font-medium">
+                              {hotel.location}
+                            </span>
                           </div>
-                          <div className="text-accent font-bold text-lg">৳{hotel.price.toLocaleString()}/night</div>
+                          <div className="text-accent font-bold text-lg">
+                            ৳{hotel.price.toLocaleString()}/night
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -723,19 +806,37 @@ const HotelsRooms: FunctionComponent = () => {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-1">
                           {Array.from({ length: hotel.star }).map((_, i) => (
-                            <Star key={i} className="w-4 h-4 text-yellow-500 fill-current" />
+                            <Star
+                              key={i}
+                              className="w-4 h-4 text-yellow-500 fill-current"
+                            />
                           ))}
-                          <span className="text-sm text-gray-500 ml-1">({hotel.star} Star)</span>
+                          <span className="text-sm text-gray-500 ml-1">
+                            ({hotel.star} Star)
+                          </span>
                         </div>
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
                             handleBookHotel(hotel);
                           }}
-                          className="px-6 py-2 bg-[#4a6b5b] text-white font-semibold rounded-xl shadow-md hover:shadow-lg hover:bg-[#0d1c1c] transition-all duration-200 hover:scale-105 flex items-center gap-2"
+                          className="px-6 py-2 bg-[#6ab187] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2"
                         >
                           Book Now
-                          <ArrowRight className="w-4 h-4" />
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="w-5 h-5 transition-transform duration-300"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M17 8l4 4m0 0l-4 4m4-4H3"
+                            />
+                          </svg>
                         </button>
                       </div>
                     </div>
@@ -765,7 +866,9 @@ const HotelsRooms: FunctionComponent = () => {
                   className="group bg-white rounded-2xl shadow-lg p-6 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105"
                   onClick={() => navigate(amenity.route)}
                 >
-                  <div className={`w-16 h-16 bg-gradient-to-br ${amenity.color} rounded-2xl flex items-center justify-center mb-4 text-white shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110`}>
+                  <div
+                    className={`w-16 h-16 bg-gradient-to-br ${amenity.color} rounded-2xl flex items-center justify-center mb-4 text-white shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110`}
+                  >
                     {amenity.icon}
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
