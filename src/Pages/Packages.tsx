@@ -161,25 +161,21 @@ const Packages: FunctionComponent = () => {
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
         <section className="relative py-20 bg-gradient-to-br from-primary via-primary-dark to-primary overflow-hidden">
-          <div className="absolute inset-0 bg-black/20"></div>
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-30"
-            style={{
-              backgroundImage:
-                "url('https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=1920')",
-            }}
-          ></div>
+          <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=1920')" }}></div>
+          {/* Overlay for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/60"></div>
+          {/* Subtle brand color overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-primary-dark/20"></div>
 
           <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight text-white drop-shadow-2xl">
               Travel
               <span className="block bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent">
                 Packages
               </span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-100 max-w-2xl mx-auto mb-8">
-              Discover curated travel experiences designed for unforgettable
-              adventures
+            <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-2xl mx-auto leading-relaxed drop-shadow-lg">
+              Discover curated travel experiences designed for unforgettable adventures
             </p>
 
             {/* Search Bar */}
@@ -460,9 +456,9 @@ const Packages: FunctionComponent = () => {
             </p>
             <button
               onClick={() => navigate("/create-packages")}
-              className="px-8 py-4 bg-primary text-white font-bold text-lg rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2 mx-auto"
+              className="px-8 py-4 bg-white text-black font-bold text-lg rounded-xl shadow-lg border border-primary/30 hover:bg-white/10 hover:text-accent hover:border-accent hover:shadow-xl transition-all duration-200 hover:scale-105 flex items-center justify-center gap-2 mx-auto focus:outline-none focus:ring-2 focus:ring-accent"
             >
-              <Users className="w-5 h-5" />
+              <Users className="w-5 h-5 mr-2" />
               Create Custom Package
             </button>
           </div>
