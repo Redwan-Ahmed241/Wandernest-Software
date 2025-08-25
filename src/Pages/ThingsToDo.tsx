@@ -10,7 +10,7 @@ const cardData = [
     title: "Explore the Sundarbans Mangrove Forest",
     location: "Khulna",
     description: `Immerse yourself in the lush green beauty of the Sundarbans, the world's largest mangrove forest. Capture stunning photos of diverse flora and fauna, and experience nature's tranquil essence.`,
-    image: "/figma_photos/mangrove.jpg",
+    image: "/Figma_photos/mangrove.jpg",
     category: "Nature",
     rating: 4.8,
     duration: "Full Day",
@@ -20,7 +20,7 @@ const cardData = [
     title: "Savor Street Food in Old Dhaka",
     location: "Dhaka",
     description: "Indulge in a culinary adventure through the vibrant streets of Old Dhaka. Sample local delicacies like biryani, kebabs, and flavorful chutneys.",
-    image: "/figma_photos/puran_dhaka.jpg",
+    image: "/Figma_photos/puran_dhaka.jpg",
     category: "Food",
     rating: 4.7,
     duration: "4 Hours",
@@ -30,7 +30,7 @@ const cardData = [
     title: "Discover Historical Sites at Lalbagh Fort",
     location: "Dhaka",
     description: "Journey through time within the ancient walls of Lalbagh Fort, a historical Mughal-era structure. Marvel at intricate architecture, gardens, and artifacts.",
-    image: "/figma_photos/lalbagh.jpg",
+    image: "/Figma_photos/lalbagh.jpg",
     category: "Culture",
     rating: 4.6,
     duration: "3 Hours",
@@ -40,7 +40,7 @@ const cardData = [
     title: "Boat Trip on the Buriganga River",
     location: "Dhaka",
     description: `Take a scenic boat trip on the Buriganga River, offering captivating views of Dhaka's cityscape. Experience the hustle and bustle of river life.`,
-    image: "/figma_photos/burigangha.jpg",
+    image: "/Figma_photos/burigangha.jpg",
     category: "Adventure",
     rating: 4.5,
     duration: "2 Hours",
@@ -50,7 +50,7 @@ const cardData = [
     title: `Relax at Cox's Bazar Beach`,
     location: `Cox's Bazar`,
     description: `Find peace and rejuvenation on the golden sands of Cox's Bazar, one of the world's longest natural beaches. Relax by the sea, and soak in the coastal atmosphere.`,
-    image: "/figma_photos/coxsbazar.jpg",
+    image: "/Figma_photos/coxsbazar.jpg",
     category: "Nature",
     rating: 4.9,
     duration: "Full Day",
@@ -60,7 +60,7 @@ const cardData = [
     title: "Experience Traditional Cuisine in a Local Eatery",
     location: "Dhaka",
     description: "Treat yourself to a delightful culinary adventure in a traditional Bangladeshi eatery. Relish the rich flavors of local dishes like hilsa fish curry and various vegetable preparations.",
-    image: "/figma_photos/local_cuisine.jpeg",
+    image: "/Figma_photos/local_cuisine.jpeg",
     category: "Food",
     rating: 4.4,
     duration: "2 Hours",
@@ -70,7 +70,7 @@ const cardData = [
     title: "Visit the National Museum of Bangladesh",
     location: "Dhaka",
     description: `Step into the cultural heritage of Bangladesh at the National Museum in Dhaka. Wander through exhibits showcasing art, history, and the nation's rich past.`,
-    image: "/figma_photos/museum.jpeg",
+    image: "/Figma_photos/museum.jpeg",
     category: "Culture",
     rating: 4.3,
     duration: "3 Hours",
@@ -80,7 +80,7 @@ const cardData = [
     title: "Cycle through the Countryside",
     location: "Dhaka",
     description: `Embark on a picturesque cycling tour through the serene countryside surrounding Dhaka. Witness rural life, lush green fields, and local villages as you ride.`,
-    image: "/figma_photos/cycling.jpg",
+    image: "/Figma_photos/cycling.jpg",
     category: "Adventure",
     rating: 4.6,
     duration: "5 Hours",
@@ -117,23 +117,24 @@ const ThingsToDo: FunctionComponent = () => {
     <Layout>
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
-        <section className="relative py-20 bg-gradient-to-br from-primary via-primary-dark to-primary overflow-hidden">
-          <div className="absolute inset-0 bg-black/20"></div>
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-30"
-            style={{
-              backgroundImage: "url('https://images.pexels.com/photos/2662116/pexels-photo-2662116.jpeg?auto=compress&cs=tinysrgb&w=1920')"
-            }}
-          ></div>
-
+        <section className="relative py-20 overflow-hidden">
+          <div className="absolute inset-0">
+            <img
+              src="https://images.pexels.com/photos/2662116/pexels-photo-2662116.jpeg?auto=compress&cs=tinysrgb&w=1920"
+              alt="Bangladesh Nature"
+              className="w-full h-full object-cover object-center"
+              style={{ filter: "brightness(0.7) blur(0px)" }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary-dark to-primary opacity-80"></div>
+          </div>
           <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 drop-shadow-lg">
               Things to
-              <span className="block bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent">
+              <span className="block text-accent font-bold drop-shadow-lg">
                 Explore
               </span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-100 max-w-2xl mx-auto mb-8">
+            <p className="text-xl md:text-2xl text-gray-100 max-w-2xl mx-auto mb-8 drop-shadow">
               Discover amazing activities and experiences across Bangladesh
             </p>
           </div>
@@ -221,6 +222,10 @@ const ThingsToDo: FunctionComponent = () => {
                         className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
                         alt={card.title}
                         src={card.image}
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = "https://images.pexels.com/photos/2662116/pexels-photo-2662116.jpeg?auto=compress&cs=tinysrgb&w=600";
+                        }}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1">

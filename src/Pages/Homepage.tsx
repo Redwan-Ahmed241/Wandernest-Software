@@ -119,14 +119,14 @@ const HomePage: FunctionComponent = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
                 onClick={() => navigate("/packages")}
-                className="px-8 py-4 bg-gradient-to-r from-accent to-accent-light text-primary-dark font-bold text-lg rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:brightness-110 flex items-center justify-center gap-2 group"
+                className="px-8 py-4 bg-white/80 text-black font-semibold text-xl rounded-full shadow-md hover:shadow-lg transition-all duration-200 hover:bg-white focus:outline-none focus:ring-2 focus:ring-accent border border-gray-200 flex items-center justify-center gap-2 group tracking-wide"
               >
                 Start Your Journey
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
               </button>
               <button
                 onClick={() => navigate("/destinations")}
-                className="px-8 py-4 border-2 border-white text-white font-bold text-lg rounded-xl transition-all duration-300 hover:scale-105 hover:bg-white hover:text-primary hover:border-white"
+                className="px-8 py-4 border-2 border-white text-white font-bold text-lg rounded-xl transition-all duration-300 hover:scale-105 hover:bg-white/10 hover:text-accent hover:border-accent focus:outline-none focus:ring-2 focus:ring-accent"
               >
                 Explore Destinations
               </button>
@@ -252,6 +252,71 @@ const HomePage: FunctionComponent = () => {
           </div>
         </section>
 
+        {/* Local Amenities & Services Section (from HotelsRooms) */}
+        <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
+          <div className="max-w-6xl mx-auto px-4">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                Local Amenities & Services
+              </h2>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                Discover what's around your hotel
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {/* Local amenities cards */}
+              <div className="group bg-white rounded-2xl shadow-lg p-8 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105">
+                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mb-6 text-white shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
+                  {/* Coffee icon */}
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 17a4 4 0 008 0M4 10h16v2a4 4 0 01-4 4H8a4 4 0 01-4-4v-2z" /></svg>
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-primary transition-colors duration-200">Local Restaurants</h3>
+                <p className="text-gray-600 mb-6 leading-relaxed">Discover popular dining spots</p>
+                <div className="flex items-center gap-2 text-primary font-semibold group-hover:gap-3 transition-all duration-200">
+                  <span>Explore</span>
+                  <ArrowRight className="w-4 h-4" />
+                </div>
+              </div>
+              <div className="group bg-white rounded-2xl shadow-lg p-8 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-2xl flex items-center justify-center mb-6 text-white shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
+                  {/* MapPin icon */}
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 11c1.104 0 2-.896 2-2s-.896-2-2-2-2 .896-2 2 .896 2 2 2zm0 10c-4.418 0-8-3.582-8-8 0-4.418 3.582-8 8-8s8 3.582 8 8c0 4.418-3.582 8-8 8z" /></svg>
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-primary transition-colors duration-200">Tourist Attractions</h3>
+                <p className="text-gray-600 mb-6 leading-relaxed">Explore nearby places of interest</p>
+                <div className="flex items-center gap-2 text-primary font-semibold group-hover:gap-3 transition-all duration-200">
+                  <span>Explore</span>
+                  <ArrowRight className="w-4 h-4" />
+                </div>
+              </div>
+              <div className="group bg-white rounded-2xl shadow-lg p-8 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105">
+                <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mb-6 text-white shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
+                  {/* Truck icon */}
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="11" width="13" height="6" rx="2" /><rect x="16" y="13" width="5" height="4" rx="1" /><circle cx="7.5" cy="17.5" r="1.5" /><circle cx="18.5" cy="17.5" r="1.5" /></svg>
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-primary transition-colors duration-200">Public Transport</h3>
+                <p className="text-gray-600 mb-6 leading-relaxed">Find transport options</p>
+                <div className="flex items-center gap-2 text-primary font-semibold group-hover:gap-3 transition-all duration-200">
+                  <span>Explore</span>
+                  <ArrowRight className="w-4 h-4" />
+                </div>
+              </div>
+              <div className="group bg-white rounded-2xl shadow-lg p-8 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105">
+                <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mb-6 text-white shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
+                  {/* ShoppingBag icon */}
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="6" y="7" width="12" height="13" rx="2" /><path d="M9 7V5a3 3 0 016 0v2" /></svg>
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-primary transition-colors duration-200">Shopping Centers</h3>
+                <p className="text-gray-600 mb-6 leading-relaxed">Shop at the best locations</p>
+                <div className="flex items-center gap-2 text-primary font-semibold group-hover:gap-3 transition-all duration-200">
+                  <span>Explore</span>
+                  <ArrowRight className="w-4 h-4" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
         {/* Services Section */}
         <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
           <div className="max-w-6xl mx-auto px-4">
@@ -292,34 +357,6 @@ const HomePage: FunctionComponent = () => {
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="py-20 bg-gradient-to-r from-primary-dark via-primary to-primary">
-          <div className="max-w-4xl mx-auto px-4 text-center text-primary-dark">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Ready to Start Your Adventure?
-            </h2>
-            <p className="text-xl mb-8 text-primary-dark max-w-2xl mx-auto">
-              Join thousands of travelers who have discovered the magic of
-              Bangladesh with WanderNest
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button
-                onClick={() => navigate("/packages")}
-                className="px-8 py-4 bg-primary-light text-white font-bold text-lg rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2"
-              >
-                <Users className="w-5 h-5 text-white" />
-                Browse Packages
-              </button>
-              <button
-                onClick={() => navigate("/plan-a-trip")}
-                className="px-8 py-4 border-2 border-primary-light text-primary-dark font-bold text-lg rounded-xl hover:bg-primary-light hover:text-white transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2"
-              >
-                <MapPin className="w-5 h-5 text-primary-dark group-hover:text-white" />
-                Plan Custom Trip
-              </button>
-            </div>
-          </div>
-        </section>
 
         {/* Testimonials Section */}
         <section className="py-20 bg-white">
