@@ -1,10 +1,6 @@
 import type { FunctionComponent } from "react";
-import { useCallback } from "react";
 
 const TrustSafety: FunctionComponent = () => {
-  const onDepth4FrameClick = useCallback(() => {
-    // Add your code here
-  }, []);
   return (
     <div className="min-h-screen bg-white flex flex-col items-center py-8 px-2 md:px-8">
       {/* Navbar */}
@@ -15,50 +11,27 @@ const TrustSafety: FunctionComponent = () => {
             alt=""
             src="/figma_photos/wandernest.svg"
           />
-          <button
-            onClick={onDepth4FrameClick}
-            className="text-xl font-bold text-blue-700"
-          >
-            WanderNest
-          </button>
+          <span className="text-xl font-bold text-blue-700">WanderNest</span>
         </div>
         <div className="flex flex-row gap-6 items-center">
-          <button
-            onClick={onDepth4FrameClick}
-            className="text-base text-gray-700 hover:text-blue-600"
-          >
+          <span className="text-base text-gray-700 hover:text-blue-600">
             Destinations
-          </button>
-          <button
-            onClick={onDepth4FrameClick}
-            className="text-base text-gray-700 hover:text-blue-600"
-          >
+          </span>
+          <span className="text-base text-gray-700 hover:text-blue-600">
             Hotels
-          </button>
-          <button
-            onClick={onDepth4FrameClick}
-            className="text-base text-gray-700 hover:text-blue-600"
-          >
+          </span>
+          <span className="text-base text-gray-700 hover:text-blue-600">
             Flights
-          </button>
-          <button
-            onClick={onDepth4FrameClick}
-            className="text-base text-gray-700 hover:text-blue-600"
-          >
+          </span>
+          <span className="text-base text-gray-700 hover:text-blue-600">
             Packages
-          </button>
-          <button
-            onClick={onDepth4FrameClick}
-            className="px-4 py-1 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700"
-          >
+          </span>
+          <span className="px-4 py-1 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700">
             Sign up
-          </button>
-          <button
-            onClick={onDepth4FrameClick}
-            className="px-4 py-1 rounded bg-gray-200 text-blue-700 font-semibold hover:bg-gray-300"
-          >
+          </span>
+          <span className="px-4 py-1 rounded bg-gray-200 text-blue-700 font-semibold hover:bg-gray-300">
             Log in
-          </button>
+          </span>
           <img className="h-8 w-8" alt="" src="/figma_photos/world.svg" />
         </div>
       </nav>
@@ -144,18 +117,11 @@ const TrustSafety: FunctionComponent = () => {
       {/* Footer */}
       <footer className="w-full mt-12 py-6 bg-blue-50 text-center text-blue-700 text-sm">
         <div className="flex flex-row justify-center gap-4 mb-2">
-          <button onClick={onDepth4FrameClick} className="hover:underline">
-            About Us
-          </button>
-          <button onClick={onDepth4FrameClick} className="hover:underline">
-            Contact
-          </button>
-          <button onClick={onDepth4FrameClick} className="hover:underline">
-            Terms of Service
-          </button>
-          <button onClick={onDepth4FrameClick} className="hover:underline">
-            Privacy Policy
-          </button>
+          <span className="hover:underline">Learn more</span>
+          <span className="hover:underline">About Us</span>
+          <span className="hover:underline">Contact</span>
+          <span className="hover:underline">Terms of Service</span>
+          <span className="hover:underline">Privacy Policy</span>
         </div>
         <div>@2025 WanderNest, All rights reserved.</div>
       </footer>
