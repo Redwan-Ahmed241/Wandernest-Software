@@ -355,7 +355,7 @@ const Packages: FunctionComponent = () => {
                 {filteredPackages.map((pkg) => (
                   <div
                     key={pkg.id}
-                    className="group bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105"
+                    className="group bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col justify-between h-full min-h-[420px]"
                     onClick={() =>
                       navigate(`/packages/${encodeURIComponent(pkg.title)}`)
                     }
@@ -394,30 +394,29 @@ const Packages: FunctionComponent = () => {
                         </div>
                       </div>
                     </div>
-
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
-                        {pkg.title}
-                      </h3>
-                      <p className="text-gray-600 mb-4 line-clamp-2 leading-relaxed">
-                        {pkg.subtitle ||
-                          "Experience the beauty and culture of this amazing destination"}
-                      </p>
-
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-4 text-sm text-gray-500">
-                          <span className="flex items-center gap-1">
-                            <MapPin className="w-4 h-4" />
-                            {extractPlaceName(pkg.title)}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Calendar className="w-4 h-4" />
-                            {pkg.days} Days
-                          </span>
+                    <div className="p-6 flex flex-col flex-1 justify-between">
+                      <div>
+                        <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
+                          {pkg.title}
+                        </h3>
+                        <p className="text-gray-600 mb-4 line-clamp-2 leading-relaxed">
+                          {pkg.subtitle ||
+                            "Experience the beauty and culture of this amazing destination"}
+                        </p>
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="flex items-center gap-4 text-sm text-gray-500">
+                            <span className="flex items-center gap-1">
+                              <MapPin className="w-4 h-4" />
+                              {extractPlaceName(pkg.title)}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Calendar className="w-4 h-4" />
+                              {pkg.days} Days
+                            </span>
+                          </div>
                         </div>
                       </div>
-
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between mt-auto">
                         <div className="text-2xl font-bold text-primary">
                           ৳{Number(pkg.price).toLocaleString()}
                         </div>
