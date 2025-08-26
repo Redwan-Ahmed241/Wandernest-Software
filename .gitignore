@@ -4,6 +4,8 @@ Netlify-CI-CD-Explanation.txt
 CI-CD-Guide.txt
 # Ignore project timeline file
 WanderNest_Timeline.txt
+api-requirements.txt
+Qodo_AI_Frontend_Guide.txt
 # Logs
 logs
 *.log

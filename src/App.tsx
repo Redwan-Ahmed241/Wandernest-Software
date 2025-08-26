@@ -43,6 +43,7 @@ import DashboardHome from "./Pages/DashboardHome";
 import ProfileDropdown from "./Components/profile-dropdown";
 import Community from "./Pages/Community";
 import ProfileSettings from "./Pages/ProfileSettings";
+import AdminDashboard from "./Pages/Admin/AdminDashboard";
 import "./global.css";
 import ConfirmBook from "./Pages/confirm_book";
 import FPass from "./Pages/fpass";
@@ -134,6 +135,16 @@ const AppRoutes: React.FC = () => {
       <Route path="/footer" element={<Footer />} />
       <Route path="/layout" element={<Layout children={undefined} />} />
       <Route path="/profile-dropdown" element={<ProfileDropdown />} />
+
+      {/* Admin Dashboard Route */}
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute>
+            <AdminDashboard />
+          </ProtectedRoute>
+        }
+      />
 
       {/* Test Route */}
       <Route
