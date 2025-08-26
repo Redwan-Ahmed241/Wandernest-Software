@@ -1,11 +1,7 @@
 import type { FunctionComponent } from "react";
-import { useCallback } from "react";
 import Layout from "../Components/Layout";
 
 const TermsOfService: FunctionComponent = () => {
-  const onDepth4FrameClick = useCallback(() => {
-    // Add your code here
-  }, []);
   return (
     <Layout>
       <div className="min-h-screen bg-gradient-to-br from-primary-100 to-primary-300 py-8 px-4">
