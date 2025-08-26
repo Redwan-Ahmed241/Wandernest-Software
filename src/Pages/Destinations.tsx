@@ -269,7 +269,8 @@ const Destinations: FunctionComponent = () => {
             </p>
             <button
               onClick={() => navigate("/plan-a-trip")}
-              className="px-8 py-4 bg-primary text-white font-bold text-lg rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2 mx-auto"
+              className="px-8 py-4 bg-primary text-white font-bold text-lg rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2 mx-auto focus:outline-none focus:ring-4 focus:ring-accent/40"
+              style={{ backgroundColor: '#4a6b5b', color: '#fff', opacity: 1 }}
             >
               <MapPin className="w-5 h-5" />
               Plan Custom Trip
