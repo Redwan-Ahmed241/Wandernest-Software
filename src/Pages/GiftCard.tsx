@@ -1,63 +1,36 @@
-import { FunctionComponent, useCallback } from "react";
+import type { FunctionComponent } from "react";
 // Tailwind CSS used for all styling. Centralized color theme via tailwind.config.js
 
 const GiftCard: FunctionComponent = () => {
-  const onDepth4FrameClick = useCallback(() => {
-    // Add your code here
-  }, []);
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-blue-300 flex flex-col items-center font-sans">
       {/* Navbar */}
       <nav className="w-full bg-white shadow flex flex-col md:flex-row items-center justify-between px-6 py-4">
         <div className="flex items-center gap-4">
           <img className="h-10 w-10" alt="" src="Depth 4, Frame 0.svg" />
-          <button
-            onClick={onDepth4FrameClick}
-            className="text-xl font-bold text-blue-700"
-          >
-            WanderNest
-          </button>
+          <span className="text-xl font-bold text-blue-700">WanderNest</span>
         </div>
         <div className="flex gap-6 mt-4 md:mt-0">
-          <button
-            onClick={onDepth4FrameClick}
-            className="text-base text-gray-700 hover:text-blue-600"
-          >
+          <span className="text-base text-gray-700 hover:text-blue-600">
             Destinations
-          </button>
-          <button
-            onClick={onDepth4FrameClick}
-            className="text-base text-gray-700 hover:text-blue-600"
-          >
+          </span>
+          <span className="text-base text-gray-700 hover:text-blue-600">
             Hotels
-          </button>
-          <button
-            onClick={onDepth4FrameClick}
-            className="text-base text-gray-700 hover:text-blue-600"
-          >
+          </span>
+          <span className="text-base text-gray-700 hover:text-blue-600">
             Flights
-          </button>
-          <button
-            onClick={onDepth4FrameClick}
-            className="text-base text-gray-700 hover:text-blue-600"
-          >
+          </span>
+          <span className="text-base text-gray-700 hover:text-blue-600">
             Packages
-          </button>
+          </span>
         </div>
         <div className="flex gap-4 items-center mt-4 md:mt-0">
-          <button
-            onClick={onDepth4FrameClick}
-            className="bg-blue-600 text-white px-4 py-2 rounded font-semibold"
-          >
+          <span className="bg-blue-600 text-white px-4 py-2 rounded font-semibold">
             Sign up
-          </button>
-          <button
-            onClick={onDepth4FrameClick}
-            className="bg-gray-200 text-blue-600 px-4 py-2 rounded font-semibold"
-          >
+          </span>
+          <span className="bg-gray-200 text-blue-600 px-4 py-2 rounded font-semibold">
             Log in
-          </button>
+          </span>
           <img className="h-8 w-8" alt="" src="Depth 5, Frame 2.svg" />
         </div>
       </nav>
