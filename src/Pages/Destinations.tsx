@@ -77,14 +77,17 @@ const Destinations: FunctionComponent = () => {
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
         <section className="relative py-20 bg-gradient-to-br from-primary via-primary-dark to-primary overflow-hidden">
-          <div className="absolute inset-0 bg-black/20"></div>
           <div
-            className="absolute inset-0 bg-cover bg-center opacity-30"
+            className="absolute inset-0 bg-cover bg-center"
             style={{
               backgroundImage:
                 "url('https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=1920')",
             }}
           ></div>
+          {/* Overlay for text readability, matching homepage/packages */}
+          <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/60"></div>
+          {/* Subtle brand color overlay (optional, matches homepage) */}
+          <div className="absolute inset-0 bg-gradient-to-br from-accent/20 via-transparent to-primary/20"></div>
 
           <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
@@ -266,7 +269,8 @@ const Destinations: FunctionComponent = () => {
             </p>
             <button
               onClick={() => navigate("/plan-a-trip")}
-              className="px-8 py-4 bg-primary text-white font-bold text-lg rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2 mx-auto"
+              className="px-8 py-4 bg-primary text-white font-bold text-lg rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2 mx-auto focus:outline-none focus:ring-4 focus:ring-accent/40"
+              style={{ backgroundColor: '#4a6b5b', color: '#fff', opacity: 1 }}
             >
               <MapPin className="w-5 h-5" />
               Plan Custom Trip
