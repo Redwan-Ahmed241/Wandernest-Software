@@ -263,7 +263,11 @@ const DestinationPage: FunctionComponent = () => {
             alt={destinationData?.name || "Destination"}
             className="w-full h-full object-cover rounded-b-2xl"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-theme-bg/80 to-transparent flex items-end">
+          {/* Overlay for text readability, matching homepage/packages */}
+          <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/60"></div>
+          {/* Subtle brand color overlay (optional, matches homepage) */}
+          <div className="absolute inset-0 bg-gradient-to-br from-theme-accent/20 via-transparent to-theme-primary/20"></div>
+          <div className="absolute inset-0 flex items-end">
             <div className="p-8 w-full">
               <h1 className="text-4xl font-bold text-white mb-2">
                 {destinationData?.name}
