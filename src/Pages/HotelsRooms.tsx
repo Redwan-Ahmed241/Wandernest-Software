@@ -8,7 +8,6 @@ import {
   Search,
   MapPin,
   Star,
-  ArrowRight,
   Filter,
   Wifi,
   Truck,
@@ -44,41 +43,6 @@ const FILTER_OPTIONS = {
 };
 
 type FilterKey = keyof typeof FILTER_OPTIONS;
-
-const AMENITY_LINKS = [
-  {
-    key: "restaurants",
-    title: "Local Restaurants",
-    description: "Discover popular dining spots",
-    icon: <Coffee className="w-8 h-8" />,
-    route: "/restaurant",
-    color: "from-orange-500 to-red-500",
-  },
-  {
-    key: "attractions",
-    title: "Tourist Attractions",
-    description: "Explore nearby places of interest",
-    icon: <MapPin className="w-8 h-8" />,
-    route: "/things-to-do",
-    color: "from-blue-500 to-indigo-500",
-  },
-  {
-    key: "transport",
-    title: "Public Transport",
-    description: "Find transport options",
-    icon: <Truck className="w-8 h-8" />,
-    route: "/public-transport",
-    color: "from-green-500 to-emerald-500",
-  },
-  {
-    key: "shopping",
-    title: "Shopping Centers",
-    description: "Shop at the best locations",
-    icon: <ShoppingBag className="w-8 h-8" />,
-    route: "/shopping-centers",
-    color: "from-purple-500 to-pink-500",
-  },
-];
 
 const MEDIA_BASE = "https://wander-nest-ad3s.onrender.com";
 
@@ -239,8 +203,12 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
               className="w-24 h-24 rounded-xl object-cover shadow-md"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
-                if (target.src !== "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=400") {
-                  target.src = "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=400";
+                if (
+                  target.src !==
+                  "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=400"
+                ) {
+                  target.src =
+                    "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=400";
                 }
               }}
             />
@@ -766,8 +734,12 @@ const HotelsRooms: FunctionComponent = () => {
                         className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
-                          if (target.src !== "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=600") {
-                            target.src = "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=600";
+                          if (
+                            target.src !==
+                            "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=600"
+                          ) {
+                            target.src =
+                              "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=600";
                           }
                         }}
                       />
@@ -860,7 +832,6 @@ const HotelsRooms: FunctionComponent = () => {
             )}
           </div>
         </section>
-
 
         {/* Booking Modal */}
         {isBookingModalOpen && selectedHotel && (

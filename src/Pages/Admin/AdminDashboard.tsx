@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaChartBar, FaPlus, FaUserShield, FaPlane, FaHotel, FaUtensils, FaMapMarkerAlt, FaClipboardCheck } from "react-icons/fa";
+import { FaChartBar, FaPlus, FaClipboardCheck } from "react-icons/fa";
 // import { useAuth } from "../../Context/AuthContext"; // Uncomment if you have AuthContext
 // import { Navigate } from "react-router-dom"; // Uncomment if you want to redirect non-admins
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend, LineChart, Line, XAxis, YAxis } from 'recharts';
