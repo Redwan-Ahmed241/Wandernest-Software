@@ -30,7 +30,6 @@ interface Package {
   days: number;
 }
 
-const _MEDIA_BASE = "https://wander-nest-ad3s.onrender.com";
 
 // Helper to extract place name from package title
 function extractPlaceName(title: string): string {
