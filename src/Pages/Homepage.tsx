@@ -3,7 +3,7 @@
 import { type FunctionComponent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../Components/Layout";
-import { ArrowRight, MapPin, Star, Users, Shield, Clock } from "react-feather";
+import { ArrowRight, MapPin, Star, Shield, Clock } from "react-feather";
 
 const FEATURED_API_URL =
   "https://wander-nest-ad3s.onrender.com/api/home/destinations/";

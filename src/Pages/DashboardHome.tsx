@@ -260,7 +260,7 @@ const DashboardHome: FunctionComponent = () => {
                       </div>
                     ) : (
                       <div className="space-y-4">
-                        {recentBookings.map((booking, index) => (
+{recentBookings.map((booking) => (
                           <div
                             key={booking.id}
                             className="flex items-center gap-4 p-4 rounded-xl border border-gray-100 hover:border-primary hover:shadow-md transition-all duration-200"

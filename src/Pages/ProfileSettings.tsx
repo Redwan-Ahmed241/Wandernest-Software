@@ -24,13 +24,10 @@ const API_URL = "https://wander-nest-ad3s.onrender.com/api/auth/edit-profile/";
 const ProfileSettings: React.FC = () => {
   const { isAuthenticated } = useAuth();
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [editMode, setEditMode] = useState(false);
   const [form, setForm] = useState<Partial<UserProfile>>({});
   const [picFile, setPicFile] = useState<File | null>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [dobPicker, setDobPicker] = useState<Date | null>(null);
-  const _navigate = useNavigate();
 
   // Fetch user profile from API
   useEffect(() => {
@@ -71,79 +68,8 @@ const ProfileSettings: React.FC = () => {
     }
   };
 
-  const handleDateChange = (date: Date | null) => {
-    setDobPicker(date);
-    setForm({
-      ...form,
-      date_of_birth: date ? date.toISOString().slice(0, 10) : "",
-    });
-  };
 
   // Save profile to API using PATCH method
-  const handleSave = async () => {
-    setSaving(true);
-    setError(null);
-    try {
-      const token = localStorage.getItem("token");
-      let profile_image_url = form.profile_image;
-
-      // If a new picture is selected, upload it first
-      if (picFile) {
-        const imgForm = new FormData();
-        imgForm.append("profile_image", picFile);
-        const imgRes = await fetch(API_URL, {
-          method: "PATCH",
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-          body: imgForm,
-        });
-        if (!imgRes.ok) throw new Error("Failed to upload image");
-        const imgData = await imgRes.json();
-        profile_image_url = imgData.profile_image;
-      }
-
-      // Prepare the data according to your Django model
-      const updateData: any = {
-        phone: form.phone,
-        country: form.country,
-        age: form.age ? parseInt(form.age.toString()) : null,
-        passport_no: form.passport_no,
-        date_of_birth: form.date_of_birth,
-      };
-
-      // Only include profile_image if it was updated
-      if (profile_image_url) {
-        updateData.profile_image = profile_image_url;
-      }
-
-      const response = await fetch(API_URL, {
-        method: "PATCH",
-        headers: {
-          Authorization: `Token ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: form.email,
-          passport_no: form.passport_no, // Map passportNumber to passport_no
-          date_of_birth: form.date_of_birth, // Map dateOfBirth to date_of_birth
-          phone_number: form.phonenumber, // Add phone number to API request
-          profile_image: profile_image_url, // Include profile image if updated
-        }),
-      });
-
-      if (!response.ok) throw new Error("Failed to update profile");
-      const updated = await response.json();
-      setProfile(updated);
-      setForm(updated);
-      setEditMode(false);
-      setPicFile(null);
-    } catch (err: any) {
-      setError(err.message || "Could not save profile.");
-    } finally {
-      setSaving(false);
-    }
-  };
 
   if (!profile)
     return (
