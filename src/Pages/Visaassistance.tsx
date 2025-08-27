@@ -4,7 +4,6 @@ import type { FunctionComponent } from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../Components/Layout";
-import Sidebar from "./Sidebar";
 import {
   visaAPI,
   type Country,
@@ -31,7 +30,6 @@ const VisaAssistance: FunctionComponent = () => {
   const [isLoadingCountries, setIsLoadingCountries] = useState(true);
   const [isLoadingPurposes, setIsLoadingPurposes] = useState(true);
   const [isLoadingRequirements, setIsLoadingRequirements] = useState(false);
-  const [isLoadingRates, setIsLoadingRates] = useState(true);
 
   // Error states
   const [, setError] = useState<string | null>(null);
@@ -106,55 +104,7 @@ const VisaAssistance: FunctionComponent = () => {
     }
   };
 
-  const handleStartApplication = () => {
-    if (selectedCountry && selectedPurpose) {
-      navigate(
-        `/visa-application?country=${selectedCountry}&purpose=${selectedPurpose}`
-      );
-    } else {
-      alert("Please select your country and purpose of visit first.");
-    }
-  };
 
-  const getVisaTypeInfo = (type: string) => {
-    switch (type) {
-      case "visa_free":
-        return {
-          title: "Visa-Free",
-          description: "No visa required for selected citizenship.",
-          icon: "🆓",
-          color: "#27ae60",
-        };
-      case "visa_on_arrival":
-        return {
-          title: "Visa-on-Arrival",
-          description: "Get your visa upon arrival in Bangladesh.",
-          icon: "✈️",
-          color: "#f39c12",
-        };
-      case "evisa_required":
-        return {
-          title: "eVisa Required",
-          description: "Apply online for an electronic visa.",
-          icon: "💻",
-          color: "#3498db",
-        };
-      case "visa_required":
-        return {
-          title: "Visa Required",
-          description: "Apply at embassy or consulate.",
-          icon: "📋",
-          color: "#e74c3c",
-        };
-      default:
-        return {
-          title: "Unknown",
-          description: "Please select country and purpose.",
-          icon: "❓",
-          color: "#95a5a6",
-        };
-    }
-  };
 
   // Show loading while auth is loading
   if (authLoading) {
@@ -175,9 +125,6 @@ const VisaAssistance: FunctionComponent = () => {
     return null;
   }
 
-  const usdToBdt = currencyRates.find(
-    (rate) => rate.from_currency === "USD" && rate.to_currency === "BDT"
-  );
 
   return (
     <Layout>

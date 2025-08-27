@@ -1,15 +1,14 @@
 "use client";
 
 import {
-  type FunctionComponent,
-  useCallback,
+type FunctionComponent,
   useEffect,
   useState,
 } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../Components/Layout";
 import { getDestinations } from "../App/api-services";
-import { MapPin, Star, ArrowRight, Search, Filter } from "react-feather";
+import { MapPin, Star, ArrowRight, Search } from "react-feather";
 
 const incrementDestinationClick = async (id: number) => {
   try {

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import type { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../Components/Layout";
-import { Search, MapPin, Star, ArrowRight, Filter } from "react-feather";
+import { Search, MapPin, Star, ArrowRight } from "react-feather";
 
 const cardData = [
   {
@@ -14,27 +14,29 @@ const cardData = [
     category: "Nature",
     rating: 4.8,
     duration: "Full Day",
-    price: "৳2,500"
+    price: "৳2,500",
   },
   {
     title: "Savor Street Food in Old Dhaka",
     location: "Dhaka",
-    description: "Indulge in a culinary adventure through the vibrant streets of Old Dhaka. Sample local delicacies like biryani, kebabs, and flavorful chutneys.",
+    description:
+      "Indulge in a culinary adventure through the vibrant streets of Old Dhaka. Sample local delicacies like biryani, kebabs, and flavorful chutneys.",
     image: "/Figma_photos/puran_dhaka.jpg",
     category: "Food",
     rating: 4.7,
     duration: "4 Hours",
-    price: "৳800"
+    price: "৳800",
   },
   {
     title: "Discover Historical Sites at Lalbagh Fort",
     location: "Dhaka",
-    description: "Journey through time within the ancient walls of Lalbagh Fort, a historical Mughal-era structure. Marvel at intricate architecture, gardens, and artifacts.",
+    description:
+      "Journey through time within the ancient walls of Lalbagh Fort, a historical Mughal-era structure. Marvel at intricate architecture, gardens, and artifacts.",
     image: "/Figma_photos/lalbagh.jpg",
     category: "Culture",
     rating: 4.6,
     duration: "3 Hours",
-    price: "৳500"
+    price: "৳500",
   },
   {
     title: "Boat Trip on the Buriganga River",
@@ -44,7 +46,7 @@ const cardData = [
     category: "Adventure",
     rating: 4.5,
     duration: "2 Hours",
-    price: "৳1,200"
+    price: "৳1,200",
   },
   {
     title: `Relax at Cox's Bazar Beach`,
@@ -54,17 +56,18 @@ const cardData = [
     category: "Nature",
     rating: 4.9,
     duration: "Full Day",
-    price: "৳1,800"
+    price: "৳1,800",
   },
   {
     title: "Experience Traditional Cuisine in a Local Eatery",
     location: "Dhaka",
-    description: "Treat yourself to a delightful culinary adventure in a traditional Bangladeshi eatery. Relish the rich flavors of local dishes like hilsa fish curry and various vegetable preparations.",
+    description:
+      "Treat yourself to a delightful culinary adventure in a traditional Bangladeshi eatery. Relish the rich flavors of local dishes like hilsa fish curry and various vegetable preparations.",
     image: "/Figma_photos/local_cuisine.jpeg",
     category: "Food",
     rating: 4.4,
     duration: "2 Hours",
-    price: "৳600"
+    price: "৳600",
   },
   {
     title: "Visit the National Museum of Bangladesh",
@@ -74,7 +77,7 @@ const cardData = [
     category: "Culture",
     rating: 4.3,
     duration: "3 Hours",
-    price: "৳300"
+    price: "৳300",
   },
   {
     title: "Cycle through the Countryside",
@@ -84,7 +87,7 @@ const cardData = [
     category: "Adventure",
     rating: 4.6,
     duration: "5 Hours",
-    price: "৳1,000"
+    price: "৳1,000",
   },
 ];
 
@@ -93,7 +96,7 @@ const filterCategories = [
   { id: "Nature", label: "Nature", icon: "🌿" },
   { id: "Food", label: "Food", icon: "🍽️" },
   { id: "Culture", label: "Culture", icon: "🏛️" },
-  { id: "Adventure", label: "Adventure", icon: "🎯" }
+  { id: "Adventure", label: "Adventure", icon: "🎯" },
 ];
 
 const ThingsToDo: FunctionComponent = () => {
@@ -104,11 +107,14 @@ const ThingsToDo: FunctionComponent = () => {
 
   // Filtering logic
   const filteredCards = cardData.filter((card) => {
-    const matchesCategory = selectedCategory === "all" || card.category === selectedCategory;
-    const matchesActivity = activityQuery.trim() === "" ||
+    const matchesCategory =
+      selectedCategory === "all" || card.category === selectedCategory;
+    const matchesActivity =
+      activityQuery.trim() === "" ||
       card.title.toLowerCase().includes(activityQuery.toLowerCase()) ||
       card.description.toLowerCase().includes(activityQuery.toLowerCase());
-    const matchesLocation = locationQuery.trim() === "" ||
+    const matchesLocation =
+      locationQuery.trim() === "" ||
       card.location.toLowerCase().includes(locationQuery.toLowerCase());
     return matchesCategory && matchesActivity && matchesLocation;
   });
@@ -175,10 +181,11 @@ const ThingsToDo: FunctionComponent = () => {
               {filterCategories.map((cat) => (
                 <button
                   key={cat.id}
-                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${cat.id === selectedCategory
-                    ? "bg-[#4a6b5b] text-white shadow-lg scale-105 hover:bg-[#0d1c1c]"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105 active:bg-gray-300"
-                    }`}
+                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${
+                    cat.id === selectedCategory
+                      ? "bg-[#4a6b5b] text-white shadow-lg scale-105 hover:bg-[#0d1c1c]"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105 active:bg-gray-300"
+                  }`}
                   onClick={() => setSelectedCategory(cat.id)}
                 >
                   <span className="text-lg">{cat.icon}</span>
@@ -197,8 +204,12 @@ const ThingsToDo: FunctionComponent = () => {
                 <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <Search className="w-12 h-12 text-gray-400" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">No activities found</h3>
-                <p className="text-gray-600 mb-6">Try adjusting your search criteria</p>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  No activities found
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Try adjusting your search criteria
+                </p>
                 <button
                   onClick={() => {
                     setActivityQuery("");
@@ -224,24 +235,33 @@ const ThingsToDo: FunctionComponent = () => {
                         src={card.image}
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
-                          target.src = "https://images.pexels.com/photos/2662116/pexels-photo-2662116.jpeg?auto=compress&cs=tinysrgb&w=600";
+                          target.src =
+                            "https://images.pexels.com/photos/2662116/pexels-photo-2662116.jpeg?auto=compress&cs=tinysrgb&w=600";
                         }}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1">
-                        <span className="text-sm font-semibold text-gray-800">{card.category}</span>
+                        <span className="text-sm font-semibold text-gray-800">
+                          {card.category}
+                        </span>
                       </div>
                       <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
                         <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                        <span className="text-sm font-semibold">{card.rating}</span>
+                        <span className="text-sm font-semibold">
+                          {card.rating}
+                        </span>
                       </div>
                       <div className="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
                         <div className="flex items-center justify-between text-white">
                           <div className="flex items-center gap-2">
                             <MapPin className="w-4 h-4" />
-                            <span className="text-sm font-medium">{card.location}</span>
+                            <span className="text-sm font-medium">
+                              {card.location}
+                            </span>
                           </div>
-                          <div className="text-accent font-bold">{card.price}</div>
+                          <div className="text-accent font-bold">
+                            {card.price}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -280,7 +300,8 @@ const ThingsToDo: FunctionComponent = () => {
               Ready for Your Next Adventure?
             </h2>
             <p className="text-lg text-gray-100 mb-8 max-w-2xl mx-auto">
-              Explore our complete travel packages or create your own custom itinerary
+              Explore our complete travel packages or create your own custom
+              itinerary
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
