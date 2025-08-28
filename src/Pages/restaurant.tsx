@@ -1,6 +1,6 @@
 import type { FunctionComponent } from "react";
-import { useCallback, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
 import Layout from "../Components/Layout";
 
 const FILTERS = [
@@ -13,7 +13,6 @@ const FILTERS = [
 ];
 
 const Restaurant: FunctionComponent = () => {
-  const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("popular");
   const [priceRange, setPriceRange] = useState(1000); // Example max price
@@ -89,7 +88,6 @@ const Restaurant: FunctionComponent = () => {
         r.cuisine.toLowerCase().includes(search.toLowerCase()))
   );
 
-
   return (
     <Layout>
       <div className="min-h-screen bg-gradient-to-br from-primary-100 to-primary-300 py-8 px-4">
@@ -132,10 +130,11 @@ const Restaurant: FunctionComponent = () => {
               {FILTERS.map((f) => (
                 <button
                   key={f.value}
-                  className={`px-4 py-2 rounded-lg font-semibold transition-all flex items-center gap-2 ${selectedFilter === f.value
-                    ? "bg-primary-600 text-white shadow-md"
-                    : "bg-primary-100 text-primary-700 hover:bg-primary-200"
-                    }`}
+                  className={`px-4 py-2 rounded-lg font-semibold transition-all flex items-center gap-2 ${
+                    selectedFilter === f.value
+                      ? "bg-primary-600 text-white shadow-md"
+                      : "bg-primary-100 text-primary-700 hover:bg-primary-200"
+                  }`}
                   onClick={() => setSelectedFilter(f.value)}
                   type="button"
                 >

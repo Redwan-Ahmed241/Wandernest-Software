@@ -31,7 +31,6 @@ interface Package {
   days: number;
 }
 
-
 // Helper to extract place name from package title
 function extractPlaceName(title: string): string {
   if (!title) return "";
@@ -81,6 +80,7 @@ const Packages: FunctionComponent = () => {
         const data = await response.json();
         const packagesData = data.results || (Array.isArray(data) ? data : []);
         setPackages(packagesData);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (err) {
         setError("Failed to fetch packages");
         setPackages([]);
@@ -117,6 +117,7 @@ const Packages: FunctionComponent = () => {
 
   const handleOptionSelect = (filter: FilterKey, option: string) => {
     if (option === "All") {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { [filter]: _, ...rest } = selectedFilters;
       setSelectedFilters(rest);
     } else {
@@ -161,7 +162,13 @@ const Packages: FunctionComponent = () => {
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
         <section className="relative py-20 bg-gradient-to-br from-primary via-primary-dark to-primary overflow-hidden">
-          <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=1920')" }}></div>
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage:
+                "url('https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=1920')",
+            }}
+          ></div>
           {/* Overlay for text readability */}
           <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/60"></div>
           {/* Subtle brand color overlay */}
@@ -175,7 +182,8 @@ const Packages: FunctionComponent = () => {
               </span>
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-2xl mx-auto leading-relaxed drop-shadow-lg">
-              Discover curated travel experiences designed for unforgettable adventures
+              Discover curated travel experiences designed for unforgettable
+              adventures
             </p>
 
             {/* Search Bar */}
@@ -370,8 +378,12 @@ const Packages: FunctionComponent = () => {
                         }
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
-                          if (target.src !== "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=600") {
-                            target.src = "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=600";
+                          if (
+                            target.src !==
+                            "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=600"
+                          ) {
+                            target.src =
+                              "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=600";
                           }
                         }}
                       />
