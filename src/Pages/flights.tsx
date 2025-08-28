@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import type React from "react";
@@ -434,9 +435,14 @@ const flightAPI = {
     const data = await response.json();
     if (data.success && data.data) {
       return data.data;
+
+    }
+    throw new Error("Flight not found");
+
     } else {
       throw new Error("Flight not found");
     }
+
   },
 
   // Create booking
@@ -1174,7 +1180,6 @@ const Flights: FunctionComponent = () => {
     // Load mock data for development
     loadMockData();
     loadAirports();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Mock data for development
@@ -1538,9 +1543,6 @@ const Flights: FunctionComponent = () => {
     }
   };
 
-  // const _onFlightsTextClick = useCallback(() => {
-  //   navigate("/");
-  // }, [navigate]);
 
   // Check for pending booking on component mount
   useEffect(() => {

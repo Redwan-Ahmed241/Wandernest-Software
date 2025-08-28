@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -40,6 +41,7 @@ const FPass: React.FC = () => {
           try {
             const errorText = await response.text();
             if (errorText) errorMsg = errorText;
+            // eslint-disable-next-line no-empty
           } catch {}
         }
         setMessage(errorMsg);
@@ -66,16 +68,17 @@ const FPass: React.FC = () => {
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* Background Image */}
-      <div 
+      <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: "url('https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=1920')"
+          backgroundImage:
+            "url('https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=1920')",
         }}
       />
-      
+
       {/* Overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/60" />
-      
+
       {/* Content */}
       <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
         <div className="w-full max-w-md">
@@ -97,7 +100,9 @@ const FPass: React.FC = () => {
               </span>
             </div>
             <div className="text-center">
-              <h1 className="text-3xl font-bold text-white mb-2">Forgot your password?</h1>
+              <h1 className="text-3xl font-bold text-white mb-2">
+                Forgot your password?
+              </h1>
               <p className="text-lg text-white/80">
                 No worries, we'll help you reset it!
               </p>
@@ -108,7 +113,8 @@ const FPass: React.FC = () => {
           <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-8">
             <div className="text-center mb-6">
               <p className="text-gray-600 leading-relaxed">
-                Enter your email address and we'll send you a link to reset your password.
+                Enter your email address and we'll send you a link to reset your
+                password.
               </p>
             </div>
 
@@ -136,10 +142,10 @@ const FPass: React.FC = () => {
                 disabled={loading}
                 className="w-full py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                 style={{
-                  background: loading 
-                    ? 'linear-gradient(to right, #6ab187, #4a6b5b)' 
-                    : 'linear-gradient(to right, #4a6b5b, #0d1c1c)',
-                  color: 'white'
+                  background: loading
+                    ? "linear-gradient(to right, #6ab187, #4a6b5b)"
+                    : "linear-gradient(to right, #4a6b5b, #0d1c1c)",
+                  color: "white",
                 }}
               >
                 {loading ? "Sending reset link..." : "Send reset link"}
@@ -156,18 +162,38 @@ const FPass: React.FC = () => {
                   }`}
                 >
                   <div className="flex items-start gap-3">
-                    <div className={`flex-shrink-0 mt-0.5 ${
-                      message.includes("sent") || message.includes("registered")
-                        ? "text-green-500"
-                        : "text-red-500"
-                    }`}>
-                      {message.includes("sent") || message.includes("registered") ? (
-                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    <div
+                      className={`flex-shrink-0 mt-0.5 ${
+                        message.includes("sent") ||
+                        message.includes("registered")
+                          ? "text-green-500"
+                          : "text-red-500"
+                      }`}
+                    >
+                      {message.includes("sent") ||
+                      message.includes("registered") ? (
+                        <svg
+                          className="w-5 h-5"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                            clipRule="evenodd"
+                          />
                         </svg>
                       ) : (
-                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                        <svg
+                          className="w-5 h-5"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                            clipRule="evenodd"
+                          />
                         </svg>
                       )}
                     </div>
@@ -182,14 +208,18 @@ const FPass: React.FC = () => {
             {/* Back to Login */}
             <div className="text-center mt-6">
               <p className="text-sm text-gray-600">
-                Remember your password?{' '}
+                Remember your password?{" "}
                 <button
                   type="button"
                   onClick={handleBackToLogin}
                   className="font-medium transition-colors duration-200 hover:underline"
-                  style={{ color: '#4a6b5b' }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = '#0d1c1c'}
-                  onMouseLeave={(e) => e.currentTarget.style.color = '#4a6b5b'}
+                  style={{ color: "#4a6b5b" }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.color = "#0d1c1c")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.color = "#4a6b5b")
+                  }
                 >
                   Back to login
                 </button>
