@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { type FunctionComponent, useState, useEffect } from "react";
@@ -173,8 +174,8 @@ const DestinationPage: FunctionComponent = () => {
       if (!response.ok) {
         throw new Error(
           data.detail ||
-          data.message ||
-          `Payment failed with status ${response.status}`
+            data.message ||
+            `Payment failed with status ${response.status}`
         );
       }
 
@@ -298,38 +299,42 @@ const DestinationPage: FunctionComponent = () => {
         {/* Navigation Tabs */}
         <div className="flex gap-2 justify-center mt-6 mb-8">
           <button
-            className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${activeTab === "overview"
-              ? "bg-theme-accent text-white shadow"
-              : "bg-theme-light text-theme-primary hover:bg-theme-accent/10"
-              }`}
+            className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${
+              activeTab === "overview"
+                ? "bg-theme-accent text-white shadow"
+                : "bg-theme-light text-theme-primary hover:bg-theme-accent/10"
+            }`}
             onClick={() => setActiveTab("overview")}
           >
             Overview
           </button>
           <button
-            className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${activeTab === "attractions"
-              ? "bg-theme-accent text-white shadow"
-              : "bg-theme-light text-theme-primary hover:bg-theme-accent/10"
-              }`}
+            className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${
+              activeTab === "attractions"
+                ? "bg-theme-accent text-white shadow"
+                : "bg-theme-light text-theme-primary hover:bg-theme-accent/10"
+            }`}
             onClick={() => setActiveTab("attractions")}
           >
             Attractions
           </button>
           <button
-            className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${activeTab === "experiences"
-              ? "bg-theme-accent text-white shadow"
-              : "bg-theme-light text-theme-primary hover:bg-theme-accent/10"
-              }`}
+            className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${
+              activeTab === "experiences"
+                ? "bg-theme-accent text-white shadow"
+                : "bg-theme-light text-theme-primary hover:bg-theme-accent/10"
+            }`}
             onClick={() => setActiveTab("experiences")}
           >
             Experiences
           </button>
           {weatherData && (
             <button
-              className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${activeTab === "weather"
-                ? "bg-theme-accent text-white shadow"
-                : "bg-theme-light text-theme-primary hover:bg-theme-accent/10"
-                }`}
+              className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${
+                activeTab === "weather"
+                  ? "bg-theme-accent text-white shadow"
+                  : "bg-theme-light text-theme-primary hover:bg-theme-accent/10"
+              }`}
               onClick={() => setActiveTab("weather")}
             >
               Weather

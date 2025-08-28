@@ -1,7 +1,7 @@
 "use client";
 
 import type { FunctionComponent } from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Layout from "../Components/Layout";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
@@ -51,7 +51,10 @@ const MyTrips: FunctionComponent = () => {
       start_date: booking.startDate,
       end_date: booking.endDate,
       location: booking.location,
-status: (booking.status === "confirmed" ? "upcoming" : booking.status as "cancelled"),
+      status:
+        booking.status === "confirmed"
+          ? "upcoming"
+          : (booking.status as "cancelled"),
       duration: `${Math.ceil(
         (new Date(booking.endDate).getTime() -
           new Date(booking.startDate).getTime()) /
@@ -77,7 +80,10 @@ status: (booking.status === "confirmed" ? "upcoming" : booking.status as "cancel
   }, [activeTab, authLoading, isAuthenticated, refreshBookings]);
 
   // Combine API trips with booking trips
-  const allTrips = [...bookingTrips, ...trips];
+  const allTrips = useMemo(
+    () => [...bookingTrips, ...trips],
+    [bookingTrips, trips]
+  );
 
   // Select first trip when trips load
   useEffect(() => {
@@ -319,7 +325,7 @@ status: (booking.status === "confirmed" ? "upcoming" : booking.status as "cancel
                         <div className="text-right">
                           <div
                             className={`px-4 py-2 rounded-full font-semibold text-sm ${
-selectedTrip.status === "upcoming"
+                              selectedTrip.status === "upcoming"
                                 ? "bg-green-500 text-white"
                                 : selectedTrip.status === "cancelled"
                                 ? "bg-red-500 text-white"
@@ -456,7 +462,8 @@ selectedTrip.status === "upcoming"
                                 </h3>
                                 <p className="text-gray-600">
                                   ৳
-                                  {(
+                                  {// eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                  (
                                     selectedTrip as any
                                   )?.price?.toLocaleString() || "N/A"}
                                 </p>

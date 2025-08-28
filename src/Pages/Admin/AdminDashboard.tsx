@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import { FaChartBar, FaPlus, FaClipboardCheck } from "react-icons/fa";
 // import { useAuth } from "../../Context/AuthContext"; // Uncomment if you have AuthContext
