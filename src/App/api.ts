@@ -417,6 +417,7 @@ export interface CurrencyRate {
   to_currency: string
   rate: number
   last_updated: string
+  currency?: string // Add for frontend compatibility
 }
 
 export interface EmbassyContact {
