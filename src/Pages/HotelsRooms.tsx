@@ -12,7 +12,6 @@ import {
   Wifi,
   Truck,
   Coffee,
-  ShoppingBag,
 } from "react-feather";
 
 // Define interfaces

@@ -1,4 +1,5 @@
-import { FunctionComponent, useState } from "react";
+import type { FunctionComponent } from "react";
+import { useState } from "react";
 // Tailwind conversion: remove CSS import
 import Layout from "../Components/Layout";
 

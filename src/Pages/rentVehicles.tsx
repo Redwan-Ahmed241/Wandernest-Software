@@ -5,11 +5,7 @@ import Layout from "../Components/Layout";
 
 const RentVehicles: FunctionComponent = () => {
   const [search, setSearch] = useState("");
-  const _navigate = useNavigate();
-
-  const _onDepth4FrameClick = useCallback(() => {
-    // Add your code here
-  }, []);
+  const navigate = useNavigate();
 
   const vehicleData = [
     {
