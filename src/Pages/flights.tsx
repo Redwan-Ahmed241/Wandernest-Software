@@ -2,7 +2,7 @@
 
 import type React from "react";
 import type { FunctionComponent } from "react";
-import { useCallback, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // Tailwind CSS used for all styling. Centralized color theme via tailwind.config.js
 import Layout from "../Components/Layout";
@@ -432,7 +432,11 @@ const flightAPI = {
     }
 
     const data = await response.json();
-    return data.success ? data.data : null;
+    if (data.success && data.data) {
+      return data.data;
+    } else {
+      throw new Error("Flight not found");
+    }
   },
 
   // Create booking
@@ -1113,7 +1117,7 @@ const BookingModal: React.FC<{
 
 const Flights: FunctionComponent = () => {
   const navigate = useNavigate();
-  const { isAuthenticated, loading: authLoading } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   // Form states - Updated to use airport codes
   const [fromAirport, setFromAirport] = useState("");
@@ -1534,9 +1538,9 @@ const Flights: FunctionComponent = () => {
     }
   };
 
-  const _onFlightsTextClick = useCallback(() => {
-    navigate("/");
-  }, [navigate]);
+  // const _onFlightsTextClick = useCallback(() => {
+  //   navigate("/");
+  // }, [navigate]);
 
   // Check for pending booking on component mount
   useEffect(() => {
