@@ -94,17 +94,15 @@ const VisaAssistance: FunctionComponent = () => {
 
   const fetchCurrencyRates = async () => {
     try {
-      setIsLoadingRates(true);
+      //setIsLoadingRates(true);
       const data = await visaAPI.getCurrencyRates();
       setCurrencyRates(data.results || data);
     } catch (error) {
       console.error("Error fetching currency rates:", error);
     } finally {
-      setIsLoadingRates(false);
+      // setIsLoadingRates(false);
     }
   };
-
-
 
   // Show loading while auth is loading
   if (authLoading) {
@@ -124,7 +122,6 @@ const VisaAssistance: FunctionComponent = () => {
     navigate("/login");
     return null;
   }
-
 
   return (
     <Layout>
@@ -193,11 +190,11 @@ const VisaAssistance: FunctionComponent = () => {
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {currencyRates.map((rate) => (
                 <div
-                  key={rate.code}
+                  key={rate.rate}
                   className="bg-white rounded shadow p-3 flex flex-col items-center"
                 >
                   <span className="font-bold text-primary-700">
-                    {rate.code}
+                    {rate.rate}
                   </span>
                   <span className="text-green-600">{rate.rate}</span>
                 </div>
