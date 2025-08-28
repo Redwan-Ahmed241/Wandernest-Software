@@ -435,14 +435,8 @@ const flightAPI = {
     const data = await response.json();
     if (data.success && data.data) {
       return data.data;
-
     }
     throw new Error("Flight not found");
-
-    } else {
-      throw new Error("Flight not found");
-    }
-
   },
 
   // Create booking
@@ -1542,7 +1536,6 @@ const Flights: FunctionComponent = () => {
       setActiveCurrencies([...activeCurrencies, code]);
     }
   };
-
 
   // Check for pending booking on component mount
   useEffect(() => {
