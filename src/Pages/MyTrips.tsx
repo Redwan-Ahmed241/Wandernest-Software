@@ -13,6 +13,7 @@ interface ExtendedTrip extends Trip {
   price?: number;
   travelers?: number;
   image?: string;
+  status: "upcoming" | "past" | "cancelled";
 }
 
 const MyTrips: FunctionComponent = () => {
@@ -50,7 +51,7 @@ const MyTrips: FunctionComponent = () => {
       start_date: booking.startDate,
       end_date: booking.endDate,
       location: booking.location,
-      status: booking.status,
+status: (booking.status === "confirmed" ? "upcoming" : booking.status as "cancelled"),
       duration: `${Math.ceil(
         (new Date(booking.endDate).getTime() -
           new Date(booking.startDate).getTime()) /
@@ -318,7 +319,7 @@ const MyTrips: FunctionComponent = () => {
                         <div className="text-right">
                           <div
                             className={`px-4 py-2 rounded-full font-semibold text-sm ${
-                              selectedTrip.status === "confirmed"
+selectedTrip.status === "upcoming"
                                 ? "bg-green-500 text-white"
                                 : selectedTrip.status === "cancelled"
                                 ? "bg-red-500 text-white"

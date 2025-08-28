@@ -3,6 +3,7 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Authentication/auth-context"; // Using your auth context
 
+import type { FunctionComponent } from "react";
 const Sidebar: FunctionComponent = () => {
   const navigate = useNavigate();
   const { user, isAuthenticated, loading } = useAuth();

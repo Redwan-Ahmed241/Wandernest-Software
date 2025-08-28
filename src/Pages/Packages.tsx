@@ -1,4 +1,5 @@
-import { FunctionComponent, useState, useRef, useEffect } from "react";
+import type { FunctionComponent } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../Components/Layout";
 import { useAuth } from "../Authentication/auth-context";

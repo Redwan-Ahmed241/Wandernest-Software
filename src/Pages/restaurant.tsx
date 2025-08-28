@@ -13,7 +13,7 @@ const FILTERS = [
 ];
 
 const Restaurant: FunctionComponent = () => {
-  const _navigate = useNavigate();
+  const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("popular");
   const [priceRange, setPriceRange] = useState(1000); // Example max price
@@ -89,9 +89,6 @@ const Restaurant: FunctionComponent = () => {
         r.cuisine.toLowerCase().includes(search.toLowerCase()))
   );
 
-  const _onDepth4FrameClick = useCallback(() => {
-    // Add your code here
-  }, []);
 
   return (
     <Layout>

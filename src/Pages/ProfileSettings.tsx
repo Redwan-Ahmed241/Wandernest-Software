@@ -4,7 +4,7 @@ import type React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Authentication/auth-context";
-import DatePicker from "react-datepicker";
+// import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 interface UserProfile {
@@ -25,8 +25,7 @@ const ProfileSettings: React.FC = () => {
   const { isAuthenticated } = useAuth();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [form, setForm] = useState<Partial<UserProfile>>({});
-  const [picFile, setPicFile] = useState<File | null>(null);
-  const [saving, setSaving] = useState(false);
+const [picFile, setPicFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   // Fetch user profile from API
