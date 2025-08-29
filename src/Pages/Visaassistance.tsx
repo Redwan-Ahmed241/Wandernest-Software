@@ -25,7 +25,7 @@ const VisaAssistance: FunctionComponent = () => {
   const [visaRequirement, setVisaRequirement] =
     useState<VisaRequirement | null>(null);
   const [currencyRates, setCurrencyRates] = useState<CurrencyRate[]>([]);
-  const [isLoadingRates, setIsLoadingRates] = useState(true);
+  const [isLoadingRates] = useState(true);
 
   // Loading states
   const [isLoadingCountries, setIsLoadingCountries] = useState(true);
@@ -222,7 +222,6 @@ const VisaAssistance: FunctionComponent = () => {
                 ))}
               </div>
             )}
-
           </div>
         </div>
       </div>
