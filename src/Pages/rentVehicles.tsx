@@ -1,11 +1,10 @@
 import type { FunctionComponent } from "react";
-import { useCallback, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
 import Layout from "../Components/Layout";
 
 const RentVehicles: FunctionComponent = () => {
   const [search, setSearch] = useState("");
-  const navigate = useNavigate();
 
   const vehicleData = [
     {
@@ -27,10 +26,10 @@ const RentVehicles: FunctionComponent = () => {
 
   const filteredVehicles = search.trim()
     ? vehicleData.filter(
-      (v) =>
-        v.name.toLowerCase().includes(search.toLowerCase()) ||
-        v.description.toLowerCase().includes(search.toLowerCase())
-    )
+        (v) =>
+          v.name.toLowerCase().includes(search.toLowerCase()) ||
+          v.description.toLowerCase().includes(search.toLowerCase())
+      )
     : [];
 
   return (

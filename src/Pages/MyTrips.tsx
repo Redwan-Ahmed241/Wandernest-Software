@@ -88,7 +88,13 @@ const MyTrips: FunctionComponent = () => {
   // Select first trip when trips load
   useEffect(() => {
     if (allTrips.length > 0 && !selectedTrip) {
-      setSelectedTrip(allTrips[0]);
+      const allowedStatuses = ["upcoming", "past", "cancelled"] as const;
+      const trip = allTrips[0];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const safeStatus = allowedStatuses.includes(trip.status as any)
+        ? (trip.status as "upcoming" | "past" | "cancelled")
+        : "upcoming";
+      setSelectedTrip({ ...trip, status: safeStatus });
     }
   }, [allTrips, selectedTrip]);
 
@@ -462,10 +468,9 @@ const MyTrips: FunctionComponent = () => {
                                 </h3>
                                 <p className="text-gray-600">
                                   ৳
-                                  {// eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                  (
-                                    selectedTrip as any
-                                  )?.price?.toLocaleString() || "N/A"}
+{selectedTrip?.price !== undefined && selectedTrip?.price !== null
+                                    ? selectedTrip.price.toLocaleString()
+                                    : "N/A"}
                                 </p>
                               </div>
                             </div>
