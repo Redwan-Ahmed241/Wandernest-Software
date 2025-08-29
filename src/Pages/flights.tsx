@@ -2006,7 +2006,7 @@ const Flights: FunctionComponent = () => {
                           flight.status !== "scheduled" ||
                           !flight.is_active
                             ? "bg-gray-300 text-gray-500 cursor-not-allowed shadow-none hover:scale-100"
-                            : "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white"
+                            : "bg-[#6ab187]  hover:from-[#6ab187] hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                         }`}
                         onClick={() => handleBookFlight(flight)}
                         disabled={
@@ -2064,7 +2064,7 @@ const Flights: FunctionComponent = () => {
           <div className="mb-8">
             <div className="text-center mb-4">
               <button
-                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                className="bg-[#6ab187]  hover:from-[#6ab187] hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                 onClick={() => setShowMap(!showMap)}
               >
                 {showMap ? "Hide Map" : "Show Weather Map"}
@@ -2118,7 +2118,7 @@ const Flights: FunctionComponent = () => {
               />
               <button
                 type="submit"
-                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                className="bg-[#6ab187] hover:from-[#6ab187] hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
               >
                 Search
               </button>
@@ -2198,7 +2198,7 @@ const Flights: FunctionComponent = () => {
               />
               <button
                 type="submit"
-                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                className="bg-[#6ab187] hover:from-[#6ab187] hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
               >
                 Search
               </button>
@@ -2209,7 +2209,7 @@ const Flights: FunctionComponent = () => {
                     setCurrencySearch("");
                     setActiveCurrencies(["EUR", "USD", "CAD"]);
                   }}
-                  className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                  className="bg-[#6ab187] hover:from-[#6ab187] hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                 >
                   Reset
                 </button>
