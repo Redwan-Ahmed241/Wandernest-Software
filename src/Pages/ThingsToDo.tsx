@@ -287,7 +287,7 @@ const ThingsToDo: FunctionComponent = () => {
                             color: "white",
                           }}
                         >
-                          <span>Book Now</span>
+                          <span>Explore</span>
                           <ArrowRight className="w-4 h-4" />
                         </button>
                       </div>
