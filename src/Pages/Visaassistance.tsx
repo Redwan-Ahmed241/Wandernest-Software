@@ -25,6 +25,7 @@ const VisaAssistance: FunctionComponent = () => {
   const [visaRequirement, setVisaRequirement] =
     useState<VisaRequirement | null>(null);
   const [currencyRates, setCurrencyRates] = useState<CurrencyRate[]>([]);
+  const [isLoadingRates] = useState(true);
 
   // Loading states
   const [isLoadingCountries, setIsLoadingCountries] = useState(true);
@@ -94,17 +95,15 @@ const VisaAssistance: FunctionComponent = () => {
 
   const fetchCurrencyRates = async () => {
     try {
-      setIsLoadingRates(true);
+      //setIsLoadingRates(true);
       const data = await visaAPI.getCurrencyRates();
       setCurrencyRates(data.results || data);
     } catch (error) {
       console.error("Error fetching currency rates:", error);
     } finally {
-      setIsLoadingRates(false);
+      // setIsLoadingRates(false);
     }
   };
-
-
 
   // Show loading while auth is loading
   if (authLoading) {
@@ -124,7 +123,6 @@ const VisaAssistance: FunctionComponent = () => {
     navigate("/login");
     return null;
   }
-
 
   return (
     <Layout>
@@ -160,7 +158,7 @@ const VisaAssistance: FunctionComponent = () => {
               >
                 <option value="">Select purpose</option>
                 {purposes.map((p) => (
-                  <option key={p.code} value={p.code}>
+                  <option key={p.name} value={p.name}>
                     {p.name}
                   </option>
                 ))}
@@ -190,19 +188,40 @@ const VisaAssistance: FunctionComponent = () => {
             <h2 className="text-lg font-semibold text-primary-600 mb-2">
               Currency Rates
             </h2>
+
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {currencyRates.map((rate) => (
                 <div
-                  key={rate.code}
+                  key={rate.rate}
                   className="bg-white rounded shadow p-3 flex flex-col items-center"
                 >
                   <span className="font-bold text-primary-700">
-                    {rate.code}
+                    {rate.rate}
                   </span>
                   <span className="text-green-600">{rate.rate}</span>
                 </div>
               ))}
             </div>
+
+            {isLoadingRates ? (
+              <div className="text-center text-gray-500 py-4">
+                Loading rates...
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {currencyRates.map((rate) => (
+                  <div
+                    key={rate.currency}
+                    className="bg-white rounded shadow p-3 flex flex-col items-center"
+                  >
+                    <span className="font-bold text-primary-700">
+                      {rate.currency}
+                    </span>
+                    <span className="text-green-600">{rate.rate}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

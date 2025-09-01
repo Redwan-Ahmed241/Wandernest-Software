@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import type { FunctionComponent } from "react";
 import { useState, useEffect, useRef } from "react";
@@ -12,7 +14,6 @@ import {
   Wifi,
   Truck,
   Coffee,
-  ShoppingBag,
 } from "react-feather";
 
 // Define interfaces
