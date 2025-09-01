@@ -121,11 +121,13 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
           guests: form.guests,
           location: hotel.location,
         },
+        booking_id: `booking_${Date.now()}`,
+        currency: "BDT",
       };
 
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "https://wander-nest-ad3s.onrender.com/initiate-payment/",
+        "https://wander-nest-ad3s.onrender.com/api/payments/sslc/initiate/",
         {
           method: "POST",
           headers: {
