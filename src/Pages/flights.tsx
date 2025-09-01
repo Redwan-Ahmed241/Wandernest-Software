@@ -1505,8 +1505,7 @@ const Flights: FunctionComponent = () => {
       return;
     }
     setIsLoadingWeather(true);
-  setWeatherError("");
-
+    setWeatherError("");
     try {
       const weatherResult = await weatherAPI.getWeatherForCity(search.trim());
       setWeatherData([weatherResult]);
@@ -1836,7 +1835,7 @@ const Flights: FunctionComponent = () => {
               </div>
 
               <button
-                className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:shadow-none"
+                className="w-full bg-[#6ab187] hover:from-[#6ab187] hover:to-green-700 text-white font-semibold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:shadow-none"
                 onClick={handleSearchFlights}
                 disabled={isSearchingFlights}
               >
