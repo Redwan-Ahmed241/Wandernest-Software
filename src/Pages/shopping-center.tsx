@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import Layout from "../Components/Layout";
+import { ShoppingBag, MapPin, Star, Clock } from "react-feather";
 export default function ShoppingCenters() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [search, setSearch] = useState("");
-  const [selectedPlace, setSelectedPlace] = useState("all");
-  const [selectedRating, setSelectedRating] = useState("all");
+  // Removed unused place and rating filters
 
   const shoppingCenters = [
     {
@@ -110,160 +110,148 @@ export default function ShoppingCenters() {
       center.name.toLowerCase().includes(search.toLowerCase()) ||
       center.description.toLowerCase().includes(search.toLowerCase()) ||
       center.location.toLowerCase().includes(search.toLowerCase());
-    // Place filter
-    const placeMatch =
-      selectedPlace === "all" ||
-      center.location.toLowerCase().includes(selectedPlace.toLowerCase());
-    // Rating filter
-    let ratingThreshold = 0;
-    if (selectedRating === "4.5") ratingThreshold = 4.5;
-    else if (selectedRating === "4.0") ratingThreshold = 4.0;
-    else if (selectedRating === "3.5") ratingThreshold = 3.5;
-    else ratingThreshold = 0;
-    const ratingMatch = center.rating >= ratingThreshold;
-    return categoryMatch && searchMatch && placeMatch && ratingMatch;
+    return categoryMatch && searchMatch;
   });
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-primary-100 to-primary-300 py-8 px-4">
-        <div className="max-w-6xl mx-auto bg-white rounded-lg shadow p-6">
-          <h1 className="text-3xl font-bold text-primary-700 mb-8">
-            Shopping Centers
-          </h1>
-          <div className="flex flex-wrap gap-4 mb-6 justify-center">
-            <div className="search-bar">
-              <div className="search-input-container">
-                <svg
-                  className="search-icon"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                >
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <path d="m21 21-4.35-4.35"></path>
-                </svg>
-                <input
-                  type="text"
-                  placeholder="Search shopping centers, stores..."
-                  className="search-input"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                />
-              </div>
+      <div className="min-h-screen bg-gradient-to-br from-primary-100 to-primary-300">
+        {/* Hero Section - full width */}
+        <section className="relative w-full h-[400px] md:h-[480px] lg:h-[520px] flex items-center justify-center overflow-hidden mb-8">
+          <div
+            className="absolute inset-0 w-full h-full bg-cover bg-center"
+            style={{
+              backgroundImage:
+                "url('/Figma_photos/bashundara.jpeg')"
+            }}
+          ></div>
+          {/* Overlay for text readability */}
+          <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-black/60 via-black/40 to-black/60"></div>
+          {/* Subtle brand color overlay */}
+          <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-primary/20 via-transparent to-primary-dark/20"></div>
+          <div className="relative z-10 w-full flex flex-col items-center justify-center text-center text-white px-4">
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight text-white drop-shadow-2xl">
+              Shopping Centers
+            </h1>
+            <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-2xl mx-auto leading-relaxed drop-shadow-lg">
+              Discover the best places to shop, from luxury malls to local markets across Bangladesh.
+            </p>
+          </div>
+        </section>
+        <div className="max-w-7xl mx-auto bg-white rounded-2xl shadow-lg p-8">
+          <div className="flex flex-col gap-6 mb-8 w-full">
+            {/* Search Bar - wide and at the top */}
+            <div className="relative w-full max-w-2xl mx-auto mb-2">
+              <input
+                type="text"
+                className="w-full p-3 pl-10 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary-500 text-lg"
+                placeholder="Search shopping centers, stores..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <svg
+                className="absolute left-3 top-3 w-5 h-5 text-primary-500"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
             </div>
-
-            <div className="filters">
-              <select
-                className="filter-dropdown"
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-              >
-                <option value="all">All Categories</option>
-                <option value="mall">Shopping Malls</option>
-                <option value="market">Markets</option>
-                <option value="street">Street Shopping</option>
-                <option value="outlet">Outlets</option>
-                <option value="specialty">Specialty Stores</option>
-              </select>
-              <select
-                className="filter-dropdown"
-                value={selectedPlace}
-                onChange={(e) => setSelectedPlace(e.target.value)}
-              >
-                <option value="all">All Places</option>
-                <option value="Dhaka">Dhaka</option>
-                <option value="Chittagong">Chittagong</option>
-                <option value="Rajshahi">Rajshahi</option>
-                <option value="Khulna">Khulna</option>
-                <option value="Sylhet">Sylhet</option>
-                <option value="Mymensingh">Mymensingh</option>
-                <option value="Barishal">Barishal</option>
-                <option value="Jessore">Jessore</option>
-                <option value="Comilla">Comilla</option>
-              </select>
-              <select
-                className="filter-dropdown"
-                value={selectedRating}
-                onChange={(e) => setSelectedRating(e.target.value)}
-              >
-                <option value="all">All Ratings</option>
-                <option value="4.5">4.5+ Stars</option>
-                <option value="4.0">4.0+ Stars</option>
-                <option value="3.5">3.5+ Stars</option>
-              </select>
+            {/* Filter Buttons - replace dropdowns with styled buttons and icons */}
+            <div className="flex flex-wrap gap-2 justify-center">
+              {/* Category Buttons */}
+              {[
+                { value: 'all', label: 'All', icon: <ShoppingBag className="w-4 h-4" /> },
+                { value: 'mall', label: 'Mall', icon: <ShoppingBag className="w-4 h-4" /> },
+                { value: 'market', label: 'Market', icon: <ShoppingBag className="w-4 h-4" /> },
+                { value: 'street', label: 'Street', icon: <MapPin className="w-4 h-4" /> },
+                { value: 'outlet', label: 'Outlet', icon: <ShoppingBag className="w-4 h-4" /> },
+                { value: 'specialty', label: 'Specialty', icon: <ShoppingBag className="w-4 h-4" /> },
+              ].map(({ value, label, icon }) => (
+                <button
+                  key={value}
+                  className={`px-6 py-3 rounded-xl font-semibold transition-all flex items-center gap-2 ${
+                    selectedCategory === value
+                      ? "bg-primary/10 text-primary shadow-lg scale-105 hover:bg-primary/20"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105 active:bg-gray-300"
+                  }`}
+                  onClick={() => setSelectedCategory(value)}
+                  type="button"
+                >
+                  {icon}
+                  {label}
+                </button>
+              ))}
+              {/* Place Buttons */}
+              {/* Rating Buttons */}
+              {/* You can add more filter buttons here as needed */}
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredCenters.map((center) => (
-              <div key={center.id} className="shopping-card">
-                <div className="card-image">
+              <div
+                key={center.id}
+                className="group bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col justify-between h-full min-h-[420px]"
+              >
+                <div className="relative overflow-hidden">
                   <img
-                    src={center.image || "/placeholder.svg"}
+                    src={center.image ? center.image.replace('/figma_photos/', '/Figma_photos/') : "/Figma_photos/placeholder.svg"}
                     alt={center.name}
+                    className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = "/Figma_photos/placeholder.svg";
+                    }}
                   />
-                  <div className="category-badge">{center.category}</div>
-                  <div className="rating-badge">
-                    <span>⭐ {center.rating}</span>
+                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
+                    <span className="text-sm font-semibold text-primary">{center.category}</span>
+                  </div>
+                  <div className="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                    <div className="flex items-center justify-between text-white">
+                      <div className="flex items-center gap-2">
+                        <MapPin className="w-4 h-4" />
+                        <span className="text-sm font-medium">{center.location}</span>
+                      </div>
+                      <div className="text-accent font-bold text-lg"><Star className="w-4 h-4 inline-block mr-1 text-yellow-500" />{center.rating}</div>
+                    </div>
                   </div>
                 </div>
-                <div className="card-content">
-                  <h3 className="card-title">{center.name}</h3>
-                  <p className="card-subtitle">{center.description}</p>
-                  <div className="shopping-details">
-                    <div className="detail-item">
-                      <span className="detail-label">📍 Location:</span>
-                      <span className="detail-value">{center.location}</span>
-                    </div>
-                    <div className="detail-item">
-                      <span className="detail-label">🏪 Stores:</span>
-                      <span className="detail-value">{center.stores}</span>
-                    </div>
-                    <div className="detail-item">
-                      <span className="detail-label">🕒 Hours:</span>
-                      <span className="detail-value">{center.hours}</span>
+                <div className="p-6 flex flex-col flex-1 justify-between">
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
+                      {center.name}
+                    </h3>
+                    <p className="text-gray-600 mb-4 line-clamp-2 leading-relaxed">{center.description}</p>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {center.features.map((feature, index) => (
+                        <span key={index} className="feature-tag bg-gray-100 px-2 py-1 rounded-full text-xs text-gray-700">
+                          {feature}
+                        </span>
+                      ))}
                     </div>
                   </div>
-                  <div className="features">
-                    {center.features.map((feature, index) => (
-                      <span key={index} className="feature-tag">
-                        {feature}
-                      </span>
-                    ))}
+                  <div className="flex items-center justify-between mt-auto">
+                    <div className="text-sm font-bold text-primary">{center.stores}</div>
+                    <div className="text-sm text-gray-500"><Clock className="w-4 h-4 inline-block mr-1" />{center.hours}</div>
+                    <button
+                      className="px-4 py-1 bg-[#6ab187] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-1 text-sm"
+                    >
+                      View Details
+                      <ShoppingBag className="w-4 h-4 transition-transform duration-300" />
+                    </button>
                   </div>
-                  <button className="card-action-btn">View Details</button>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Shopping Tips Section */}
-          <div className="info-section">
-            <h2 className="section-title">Shopping Tips</h2>
-            <div className="info-grid">
-              <div className="info-card">
-                <h3>Best Shopping Times</h3>
-                <p>Visit weekday mornings for less crowds and better service</p>
-              </div>
-              <div className="info-card">
-                <h3>Parking Information</h3>
-                <p>Most centers offer free parking for the first 2-3 hours</p>
-              </div>
-              <div className="info-card">
-                <h3>Tourist Discounts</h3>
-                <p>
-                  Show your tourist ID for special discounts at participating
-                  stores
-                </p>
-              </div>
-              <div className="info-card">
-                <h3>Payment Methods</h3>
-                <p>All major credit cards and mobile payments accepted</p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </Layout>
