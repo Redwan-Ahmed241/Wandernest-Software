@@ -280,7 +280,13 @@ const ThingsToDo: FunctionComponent = () => {
                             {card.duration}
                           </span>
                         </div>
-                        <button className="flex items-center gap-1 text-primary font-semibold hover:gap-2 transition-all duration-200">
+                        <button
+                          className="flex items-center gap-1 font-semibold hover:gap-2 transition-all duration-200 px-6 py-2 rounded-xl shadow-md"
+                          style={{
+                            background: "linear-gradient(to right, #4a6b5b, #0d1c1c)",
+                            color: "white",
+                          }}
+                        >
                           <span>Book Now</span>
                           <ArrowRight className="w-4 h-4" />
                         </button>
@@ -306,14 +312,23 @@ const ThingsToDo: FunctionComponent = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
                 onClick={() => navigate("/packages")}
-                className="px-8 py-4 bg-white text-primary font-bold text-lg rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2"
+                className="px-8 py-4 font-bold text-lg rounded-xl shadow-xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2"
+                style={{
+                  background: "linear-gradient(to right, #4a6b5b, #0d1c1c)",
+                  color: "white",
+                  border: "none"
+                }}
               >
                 View Packages
-                <ArrowRight className="w-5 h-5" />
               </button>
               <button
                 onClick={() => navigate("/plan-a-trip")}
-                className="px-8 py-4 border-2 border-white text-white font-bold text-lg rounded-xl hover:bg-white hover:text-primary transition-all duration-300 hover:scale-105"
+                className="px-8 py-4 font-bold text-lg rounded-xl shadow-xl transition-all duration-300 hover:scale-105"
+                style={{
+                  background: "linear-gradient(to right, #4a6b5b, #0d1c1c)",
+                  color: "white",
+                  border: "none"
+                }}
               >
                 Plan Custom Trip
               </button>
