@@ -1160,7 +1160,6 @@ const Flights: FunctionComponent = () => {
 
   // Search states
   const [search, setSearch] = useState("");
-  const [searching, setSearching] = useState(false);
   const [currencySearch, setCurrencySearch] = useState("");
   const [activeCurrencies, setActiveCurrencies] = useState([
     "EUR",
@@ -1501,15 +1500,12 @@ const Flights: FunctionComponent = () => {
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!search.trim()) {
-      setSearching(false);
       const defaultCities = ["Dhaka", "Chittagong", "Sylhet", "Rajshahi"];
       fetchWeatherForCities(defaultCities);
       return;
     }
-
-    setSearching(true);
     setIsLoadingWeather(true);
-    setWeatherError("");
+  setWeatherError("");
 
     try {
       const weatherResult = await weatherAPI.getWeatherForCity(search.trim());
