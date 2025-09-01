@@ -1,7 +1,7 @@
 "use client";
 
 import type { FunctionComponent } from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Layout from "../Components/Layout";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
@@ -13,6 +13,7 @@ interface ExtendedTrip extends Trip {
   price?: number;
   travelers?: number;
   image?: string;
+  status: "upcoming" | "past" | "cancelled";
 }
 
 const MyTrips: FunctionComponent = () => {
@@ -50,7 +51,10 @@ const MyTrips: FunctionComponent = () => {
       start_date: booking.startDate,
       end_date: booking.endDate,
       location: booking.location,
-      status: booking.status,
+      status:
+        booking.status === "confirmed"
+          ? "upcoming"
+          : (booking.status as "cancelled"),
       duration: `${Math.ceil(
         (new Date(booking.endDate).getTime() -
           new Date(booking.startDate).getTime()) /
@@ -76,12 +80,21 @@ const MyTrips: FunctionComponent = () => {
   }, [activeTab, authLoading, isAuthenticated, refreshBookings]);
 
   // Combine API trips with booking trips
-  const allTrips = [...bookingTrips, ...trips];
+  const allTrips = useMemo(
+    () => [...bookingTrips, ...trips],
+    [bookingTrips, trips]
+  );
 
   // Select first trip when trips load
   useEffect(() => {
     if (allTrips.length > 0 && !selectedTrip) {
-      setSelectedTrip(allTrips[0]);
+      const allowedStatuses = ["upcoming", "past", "cancelled"] as const;
+      const trip = allTrips[0];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const safeStatus = allowedStatuses.includes(trip.status as any)
+        ? (trip.status as "upcoming" | "past" | "cancelled")
+        : "upcoming";
+      setSelectedTrip({ ...trip, status: safeStatus });
     }
   }, [allTrips, selectedTrip]);
 
@@ -318,7 +331,7 @@ const MyTrips: FunctionComponent = () => {
                         <div className="text-right">
                           <div
                             className={`px-4 py-2 rounded-full font-semibold text-sm ${
-                              selectedTrip.status === "confirmed"
+                              selectedTrip.status === "upcoming"
                                 ? "bg-green-500 text-white"
                                 : selectedTrip.status === "cancelled"
                                 ? "bg-red-500 text-white"
@@ -455,9 +468,9 @@ const MyTrips: FunctionComponent = () => {
                                 </h3>
                                 <p className="text-gray-600">
                                   ৳
-                                  {(
-                                    selectedTrip as any
-                                  )?.price?.toLocaleString() || "N/A"}
+{selectedTrip?.price !== undefined && selectedTrip?.price !== null
+                                    ? selectedTrip.price.toLocaleString()
+                                    : "N/A"}
                                 </p>
                               </div>
                             </div>

@@ -2,9 +2,6 @@
 
 import type React from "react";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../Authentication/auth-context";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 interface UserProfile {
@@ -22,12 +19,13 @@ interface UserProfile {
 const API_URL = "https://wander-nest-ad3s.onrender.com/api/auth/edit-profile/";
 
 const ProfileSettings: React.FC = () => {
-  const { isAuthenticated } = useAuth();
+  //  const { isAuthenticated } = useAuth();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [form, setForm] = useState<Partial<UserProfile>>({});
   const [picFile, setPicFile] = useState<File | null>(null);
-  const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [saving, setSaving] = useState<boolean>(false);
+  const [success, setSuccess] = useState<string | null>(null);
 
   // Fetch user profile from API
   useEffect(() => {
@@ -35,23 +33,36 @@ const ProfileSettings: React.FC = () => {
       try {
         setError(null);
         const token = localStorage.getItem("token");
-        console.log("Token:", token);
         const response = await fetch(API_URL, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Token ${token}`,
           },
         });
-        console.log("Profile fetch status:", response.status);
         const data = await response.json();
-        console.log("Profile fetch data:", data);
         if (!response.ok) throw new Error("Failed to fetch profile");
-        setProfile(data);
-        setForm(data);
-        if (data.date_of_birth) setDobPicker(new Date(data.date_of_birth));
-      } catch (err: any) {
-        setError(err.message || "Could not load profile.");
-        console.error("Profile fetch error:", err);
+        // Only set allowed UserProfile fields
+        const allowedProfile: UserProfile = {
+          id: data.id,
+          phone: data.phone,
+          country: data.country,
+          age: data.age,
+          passport_no: data.passport_no,
+          date_of_birth: data.date_of_birth,
+          profile_image: data.profile_image,
+          phonenumber: data.phonenumber,
+          email: data.email,
+        };
+        setProfile(allowedProfile);
+        setForm(allowedProfile);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message || "Could not load profile.");
+          console.error("Profile fetch error:", err);
+        } else {
+          setError("Could not load profile.");
+          console.error("Unknown error:", err);
+        }
       }
     };
     fetchProfile();
@@ -68,8 +79,75 @@ const ProfileSettings: React.FC = () => {
     }
   };
 
-
   // Save profile to API using PATCH method
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSaving(true);
+    setError(null);
+    setSuccess(null);
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("Missing auth token");
+
+      let response: Response;
+      // If there is a new profile image, use FormData
+      if (picFile) {
+        const formData = new FormData();
+        Object.entries(form).forEach(([key, value]) => {
+          if (value !== undefined && value !== null) {
+            formData.append(key, value as string);
+          }
+        });
+        formData.append("profile_image", picFile);
+        response = await fetch(API_URL, {
+          method: "PATCH",
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+          body: formData,
+        });
+      } else {
+        // Send as JSON if no new image
+        response = await fetch(API_URL, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${token}`,
+          },
+          body: JSON.stringify(form),
+        });
+      }
+      if (!response.ok) {
+        const failBody = await response.text();
+        throw new Error("Save failed: " + failBody);
+      }
+      const data = await response.json();
+      setSuccess("Profile updated successfully!");
+      // Only set allowed UserProfile fields
+      const allowedProfile: UserProfile = {
+        id: data.id,
+        phone: data.phone,
+        country: data.country,
+        age: data.age,
+        passport_no: data.passport_no,
+        date_of_birth: data.date_of_birth,
+        profile_image: data.profile_image,
+        phonenumber: data.phonenumber,
+        email: data.email,
+      };
+      setProfile(allowedProfile);
+      setForm(allowedProfile);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || "Could not save profile.");
+      } else {
+        setError("Could not save profile.");
+      }
+    } finally {
+      setSaving(false);
+    }
+  };
 
   if (!profile)
     return (
@@ -107,7 +185,12 @@ const ProfileSettings: React.FC = () => {
             {error}
           </div>
         )}
-        <form className="space-y-4">
+        {success && (
+          <div className="mb-4 text-green-600 font-medium text-center">
+            {success}
+          </div>
+        )}
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="flex flex-col">
             <label className="font-medium mb-1">Phone</label>
             <input

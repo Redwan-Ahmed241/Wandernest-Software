@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import type React from "react";
 import type { FunctionComponent } from "react";
-import { useCallback, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // Tailwind CSS used for all styling. Centralized color theme via tailwind.config.js
 import Layout from "../Components/Layout";
@@ -432,7 +433,10 @@ const flightAPI = {
     }
 
     const data = await response.json();
-    return data.success ? data.data : null;
+    if (data.success && data.data) {
+      return data.data;
+    }
+    throw new Error("Flight not found");
   },
 
   // Create booking
@@ -1113,7 +1117,7 @@ const BookingModal: React.FC<{
 
 const Flights: FunctionComponent = () => {
   const navigate = useNavigate();
-  const { isAuthenticated, loading: authLoading } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   // Form states - Updated to use airport codes
   const [fromAirport, setFromAirport] = useState("");
@@ -1170,7 +1174,6 @@ const Flights: FunctionComponent = () => {
     // Load mock data for development
     loadMockData();
     loadAirports();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Mock data for development
@@ -1533,10 +1536,6 @@ const Flights: FunctionComponent = () => {
       setActiveCurrencies([...activeCurrencies, code]);
     }
   };
-
-  const _onFlightsTextClick = useCallback(() => {
-    navigate("/");
-  }, [navigate]);
 
   // Check for pending booking on component mount
   useEffect(() => {
@@ -2007,7 +2006,7 @@ const Flights: FunctionComponent = () => {
                           flight.status !== "scheduled" ||
                           !flight.is_active
                             ? "bg-gray-300 text-gray-500 cursor-not-allowed shadow-none hover:scale-100"
-                            : "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white"
+                            : "bg-[#6ab187]  hover:from-[#6ab187] hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                         }`}
                         onClick={() => handleBookFlight(flight)}
                         disabled={
@@ -2065,7 +2064,7 @@ const Flights: FunctionComponent = () => {
           <div className="mb-8">
             <div className="text-center mb-4">
               <button
-                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                className="bg-[#6ab187]  hover:from-[#6ab187] hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                 onClick={() => setShowMap(!showMap)}
               >
                 {showMap ? "Hide Map" : "Show Weather Map"}
@@ -2119,7 +2118,7 @@ const Flights: FunctionComponent = () => {
               />
               <button
                 type="submit"
-                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                className="bg-[#6ab187] hover:from-[#6ab187] hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
               >
                 Search
               </button>
@@ -2199,7 +2198,7 @@ const Flights: FunctionComponent = () => {
               />
               <button
                 type="submit"
-                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                className="bg-[#6ab187] hover:from-[#6ab187] hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
               >
                 Search
               </button>
@@ -2210,7 +2209,7 @@ const Flights: FunctionComponent = () => {
                     setCurrencySearch("");
                     setActiveCurrencies(["EUR", "USD", "CAD"]);
                   }}
-                  className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                  className="bg-[#6ab187] hover:from-[#6ab187] hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                 >
                   Reset
                 </button>

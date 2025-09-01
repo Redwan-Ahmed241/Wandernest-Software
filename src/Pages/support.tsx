@@ -1,11 +1,6 @@
 import type { FunctionComponent } from "react";
-import { useCallback } from "react";
 
 const Support: FunctionComponent = () => {
-  const onDepth7FrameClick = useCallback(() => {
-    // Add your code here
-  }, []);
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-100 to-primary-300 py-8 px-4">
       <div className="max-w-3xl mx-auto bg-white rounded-lg shadow p-6">

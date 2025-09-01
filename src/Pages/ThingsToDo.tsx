@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 import type { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../Components/Layout";
