@@ -241,10 +241,10 @@ export default function ShoppingCenters() {
                     <div className="text-sm font-bold text-primary">{center.stores}</div>
                     <div className="text-sm text-gray-500"><Clock className="w-4 h-4 inline-block mr-1" />{center.hours}</div>
                     <button
-                      className="px-4 py-1 bg-[#6ab187] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-1 text-sm"
+                      className="px-6 py-2 bg-[#6ab187] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2"
                     >
                       View Details
-                      <ShoppingBag className="w-4 h-4 transition-transform duration-300" />
+                      <ShoppingBag className="w-5 h-5 transition-transform duration-300" />
                     </button>
                   </div>
                 </div>
