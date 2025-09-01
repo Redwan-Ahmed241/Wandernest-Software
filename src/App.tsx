@@ -8,6 +8,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import ScrollToTop from "./ScrollToTop";
 import { AuthProvider, useAuth } from "./Authentication/auth-context";
 import { BookingProvider } from "./Context/booking-context";
 
@@ -178,6 +179,7 @@ function App() {
     <AuthProvider>
       <BookingProvider>
         <Router>
+          <ScrollToTop />
           <AppRoutes />
         </Router>
       </BookingProvider>
