@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wandernest Project Timeline by Sprint</title>
+<style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f6f8; color: #333; margin: 0; padding: 20px;}
+    h1, h2, h3, h4 { margin-top: 20px; margin-bottom: 10px; }
+    h1 { font-size: 2rem; color: #1f2937; }
+    h2 { font-size: 1.5rem; color: #3b82f6; }
+    h3 { font-size: 1.25rem; color: #10b981; }
+    h4 { font-size: 1rem; color: #f59e0b; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #e5e7eb; }
+    tr:nth-child(even) { background-color: #f9fafb; }
+    .done { color: #10b981; font-weight: bold; }
+    .subtask { margin-left: 20px; }
+    .sub-subtask { margin-left: 40px; font-style: italic; }
+</style>
+</head>
+<body>
+
+<h1>Wandernest Project Timeline by Sprint</h1>
+<p>Repo: <strong>Wandernest-Software (branch: Dev)</strong></p>
+
+<!-- Sprint 1 -->
+<h2>Sprint 1 — Setup & Core Frontend Pages (2 weeks)</h2>
+
+<h3>Module: Frontend Pages</h3>
+
+<h4>Task: Hotels & Rooms</h4>
+<table>
+<tr><td>Assignee</td><td>Ifty / Redwan</td></tr>
+<tr><td>Status</td><td>Done</td></tr>
+<tr><td>Priority</td><td>High</td></tr>
+<tr><td>Dependencies</td><td>API (payment/initiate), Auth token</td></tr>
+</table>
+<div class="subtask">Booking Modal — <span class="done">Done</span></div>
+<div class="subtask">Filtering — <span class="done">Done</span></div>
+<div class="subtask">Amenities links & routes — <span class="done">Done</span></div>
+<div class="subtask">Payment Integration — <span class="done">Done</span>
+    <div class="sub-subtask">Robust error handling — <span class="done">Done</span></div>
+</div>
+<div class="subtask">Responsive design & accessibility — <span class="done">Done</span></div>
+
+<h4>Task: Authentication Pages</h4>
+<table>
+<tr><td>Assignee</td><td>Redwan + Ifty</td></tr>
+<tr><td>Status</td><td>Done</td></tr>
+<tr><td>Priority</td><td>High</td></tr>
+</table>
+<div class="subtask">Signup — <span class="done">Done</span></div>
+<div class="subtask">Login — <span class="done">Done</span></div>
+<div class="subtask">Forgot password — <span class="done">Done</span></div>
+<div class="subtask">Token storage & management — <span class="done">Done</span></div>
+<div class="subtask">Validation & error messaging — <span class="done">Done</span></div>
+
+<h4>Task: UI Components — Navbar / Footer / Dropdowns</h4>
+<div class="subtask">Navbar centralization & responsive behavior — <span class="done">Done</span></div>
+<div class="subtask">Footer — <span class="done">Done</span></div>
+<div class="subtask">Profile dropdown and avatar behaviors — <span class="done">Done</span></div>
+<div class="subtask">Accessibility improvements — <span class="done">Done</span></div>
+
+<!-- Sprint 2 -->
+<h2>Sprint 2 — Secondary Pages & Reusable Components (2 weeks)</h2>
+
+<h3>Module: Frontend Pages</h3>
+
+<h4>Task: Packages</h4>
+<div class="subtask">Create Package — <span class="done">Done</span></div>
+<div class="subtask">Edit Package — <span class="done">Done</span></div>
+<div class="subtask">Delete Package — <span class="done">Done</span></div>
+<div class="subtask">Error handling / token management — <span class="done">Done</span></div>
+<div class="subtask">Responsive styles — <span class="done">Done</span></div>
+
+<h4>Task: Destinations / Things To Do / Attractions</h4>
+<div class="subtask">Destination listing — <span class="done">Done</span></div>
+<div class="subtask">Attraction details — <span class="done">Done</span></div>
+<div class="subtask">Things to do pages — <span class="done">Done</span></div>
+
+<h4>Task: Help Center / Blog / Guides</h4>
+<div class="subtask">Help Center — <span class="done">Done</span></div>
+<div class="subtask">Blog/Guides listings — <span class="done">Done</span></div>
+<div class="subtask">Groups page — <span class="done">Done</span></div>
+
+<h4>Task: Reusable Widgets (Cards, Hero, Buttons)</h4>
+<div class="subtask">Hero sections — <span class="done">Done</span></div>
+<div class="subtask">Card components — <span class="done">Done</span></div>
+<div class="subtask">Button states & hover accessibility — <span class="done">Done</span></div>
+
+<!-- Sprint 3 -->
+<h2>Sprint 3 — Backend Integration & Auth (2 weeks)</h2>
+
+<h3>Module: API & Services</h3>
+
+<h4>Task: API Service Layer</h4>
+<div class="subtask">api.ts / api-services.tsx usage — <span class="done">Done</span></div>
+<div class="subtask">Env variable fixes — <span class="done">Done</span></div>
+<div class="subtask">Error parsing & fallback — <span class="done">Done</span></div>
+
+<h4>Task: Payments</h4>
+<div class="subtask">Initiate payment endpoint usage — <span class="done">Done</span></div>
+<div class="subtask">Redirect handling & success flow — <span class="done">Done</span></div>
+<div class="subtask">Failure handling and user feedback — <span class="done">Done</span></div>
+
+<h3>Module: Auth & Context</h3>
+
+<h4>Task: Auth Context</h4>
+<div class="subtask">Token storage & retrieval — <span class="done">Done</span></div>
+<div class="subtask">Protected routes — <span class="done">Done</span></div>
+<div class="subtask">Role management — <span class="done">Done</span></div>
+
+<h4>Task: Booking Context</h4>
+<div class="subtask">Booking state management — <span class="done">Done</span></div>
+<div class="subtask">Persisting selections across pages — <span class="done">Done</span></div>
+
+<!-- Sprint 4 -->
+<h2>Sprint 4 — Styling, QA, and Testing (2 weeks)</h2>
+
+<h3>Module: Styling & Theme</h3>
+
+<h4>Task: Convert CSS to Tailwind</h4>
+<div class="subtask">Remove CSS modules — <span class="done">Done</span></div>
+<div class="subtask">Global Tailwind theme — <span class="done">Done</span></div>
+<div class="subtask">Per-page style fixes — <span class="done">Done</span></div>
+
+<h3>Module: Quality, Tests & Build</h3>
+
+<h4>Task: Tests</h4>
+<div class="subtask">Unit tests — <span class="done">Done</span></div>
+<div class="subtask">Component/unit tests — <span class="done">Done</span></div>
+<div class="subtask">E2E tests — <span class="done">Done</span></div>
+
+<h4>Task: Build & Dependencies</h4>
+<div class="subtask">Update dependencies — <span class="done">Done</span></div>
+<div class="subtask">Linting/format checks — <span class="done">Done</span></div>
+
+</body>
+</html>
