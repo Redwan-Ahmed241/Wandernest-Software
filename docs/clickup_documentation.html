@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wandernest ClickUp Checklist</title>
+<style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f6f8; color: #333; margin: 0; padding: 20px;}
+    h1, h2, h3, h4 { margin-top: 20px; margin-bottom: 10px; }
+    h1 { font-size: 2rem; color: #1f2937; }
+    h2 { font-size: 1.5rem; color: #3b82f6; }
+    h3 { font-size: 1.25rem; color: #10b981; }
+    h4 { font-size: 1rem; color: #f59e0b; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #e5e7eb; }
+    tr:nth-child(even) { background-color: #f9fafb; }
+    .done { color: #10b981; font-weight: bold; }
+    .subtask { margin-left: 20px; }
+    .sub-subtask { margin-left: 40px; font-style: italic; }
+</style>
+</head>
+<body>
+
+<h1>Wandernest ClickUp Checklist</h1>
+<p>Repo: <strong>Wandernest-Software (branch: Dev)</strong></p>
+<p>Main areas: Pages, Components, Context & Auth, API Services, Payments</p>
+
+<!-- Module A: Frontend Pages -->
+<h2>Module A — Frontend Pages (Pages)</h2>
+<p>Purpose: UI pages, routing, layouts, client logic.</p>
+
+<h3>Task: Hotels & Rooms</h3>
+<table>
+<tr><td>Assignee</td><td>Ifty (Co-owner: Redwan)</td></tr>
+<tr><td>Priority</td><td>High</td></tr>
+<tr><td>Status</td><td>Done</td></tr>
+<tr><td>Dependencies</td><td>API (payment/initiate), Auth token</td></tr>
+<tr><td>Est. Time</td><td>1–2 days (for error edge-cases)</td></tr>
+<tr><td>Acceptance Criteria</td><td>Modal collects user data + redirects to payment gateway.</td></tr>
+<tr><td>Related Commits</td><td>... (see contribution_logs.txt)</td></tr>
+</table>
+
+<div class="subtask">Booking Modal — <span class="done">Done</span></div>
+<div class="subtask">Filtering (price, rating, location, room type) — <span class="done">Done</span></div>
+<div class="subtask">Amenities links & routes — <span class="done">Done</span></div>
+<div class="subtask">Payment Integration — <span class="done">Done</span>
+    <div class="sub-subtask">Robust error handling — <span class="done">Done</span></div>
+</div>
+<div class="subtask">Responsive design & accessibility — <span class="done">Done</span></div>
+
+<h3>Task: Packages</h3>
+<table>
+<tr><td>Assignee</td><td>Redwan</td></tr>
+<tr><td>Priority</td><td>Medium</td></tr>
+<tr><td>Status</td><td>Done</td></tr>
+</table>
+<div class="subtask">Create Package — <span class="done">Done</span></div>
+<div class="subtask">Edit Package — <span class="done">Done</span></div>
+<div class="subtask">Delete Package — <span class="done">Done</span></div>
+<div class="subtask">Error handling / token management — <span class="done">Done</span></div>
+<div class="subtask">Responsive styles — <span class="done">Done</span></div>
+
+<h3>Task: Dashboard (Admin)</h3>
+<table>
+<tr><td>Assignee</td><td>Redwan</td></tr>
+<tr><td>Priority</td><td>High</td></tr>
+<tr><td>Status</td><td>Done</td></tr>
+</table>
+<div class="subtask">Analytics widgets — <span class="done">Done</span></div>
+<div class="subtask">Data management (CRUD) — <span class="done">Done</span></div>
+<div class="subtask">Visa approval workflow — <span class="done">Done</span></div>
+<div class="subtask">Admin controls & permissions — <span class="done">Done</span></div>
+<div class="subtask">QA & polish — <span class="done">Done</span></div>
+
+<h3>Task: Authentication pages</h3>
+<table>
+<tr><td>Assignee</td><td>Redwan + Ifty</td></tr>
+<tr><td>Priority</td><td>High</td></tr>
+<tr><td>Status</td><td>Done</td></tr>
+</table>
+<div class="subtask">Signup — <span class="done">Done</span></div>
+<div class="subtask">Login — <span class="done">Done</span></div>
+<div class="subtask">Forgot password — <span class="done">Done</span></div>
+<div class="subtask">Token storage & management — <span class="done">Done</span></div>
+<div class="subtask">Validation & error messaging — <span class="done">Done</span></div>
+
+<h3>Task: Destinations / Things To Do / Attractions</h3>
+<table>
+<tr><td>Assignee</td><td>Ifty</td></tr>
+<tr><td>Priority</td><td>Medium</td></tr>
+<tr><td>Status</td><td>Done</td></tr>
+</table>
+<div class="subtask">Destination listing — <span class="done">Done</span></div>
+<div class="subtask">Attraction details — <span class="done">Done</span></div>
+<div class="subtask">Things to do pages — <span class="done">Done</span></div>
+
+<h3>Task: Help Center / Community / Guides / Blog</h3>
+<table>
+<tr><td>Assignee</td><td>Ifty</td></tr>
+<tr><td>Priority</td><td>Low</td></tr>
+<tr><td>Status</td><td>Done</td></tr>
+</table>
+<div class="subtask">Help Center — <span class="done">Done</span></div>
+<div class="subtask">Blog/Guides listings — <span class="done">Done</span></div>
+<div class="subtask">Groups page — <span class="done">Done</span></div>
+
+<h3>Task: Misc Pages</h3>
+<div class="subtask">Profile Settings — <span class="done">Done</span></div>
+<div class="subtask">Privacy Policy — <span class="done">Done</span></div>
+<div class="subtask">Gift Card — <span class="done">Done</span></div>
+
+<!-- Module B: UI Components -->
+<h2>Module B — UI Components (Components)</h2>
+<p>Purpose: Shared layout and UI building blocks.</p>
+
+<h3>Task: Layout / Navbar / Footer / Dropdowns</h3>
+<table>
+<tr><td>Assignee</td><td>Ifty / Redwan</td></tr>
+<tr><td>Priority</td><td>High</td></tr>
+<tr><td>Status</td><td>Done</td></tr>
+</table>
+<div class="subtask">Navbar centralization & responsive behavior — <span class="done">Done</span></div>
+<div class="subtask">Footer — <span class="done">Done</span></div>
+<div class="subtask">Profile dropdown and avatar behaviors — <span class="done">Done</span></div>
+<div class="subtask">Accessibility improvements (buttons, overlays) — <span class="done">Done</span></div>
+
+<h3>Task: Reusable widgets (cards, hero, buttons)</h3>
+<div class="subtask">Hero sections across pages — <span class="done">Done</span></div>
+<div class="subtask">Card components (responsive) — <span class="done">Done</span></div>
+<div class="subtask">Button states & hover accessibility — <span class="done">Done</span></div>
+
+<!-- Module C: API & Services -->
+<h2>Module C — API & Services (src/App)</h2>
+<p>Purpose: Backend integration, fetch wrappers, payment initiation.</p>
+
+<h3>Task: API service layer</h3>
+<table>
+<tr><td>Assignee</td><td>Redwan</td></tr>
+<tr><td>Priority</td><td>High</td></tr>
+<tr><td>Status</td><td>Done</td></tr>
+</table>
+<div class="subtask">api.ts / api-services.tsx usage — <span class="done">Done</span></div>
+<div class="subtask">env variable fixes — <span class="done">Done</span></div>
+<div class="subtask">Error parsing & fallback — <span class="done">Done</span></div>
+
+<h3>Task: Payments</h3>
+<div class="subtask">Initiate payment endpoint usage — <span class="done">Done</span></div>
+<div class="subtask">Redirect handling & success flow — <span class="done">Done</span></div>
+<div class="subtask">Failure handling and user feedback — <span class="done">Done</span></div>
+
+<!-- Module D: Auth & Context -->
+<h2>Module D — Auth & Context</h2>
+<p>Purpose: Auth state, booking context.</p>
+
+<h3>Task: Auth context</h3>
+<table>
+<tr><td>File</td><td>auth-context.tsx</td></tr>
+<tr><td>Status</td><td>Done</td></tr>
+</table>
+<div class="subtask">Token storage & retrieval — <span class="done">Done</span></div>
+<div class="subtask">Protected routes (usage) — <span class="done">Done</span></div>
+<div class="subtask">Role management — <span class="done">Done</span></div>
+
+<h3>Task: Booking context</h3>
+<table>
+<tr><td>File</td><td>booking-context.tsx</td></tr>
+<tr><td>Status</td><td>Done</td></tr>
+</table>
+<div class="subtask">Booking state management — <span class="done">Done</span></div>
+<div class="subtask">Persisting selections across pages — <span class="done">Done</span></div>
+
+<!-- Module E: Styling & Theme -->
+<h2>Module E — Styling & Theme</h2>
+<p>Purpose: Tailwind migration, theme management.</p>
+
+<h3>Task: Convert CSS to Tailwind</h3>
+<div class="subtask">Remove CSS modules — <span class="done">Done</span></div>
+<div class="subtask">Global Tailwind theme (tailwind.theme.js) — <span class="done">Done</span></div>
+<div class="subtask">Per-page style fixes — <span class="done">Done</span></div>
+
+<!-- Module F: Quality, Tests & Build -->
+<h2>Module F — Quality, Tests & Build</h2>
+<p>Purpose: tests, CI, dependency updates.</p>
+
+<h3>Task: Tests</h3>
+<table>
+<tr><td>Files</td><td>App.test.tsx, setupTests.ts</td></tr>
+<tr><td>Status</td><td>Done</td></tr>
+</table>
+<div class="subtask">Unit tests — <span class="done">Done</span></div>
+<div class="subtask">Component/unit tests — <span class="done">Done</span></div>
+<div class="subtask">E2E tests — <span class="done">Done</span></div>
+
+<h3>Task: Build & Dependencies</h3>
+<div class="subtask">Update dependencies — <span class="done">Done</span></div>
+<div class="subtask">Linting/format checks — <span class="done">Done</span></div>
+
+</body>
+</html>

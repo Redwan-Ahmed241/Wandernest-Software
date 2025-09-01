@@ -268,7 +268,7 @@ const HomePage: FunctionComponent = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {/* Local amenities cards */}
-              <div className="group bg-white rounded-2xl shadow-lg p-8 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col justify-between h-full min-h-[340px]">
+              <div className="group bg-white rounded-2xl shadow-lg p-8 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col justify-between h-full min-h-[340px]" onClick={() => navigate('/restaurant')}>
                 <div>
                   <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mb-6 text-white shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
                     {/* Coffee icon */}
@@ -299,7 +299,7 @@ const HomePage: FunctionComponent = () => {
                   <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
-              <div className="group bg-white rounded-2xl shadow-lg p-8 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col justify-between h-full min-h-[340px]">
+              <div className="group bg-white rounded-2xl shadow-lg p-8 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col justify-between h-full min-h-[340px]" onClick={() => navigate('/destinations')}>
                 <div>
                   <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-2xl flex items-center justify-center mb-6 text-white shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
                     {/* MapPin icon */}
@@ -330,7 +330,7 @@ const HomePage: FunctionComponent = () => {
                   <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
-              <div className="group bg-white rounded-2xl shadow-lg p-8 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col justify-between h-full min-h-[340px]">
+              <div className="group bg-white rounded-2xl shadow-lg p-8 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col justify-between h-full min-h-[340px]" onClick={() => navigate('/public-transport')}>
                 <div>
                   <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mb-6 text-white shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
                     {/* Truck icon */}
@@ -359,7 +359,7 @@ const HomePage: FunctionComponent = () => {
                   <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
-              <div className="group bg-white rounded-2xl shadow-lg p-8 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col justify-between h-full min-h-[340px]">
+              <div className="group bg-white rounded-2xl shadow-lg p-8 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col justify-between h-full min-h-[340px]" onClick={() => navigate('/shopping-centers')}>
                 <div>
                   <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mb-6 text-white shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
                     {/* ShoppingBag icon */}

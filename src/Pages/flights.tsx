@@ -1559,7 +1559,7 @@ const Flights: FunctionComponent = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gray-50 pt-16">
+      <div className="min-h-screen bg-gray-50 pt-0">
         {/* Success Message */}
         {bookingSuccess && (
           <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
@@ -2123,25 +2123,6 @@ const Flights: FunctionComponent = () => {
                 Search
               </button>
             </form>
-            {searching && (
-              <button
-                type="button"
-                onClick={() => {
-                  setSearch("");
-                  setSearching(false);
-                  const defaultCities = [
-                    "Dhaka",
-                    "Chittagong",
-                    "Sylhet",
-                    "Rajshahi",
-                  ];
-                  fetchWeatherForCities(defaultCities);
-                }}
-                className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-              >
-                Reset
-              </button>
-            )}
           </div>
 
           {isLoadingWeather && (
