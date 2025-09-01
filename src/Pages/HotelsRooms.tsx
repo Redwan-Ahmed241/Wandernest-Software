@@ -329,7 +329,13 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
             <button
               type="submit"
               disabled={isProcessingPayment}
-              className="w-full py-4 bg-gradient-to-r from-primary to-primary-dark text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              style={{
+                background: isProcessingPayment
+                  ? "linear-gradient(to right, #6ab187, #4a6b5b)"
+                  : "linear-gradient(to right, #4a6b5b, #0d1c1c)",
+                color: "white",
+              }}
             >
               {isProcessingPayment
                 ? "Processing Payment..."
