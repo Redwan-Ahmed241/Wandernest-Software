@@ -169,16 +169,15 @@ export default function TravelLogin() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Background Image - improved fit for travel-background.jpg */}
-      <div
-        className="absolute inset-0 w-full h-full"
-        style={{
-          backgroundImage: "url('/Figma_photos/travel-background.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      />
+      {/* Background Image - use <img> with object-contain so photos aren't cropped */}
+      <div className="absolute inset-0 w-full h-full flex items-center justify-center bg-black">
+        <img
+          src="/Figma_photos/travel-background.jpg"
+          alt="Travel background"
+          className="w-full h-full object-fill"
+          style={{ objectPosition: "center" }}
+        />
+      </div>
 
       {/* Overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/60" />
