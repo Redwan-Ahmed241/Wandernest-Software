@@ -169,12 +169,14 @@ export default function TravelLogin() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Background Image */}
+      {/* Background Image - improved fit for travel-background.jpg */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 w-full h-full"
         style={{
-          backgroundImage:
-            "url('https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=1920')",
+          backgroundImage: "url('/Figma_photos/travel-background.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
         }}
       />
 
