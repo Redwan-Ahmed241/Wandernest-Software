@@ -29,6 +29,7 @@ import HomePage from "./Pages/Homepage";
 import RentVehicles from "./Pages/rentVehicles";
 import Restaurant from "./Pages/restaurant";
 import Support from "./Pages/support";
+import CookiePolicy from "./Pages/CookiePolicy";
 import VisaAssistance from "./Pages/Visaassistance";
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
@@ -89,7 +90,8 @@ const AppRoutes: React.FC = () => {
       <Route path="/homepage" element={<HomePage />} />
       <Route path="/rent-vehicles" element={<RentVehicles />} />
       <Route path="/restaurant" element={<Restaurant />} />
-      <Route path="/support" element={<Support />} />
+  <Route path="/support" element={<Support />} />
+  <Route path="/cookie-policy" element={<CookiePolicy />} />
       <Route path="/visa-assistance" element={<VisaAssistance />} />
       <Route path="/destinations" element={<Destinations />} />
       <Route path="/community" element={<Community />} />
