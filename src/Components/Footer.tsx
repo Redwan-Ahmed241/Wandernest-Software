@@ -28,7 +28,7 @@ const Footer: React.FC = () => {
       links: [
         { label: "Terms of Service", path: "/terms" },
         { label: "Privacy Policy", path: "/privacy" },
-        { label: "Cookie Policy", path: "/cookies" },
+  { label: "Cookie Policy", path: "/cookie-policy" },
         { label: "Accessibility", path: "/accessibility" },
       ],
     },
