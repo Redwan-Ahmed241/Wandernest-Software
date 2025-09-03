@@ -92,12 +92,14 @@ const HomePage: FunctionComponent = () => {
       <main className="min-h-screen bg-white">
         {/* Hero Section */}
         <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
-          {/* Background Image */}
+          {/* Background Image - Hero */}
           <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            className="absolute inset-0 w-full h-full"
             style={{
-              backgroundImage:
-                "url('https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=1920')",
+              backgroundImage: "url('/Figma_photos/2102331.jpg')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
             }}
           ></div>
           {/* Overlay for text readability */}
@@ -107,28 +109,24 @@ const HomePage: FunctionComponent = () => {
           <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-primary-dark/20"></div>
 
           {/* Hero Content */}
-          <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight text-white drop-shadow-2xl">
-              Explore Bangladesh with{" "}
-              <span className="bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent">
-                WanderNest
-              </span>
+          <div className="relative z-10 max-w-5xl mx-auto px-8 text-center">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-white drop-shadow-2xl">
+              Explore Bangladesh with Wandernest
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-2xl mx-auto leading-relaxed drop-shadow-lg">
-              Discover the beauty, culture, and adventure of Bangladesh with our
-              expertly crafted travel experiences
+            <p className="text-lg md:text-xl lg:text-2xl mb-8 text-white/90 max-w-3xl mx-auto leading-relaxed drop-shadow-lg">
+              Discover the beauty, culture, and adventure of Bangladesh with our expertly crafted travel experiences
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex justify-center items-center gap-4">
               <button
                 onClick={() => navigate("/packages")}
-                className="px-8 py-4 bg-white/80 text-black font-semibold text-xl rounded-full shadow-md hover:shadow-lg transition-all duration-200 hover:bg-white focus:outline-none focus:ring-2 focus:ring-accent border border-gray-200 flex items-center justify-center gap-2 group tracking-wide"
+                className="px-8 py-4 bg-white/80 text-black font-semibold text-xl rounded-full shadow-md hover:shadow-lg transition-all duration-200 hover:bg-white focus:outline-none focus:ring-2 focus:ring-accent border border-gray-200 flex items-center justify-center gap-2 group tracking-wide min-w-[200px]"
               >
                 Start Your Journey
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
               </button>
               <button
                 onClick={() => navigate("/destinations")}
-                className="px-8 py-4 border-2 border-white text-white font-bold text-lg rounded-xl transition-all duration-300 hover:scale-105 hover:bg-white/10 hover:text-accent hover:border-accent focus:outline-none focus:ring-2 focus:ring-accent"
+                className="px-8 py-4 border-2 border-white text-white font-bold text-lg rounded-xl transition-all duration-300 hover:scale-105 hover:bg-white/10 hover:text-accent hover:border-accent focus:outline-none focus:ring-2 focus:ring-accent min-w-[200px]"
               >
                 Explore Destinations
               </button>
