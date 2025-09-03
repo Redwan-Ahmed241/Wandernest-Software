@@ -94,7 +94,7 @@ const HomePage: FunctionComponent = () => {
         <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
           {/* Background Image - Hero */}
           <div
-            className="absolute inset-0 w-full h-full bg-center bg-no-repeat bg-contain md:bg-cover"
+            className="absolute inset-0 w-full h-full bg-no-repeat bg-cover bg-[center_35%] md:bg-center"
             style={{ backgroundImage: "url('/Figma_photos/2102331.jpg')" }}
           ></div>
           {/* Overlay for text readability */}
