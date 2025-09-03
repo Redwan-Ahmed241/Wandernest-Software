@@ -94,13 +94,8 @@ const HomePage: FunctionComponent = () => {
         <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
           {/* Background Image - Hero */}
           <div
-            className="absolute inset-0 w-full h-full"
-            style={{
-              backgroundImage: "url('/Figma_photos/2102331.jpg')",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-            }}
+            className="absolute inset-0 w-full h-full bg-center bg-no-repeat bg-contain md:bg-cover"
+            style={{ backgroundImage: "url('/Figma_photos/2102331.jpg')" }}
           ></div>
           {/* Overlay for text readability */}
           <div className="absolute inset-0 bg-gradient-to-br from-black/50 via-black/30 to-black/50"></div>
