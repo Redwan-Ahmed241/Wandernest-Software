@@ -91,37 +91,38 @@ const HomePage: FunctionComponent = () => {
     <Layout>
       <main className="min-h-screen bg-white">
         {/* Hero Section */}
-        <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
+        <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
           {/* Background Image - Hero */}
           <div
-            className="absolute inset-0 w-full h-full bg-no-repeat bg-cover bg-[center_35%] md:bg-center"
+            className="absolute inset-0 w-full h-full bg-no-repeat bg-cover bg-center"
             style={{ backgroundImage: "url('/Figma_photos/2102331.jpg')" }}
           ></div>
           {/* Overlay for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-br from-black/50 via-black/30 to-black/50"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/60"></div>
 
           {/* Subtle brand color overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-primary-dark/20"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-transparent to-primary-dark/30"></div>
 
           {/* Hero Content */}
-          <div className="relative z-10 max-w-5xl mx-auto px-8 text-center">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-white drop-shadow-2xl">
+          <div className="relative z-10 max-w-2xl md:max-w-5xl mx-auto px-4 sm:px-6 text-center">
+            <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight text-white drop-shadow-2xl">
               Explore Bangladesh with Wandernest
             </h1>
-            <p className="text-lg md:text-xl lg:text-2xl mb-8 text-white/90 max-w-3xl mx-auto leading-relaxed drop-shadow-lg">
-              Discover the beauty, culture, and adventure of Bangladesh with our expertly crafted travel experiences
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 text-white/90 max-w-xl sm:max-w-3xl mx-auto leading-relaxed drop-shadow-lg">
+              Discover the beauty, culture, and adventure of Bangladesh with our
+              expertly crafted travel experiences
             </p>
-            <div className="flex justify-center items-center gap-4">
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 w-full">
               <button
                 onClick={() => navigate("/packages")}
-                className="px-8 py-4 bg-white/80 text-black font-semibold text-xl rounded-full shadow-md hover:shadow-lg transition-all duration-200 hover:bg-white focus:outline-none focus:ring-2 focus:ring-accent border border-gray-200 flex items-center justify-center gap-2 group tracking-wide min-w-[200px]"
+                className="w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 bg-white/80 text-black font-semibold text-base sm:text-xl rounded-full shadow-md hover:shadow-lg transition-all duration-200 hover:bg-white focus:outline-none focus:ring-2 focus:ring-accent border border-gray-200 flex items-center justify-center gap-2 group tracking-wide min-w-[160px] sm:min-w-[200px] mb-3 sm:mb-0"
               >
                 Start Your Journey
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
               </button>
               <button
                 onClick={() => navigate("/destinations")}
-                className="px-8 py-4 border-2 border-white text-white font-bold text-lg rounded-xl transition-all duration-300 hover:scale-105 hover:bg-white/10 hover:text-accent hover:border-accent focus:outline-none focus:ring-2 focus:ring-accent min-w-[200px]"
+                className="w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 border-2 border-white text-white font-bold text-base sm:text-lg rounded-xl transition-all duration-300 hover:scale-105 hover:bg-white/10 hover:text-accent hover:border-accent focus:outline-none focus:ring-2 focus:ring-accent min-w-[160px] sm:min-w-[200px]"
               >
                 Explore Destinations
               </button>
@@ -129,8 +130,8 @@ const HomePage: FunctionComponent = () => {
           </div>
 
           {/* Floating Elements */}
-          <div className="absolute top-20 left-10 w-20 h-20 bg-accent/20 rounded-full blur-xl animate-pulse"></div>
-          <div className="absolute bottom-20 right-10 w-32 h-32 bg-primary-light/20 rounded-full blur-xl animate-pulse delay-1000"></div>
+          <div className="hidden sm:block absolute top-20 left-10 w-20 h-20 bg-accent/20 rounded-full blur-xl animate-pulse"></div>
+          <div className="hidden sm:block absolute bottom-20 right-10 w-32 h-32 bg-primary-light/20 rounded-full blur-xl animate-pulse delay-1000"></div>
         </section>
 
         {/* Stats Section */}
@@ -261,7 +262,10 @@ const HomePage: FunctionComponent = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {/* Local amenities cards */}
-              <div className="group bg-white rounded-2xl shadow-lg p-8 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col justify-between h-full min-h-[340px]" onClick={() => navigate('/restaurant')}>
+              <div
+                className="group bg-white rounded-2xl shadow-lg p-8 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col justify-between h-full min-h-[340px]"
+                onClick={() => navigate("/restaurant")}
+              >
                 <div>
                   <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mb-6 text-white shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
                     {/* Coffee icon */}
@@ -292,7 +296,10 @@ const HomePage: FunctionComponent = () => {
                   <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
-              <div className="group bg-white rounded-2xl shadow-lg p-8 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col justify-between h-full min-h-[340px]" onClick={() => navigate('/destinations')}>
+              <div
+                className="group bg-white rounded-2xl shadow-lg p-8 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col justify-between h-full min-h-[340px]"
+                onClick={() => navigate("/destinations")}
+              >
                 <div>
                   <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-2xl flex items-center justify-center mb-6 text-white shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
                     {/* MapPin icon */}
@@ -323,7 +330,10 @@ const HomePage: FunctionComponent = () => {
                   <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
-              <div className="group bg-white rounded-2xl shadow-lg p-8 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col justify-between h-full min-h-[340px]" onClick={() => navigate('/public-transport')}>
+              <div
+                className="group bg-white rounded-2xl shadow-lg p-8 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col justify-between h-full min-h-[340px]"
+                onClick={() => navigate("/public-transport")}
+              >
                 <div>
                   <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mb-6 text-white shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
                     {/* Truck icon */}
@@ -352,7 +362,10 @@ const HomePage: FunctionComponent = () => {
                   <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
-              <div className="group bg-white rounded-2xl shadow-lg p-8 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col justify-between h-full min-h-[340px]" onClick={() => navigate('/shopping-centers')}>
+              <div
+                className="group bg-white rounded-2xl shadow-lg p-8 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col justify-between h-full min-h-[340px]"
+                onClick={() => navigate("/shopping-centers")}
+              >
                 <div>
                   <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mb-6 text-white shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
                     {/* ShoppingBag icon */}
