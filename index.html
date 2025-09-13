@@ -1,13 +1,32 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/public/Figma_photos/wandernest.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Wandernest</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/public/Figma_photos/wandernest.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wandernest</title>
+
+  <!-- Preconnect to external domains for faster loading -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.pexels.com">
+  <link rel="preconnect" href="https://wander-nest-ad3s.onrender.com">
+
+  <!-- DNS prefetch for additional performance -->
+  <link rel="dns-prefetch" href="https://images.pexels.com">
+  <link rel="dns-prefetch" href="https://wander-nest-ad3s.onrender.com">
+
+  <!-- Preload critical resources -->
+  <link rel="preload" href="/Figma_photos/2102331.jpg" as="image" type="image/jpeg">
+
+  <!-- Load CSS normally to avoid build issues -->
+  <link rel="stylesheet" href="/src/global.css">
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>
