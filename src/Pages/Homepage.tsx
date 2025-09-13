@@ -2,9 +2,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { type FunctionComponent, useEffect, useState } from "react";
+import { type FunctionComponent, useEffect, useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../Components/Layout";
+import OptimizedImage from "../Components/OptimizedImage";
 import { ArrowRight, MapPin, Star, Shield, Clock } from "react-feather";
 
 const FEATURED_API_URL =
@@ -16,28 +17,31 @@ const HomePage: FunctionComponent = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchDestinations = async () => {
-      setLoading(true);
-      setError("");
-      try {
-        const response = await fetch(FEATURED_API_URL);
-        if (!response.ok) throw new Error("Failed to fetch destinations");
-        const data = await response.json();
-        const sorted = (Array.isArray(data) ? data : [])
-          .sort((a, b) => (b.click || 0) - (a.click || 0))
-          .slice(0, 6);
-        setDestinations(sorted);
-      } catch (err: any) {
-        setError(err.message || "Error fetching destinations");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchDestinations();
+  // Memoize the fetch function to prevent unnecessary re-renders
+  const fetchDestinations = useCallback(async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const response = await fetch(FEATURED_API_URL);
+      if (!response.ok) throw new Error("Failed to fetch destinations");
+      const data = await response.json();
+      const sorted = (Array.isArray(data) ? data : [])
+        .sort((a, b) => (b.click || 0) - (a.click || 0))
+        .slice(0, 6);
+      setDestinations(sorted);
+    } catch (err: any) {
+      setError(err.message || "Error fetching destinations");
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  const incrementDestinationClick = async (id: number) => {
+  useEffect(() => {
+    fetchDestinations();
+  }, [fetchDestinations]);
+
+  // Memoize the click handler to prevent unnecessary re-renders
+  const incrementDestinationClick = useCallback(async (id: number) => {
     try {
       await fetch(
         `https://wander-nest-ad3s.onrender.com/api/home/destinations/${id}/click/`,
@@ -49,14 +53,15 @@ const HomePage: FunctionComponent = () => {
     } catch (err) {
       // Optionally handle error
     }
-  };
+  }, []);
 
-  const handleCardClick = async (dest: any) => {
+  const handleCardClick = useCallback(async (dest: any) => {
     await incrementDestinationClick(dest.id);
     navigate("/destination-01");
-  };
+  }, [incrementDestinationClick, navigate]);
 
-  const services = [
+  // Memoize static data to prevent unnecessary re-renders
+  const services = useMemo(() => [
     {
       icon: <Shield className="w-8 h-8" />,
       title: "Visa Assistance",
@@ -78,14 +83,14 @@ const HomePage: FunctionComponent = () => {
       color: "from-purple-500 to-purple-600",
       path: "/support",
     },
-  ];
+  ], []);
 
-  const stats = [
+  const stats = useMemo(() => [
     { number: "50K+", label: "Happy Travelers", icon: "👥" },
     { number: "200+", label: "Destinations", icon: "🗺️" },
     { number: "1000+", label: "Hotels", icon: "🏨" },
     { number: "4.9", label: "Average Rating", icon: "⭐" },
-  ];
+  ], []);
 
   return (
     <Layout>
@@ -177,59 +182,65 @@ const HomePage: FunctionComponent = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {loading
                 ? Array.from({ length: 6 }).map((_, index) => (
-                    <div
-                      key={index}
-                      className="bg-gray-100 rounded-2xl overflow-hidden animate-pulse"
-                    >
-                      <div className="h-64 bg-gray-200"></div>
-                      <div className="p-6 space-y-3">
-                        <div className="h-6 bg-gray-200 rounded"></div>
-                        <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                      </div>
+                  <div
+                    key={index}
+                    className="bg-gray-100 rounded-2xl overflow-hidden animate-pulse"
+                  >
+                    <div className="h-64 bg-gray-200"></div>
+                    <div className="p-6 space-y-3">
+                      <div className="h-6 bg-gray-200 rounded"></div>
+                      <div className="h-4 bg-gray-200 rounded w-3/4"></div>
                     </div>
-                  ))
+                  </div>
+                ))
                 : destinations.map((place, index) => (
-                    <div
-                      key={place.id || index}
-                      className="group bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105"
-                      onClick={() => handleCardClick(place)}
-                    >
-                      <div className="relative overflow-hidden">
-                        <img
-                          src={
-                            place.image_url ||
-                            "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=600"
-                          }
-                          alt={place.name}
-                          className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
-                          <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                          <span className="text-sm font-semibold">4.8</span>
-                        </div>
+                  <div
+                    key={place.id || index}
+                    className="group bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105"
+                    onClick={() => handleCardClick(place)}
+                  >
+                    <div className="relative overflow-hidden">
+                      <OptimizedImage
+                        src={
+                          place.image_url ||
+                          "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=600"
+                        }
+                        webpSrc={
+                          place.image_url ||
+                          "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=600&format=webp"
+                        }
+                        alt={place.name}
+                        className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
+                        <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                        <span className="text-sm font-semibold">4.8</span>
                       </div>
-                      <div className="p-6">
-                        <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
-                          {place.name}
-                        </h3>
-                        <p className="text-gray-600 mb-4 line-clamp-2">
-                          {place.description ||
-                            "Experience the beauty and culture of this amazing destination"}
-                        </p>
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2 text-gray-500">
-                            <MapPin className="w-4 h-4" />
-                            <span className="text-sm">Bangladesh</span>
-                          </div>
-                          <div className="flex items-center gap-1 text-primary font-semibold group-hover:gap-2 transition-all duration-200">
-                            <span>Explore</span>
-                            <ArrowRight className="w-4 h-4" />
-                          </div>
+                    </div>
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
+                        {place.name}
+                      </h3>
+                      <p className="text-gray-600 mb-4 line-clamp-2">
+                        {place.description ||
+                          "Experience the beauty and culture of this amazing destination"}
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 text-gray-500">
+                          <MapPin className="w-4 h-4" />
+                          <span className="text-sm">Bangladesh</span>
+                        </div>
+                        <div className="flex items-center gap-1 text-primary font-semibold group-hover:gap-2 transition-all duration-200">
+                          <span>Explore</span>
+                          <ArrowRight className="w-4 h-4" />
                         </div>
                       </div>
                     </div>
-                  ))}
+                  </div>
+                ))}
             </div>
 
             {!loading && destinations.length === 0 && !error && (
@@ -482,10 +493,13 @@ const HomePage: FunctionComponent = () => {
                   className="bg-gray-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300"
                 >
                   <div className="flex items-center gap-4 mb-6">
-                    <img
+                    <OptimizedImage
                       src={testimonial.avatar}
+                      webpSrc={testimonial.avatar.replace(/\.(jpg|jpeg)$/i, '.webp')}
                       alt={testimonial.name}
                       className="w-16 h-16 rounded-full object-cover shadow-md"
+                      loading="lazy"
+                      decoding="async"
                     />
                     <div>
                       <h4 className="font-bold text-gray-900">
