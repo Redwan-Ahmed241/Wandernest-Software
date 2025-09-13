@@ -1,6 +1,7 @@
 "use client";
 
 import type React from "react";
+import { Suspense, lazy } from "react";
 
 import {
   BrowserRouter as Router,
@@ -12,45 +13,53 @@ import ScrollToTop from "./ScrollToTop";
 import { AuthProvider, useAuth } from "./Authentication/auth-context";
 import { BookingProvider } from "./Context/booking-context";
 
-// All your existing imports
-import ThingsToDo from "./Pages/ThingsToDo";
-import HotelsRooms from "./Pages/HotelsRooms";
-import Destinations from "./Pages/Destinations";
-import PlanATrip from "./Pages/PlanATrip";
-import AboutUs from "./Pages/aboutUs";
-import AllGuides from "./Pages/ALLGuides";
-import Blogs from "./Pages/Blog";
-import Flights from "./Pages/flights";
-import Groups from "./Pages/Groups";
-import Guides from "./Pages/hiringGuides";
-import LoginPage from "./Pages/Loginpage";
-import Destination01 from "./Pages/Destination_01";
-import HomePage from "./Pages/Homepage";
-import RentVehicles from "./Pages/rentVehicles";
-import Restaurant from "./Pages/restaurant";
-import Support from "./Pages/support";
-import CookiePolicy from "./Pages/CookiePolicy";
-import VisaAssistance from "./Pages/Visaassistance";
+// Lazy load components for better code splitting
+const HomePage = lazy(() => import("./Pages/Homepage"));
+const ThingsToDo = lazy(() => import("./Pages/ThingsToDo"));
+const HotelsRooms = lazy(() => import("./Pages/HotelsRooms"));
+const Destinations = lazy(() => import("./Pages/Destinations"));
+const PlanATrip = lazy(() => import("./Pages/PlanATrip"));
+const AboutUs = lazy(() => import("./Pages/aboutUs"));
+const AllGuides = lazy(() => import("./Pages/ALLGuides"));
+const Blogs = lazy(() => import("./Pages/Blog"));
+const Flights = lazy(() => import("./Pages/flights"));
+const Groups = lazy(() => import("./Pages/Groups"));
+const Guides = lazy(() => import("./Pages/hiringGuides"));
+const LoginPage = lazy(() => import("./Pages/Loginpage"));
+const Destination01 = lazy(() => import("./Pages/Destination_01"));
+const RentVehicles = lazy(() => import("./Pages/rentVehicles"));
+const Restaurant = lazy(() => import("./Pages/restaurant"));
+const Support = lazy(() => import("./Pages/support"));
+const CookiePolicy = lazy(() => import("./Pages/CookiePolicy"));
+const VisaAssistance = lazy(() => import("./Pages/Visaassistance"));
+const MyTrips = lazy(() => import("./Pages/MyTrips"));
+const HelpCenter = lazy(() => import("./Pages/HelpCenter"));
+const Packages = lazy(() => import("./Pages/Packages"));
+const CreatePackage = lazy(() => import("./Pages/CreatePackages"));
+const SignupForm = lazy(() => import("./Pages/Signup-form"));
+const ShoppingCenters = lazy(() => import("./Pages/shopping-center"));
+const PublicTransport = lazy(() => import("./Pages/public-transport"));
+const DashboardHome = lazy(() => import("./Pages/DashboardHome"));
+const Community = lazy(() => import("./Pages/Community"));
+const ProfileSettings = lazy(() => import("./Pages/ProfileSettings"));
+const AdminDashboard = lazy(() => import("./Pages/Admin/AdminDashboard"));
+const ConfirmBook = lazy(() => import("./Pages/confirm_book"));
+const FPass = lazy(() => import("./Pages/fpass"));
+const ResetPassword = lazy(() => import("./Pages/reset-password"));
+
+// Keep these as regular imports since they're used immediately
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
 import Layout from "./Components/Layout";
-import MyTrips from "./Pages/MyTrips";
-import HelpCenter from "./Pages/HelpCenter";
-import Packages from "./Pages/Packages";
-import CreatePackage from "./Pages/CreatePackages";
-import SignupForm from "./Pages/Signup-form";
-import ShoppingCenters from "./Pages/shopping-center";
-import PublicTransport from "./Pages/public-transport";
-import DashboardHome from "./Pages/DashboardHome";
 import ProfileDropdown from "./Components/profile-dropdown";
-import Community from "./Pages/Community";
-import ProfileSettings from "./Pages/ProfileSettings";
-import AdminDashboard from "./Pages/Admin/AdminDashboard";
 import "./global.css";
-import ConfirmBook from "./Pages/confirm_book";
-import FPass from "./Pages/fpass";
 
-import ResetPassword from "./Pages/reset-password";
+// Loading component for Suspense
+const LoadingSpinner = () => (
+  <div className="min-h-screen flex items-center justify-center">
+    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+  </div>
+);
 
 // Protected Route Component
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
@@ -74,105 +83,107 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
 // Routes Component (needs to be inside AuthProvider)
 const AppRoutes: React.FC = () => {
   return (
-    <Routes>
-      {/* Public Routes */}
-      <Route path="/" element={<HomePage />} />
-      <Route path="/things-to-do" element={<ThingsToDo />} />
-      <Route path="/hotels-rooms" element={<HotelsRooms />} />
-      <Route path="/plan-a-trip" element={<PlanATrip />} />
-      <Route path="/about-us" element={<AboutUs />} />
-      <Route path="/all-guides" element={<AllGuides />} />
-      <Route path="/blogs" element={<Blogs />} />
-      <Route path="/flights" element={<Flights />} />
-      <Route path="/groups" element={<Groups />} />
-      <Route path="/hiring-guides" element={<Guides />} />
-      <Route path="/destination-01" element={<Destination01 />} />
-      <Route path="/homepage" element={<HomePage />} />
-      <Route path="/rent-vehicles" element={<RentVehicles />} />
-      <Route path="/restaurant" element={<Restaurant />} />
-  <Route path="/support" element={<Support />} />
-  <Route path="/cookie-policy" element={<CookiePolicy />} />
-      <Route path="/visa-assistance" element={<VisaAssistance />} />
-      <Route path="/destinations" element={<Destinations />} />
-      <Route path="/community" element={<Community />} />
-      <Route path="/shopping-centers" element={<ShoppingCenters />} />
-      <Route path="/public-transport" element={<PublicTransport />} />
-      <Route path="/packages" element={<Packages />} />
-      <Route path="/create-packages" element={<CreatePackage />} />
-      <Route path="/profile" element={<ProfileSettings />} />
-      <Route path="/confirm-book" element={<ConfirmBook />} />
-      <Route path="/help-center" element={<HelpCenter />} />
-      {/* Redirects */}
-      {/* Auth Routes */}
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/signup" element={<SignupForm />} />
+    <Suspense fallback={<LoadingSpinner />}>
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/things-to-do" element={<ThingsToDo />} />
+        <Route path="/hotels-rooms" element={<HotelsRooms />} />
+        <Route path="/plan-a-trip" element={<PlanATrip />} />
+        <Route path="/about-us" element={<AboutUs />} />
+        <Route path="/all-guides" element={<AllGuides />} />
+        <Route path="/blogs" element={<Blogs />} />
+        <Route path="/flights" element={<Flights />} />
+        <Route path="/groups" element={<Groups />} />
+        <Route path="/hiring-guides" element={<Guides />} />
+        <Route path="/destination-01" element={<Destination01 />} />
+        <Route path="/homepage" element={<HomePage />} />
+        <Route path="/rent-vehicles" element={<RentVehicles />} />
+        <Route path="/restaurant" element={<Restaurant />} />
+        <Route path="/support" element={<Support />} />
+        <Route path="/cookie-policy" element={<CookiePolicy />} />
+        <Route path="/visa-assistance" element={<VisaAssistance />} />
+        <Route path="/destinations" element={<Destinations />} />
+        <Route path="/community" element={<Community />} />
+        <Route path="/shopping-centers" element={<ShoppingCenters />} />
+        <Route path="/public-transport" element={<PublicTransport />} />
+        <Route path="/packages" element={<Packages />} />
+        <Route path="/create-packages" element={<CreatePackage />} />
+        <Route path="/profile" element={<ProfileSettings />} />
+        <Route path="/confirm-book" element={<ConfirmBook />} />
+        <Route path="/help-center" element={<HelpCenter />} />
+        {/* Redirects */}
+        {/* Auth Routes */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupForm />} />
 
-      {/* Protected Routes */}
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute>
-            <DashboardHome />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/my-trips"
-        element={
-          <ProtectedRoute>
-            <MyTrips />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/create-package"
-        element={
-          <ProtectedRoute>
-            <CreatePackage />
-          </ProtectedRoute>
-        }
-      />
+        {/* Protected Routes */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardHome />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-trips"
+          element={
+            <ProtectedRoute>
+              <MyTrips />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/create-package"
+          element={
+            <ProtectedRoute>
+              <CreatePackage />
+            </ProtectedRoute>
+          }
+        />
 
-      {/* Utility Routes (probably not needed as routes) */}
-      <Route path="/navbar" element={<Navbar />} />
-      <Route path="/footer" element={<Footer />} />
-      <Route path="/layout" element={<Layout children={undefined} />} />
-      <Route path="/profile-dropdown" element={<ProfileDropdown />} />
+        {/* Utility Routes (probably not needed as routes) */}
+        <Route path="/navbar" element={<Navbar />} />
+        <Route path="/footer" element={<Footer />} />
+        <Route path="/layout" element={<Layout children={undefined} />} />
+        <Route path="/profile-dropdown" element={<ProfileDropdown />} />
 
-      {/* Admin Dashboard Route */}
-      <Route
-        path="/admin"
-        element={
-          <ProtectedRoute>
-            <AdminDashboard />
-          </ProtectedRoute>
-        }
-      />
+        {/* Admin Dashboard Route */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
 
-      {/* Test Route */}
-      <Route
-        path="/test"
-        element={
-          <div style={{ padding: "20px" }}>
-            <h1>Test Route Working!</h1>
-          </div>
-        }
-      />
+        {/* Test Route */}
+        <Route
+          path="/test"
+          element={
+            <div style={{ padding: "20px" }}>
+              <h1>Test Route Working!</h1>
+            </div>
+          }
+        />
 
-      {/* New Route */}
-      <Route path="/profile-settings" element={<ProfileSettings />} />
+        {/* New Route */}
+        <Route path="/profile-settings" element={<ProfileSettings />} />
 
-      {/* New Route */}
-      <Route path="/fpass" element={<FPass />} />
+        {/* New Route */}
+        <Route path="/fpass" element={<FPass />} />
 
-      {/* New Route */}
+        {/* New Route */}
 
-      {/* New Route for password reset confirmation */}
-      <Route
-        path="/reset-password/:uidb64/:token/"
-        element={<ResetPassword />}
-      />
-    </Routes>
+        {/* New Route for password reset confirmation */}
+        <Route
+          path="/reset-password/:uidb64/:token/"
+          element={<ResetPassword />}
+        />
+      </Routes>
+    </Suspense>
   );
 };
 
