@@ -21,12 +21,6 @@ export default defineConfig({
     },
     // Enable minification and tree shaking
     minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-      },
-    },
     // Optimize chunk size
     chunkSizeWarningLimit: 1000,
     // Optimize assets
