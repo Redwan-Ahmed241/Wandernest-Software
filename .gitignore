@@ -10,6 +10,8 @@ api-requirements.txt
 Qodo_AI_Frontend_Guide.txt
 contribution_logs.txt
 history.csv
+file_history.csv
+
 # Logs
 logs
 *.log
