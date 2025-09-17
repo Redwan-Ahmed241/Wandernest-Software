@@ -169,8 +169,8 @@ export default function TravelLogin() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-  {/* Background Image - mobile: show entire photo (no crop). md+: fill the area for best desktop look */}
-  <div className="absolute inset-0 w-full h-full flex items-center justify-center bg-transparent">
+      {/* Background Image - mobile: show entire photo (no crop). md+: fill the area for best desktop look */}
+      <div className="absolute inset-0 w-full h-full flex items-center justify-center bg-transparent">
         <img
           src="/Figma_photos/travel-background.jpg"
           alt="Travel background"
