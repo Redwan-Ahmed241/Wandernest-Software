@@ -17,7 +17,7 @@ const Footer: React.FC = () => {
     {
       title: "Support",
       links: [
-        { label: "Help Center", path: "/support" },
+        { label: "Help Center", path: "/help-center" },
         { label: "Contact Us", path: "/contact" },
         { label: "Trust & Safety", path: "/trust-safety" },
         { label: "Emergency", path: "/emergency" },
@@ -28,7 +28,7 @@ const Footer: React.FC = () => {
       links: [
         { label: "Terms of Service", path: "/terms" },
         { label: "Privacy Policy", path: "/privacy" },
-  { label: "Cookie Policy", path: "/cookie-policy" },
+        { label: "Cookie Policy", path: "/cookie-policy" },
         { label: "Accessibility", path: "/accessibility" },
       ],
     },

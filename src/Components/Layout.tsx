@@ -1,14 +1,17 @@
-import React from 'react';
-import Navbar from '../Components/Navbar';
-import Footer from '../Components/Footer';
- 
-
+import React from "react";
+import Navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <div className="flex flex-col min-h-screen w-full bg-gray-50">
+      {/* Navbar */}
       <Navbar />
-      <main style={{ flex: 1, paddingTop: '64px' }}>{children}</main>
+
+      {/* Page Content */}
+      <main className="flex-1 w-full pt-16">{children}</main>
+
+      {/* Footer */}
       <Footer />
     </div>
   );
