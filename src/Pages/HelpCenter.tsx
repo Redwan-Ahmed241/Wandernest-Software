@@ -1,199 +1,180 @@
-import { type FunctionComponent, useCallback, useState } from "react";
-import { Search, Phone, Mail, HelpCircle, ChevronDown } from "react-feather";
-import Navbar from "../Components/Navbar";
-import Footer from "../Components/Footer";
-// Tailwind CSS used for all styling. Centralized color theme via tailwind.config.js
+import React, { useState } from "react";
+import { Mail, Phone, HelpCircle, MessageCircle } from "react-feather";
+import Layout from "../Components/Layout";
 
-const HelpCenter: FunctionComponent = () => {
-  const [expandedFAQ, setExpandedFAQ] = useState<string | null>(null);
+const HelpCenter: React.FC = () => {
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [submitted, setSubmitted] = useState(false);
 
-  const toggleFAQ = useCallback((faqId: string) => {
-    setExpandedFAQ(prev => prev === faqId ? null : faqId);
-  }, []);
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+    // Here you would integrate with backend or service
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Navbar />
-      
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
-        {/* Hero Section with Search */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">How can we help you?</h1>
-          <p className="text-lg text-gray-600 mb-8">Search our knowledge base or contact support</p>
-          
-          {/* Main Search Bar */}
-          <div className="max-w-2xl mx-auto">
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-gray-400" />
+    <Layout>
+      <div className="max-w-5xl mx-auto px-4 py-10">
+        <h1 className="text-4xl font-bold text-primary mb-4 text-center">
+          Wandernest Support Center
+        </h1>
+        <p className="text-lg text-gray-600 mb-10 text-center">
+          Need help? Our team is here for you. Browse resources, contact
+          support, or report an issue.
+        </p>
+        <div>
+          {/* Contact Form */}
+          <div className="bg-white rounded-xl shadow p-8 mb-12">
+            <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
+              <MessageCircle className="w-6 h-6 text-primary" /> Contact Us
+            </h2>
+            {submitted ? (
+              <div className="text-green-600 font-medium">
+                Thank you! Your message has been sent.
               </div>
-              <input
-                type="text"
-                placeholder="Search for help or topics..."
-                className="block w-full pl-12 pr-4 py-4 text-lg border border-gray-300 rounded-xl bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Emergency Contacts Section */}
-        <div className="mb-12">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-3">Emergency Contacts</h2>
-            <p className="text-lg text-gray-600">Reach out to the right team for assistance.</p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Technical Support */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
-              <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg mb-4">
-                <HelpCircle className="w-6 h-6 text-blue-600" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Technical Support</h3>
-              <div className="flex items-center text-gray-600">
-                <Phone className="w-4 h-4 mr-2" />
-                <span className="text-sm">+123 456 7890</span>
-              </div>
-            </div>
-
-            {/* Medical Assistance */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
-              <div className="flex items-center justify-center w-12 h-12 bg-red-100 rounded-lg mb-4">
-                <Phone className="w-6 h-6 text-red-600" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Medical Assistance</h3>
-              <div className="flex items-center text-gray-600">
-                <Phone className="w-4 h-4 mr-2" />
-                <span className="text-sm">+987 654 3210</span>
-              </div>
-            </div>
-
-            {/* Customer Service */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
-              <div className="flex items-center justify-center w-12 h-12 bg-green-100 rounded-lg mb-4">
-                <Mail className="w-6 h-6 text-green-600" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Customer Service</h3>
-              <div className="flex items-center text-gray-600">
-                <Mail className="w-4 h-4 mr-2" />
-                <span className="text-sm">support@wandernest.com</span>
-              </div>
-            </div>
-
-            {/* IT Helpdesk */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
-              <div className="flex items-center justify-center w-12 h-12 bg-purple-100 rounded-lg mb-4">
-                <HelpCircle className="w-6 h-6 text-purple-600" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">IT Helpdesk</h3>
-              <div className="flex items-center text-gray-600">
-                <Phone className="w-4 h-4 mr-2" />
-                <span className="text-sm">+555 678 1234</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* FAQ Section */}
-        <div className="mb-12">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-3">Frequently Asked Questions</h2>
-          </div>
-
-          <div className="max-w-4xl mx-auto space-y-4">
-            {/* FAQ Item 1 */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-              <button
-                className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors duration-200"
-                onClick={() => toggleFAQ('password-reset')}
-              >
-                <div className="flex items-center space-x-3">
-                  <div className="flex items-center justify-center w-8 h-8 bg-primary-light rounded-lg">
-                    <HelpCircle className="w-4 h-4 text-primary" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    How to reset my password?
-                  </h3>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={form.name}
+                    onChange={handleChange}
+                    required
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
                 </div>
-                <ChevronDown 
-                  className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${
-                    expandedFAQ === 'password-reset' ? 'transform rotate-180' : ''
-                  }`} 
-                />
-              </button>
-              {expandedFAQ === 'password-reset' && (
-                <div className="px-6 pb-6 pt-0">
-                  <p className="text-gray-600 leading-relaxed">
-                    Find out how to securely reset your password. You can reset your password by visiting the login page and clicking "Forgot Password", then following the instructions sent to your email.
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    required
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Message
+                  </label>
+                  <textarea
+                    name="message"
+                    value={form.message}
+                    onChange={handleChange}
+                    required
+                    rows={4}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="bg-primary text-white font-semibold px-6 py-2 rounded-lg hover:bg-primary-dark transition"
+                >
+                  Send Message
+                </button>
+              </form>
+            )}
+          </div>
+
+          {/* Emergency Contacts */}
+          <div className="mb-12">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <Phone className="w-5 h-5 text-primary" /> Emergency Contacts
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-primary-light p-6 rounded-xl flex items-center gap-4">
+                <Phone className="w-8 h-8 text-primary" />
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-1">
+                    24/7 Hotline
+                  </h3>
+                  <p className="text-gray-700 text-sm">+880 1760818882</p>
+                </div>
+              </div>
+              <div className="bg-primary-light p-6 rounded-xl flex items-center gap-4">
+                <Mail className="w-8 h-8 text-primary" />
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-1">
+                    Email Support
+                  </h3>
+                  <p className="text-gray-700 text-sm">
+                    support@wandernest.com
                   </p>
                 </div>
-              )}
-            </div>
-
-            {/* FAQ Item 2 */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-              <button
-                className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors duration-200"
-                onClick={() => toggleFAQ('contact-support')}
-              >
-                <div className="flex items-center space-x-3">
-                  <div className="flex items-center justify-center w-8 h-8 bg-primary-light rounded-lg">
-                    <HelpCircle className="w-4 h-4 text-primary" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    How to contact support?
-                  </h3>
-                </div>
-                <ChevronDown 
-                  className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${
-                    expandedFAQ === 'contact-support' ? 'transform rotate-180' : ''
-                  }`} 
-                />
-              </button>
-              {expandedFAQ === 'contact-support' && (
-                <div className="px-6 pb-6 pt-0">
-                  <p className="text-gray-600 leading-relaxed">
-                    Learn about different ways to reach us. You can contact our support team through email, phone, or live chat. Check the Emergency Contacts section above for specific contact information.
-                  </p>
-                </div>
-              )}
-            </div>
-
-            {/* FAQ Item 3 */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-              <button
-                className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors duration-200"
-                onClick={() => toggleFAQ('emergency')}
-              >
-                <div className="flex items-center space-x-3">
-                  <div className="flex items-center justify-center w-8 h-8 bg-primary-light rounded-lg">
-                    <HelpCircle className="w-4 h-4 text-primary" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    What to do in case of emergency?
-                  </h3>
-                </div>
-                <ChevronDown 
-                  className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${
-                    expandedFAQ === 'emergency' ? 'transform rotate-180' : ''
-                  }`} 
-                />
-              </button>
-              {expandedFAQ === 'emergency' && (
-                <div className="px-6 pb-6 pt-0">
-                  <p className="text-gray-600 leading-relaxed">
-                    Steps to take during urgent situations. In case of emergency, contact our 24/7 emergency hotline immediately. For medical emergencies, also contact local emergency services (911 or your local equivalent).
-                  </p>
-                </div>
-              )}
+              </div>
             </div>
           </div>
-        </div>
-      </main>
 
-      <Footer />
-    </div>
+          {/* Knowledge Base Links */}
+          <div className="mb-12">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <HelpCircle className="w-5 h-5 text-primary" /> Knowledge Base
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <a
+                href="/faq"
+                className="block bg-white rounded-xl shadow p-6 hover:shadow-md transition"
+              >
+                <h3 className="font-semibold text-primary mb-2">FAQs</h3>
+                <p className="text-gray-600 text-sm">
+                  Find answers to common questions about Wandernest.
+                </p>
+              </a>
+              <a
+                href="/community"
+                className="block bg-white rounded-xl shadow p-6 hover:shadow-md transition"
+              >
+                <h3 className="font-semibold text-primary mb-2">
+                  Community Forum
+                </h3>
+                <p className="text-gray-600 text-sm">
+                  Connect with other travelers and share experiences.
+                </p>
+              </a>
+              <a
+                href="/blog"
+                className="block bg-white rounded-xl shadow p-6 hover:shadow-md transition"
+              >
+                <h3 className="font-semibold text-primary mb-2">Travel Blog</h3>
+                <p className="text-gray-600 text-sm">
+                  Read tips, guides, and stories from our team.
+                </p>
+              </a>
+            </div>
+          </div>
+
+          {/* Report an Issue */}
+          <div className="mb-12">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <Mail className="w-5 h-5 text-primary" /> Report an Issue
+            </h2>
+            <p className="text-gray-600 mb-4">
+              If you encounter a bug or problem, please let us know so we can
+              fix it quickly.
+            </p>
+            <a
+              href="mailto:support@wandernest.com?subject=Issue%20Report"
+              className="inline-block bg-primary text-white font-semibold px-6 py-2 rounded-lg hover:bg-primary-dark transition"
+            >
+              Email Support
+            </a>
+          </div>
+        </div>
+      </div>
+    </Layout>
   );
 };
 
