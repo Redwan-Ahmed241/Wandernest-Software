@@ -29,7 +29,7 @@ const LoginPage = lazy(() => import("./Pages/Loginpage"));
 const Destination01 = lazy(() => import("./Pages/Destination_01"));
 const RentVehicles = lazy(() => import("./Pages/rentVehicles"));
 const Restaurant = lazy(() => import("./Pages/restaurant"));
-const Support = lazy(() => import("./Pages/support"));
+
 const CookiePolicy = lazy(() => import("./Pages/CookiePolicy"));
 const VisaAssistance = lazy(() => import("./Pages/Visaassistance"));
 const MyTrips = lazy(() => import("./Pages/MyTrips"));
@@ -100,7 +100,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/homepage" element={<HomePage />} />
         <Route path="/rent-vehicles" element={<RentVehicles />} />
         <Route path="/restaurant" element={<Restaurant />} />
-        <Route path="/support" element={<Support />} />
+
         <Route path="/cookie-policy" element={<CookiePolicy />} />
         <Route path="/visa-assistance" element={<VisaAssistance />} />
         <Route path="/destinations" element={<Destinations />} />
@@ -109,7 +109,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/public-transport" element={<PublicTransport />} />
         <Route path="/packages" element={<Packages />} />
         <Route path="/create-packages" element={<CreatePackage />} />
-        <Route path="/profile" element={<ProfileSettings />} />
+
         <Route path="/confirm-book" element={<ConfirmBook />} />
         <Route path="/help-center" element={<HelpCenter />} />
         {/* Redirects */}
