@@ -62,9 +62,13 @@ const Destinations: FunctionComponent = () => {
       dest.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       dest.description?.toLowerCase().includes(searchQuery.toLowerCase());
 
+    // Normalize both category and selectedCategory for robust matching
+    const destCategory = (dest.category || "all").toLowerCase();
+    const selected = selectedCategory.toLowerCase();
     const matchesCategory =
-      selectedCategory === "all" ||
-      dest.category?.toLowerCase() === selectedCategory;
+      selected === "all" ||
+      destCategory === selected ||
+      destCategory.includes(selected); // allow partial match for flexibility
 
     return matchesSearch && matchesCategory;
   });
