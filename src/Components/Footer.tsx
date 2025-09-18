@@ -35,8 +35,8 @@ const Footer: React.FC = () => {
       links: [
         { label: "Visa Assistance", path: "/visa-assistance" },
         { label: "Guide hiring", path: "/all-guides" },
-        { label: "Hotels", path: "/hotels-rooms" },
-        { label: "Packages", path: "/packages" },
+        { label: "Hotel Booking", path: "/hotels-rooms" },
+        { label: "Package Booking", path: "/packages" },
       ],
     },
   ];
