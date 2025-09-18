@@ -103,9 +103,13 @@ const ThingsToDo: FunctionComponent = () => {
   const [activityQuery, setActivityQuery] = useState("");
   const [locationQuery, setLocationQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
+
   const [apiData, setApiData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+
+ // const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -328,6 +332,7 @@ const ThingsToDo: FunctionComponent = () => {
             )}
           </div>
         </section>
+
       </div>
     </Layout>
   );
