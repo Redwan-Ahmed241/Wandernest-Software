@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { FunctionComponent } from "react";
 //import { useNavigate } from "react-router-dom";
 import Layout from "../Components/Layout";
@@ -103,10 +103,36 @@ const ThingsToDo: FunctionComponent = () => {
   const [activityQuery, setActivityQuery] = useState("");
   const [locationQuery, setLocationQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
+
+  const [apiData, setApiData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+
  // const navigate = useNavigate();
 
-  // Filtering logic
-  const filteredCards = cardData.filter((card) => {
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/things-to-do");
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const data = await response.json();
+        setApiData(data);
+        setHasError(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setHasError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const filteredCards = (hasError ? cardData : apiData).filter((card) => {
     const matchesCategory =
       selectedCategory === "all" || card.category === selectedCategory;
     const matchesActivity =
@@ -199,7 +225,13 @@ const ThingsToDo: FunctionComponent = () => {
         {/* Activities Grid */}
         <section className="py-16">
           <div className="max-w-6xl mx-auto px-4">
-            {filteredCards.length === 0 ? (
+            {isLoading ? (
+              <div className="text-center py-16">
+                <p className="text-xl font-semibold text-gray-900">
+                  Loading activities...
+                </p>
+              </div>
+            ) : filteredCards.length === 0 ? (
               <div className="text-center py-16">
                 <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <Search className="w-12 h-12 text-gray-400" />
@@ -301,8 +333,6 @@ const ThingsToDo: FunctionComponent = () => {
           </div>
         </section>
 
-     
-      
       </div>
     </Layout>
   );
