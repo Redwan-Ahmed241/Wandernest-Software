@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import type { FunctionComponent } from "react";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 import Layout from "../Components/Layout";
 import { Search, MapPin, Star, ArrowRight } from "react-feather";
 
@@ -103,7 +103,7 @@ const ThingsToDo: FunctionComponent = () => {
   const [activityQuery, setActivityQuery] = useState("");
   const [locationQuery, setLocationQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const navigate = useNavigate();
+ // const navigate = useNavigate();
 
   // Filtering logic
   const filteredCards = cardData.filter((card) => {
@@ -226,7 +226,7 @@ const ThingsToDo: FunctionComponent = () => {
                 {filteredCards.map((card, idx) => (
                   <div
                     key={idx}
-                    className="group bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-105"
+                    className="group bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col h-full"
                   >
                     <div className="relative overflow-hidden">
                       <img
@@ -266,14 +266,16 @@ const ThingsToDo: FunctionComponent = () => {
                       </div>
                     </div>
 
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
-                        {card.title}
-                      </h3>
-                      <p className="text-gray-600 mb-4 line-clamp-3 leading-relaxed">
-                        {card.description}
-                      </p>
-                      <div className="flex items-center justify-between">
+                    <div className="p-6 flex flex-col flex-1 justify-between">
+                      <div>
+                        <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
+                          {card.title}
+                        </h3>
+                        <p className="text-gray-600 mb-4 line-clamp-3 leading-relaxed">
+                          {card.description}
+                        </p>
+                      </div>
+                      <div className="flex items-center justify-between mt-auto">
                         <div className="flex items-center gap-4 text-sm text-gray-500">
                           <span className="flex items-center gap-1">
                             <span>⏱️</span>
@@ -283,7 +285,7 @@ const ThingsToDo: FunctionComponent = () => {
                         <button
                           className="flex items-center gap-1 font-semibold hover:gap-2 transition-all duration-200 px-6 py-2 rounded-xl shadow-md"
                           style={{
-                            background: "linear-gradient(to right, #4a6b5b, #0d1c1c)",
+                            background: "linear-gradient(to right, #6ab187)",
                             color: "white",
                           }}
                         >
@@ -299,42 +301,8 @@ const ThingsToDo: FunctionComponent = () => {
           </div>
         </section>
 
-        {/* Call to Action */}
-        <section className="py-16 bg-gradient-to-r from-primary to-primary-dark">
-          <div className="max-w-4xl mx-auto px-4 text-center text-white">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Ready for Your Next Adventure?
-            </h2>
-            <p className="text-lg text-gray-100 mb-8 max-w-2xl mx-auto">
-              Explore our complete travel packages or create your own custom
-              itinerary
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button
-                onClick={() => navigate("/packages")}
-                className="px-8 py-4 font-bold text-lg rounded-xl shadow-xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2"
-                style={{
-                  background: "linear-gradient(to right, #4a6b5b, #0d1c1c)",
-                  color: "white",
-                  border: "none"
-                }}
-              >
-                View Packages
-              </button>
-              <button
-                onClick={() => navigate("/plan-a-trip")}
-                className="px-8 py-4 font-bold text-lg rounded-xl shadow-xl transition-all duration-300 hover:scale-105"
-                style={{
-                  background: "linear-gradient(to right, #4a6b5b, #0d1c1c)",
-                  color: "white",
-                  border: "none"
-                }}
-              >
-                Plan Custom Trip
-              </button>
-            </div>
-          </div>
-        </section>
+     
+      
       </div>
     </Layout>
   );

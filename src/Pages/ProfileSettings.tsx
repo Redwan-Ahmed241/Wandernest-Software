@@ -2,6 +2,8 @@
 
 import type React from "react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "..//Authentication/auth-context";
 import "react-datepicker/dist/react-datepicker.css";
 
 interface UserProfile {
@@ -19,7 +21,14 @@ interface UserProfile {
 const API_URL = "https://wander-nest-ad3s.onrender.com/api/auth/edit-profile/";
 
 const ProfileSettings: React.FC = () => {
-  //  const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  // Redirect if not authenticated
+  useEffect(() => {
+    if (isAuthenticated === false) {
+      navigate("/login");
+    }
+  }, [isAuthenticated, navigate]);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [form, setForm] = useState<Partial<UserProfile>>({});
   const [picFile, setPicFile] = useState<File | null>(null);
