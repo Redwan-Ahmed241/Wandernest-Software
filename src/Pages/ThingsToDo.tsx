@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import type { FunctionComponent } from "react";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 import Layout from "../Components/Layout";
 import { Search, MapPin, Star, ArrowRight } from "react-feather";
 
