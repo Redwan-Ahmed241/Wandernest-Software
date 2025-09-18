@@ -79,12 +79,15 @@ const HelpCenter: React.FC = () => {
                     className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                 </div>
-                <button
-                  type="submit"
-                  className="bg-primary text-white font-semibold px-6 py-2 rounded-lg hover:bg-primary-dark transition"
-                >
-                  Send Message
-                </button>
+                <div className="flex justify-end pt-2">
+                  <button
+                    type="submit"
+                    style={{ display: "block", backgroundColor: "#6ab187" }}
+                    className="text-white font-semibold px-6 py-2 rounded-lg transition border-2 border-[#6ab187] hover:shadow-lg cursor-pointe"
+                  >
+                    Send Message
+                  </button>
+                </div>
               </form>
             )}
           </div>
@@ -167,7 +170,7 @@ const HelpCenter: React.FC = () => {
             </p>
             <a
               href="mailto:support@wandernest.com?subject=Issue%20Report"
-              className="inline-block bg-primary text-white font-semibold px-6 py-2 rounded-lg hover:bg-primary-dark transition"
+              className="inline-block text-white font-semibold px-6 py-2 rounded-lg transition border-2 border-[#6ab187] bg-[#6ab187] hover:bg-[#4a6b5b]"
             >
               Email Support
             </a>
