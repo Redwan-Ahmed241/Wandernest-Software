@@ -18,7 +18,6 @@ const Footer: React.FC = () => {
       title: "Support",
       links: [
         { label: "Help Center", path: "/help-center" },
-        { label: "Contact Us", path: "/contact" },
         { label: "Trust & Safety", path: "/trust-safety" },
         { label: "Emergency", path: "/emergency" },
       ],
@@ -29,16 +28,15 @@ const Footer: React.FC = () => {
         { label: "Terms of Service", path: "/terms" },
         { label: "Privacy Policy", path: "/privacy" },
         { label: "Cookie Policy", path: "/cookie-policy" },
-        { label: "Accessibility", path: "/accessibility" },
       ],
     },
     {
       title: "Services",
       links: [
-        { label: "Destinations", path: "/destinations" },
+        { label: "Visa Assistance", path: "/visa-assistance" },
+        { label: "Guide hiring", path: "/all-guides" },
         { label: "Hotels", path: "/hotels-rooms" },
         { label: "Packages", path: "/packages" },
-        { label: "Visa Assistance", path: "/visa-assistance" },
       ],
     },
   ];
