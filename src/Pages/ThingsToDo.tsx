@@ -5,92 +5,6 @@ import type { FunctionComponent } from "react";
 import Layout from "../Components/Layout";
 import { Search, MapPin, Star, ArrowRight } from "react-feather";
 
-const cardData = [
-  {
-    title: "Explore the Sundarbans Mangrove Forest",
-    location: "Khulna",
-    description: `Immerse yourself in the lush green beauty of the Sundarbans, the world's largest mangrove forest. Capture stunning photos of diverse flora and fauna, and experience nature's tranquil essence.`,
-    image: "/Figma_photos/mangrove.jpg",
-    category: "Nature",
-    rating: 4.8,
-    duration: "Full Day",
-    price: "৳2,500",
-  },
-  {
-    title: "Savor Street Food in Old Dhaka",
-    location: "Dhaka",
-    description:
-      "Indulge in a culinary adventure through the vibrant streets of Old Dhaka. Sample local delicacies like biryani, kebabs, and flavorful chutneys.",
-    image: "/Figma_photos/puran_dhaka.jpg",
-    category: "Food",
-    rating: 4.7,
-    duration: "4 Hours",
-    price: "৳800",
-  },
-  {
-    title: "Discover Historical Sites at Lalbagh Fort",
-    location: "Dhaka",
-    description:
-      "Journey through time within the ancient walls of Lalbagh Fort, a historical Mughal-era structure. Marvel at intricate architecture, gardens, and artifacts.",
-    image: "/Figma_photos/lalbagh.jpg",
-    category: "Culture",
-    rating: 4.6,
-    duration: "3 Hours",
-    price: "৳500",
-  },
-  {
-    title: "Boat Trip on the Buriganga River",
-    location: "Dhaka",
-    description: `Take a scenic boat trip on the Buriganga River, offering captivating views of Dhaka's cityscape. Experience the hustle and bustle of river life.`,
-    image: "/Figma_photos/burigangha.jpg",
-    category: "Adventure",
-    rating: 4.5,
-    duration: "2 Hours",
-    price: "৳1,200",
-  },
-  {
-    title: `Relax at Cox's Bazar Beach`,
-    location: `Cox's Bazar`,
-    description: `Find peace and rejuvenation on the golden sands of Cox's Bazar, one of the world's longest natural beaches. Relax by the sea, and soak in the coastal atmosphere.`,
-    image: "/Figma_photos/coxsbazar.jpg",
-    category: "Nature",
-    rating: 4.9,
-    duration: "Full Day",
-    price: "৳1,800",
-  },
-  {
-    title: "Experience Traditional Cuisine in a Local Eatery",
-    location: "Dhaka",
-    description:
-      "Treat yourself to a delightful culinary adventure in a traditional Bangladeshi eatery. Relish the rich flavors of local dishes like hilsa fish curry and various vegetable preparations.",
-    image: "/Figma_photos/local_cuisine.jpeg",
-    category: "Food",
-    rating: 4.4,
-    duration: "2 Hours",
-    price: "৳600",
-  },
-  {
-    title: "Visit the National Museum of Bangladesh",
-    location: "Dhaka",
-    description: `Step into the cultural heritage of Bangladesh at the National Museum in Dhaka. Wander through exhibits showcasing art, history, and the nation's rich past.`,
-    image: "/Figma_photos/museum.jpeg",
-    category: "Culture",
-    rating: 4.3,
-    duration: "3 Hours",
-    price: "৳300",
-  },
-  {
-    title: "Cycle through the Countryside",
-    location: "Dhaka",
-    description: `Embark on a picturesque cycling tour through the serene countryside surrounding Dhaka. Witness rural life, lush green fields, and local villages as you ride.`,
-    image: "/Figma_photos/cycling.jpg",
-    category: "Adventure",
-    rating: 4.6,
-    duration: "5 Hours",
-    price: "৳1,000",
-  },
-];
-
 const filterCategories = [
   { id: "all", label: "All Activities", icon: "🌟" },
   { id: "Nature", label: "Nature", icon: "🌿" },
@@ -99,31 +13,128 @@ const filterCategories = [
   { id: "Adventure", label: "Adventure", icon: "🎯" },
 ];
 
+type Activity = {
+  title: string;
+  location: string;
+  description: string;
+  image: string;
+  category: string;
+  rating: number;
+  duration: string;
+  price: string;
+};
+
 const ThingsToDo: FunctionComponent = () => {
   const [activityQuery, setActivityQuery] = useState("");
   const [locationQuery, setLocationQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
 
-  const [apiData, setApiData] = useState([]);
+  const [apiData, setApiData] = useState<Activity[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
 
- // const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-
+  // Moved `cardData` inside `useEffect` to prevent unnecessary re-renders
   useEffect(() => {
+    const cardData: Activity[] = [
+      {
+        title: "Explore the Sundarbans Mangrove Forest",
+        location: "Khulna",
+        description: `Immerse yourself in the lush green beauty of the Sundarbans, the world's largest mangrove forest. Capture stunning photos of diverse flora and fauna, and experience nature's tranquil essence.`,
+        image: "/Figma_photos/mangrove.jpg",
+        category: "Nature",
+        rating: 4.8,
+        duration: "Full Day",
+        price: "৳2,500",
+      },
+      {
+        title: "Savor Street Food in Old Dhaka",
+        location: "Dhaka",
+        description:
+          "Indulge in a culinary adventure through the vibrant streets of Old Dhaka. Sample local delicacies like biryani, kebabs, and flavorful chutneys.",
+        image: "/Figma_photos/puran_dhaka.jpg",
+        category: "Food",
+        rating: 4.7,
+        duration: "4 Hours",
+        price: "৳800",
+      },
+      {
+        title: "Discover Historical Sites at Lalbagh Fort",
+        location: "Dhaka",
+        description:
+          "Journey through time within the ancient walls of Lalbagh Fort, a historical Mughal-era structure. Marvel at intricate architecture, gardens, and artifacts.",
+        image: "/Figma_photos/lalbagh.jpg",
+        category: "Culture",
+        rating: 4.6,
+        duration: "3 Hours",
+        price: "৳500",
+      },
+      {
+        title: "Boat Trip on the Buriganga River",
+        location: "Dhaka",
+        description: `Take a scenic boat trip on the Buriganga River, offering captivating views of Dhaka's cityscape. Experience the hustle and bustle of river life.`,
+        image: "/Figma_photos/burigangha.jpg",
+        category: "Adventure",
+        rating: 4.5,
+        duration: "2 Hours",
+        price: "৳1,200",
+      },
+      {
+        title: `Relax at Cox's Bazar Beach`,
+        location: `Cox's Bazar`,
+        description: `Find peace and rejuvenation on the golden sands of Cox's Bazar, one of the world's longest natural beaches. Relax by the sea, and soak in the coastal atmosphere.`,
+        image: "/Figma_photos/coxsbazar.jpg",
+        category: "Nature",
+        rating: 4.9,
+        duration: "Full Day",
+        price: "৳1,800",
+      },
+      {
+        title: "Experience Traditional Cuisine in a Local Eatery",
+        location: "Dhaka",
+        description:
+          "Treat yourself to a delightful culinary adventure in a traditional Bangladeshi eatery. Relish the rich flavors of local dishes like hilsa fish curry and various vegetable preparations.",
+        image: "/Figma_photos/local_cuisine.jpeg",
+        category: "Food",
+        rating: 4.4,
+        duration: "2 Hours",
+        price: "৳600",
+      },
+      {
+        title: "Visit the National Museum of Bangladesh",
+        location: "Dhaka",
+        description: `Step into the cultural heritage of Bangladesh at the National Museum in Dhaka. Wander through exhibits showcasing art, history, and the nation's rich past.`,
+        image: "/Figma_photos/museum.jpeg",
+        category: "Culture",
+        rating: 4.3,
+        duration: "3 Hours",
+        price: "৳300",
+      },
+      {
+        title: "Cycle through the Countryside",
+        location: "Dhaka",
+        description: `Embark on a picturesque cycling tour through the serene countryside surrounding Dhaka. Witness rural life, lush green fields, and local villages as you ride.`,
+        image: "/Figma_photos/cycling.jpg",
+        category: "Adventure",
+        rating: 4.6,
+        duration: "5 Hours",
+        price: "৳1,000",
+      },
+    ];
+
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/things-to-do");
+        const response = await fetch(
+          "https://wander-nest-ad3s.onrender.com/api/things-to-do/"
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
         const data = await response.json();
         setApiData(data);
-        setHasError(false);
       } catch (error) {
         console.error("Error fetching data:", error);
-        setHasError(true);
+        setApiData(cardData); // Fallback to mock data
       } finally {
         setIsLoading(false);
       }
@@ -132,7 +143,7 @@ const ThingsToDo: FunctionComponent = () => {
     fetchData();
   }, []);
 
-  const filteredCards = (hasError ? cardData : apiData).filter((card) => {
+  const filteredCards: Activity[] = apiData.filter((card) => {
     const matchesCategory =
       selectedCategory === "all" || card.category === selectedCategory;
     const matchesActivity =
@@ -332,7 +343,6 @@ const ThingsToDo: FunctionComponent = () => {
             )}
           </div>
         </section>
-
       </div>
     </Layout>
   );
