@@ -108,13 +108,14 @@ const ThingsToDo: FunctionComponent = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
- // const navigate = useNavigate();
-
+  // const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/things-to-do");
+        const response = await fetch(
+          "https://wander-nest-ad3s.onrender.com/api/things-to-do/"
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
@@ -332,7 +333,6 @@ const ThingsToDo: FunctionComponent = () => {
             )}
           </div>
         </section>
-
       </div>
     </Layout>
   );
