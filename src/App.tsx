@@ -29,7 +29,7 @@ const LoginPage = lazy(() => import("./Pages/Loginpage"));
 const Destination01 = lazy(() => import("./Pages/Destination_01"));
 const RentVehicles = lazy(() => import("./Pages/rentVehicles"));
 const Restaurant = lazy(() => import("./Pages/restaurant"));
-
+const TrustSafety = lazy(() => import("./Pages/TrustSafety"));
 const CookiePolicy = lazy(() => import("./Pages/CookiePolicy"));
 const VisaAssistance = lazy(() => import("./Pages/Visaassistance"));
 const MyTrips = lazy(() => import("./Pages/MyTrips"));
@@ -46,7 +46,8 @@ const AdminDashboard = lazy(() => import("./Pages/Admin/AdminDashboard"));
 const ConfirmBook = lazy(() => import("./Pages/confirm_book"));
 const FPass = lazy(() => import("./Pages/fpass"));
 const ResetPassword = lazy(() => import("./Pages/reset-password"));
-
+const PrivacyPolicy = lazy(() => import("./Pages/PrivacyPolicy"));
+const Emergency = lazy(() => import("./Pages/Emergency"));
 // Keep these as regular imports since they're used immediately
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
@@ -100,7 +101,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/homepage" element={<HomePage />} />
         <Route path="/rent-vehicles" element={<RentVehicles />} />
         <Route path="/restaurant" element={<Restaurant />} />
-
+        <Route path="/trust-safety" element={<TrustSafety />} />
         <Route path="/cookie-policy" element={<CookiePolicy />} />
         <Route path="/visa-assistance" element={<VisaAssistance />} />
         <Route path="/destinations" element={<Destinations />} />
@@ -109,14 +110,14 @@ const AppRoutes: React.FC = () => {
         <Route path="/public-transport" element={<PublicTransport />} />
         <Route path="/packages" element={<Packages />} />
         <Route path="/create-packages" element={<CreatePackage />} />
-
+        <Route path="/emergency" element={<Emergency />} />
         <Route path="/confirm-book" element={<ConfirmBook />} />
         <Route path="/help-center" element={<HelpCenter />} />
         {/* Redirects */}
         {/* Auth Routes */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupForm />} />
-
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         {/* Protected Routes */}
         <Route
           path="/dashboard"
