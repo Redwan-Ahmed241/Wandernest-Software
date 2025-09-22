@@ -12,6 +12,11 @@ contribution_logs.txt
 history.csv
 file_history.csv
 
+# Git commit documentation files
+git_commits_aug22_sep15.md
+git_commits_ifty_aug22_sep15.md
+git_commits_shah_redwan_ahmed.md
+
 # Logs
 logs
 *.log
