@@ -20,6 +20,41 @@ interface UserProfile {
 
 const API_URL = "https://wander-nest-ad3s.onrender.com/api/auth/edit-profile/";
 
+// Helper function to map allowed profile fields
+const mapAllowedProfileFields = (data: Partial<UserProfile>): UserProfile => ({
+  id: data.id || "",
+  phone: data.phone || "",
+  country: data.country || "",
+  age: data.age || null,
+  passport_no: data.passport_no || null,
+  date_of_birth: data.date_of_birth || null,
+  profile_image: data.profile_image || null,
+  phonenumber: data.phonenumber || null,
+  email: data.email || "",
+});
+
+// Helper function for error handling
+const handleError = (
+  err: unknown,
+  setError: React.Dispatch<React.SetStateAction<string | null>>,
+  defaultMessage: string
+) => {
+  if (err instanceof Error) {
+    setError(err.message || defaultMessage);
+  } else {
+    setError(defaultMessage);
+  }
+};
+
+// Update API headers to use accessToken
+const getAuthHeaders = () => {
+  const accessToken = localStorage.getItem("accessToken");
+  return {
+    Authorization: `Bearer ${accessToken}`,
+    "Content-Type": "application/json",
+  };
+};
+
 const ProfileSettings: React.FC = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -41,37 +76,21 @@ const ProfileSettings: React.FC = () => {
     const fetchProfile = async () => {
       try {
         setError(null);
-        const token = localStorage.getItem("token");
+        const headers = getAuthHeaders();
         const response = await fetch(API_URL, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Token ${token}`,
-          },
+          method: "PATCH", // Change this to "PATCH" if the endpoint is for updates only
+          headers,
         });
+        console.log("API Response Status:", response.status);
+        console.log("API Response Headers:", response.headers);
         const data = await response.json();
+        console.log("API Response Data:", data);
         if (!response.ok) throw new Error("Failed to fetch profile");
-        // Only set allowed UserProfile fields
-        const allowedProfile: UserProfile = {
-          id: data.id,
-          phone: data.phone,
-          country: data.country,
-          age: data.age,
-          passport_no: data.passport_no,
-          date_of_birth: data.date_of_birth,
-          profile_image: data.profile_image,
-          phonenumber: data.phonenumber,
-          email: data.email,
-        };
+        const allowedProfile = mapAllowedProfileFields(data);
         setProfile(allowedProfile);
         setForm(allowedProfile);
       } catch (err: unknown) {
-        if (err instanceof Error) {
-          setError(err.message || "Could not load profile.");
-          console.error("Profile fetch error:", err);
-        } else {
-          setError("Could not load profile.");
-          console.error("Unknown error:", err);
-        }
+        handleError(err, setError, "Could not load profile.");
       }
     };
     fetchProfile();
@@ -100,7 +119,6 @@ const ProfileSettings: React.FC = () => {
       if (!token) throw new Error("Missing auth token");
 
       let response: Response;
-      // If there is a new profile image, use FormData
       if (picFile) {
         const formData = new FormData();
         Object.entries(form).forEach(([key, value]) => {
@@ -111,19 +129,14 @@ const ProfileSettings: React.FC = () => {
         formData.append("profile_image", picFile);
         response = await fetch(API_URL, {
           method: "PATCH",
-          headers: {
-            Authorization: `Token ${token}`,
-          },
+          headers: { Authorization: `Token ${token}` },
           body: formData,
         });
       } else {
-        // Send as JSON if no new image
+        const headers = getAuthHeaders();
         response = await fetch(API_URL, {
           method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Token ${token}`,
-          },
+          headers,
           body: JSON.stringify(form),
         });
       }
@@ -133,26 +146,11 @@ const ProfileSettings: React.FC = () => {
       }
       const data = await response.json();
       setSuccess("Profile updated successfully!");
-      // Only set allowed UserProfile fields
-      const allowedProfile: UserProfile = {
-        id: data.id,
-        phone: data.phone,
-        country: data.country,
-        age: data.age,
-        passport_no: data.passport_no,
-        date_of_birth: data.date_of_birth,
-        profile_image: data.profile_image,
-        phonenumber: data.phonenumber,
-        email: data.email,
-      };
+      const allowedProfile = mapAllowedProfileFields(data);
       setProfile(allowedProfile);
       setForm(allowedProfile);
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message || "Could not save profile.");
-      } else {
-        setError("Could not save profile.");
-      }
+      handleError(err, setError, "Could not save profile.");
     } finally {
       setSaving(false);
     }
@@ -245,7 +243,13 @@ const ProfileSettings: React.FC = () => {
               value={form.date_of_birth || ""}
               onChange={handleChange}
               className="border rounded px-3 py-2 focus:outline-none focus:ring focus:border-primary-400"
+              disabled={!!profile?.date_of_birth} // Disable if date_of_birth is already set
             />
+            {profile?.date_of_birth && (
+              <p className="text-sm text-gray-500 mt-1">
+                Date of Birth cannot be changed once set.
+              </p>
+            )}
           </div>
           <div className="flex flex-col">
             <label className="font-medium mb-1">Email</label>
