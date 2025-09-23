@@ -14,6 +14,7 @@ import { AuthProvider, useAuth } from "./Authentication/auth-context";
 import { BookingProvider } from "./Context/booking-context";
 
 // Lazy load components for better code splitting
+const TermsOfService = lazy(() => import("./Pages/TermsOfService"));
 const HomePage = lazy(() => import("./Pages/Homepage"));
 const ThingsToDo = lazy(() => import("./Pages/ThingsToDo"));
 const HotelsRooms = lazy(() => import("./Pages/HotelsRooms"));
@@ -118,6 +119,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupForm />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-of-service" element={<TermsOfService />} />
         {/* Protected Routes */}
         <Route
           path="/dashboard"
