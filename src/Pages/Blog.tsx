@@ -178,23 +178,14 @@ const BlogPage: React.FC = () => {
                     navigate("/login");
                   }
                 }}
-                className={`inline-flex items-center px-8 py-3 font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 ${
-                  isAuthenticated
-                    ? "bg-green-600 text-white hover:bg-green-700"
-                    : "bg-blue-600 text-white hover:bg-blue-700"
-                }`}
+                className="inline-flex items-center px-8 py-3 font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 text-white hover:opacity-90"
+                style={{ backgroundColor: '#6ab187' }}
               >
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                 </svg>
                 {isAuthenticated ? "Write Your Travel Story" : "Share Your Story"}
               </button>
-              
-              {!isAuthenticated && (
-                <p className="text-sm text-gray-600 bg-yellow-50 px-4 py-2 rounded-full border border-yellow-200">
-                  🔐 Login required to share your travel experiences
-                </p>
-              )}
             </div>
           </div>
 
@@ -372,9 +363,23 @@ const BlogPage: React.FC = () => {
               Join our community of travel writers and share your adventures with fellow wanderers. 
               Your story could inspire someone's next great journey!
             </p>
-            <button className="bg-primary-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-primary-700 transition">
-              Submit Your Story
-            </button>
+            <div className="flex justify-center">
+              <button 
+                className="text-white px-8 py-3 rounded-lg font-medium hover:opacity-90 transition"
+                style={{ backgroundColor: '#6ab187' }}
+                onClick={() => {
+                  if (isAuthenticated) {
+                    navigate("/community");
+                  } else {
+                    // Store the intended destination and redirect to login
+                    sessionStorage.setItem('redirectAfterLogin', '/community');
+                    navigate("/login");
+                  }
+                }}
+              >
+                Join Community
+              </button>
+            </div>
           </div>
         </div>
       </div>

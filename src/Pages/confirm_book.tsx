@@ -222,19 +222,24 @@ const ConfirmBook: React.FC = () => {
 
   useEffect(() => {
     if (!skipHotel) {
+      console.log("🏨 Starting hotel fetch process...");
       setHotelsLoading(true);
       setHotelsError("");
       getHotels()
         .then((hotels) => {
+          console.log("✅ Hotels fetched successfully:", hotels);
           setHotels(hotels);
           setHotelsLoading(false);
         })
-        .catch(() => {
-          setHotelsError("Failed to fetch hotels.");
+        .catch((error) => {
+          console.error("❌ Hotel fetch failed:", error);
+          const errorMessage = error.message || "Failed to fetch hotels.";
+          setHotelsError(errorMessage);
           setHotels([]);
           setHotelsLoading(false);
         });
     } else {
+      console.log("🚫 Hotel section skipped");
       setHotels([]);
     }
   }, [skipHotel]);
@@ -575,7 +580,11 @@ const ConfirmBook: React.FC = () => {
               </span>
               <button
                 type="button"
-                className="ml-4 px-4 py-1 rounded-full border border-primary text-primary bg-white hover:bg-primary hover:text-white transition"
+                className="ml-4 px-4 py-1 rounded-full border text-white bg-white hover:opacity-90 transition"
+                style={{ 
+                  borderColor: '#6ab187',
+                  backgroundColor: '#6ab187'
+                }}
                 onClick={() => handleSkipToggle("hotel")}
               >
                 {skipHotel ? "Include" : "Skip"}
@@ -767,7 +776,11 @@ const ConfirmBook: React.FC = () => {
               </span>
               <button
                 type="button"
-                className="ml-4 px-4 py-1 rounded-full border border-primary text-primary bg-white hover:bg-primary hover:text-white transition"
+                className="ml-4 px-4 py-1 rounded-full border text-white bg-white hover:opacity-90 transition"
+                style={{ 
+                  borderColor: '#6ab187',
+                  backgroundColor: '#6ab187'
+                }}
                 onClick={() => handleSkipToggle("vehicle")}
               >
                 {skipVehicle ? "Include" : "Skip"}
@@ -792,7 +805,11 @@ const ConfirmBook: React.FC = () => {
               </span>
               <button
                 type="button"
-                className="ml-4 px-4 py-1 rounded-full border border-primary text-primary bg-white hover:bg-primary hover:text-white transition"
+                className="ml-4 px-4 py-1 rounded-full border text-white bg-white hover:opacity-90 transition"
+                style={{ 
+                  borderColor: '#6ab187',
+                  backgroundColor: '#6ab187'
+                }}
                 onClick={() => handleSkipToggle("guide")}
               >
                 {skipGuide ? "Include" : "Skip"}
@@ -840,7 +857,8 @@ const ConfirmBook: React.FC = () => {
             </div>
           )}
           <button
-            className="w-full max-w-xs px-6 py-3 rounded-lg bg-primary text-white font-semibold shadow hover:bg-primary-dark transition disabled:opacity-60"
+            className="w-full max-w-xs px-6 py-3 rounded-lg text-white font-semibold shadow hover:opacity-90 transition disabled:opacity-60"
+            style={{ backgroundColor: '#6ab187' }}
             onClick={handleConfirmBooking}
             disabled={isProcessingPayment}
           >
