@@ -5,6 +5,7 @@ import type React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Authentication/auth-context";
+import { storeTokens } from "../utils/authUtils";
 
 export default function TravelLogin() {
   const [username, setUsername] = useState("");
@@ -128,6 +129,13 @@ export default function TravelLogin() {
       }
 
       console.log("Login successful, user data:", data);
+
+      // Store tokens in localStorage
+      storeTokens({
+        access: data.access,
+        refresh: data.refresh,
+        token: data.token,
+      });
 
       // Use the auth context login function
       login(
