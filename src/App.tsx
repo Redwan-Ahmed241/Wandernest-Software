@@ -14,6 +14,7 @@ import { AuthProvider, useAuth } from "./Authentication/auth-context";
 import { BookingProvider } from "./Context/booking-context";
 
 // Lazy load components for better code splitting
+const TermsOfService = lazy(() => import("./Pages/TermsOfService"));
 const HomePage = lazy(() => import("./Pages/Homepage"));
 const ThingsToDo = lazy(() => import("./Pages/ThingsToDo"));
 const HotelsRooms = lazy(() => import("./Pages/HotelsRooms"));
@@ -22,6 +23,8 @@ const PlanATrip = lazy(() => import("./Pages/PlanATrip"));
 const AboutUs = lazy(() => import("./Pages/aboutUs"));
 const AllGuides = lazy(() => import("./Pages/ALLGuides"));
 const Blogs = lazy(() => import("./Pages/Blog"));
+const BlogDetail = lazy(() => import("./Pages/BlogDetail"));
+const WriteStory = lazy(() => import("./Pages/WriteStory"));
 const Flights = lazy(() => import("./Pages/flights"));
 const Groups = lazy(() => import("./Pages/Groups"));
 const Guides = lazy(() => import("./Pages/hiringGuides"));
@@ -94,6 +97,15 @@ const AppRoutes: React.FC = () => {
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/all-guides" element={<AllGuides />} />
         <Route path="/blogs" element={<Blogs />} />
+        <Route path="/blogs/:id" element={<BlogDetail />} />
+        <Route 
+          path="/write-story" 
+          element={
+            <ProtectedRoute>
+              <WriteStory />
+            </ProtectedRoute>
+          } 
+        />
         <Route path="/flights" element={<Flights />} />
         <Route path="/groups" element={<Groups />} />
         <Route path="/hiring-guides" element={<Guides />} />
@@ -118,6 +130,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupForm />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-of-service" element={<TermsOfService />} />
         {/* Protected Routes */}
         <Route
           path="/dashboard"
