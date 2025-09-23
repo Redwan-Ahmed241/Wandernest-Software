@@ -11,16 +11,15 @@ Qodo_AI_Frontend_Guide.txt
 contribution_logs.txt
 history.csv
 file_history.csv
-<<<<<<< HEAD
 
 # Git commit documentation files
 git_commits_aug22_sep15.md
 git_commits_ifty_aug22_sep15.md
 git_commits_shah_redwan_ahmed.md
 
-=======
-docs
->>>>>>> 8819dd11217b44f464d4b6958bf85781e4ea9924
+# Documentation files
+docs/
+docs/blog-api-documentation.md
 # Logs
 logs
 *.log
