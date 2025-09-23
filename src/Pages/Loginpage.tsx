@@ -310,9 +310,7 @@ export default function TravelLogin() {
                 type="submit"
                 className="w-full py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                 style={{
-                  background: isLoading
-                    ? "linear-gradient(to right, #6ab187, #4a6b5b)"
-                    : "linear-gradient(to right, #4a6b5b, #0d1c1c)",
+                  backgroundColor: isLoading ? "#5a9c78" : "#6ab187",
                   color: "white",
                 }}
                 disabled={isLoading}

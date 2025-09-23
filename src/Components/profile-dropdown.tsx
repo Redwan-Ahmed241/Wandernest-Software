@@ -71,7 +71,7 @@ const ProfileDropdown: React.FC = () => {
         className="flex items-center gap-2 cursor-pointer px-3 py-2 rounded-lg bg-white shadow hover:bg-gray-100 transition"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <div className="w-9 h-9 rounded-full flex items-center justify-center font-bold text-lg shadow bg-primary text-white">
+        <div className="w-9 h-9 rounded-full flex items-center justify-center font-bold text-lg shadow text-white" style={{ backgroundColor: '#6ab187' }}>
           {user?.first_name || user?.last_name || user?.username ? (
             getInitials()
           ) : (
@@ -85,12 +85,13 @@ const ProfileDropdown: React.FC = () => {
           {user?.first_name || user?.username}
         </span>
         <svg
-          className={`ml-2 w-4 h-4 text-gray-500 transition-transform ${
+          className={`ml-2 w-4 h-4 transition-transform ${
             isOpen ? "rotate-180" : ""
           }`}
           width="12"
           height="12"
           viewBox="0 0 12 12"
+          style={{ color: '#6ab187' }}
         >
           <path
             d="M3 4.5L6 7.5L9 4.5"
