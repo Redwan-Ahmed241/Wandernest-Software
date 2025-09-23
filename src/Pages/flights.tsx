@@ -1402,6 +1402,18 @@ const Flights: FunctionComponent = () => {
       return;
     }
 
+    // Ensure at least one airport is in Bangladesh
+    const bangladeshAirportCodes = ["DAC", "CGP", "ZYL", "RJH", "JSR", "BZL"];
+    if (
+      !bangladeshAirportCodes.includes(fromAirport) &&
+      !bangladeshAirportCodes.includes(toAirport)
+    ) {
+      setSearchError(
+        "At least one of the departure or destination airports must be in Bangladesh"
+      );
+      return;
+    }
+
     if (tripType === "round_trip" && !returnDate) {
       setSearchError("Please select return date for round trip");
       return;
