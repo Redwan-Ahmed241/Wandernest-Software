@@ -14,7 +14,7 @@ interface UserProfile {
   passport_no: string | null;
   date_of_birth: string | null;
   profile_image: string | null;
-  phonenumber: string | null;
+
   email: string;
 }
 
@@ -29,7 +29,7 @@ const mapAllowedProfileFields = (data: Partial<UserProfile>): UserProfile => ({
   passport_no: data.passport_no || null,
   date_of_birth: data.date_of_birth || null,
   profile_image: data.profile_image || null,
-  phonenumber: data.phonenumber || null,
+
   email: data.email || "",
 });
 
@@ -226,15 +226,7 @@ const ProfileSettings: React.FC = () => {
               className="border rounded px-3 py-2 focus:outline-none focus:ring focus:border-primary-400"
             />
           </div>
-          <div className="flex flex-col">
-            <label className="font-medium mb-1">Passport No</label>
-            <input
-              name="passport_no"
-              value={form.passport_no || ""}
-              onChange={handleChange}
-              className="border rounded px-3 py-2 focus:outline-none focus:ring focus:border-primary-400"
-            />
-          </div>
+
           <div className="flex flex-col">
             <label className="font-medium mb-1">Date of Birth</label>
             <input
@@ -272,7 +264,7 @@ const ProfileSettings: React.FC = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-primary-500 text-white py-2 rounded font-semibold hover:bg-primary-600 transition"
+            className="text-white font-semibold px-6 py-2 rounded-lg transition border-2 border-[#6ab187] hover:shadow-lg cursor-pointe"
             disabled={saving}
           >
             {saving ? "Saving..." : "Save Changes"}
