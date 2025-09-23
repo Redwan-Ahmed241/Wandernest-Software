@@ -96,7 +96,7 @@ const Navbar: React.FC = () => {
                       >
                         <span className="inline-block">
                           {/* Modern filled bell SVG icon */}
-                          <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" style={{ color: hasUnread ? '#4a6b5b' : '#222' }}>
+                          <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" style={{ color: hasUnread ? '#6ab187' : '#6ab187' }}>
                             <path d="M12 2C8.13 2 5 5.13 5 9v4.28c0 .44-.18.86-.5 1.18l-1.3 1.3A1 1 0 004 17h16a1 1 0 00.8-1.74l-1.3-1.3a1.7 1.7 0 01-.5-1.18V9c0-3.87-3.13-7-7-7zm0 20a2.5 2.5 0 002.5-2.5h-5A2.5 2.5 0 0012 22z" />
                           </svg>
                         </span>
