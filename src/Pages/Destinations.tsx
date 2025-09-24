@@ -3,7 +3,7 @@
 
 import { type FunctionComponent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Layout from "../Components/Layout";
+import Layout from "../components/layout";
 import { getDestinations } from "../App/api-services";
 import { MapPin, Star, ArrowRight, Search } from "react-feather";
 

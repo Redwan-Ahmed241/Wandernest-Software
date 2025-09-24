@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import Footer from "../Components/Footer";
+import Footer from "../components/footer";
 import { useCallback } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";

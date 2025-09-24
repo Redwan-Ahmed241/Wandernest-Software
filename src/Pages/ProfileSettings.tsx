@@ -5,18 +5,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "..//Authentication/auth-context";
 import "react-datepicker/dist/react-datepicker.css";
+import type { UserProfile } from "../types/user";
 
-interface UserProfile {
-  id: string;
-  phone: string;
-  country: string;
-  age: number | null;
-  passport_no: string | null;
-  date_of_birth: string | null;
-  profile_image: string | null;
-
-  email: string;
-}
+// UserProfile type now comes from src/types/user
 
 const API_URL = "https://wander-nest-ad3s.onrender.com/api/auth/edit-profile/";
 

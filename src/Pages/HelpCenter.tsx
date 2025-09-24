@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Mail, Phone, HelpCircle, MessageCircle } from "react-feather";
-import Layout from "../Components/Layout";
+import Layout from "../components/layout";
 
 const HelpCenter: React.FC = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });

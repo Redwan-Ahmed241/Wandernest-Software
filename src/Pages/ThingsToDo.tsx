@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import type { FunctionComponent } from "react";
 //import { useNavigate } from "react-router-dom";
-import Layout from "../Components/Layout";
+import Layout from "../components/layout";
 import { Search, MapPin, Star, ArrowRight } from "react-feather";
 
 const filterCategories = [

@@ -3,7 +3,7 @@
 import type React from "react";
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import Layout from "../Components/Layout";
+import Layout from "../components/layout";
 import Sidebar from "./Sidebar";
 import { useAuth } from "../Authentication/auth-context";
 import { Search, Heart, MessageCircle, Star } from "react-feather";
@@ -210,13 +210,25 @@ const Community: React.FC = () => {
           <div className="max-w-6xl mx-auto space-y-10">
             {/* Hero + Search */}
             <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-primary-dark text-white">
-              <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "url('https://images.pexels.com/photos/346885/pexels-photo-346885.jpeg?auto=compress&cs=tinysrgb&w=1920')", backgroundSize: "cover", backgroundPosition: "center" }} />
+              <div
+                className="absolute inset-0 opacity-20"
+                style={{
+                  backgroundImage:
+                    "url('https://images.pexels.com/photos/346885/pexels-photo-346885.jpeg?auto=compress&cs=tinysrgb&w=1920')",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+              />
               <div className="relative z-10 px-6 md:px-10 py-10 md:py-14">
                 <div className="flex items-center gap-3 mb-3">
-                  <span role="img" aria-label="community" className="text-4xl">🌍</span>
+                  <span role="img" aria-label="community" className="text-4xl">
+                    🌍
+                  </span>
                   <h1 className="text-3xl md:text-4xl font-bold">Community</h1>
                 </div>
-                <p className="text-white/90 max-w-2xl">Connect, share, and explore the world together.</p>
+                <p className="text-white/90 max-w-2xl">
+                  Connect, share, and explore the world together.
+                </p>
                 <div className="mt-6 max-w-2xl">
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/70 w-5 h-5" />
@@ -236,7 +248,9 @@ const Community: React.FC = () => {
             <section>
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
-                  <span role="img" aria-label="blog" className="mr-2">📝</span>
+                  <span role="img" aria-label="blog" className="mr-2">
+                    📝
+                  </span>
                   Latest Travel Blogs
                 </h2>
               </div>
@@ -244,7 +258,10 @@ const Community: React.FC = () => {
               {isLoadingBlogs ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {Array.from({ length: 6 }).map((_, i) => (
-                    <div key={i} className="rounded-2xl overflow-hidden bg-gray-100 animate-pulse">
+                    <div
+                      key={i}
+                      className="rounded-2xl overflow-hidden bg-gray-100 animate-pulse"
+                    >
                       <div className="h-40 bg-gray-200" />
                       <div className="p-5 space-y-3">
                         <div className="h-5 bg-gray-200 rounded w-3/4" />
@@ -257,18 +274,25 @@ const Community: React.FC = () => {
               ) : blogsError ? (
                 <div className="flex items-center justify-between p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl">
                   <span>{blogsError}</span>
-                  <button onClick={fetchBlogs} className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Try Again</button>
+                  <button
+                    onClick={fetchBlogs}
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                  >
+                    Try Again
+                  </button>
                 </div>
               ) : blogs.length === 0 ? (
-                <div className="text-center p-10 bg-gray-50 rounded-2xl text-gray-600">No travel blogs found.</div>
+                <div className="text-center p-10 bg-gray-50 rounded-2xl text-gray-600">
+                  No travel blogs found.
+                </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {blogs
                     .filter((b) =>
                       searchQuery.trim()
                         ? `${b.title} ${b.excerpt ?? ""}`
-                          .toLowerCase()
-                          .includes(searchQuery.toLowerCase())
+                            .toLowerCase()
+                            .includes(searchQuery.toLowerCase())
                         : true
                     )
                     .slice(0, 6)
@@ -280,7 +304,10 @@ const Community: React.FC = () => {
                       >
                         <div className="relative h-40 overflow-hidden">
                           <img
-                            src={blog.image || "/placeholder.svg?height=160&width=320"}
+                            src={
+                              blog.image ||
+                              "/placeholder.svg?height=160&width=320"
+                            }
                             alt={blog.title}
                             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                           />
@@ -288,21 +315,34 @@ const Community: React.FC = () => {
                         <div className="p-5">
                           <div className="flex items-center gap-2 mb-2">
                             <img
-                              src={blog.author.profile_image || "/placeholder.svg?height=28&width=28"}
+                              src={
+                                blog.author.profile_image ||
+                                "/placeholder.svg?height=28&width=28"
+                              }
                               alt="author"
                               className="w-7 h-7 rounded-full border-2 border-accent"
                             />
-                            <h3 className="font-semibold text-gray-900 line-clamp-1">{blog.title}</h3>
+                            <h3 className="font-semibold text-gray-900 line-clamp-1">
+                              {blog.title}
+                            </h3>
                           </div>
                           <div className="text-sm text-gray-500 mb-2">
-                            By {blog.author.first_name} {blog.author.last_name} | {new Date(blog.created_at).toLocaleDateString()}
+                            By {blog.author.first_name} {blog.author.last_name}{" "}
+                            | {new Date(blog.created_at).toLocaleDateString()}
                           </div>
                           {blog.excerpt && (
-                            <p className="text-gray-600 mb-3 line-clamp-2">{blog.excerpt}</p>
+                            <p className="text-gray-600 mb-3 line-clamp-2">
+                              {blog.excerpt}
+                            </p>
                           )}
                           <div className="flex items-center justify-between text-gray-600">
-                            <span className="inline-flex items-center gap-1"><Heart className="w-4 h-4" /> {blog.likes_count}</span>
-                            <span className="inline-flex items-center gap-1"><MessageCircle className="w-4 h-4" /> {blog.comments_count}</span>
+                            <span className="inline-flex items-center gap-1">
+                              <Heart className="w-4 h-4" /> {blog.likes_count}
+                            </span>
+                            <span className="inline-flex items-center gap-1">
+                              <MessageCircle className="w-4 h-4" />{" "}
+                              {blog.comments_count}
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -314,14 +354,19 @@ const Community: React.FC = () => {
             {/* Discussions & Reviews */}
             <section>
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
-                <span role="img" aria-label="discussions" className="mr-2">💬</span>
+                <span role="img" aria-label="discussions" className="mr-2">
+                  💬
+                </span>
                 Discussions & Reviews
               </h2>
 
               {isLoadingReviews ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {Array.from({ length: 4 }).map((_, i) => (
-                    <div key={i} className="bg-gray-50 rounded-2xl p-6 shadow animate-pulse space-y-4">
+                    <div
+                      key={i}
+                      className="bg-gray-50 rounded-2xl p-6 shadow animate-pulse space-y-4"
+                    >
                       <div className="h-6 bg-gray-200 rounded w-1/2" />
                       <div className="h-4 bg-gray-200 rounded w-1/3" />
                       <div className="h-4 bg-gray-200 rounded" />
@@ -332,17 +377,30 @@ const Community: React.FC = () => {
               ) : reviewsError ? (
                 <div className="flex items-center justify-between p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl">
                   <span>{reviewsError}</span>
-                  <button onClick={fetchReviews} className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Try Again</button>
+                  <button
+                    onClick={fetchReviews}
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                  >
+                    Try Again
+                  </button>
                 </div>
               ) : reviews.length === 0 ? (
-                <div className="text-center p-10 bg-gray-50 rounded-2xl text-gray-600">No reviews found.</div>
+                <div className="text-center p-10 bg-gray-50 rounded-2xl text-gray-600">
+                  No reviews found.
+                </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {reviews.map((review) => (
-                    <div key={review.id} className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div
+                      key={review.id}
+                      className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300"
+                    >
                       <div className="flex items-center gap-3 mb-3">
                         <img
-                          src={review.user.profile_image || "/placeholder.svg?height=40&width=40"}
+                          src={
+                            review.user.profile_image ||
+                            "/placeholder.svg?height=40&width=40"
+                          }
                           alt={`${review.user.first_name} ${review.user.last_name}`}
                           className="w-10 h-10 rounded-full object-cover border-2 border-accent"
                         />
@@ -355,13 +413,24 @@ const Community: React.FC = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="text-gray-600 mb-1">📍 {review.location}</div>
+                      <div className="text-gray-600 mb-1">
+                        📍 {review.location}
+                      </div>
                       <div className="flex items-center gap-1 mb-3">
                         {Array.from({ length: 5 }).map((_, i) => (
-                          <Star key={i} className={`w-4 h-4 ${i < review.rating ? "text-yellow-500 fill-current" : "text-gray-300"}`} />
+                          <Star
+                            key={i}
+                            className={`w-4 h-4 ${
+                              i < review.rating
+                                ? "text-yellow-500 fill-current"
+                                : "text-gray-300"
+                            }`}
+                          />
                         ))}
                       </div>
-                      <p className="text-gray-700 leading-relaxed mb-4">{review.content}</p>
+                      <p className="text-gray-700 leading-relaxed mb-4">
+                        {review.content}
+                      </p>
                       {review.images && review.images.length > 0 && (
                         <div className="grid grid-cols-3 gap-2 mb-4">
                           {review.images.slice(0, 3).map((image, index) => (
@@ -383,7 +452,8 @@ const Community: React.FC = () => {
                         </button>
                         {review.comments_count > 0 && (
                           <button className="inline-flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700">
-                            <MessageCircle className="w-4 h-4" /> {review.comments_count}
+                            <MessageCircle className="w-4 h-4" />{" "}
+                            {review.comments_count}
                           </button>
                         )}
                       </div>
