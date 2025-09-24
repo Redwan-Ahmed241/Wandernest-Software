@@ -4,7 +4,7 @@ import type React from "react";
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Authentication/auth-context";
-import ProfileDropdown from "./profile-dropdown";
+import ProfileDropdown from "./ProfileDropdown";
 import { Menu, X } from "react-feather";
 
 const Navbar: React.FC = () => {
@@ -96,7 +96,12 @@ const Navbar: React.FC = () => {
                       >
                         <span className="inline-block">
                           {/* Modern filled bell SVG icon */}
-                          <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" style={{ color: hasUnread ? '#6ab187' : '#6ab187' }}>
+                          <svg
+                            className="w-7 h-7"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                            style={{ color: hasUnread ? "#6ab187" : "#6ab187" }}
+                          >
                             <path d="M12 2C8.13 2 5 5.13 5 9v4.28c0 .44-.18.86-.5 1.18l-1.3 1.3A1 1 0 004 17h16a1 1 0 00.8-1.74l-1.3-1.3a1.7 1.7 0 01-.5-1.18V9c0-3.87-3.13-7-7-7zm0 20a2.5 2.5 0 002.5-2.5h-5A2.5 2.5 0 0012 22z" />
                           </svg>
                         </span>
@@ -107,8 +112,18 @@ const Navbar: React.FC = () => {
                       {showNotifications && (
                         <div className="absolute right-0 mt-2 w-80 bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl border border-gray-200 z-50 animate-fade-in">
                           <div className="p-4 border-b border-gray-100 font-bold text-gray-900 flex items-center gap-2">
-                            <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                              <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" strokeLinecap="round" strokeLinejoin="round" />
+                            <svg
+                              className="w-5 h-5 text-primary"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth={2}
+                            >
+                              <path
+                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
                             </svg>
                             Notifications
                           </div>
@@ -116,39 +131,97 @@ const Navbar: React.FC = () => {
                             {/* Example notifications, replace with real data */}
                             <div className="flex gap-3 items-start p-4 hover:bg-primary/5 cursor-pointer">
                               <div className="flex-shrink-0 w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                                <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                                <svg
+                                  className="w-6 h-6 text-primary"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M5 13l4 4L19 7"
+                                  />
+                                </svg>
                               </div>
                               <div>
-                                <div className="font-semibold text-primary">Booking Confirmed</div>
-                                <div className="text-gray-700 text-sm">Your booking for Hotel Sundarbans is confirmed.</div>
-                                <div className="text-xs text-gray-400 mt-1">2 hours ago</div>
+                                <div className="font-semibold text-primary">
+                                  Booking Confirmed
+                                </div>
+                                <div className="text-gray-700 text-sm">
+                                  Your booking for Hotel Sundarbans is
+                                  confirmed.
+                                </div>
+                                <div className="text-xs text-gray-400 mt-1">
+                                  2 hours ago
+                                </div>
                               </div>
                             </div>
                             <div className="flex gap-3 items-start p-4 hover:bg-primary/5 cursor-pointer">
                               <div className="flex-shrink-0 w-10 h-10 bg-accent/10 rounded-full flex items-center justify-center">
-                                <svg className="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3" /></svg>
+                                <svg
+                                  className="w-6 h-6 text-accent"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M12 8v4l3 3"
+                                  />
+                                </svg>
                               </div>
                               <div>
-                                <div className="font-semibold text-accent">Trip Reminder</div>
-                                <div className="text-gray-700 text-sm">Your trip to Cox's Bazar starts tomorrow.</div>
-                                <div className="text-xs text-gray-400 mt-1">1 day ago</div>
+                                <div className="font-semibold text-accent">
+                                  Trip Reminder
+                                </div>
+                                <div className="text-gray-700 text-sm">
+                                  Your trip to Cox's Bazar starts tomorrow.
+                                </div>
+                                <div className="text-xs text-gray-400 mt-1">
+                                  1 day ago
+                                </div>
                               </div>
                             </div>
                             <div className="flex gap-3 items-start p-4 hover:bg-primary/5 cursor-pointer">
                               <div className="flex-shrink-0 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                                <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3" /></svg>
+                                <svg
+                                  className="w-6 h-6 text-green-500"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M12 8v4l3 3"
+                                  />
+                                </svg>
                               </div>
                               <div>
-                                <div className="font-semibold text-green-600">Payment Received</div>
-                                <div className="text-gray-700 text-sm">We have received your payment for the Dhaka City Tour.</div>
-                                <div className="text-xs text-gray-400 mt-1">3 days ago</div>
+                                <div className="font-semibold text-green-600">
+                                  Payment Received
+                                </div>
+                                <div className="text-gray-700 text-sm">
+                                  We have received your payment for the Dhaka
+                                  City Tour.
+                                </div>
+                                <div className="text-xs text-gray-400 mt-1">
+                                  3 days ago
+                                </div>
                               </div>
                             </div>
                           </div>
                           <button
                             className="w-full py-2 text-center text-primary font-semibold hover:bg-primary/10 rounded-b-xl border-t border-gray-100"
                             onClick={() => setShowNotifications(false)}
-                          >Close</button>
+                          >
+                            Close
+                          </button>
                         </div>
                       )}
                     </div>

@@ -54,8 +54,8 @@ const Emergency = lazy(() => import("./Pages/Emergency"));
 // Keep these as regular imports since they're used immediately
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import ProfileDropdown from "./components/ProfileDropdown";
 import Layout from "./components/Layout";
-import ProfileDropdown from "./components/profile-dropdown";
 import "./global.css";
 
 // Loading component for Suspense
@@ -98,13 +98,13 @@ const AppRoutes: React.FC = () => {
         <Route path="/all-guides" element={<AllGuides />} />
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/blogs/:id" element={<BlogDetail />} />
-        <Route 
-          path="/write-story" 
+        <Route
+          path="/write-story"
           element={
             <ProtectedRoute>
               <WriteStory />
             </ProtectedRoute>
-          } 
+          }
         />
         <Route path="/flights" element={<Flights />} />
         <Route path="/groups" element={<Groups />} />
@@ -188,8 +188,6 @@ const AppRoutes: React.FC = () => {
 
         {/* New Route */}
         <Route path="/fpass" element={<FPass />} />
-
-        {/* New Route */}
 
         {/* New Route for password reset confirmation */}
         <Route
