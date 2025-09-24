@@ -264,7 +264,7 @@ const ProfileSettings: React.FC = () => {
           </div>
           <button
             type="submit"
-            className="text-white font-semibold px-6 py-2 rounded-lg transition border-2 border-[#6ab187] hover:shadow-lg cursor-pointe"
+            className="text-white font-semibold px-6 py-2 rounded-lg transition bg-[#6ab187] hover:shadow-lg cursor-pointer disabled:opacity-50 disabled:bg-gray-300"
             disabled={saving}
           >
             {saving ? "Saving..." : "Save Changes"}
