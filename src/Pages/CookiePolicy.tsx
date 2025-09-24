@@ -3,10 +3,10 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 const CookiePolicy: React.FC = () => (
-  <div className="min-h-screen flex flex-col bg-gradient-to-br from-primary-100 to-primary-300">
+  <>
     <Navbar />
-    <main className="flex-1 flex justify-center items-center px-4 py-8">
-      <div className="w-full max-w-2xl bg-white rounded-2xl shadow-2xl p-10 flex flex-col gap-8">
+    <div className="min-h-screen bg-white py-12 px-4 mt-16">
+      <div className="max-w-3xl mx-auto">
         <h1 className="text-4xl font-extrabold text-primary-700 text-center mb-2 tracking-tight">Cookie Policy</h1>
         <p className="text-gray-700 text-base mb-4 text-center">
           This Cookie Policy explains how WanderNest uses cookies and similar technologies to recognize you when you visit our website. It explains what these technologies are, why we use them, and your rights to control our use of them.
@@ -45,9 +45,9 @@ const CookiePolicy: React.FC = () => (
           </p>
         </section>
       </div>
-    </main>
+    </div>
     <Footer />
-  </div>
+  </>
 );
 
 export default CookiePolicy;
