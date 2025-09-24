@@ -1,7 +1,7 @@
 import type { FunctionComponent } from "react";
 import { useCallback } from "react";
 // Tailwind conversion: remove CSS import
-import Footer from "../Components/Footer";
+import Footer from "../components/Footer";
 
 const Blogs: FunctionComponent = () => {
   const onDepth5FrameClick = useCallback(() => {

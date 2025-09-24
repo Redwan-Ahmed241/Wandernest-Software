@@ -3,7 +3,7 @@
 import type React from "react";
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import Layout from "../Components/Layout";
+import Layout from "../components/Layout";
 import Sidebar from "./Sidebar";
 import { useAuth } from "../Authentication/auth-context";
 import { Search, Heart, MessageCircle, Star } from "react-feather";

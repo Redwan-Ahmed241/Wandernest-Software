@@ -3,7 +3,7 @@
 import { type FunctionComponent, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // Tailwind CSS used for all styling. Centralized color theme via tailwind.config.js
-import Layout from "../Components/Layout";
+import Layout from "../components/Layout";
 import Sidebar from "./Sidebar";
 import { useAuth } from "../Authentication/auth-context";
 
@@ -472,11 +472,10 @@ const CreatePackage: FunctionComponent = () => {
                           return (
                             <div
                               key={day}
-                              className={`px-2 py-1 rounded text-center cursor-pointer ${
-                                isDisabled
+                              className={`px-2 py-1 rounded text-center cursor-pointer ${isDisabled
                                   ? "bg-gray-200 text-gray-400 cursor-not-allowed"
                                   : "hover:bg-primary/10"
-                              }`}
+                                }`}
                               onClick={() =>
                                 !isDisabled && handleStartDateSelect(day)
                               }
@@ -558,11 +557,10 @@ const CreatePackage: FunctionComponent = () => {
                             return (
                               <div
                                 key={day}
-                                className={`px-2 py-1 rounded text-center cursor-pointer ${
-                                  isDisabled
+                                className={`px-2 py-1 rounded text-center cursor-pointer ${isDisabled
                                     ? "bg-gray-200 text-gray-400 cursor-not-allowed"
                                     : "hover:bg-primary/10"
-                                }`}
+                                  }`}
                                 onClick={() =>
                                   !isDisabled && handleEndDateSelect(day)
                                 }
@@ -666,18 +664,16 @@ const CreatePackage: FunctionComponent = () => {
                     </button>
                   </div>
                   <div
-                    className={`grid grid-cols-1 md:grid-cols-3 gap-4 ${
-                      skipTransport ? "opacity-50 pointer-events-none" : ""
-                    }`}
+                    className={`grid grid-cols-1 md:grid-cols-3 gap-4 ${skipTransport ? "opacity-50 pointer-events-none" : ""
+                      }`}
                   >
                     {transportOptions.map((option) => (
                       <div
                         key={option.id}
-                        className={`bg-white rounded-xl shadow p-4 flex flex-col items-center cursor-pointer transition-all duration-200 border-2 ${
-                          selectedTransport === option.id
+                        className={`bg-white rounded-xl shadow p-4 flex flex-col items-center cursor-pointer transition-all duration-200 border-2 ${selectedTransport === option.id
                             ? "border-primary"
                             : "border-transparent"
-                        }`}
+                          }`}
                         onClick={() =>
                           handleOptionSelect(
                             option.id,
@@ -730,18 +726,16 @@ const CreatePackage: FunctionComponent = () => {
                     </button>
                   </div>
                   <div
-                    className={`grid grid-cols-1 md:grid-cols-3 gap-4 ${
-                      skipHotel ? "opacity-50 pointer-events-none" : ""
-                    }`}
+                    className={`grid grid-cols-1 md:grid-cols-3 gap-4 ${skipHotel ? "opacity-50 pointer-events-none" : ""
+                      }`}
                   >
                     {hotelOptions.map((option) => (
                       <div
                         key={option.id}
-                        className={`bg-white rounded-xl shadow p-4 flex flex-col items-center cursor-pointer transition-all duration-200 border-2 ${
-                          selectedHotel === option.id
+                        className={`bg-white rounded-xl shadow p-4 flex flex-col items-center cursor-pointer transition-all duration-200 border-2 ${selectedHotel === option.id
                             ? "border-primary"
                             : "border-transparent"
-                        }`}
+                          }`}
                         onClick={() =>
                           handleOptionSelect(
                             option.id,
@@ -794,18 +788,16 @@ const CreatePackage: FunctionComponent = () => {
                     </button>
                   </div>
                   <div
-                    className={`grid grid-cols-1 md:grid-cols-3 gap-4 ${
-                      skipGuide ? "opacity-50 pointer-events-none" : ""
-                    }`}
+                    className={`grid grid-cols-1 md:grid-cols-3 gap-4 ${skipGuide ? "opacity-50 pointer-events-none" : ""
+                      }`}
                   >
                     {guideOptions.map((option) => (
                       <div
                         key={option.id}
-                        className={`bg-white rounded-xl shadow p-4 flex flex-col items-center cursor-pointer transition-all duration-200 border-2 ${
-                          selectedGuide === option.id
+                        className={`bg-white rounded-xl shadow p-4 flex flex-col items-center cursor-pointer transition-all duration-200 border-2 ${selectedGuide === option.id
                             ? "border-primary"
                             : "border-transparent"
-                        }`}
+                          }`}
                         onClick={() =>
                           handleOptionSelect(
                             option.id,

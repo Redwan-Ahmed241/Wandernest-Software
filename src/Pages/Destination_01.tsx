@@ -3,7 +3,7 @@
 
 import { type FunctionComponent, useState, useEffect } from "react";
 // Tailwind conversion: removed CSS module import
-import Layout from "../Components/Layout";
+import Layout from "../components/Layout";
 import { useNavigate, useParams } from "react-router-dom";
 
 // API Base URL
@@ -252,42 +252,38 @@ const DestinationPage: FunctionComponent = () => {
         {/* Navigation Tabs */}
         <div className="flex gap-2 justify-center mt-6 mb-8">
           <button
-            className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${
-              activeTab === "overview"
+            className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${activeTab === "overview"
                 ? "bg-theme-accent text-white shadow"
                 : "bg-theme-light text-theme-primary hover:bg-theme-accent/10"
-            }`}
+              }`}
             onClick={() => setActiveTab("overview")}
           >
             Overview
           </button>
           <button
-            className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${
-              activeTab === "attractions"
+            className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${activeTab === "attractions"
                 ? "bg-theme-accent text-white shadow"
                 : "bg-theme-light text-theme-primary hover:bg-theme-accent/10"
-            }`}
+              }`}
             onClick={() => setActiveTab("attractions")}
           >
             Attractions
           </button>
           <button
-            className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${
-              activeTab === "experiences"
+            className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${activeTab === "experiences"
                 ? "bg-theme-accent text-white shadow"
                 : "bg-theme-light text-theme-primary hover:bg-theme-accent/10"
-            }`}
+              }`}
             onClick={() => setActiveTab("experiences")}
           >
             Experiences
           </button>
           {weatherData && (
             <button
-              className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${
-                activeTab === "weather"
+              className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${activeTab === "weather"
                   ? "bg-theme-accent text-white shadow"
                   : "bg-theme-light text-theme-primary hover:bg-theme-accent/10"
-              }`}
+                }`}
               onClick={() => setActiveTab("weather")}
             >
               Weather

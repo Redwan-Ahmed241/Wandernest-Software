@@ -1,6 +1,6 @@
 import React from "react";
-import Navbar from "../Components/Navbar";
-import Footer from "../Components/Footer";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const CookiePolicy: React.FC = () => (
   <div className="min-h-screen flex flex-col bg-gradient-to-br from-primary-100 to-primary-300">

@@ -6,7 +6,7 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
-    port: 5174, // Change this to your desired port
+    port: 1241, // Change this to your desired port
   },
   build: {
     rollupOptions: {

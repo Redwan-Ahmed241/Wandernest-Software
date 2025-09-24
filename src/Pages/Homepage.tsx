@@ -4,8 +4,8 @@
 
 import { type FunctionComponent, useEffect, useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import Layout from "../Components/Layout";
-import OptimizedImage from "../Components/OptimizedImage";
+import Layout from "../components/Layout";
+import OptimizedImage from "../components/OptimizedImage";
 import { ArrowRight, MapPin, Star, Shield, Clock } from "react-feather";
 
 const FEATURED_API_URL =
