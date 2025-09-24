@@ -71,11 +71,18 @@ const ProfileDropdown: React.FC = () => {
         className="flex items-center gap-2 cursor-pointer px-3 py-2 rounded-lg bg-white shadow hover:bg-gray-100 transition"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <div className="w-9 h-9 rounded-full flex items-center justify-center font-bold text-lg shadow text-white" style={{ backgroundColor: '#6ab187' }}>
+        <div
+          className="w-9 h-9 rounded-full flex items-center justify-center font-bold text-lg shadow text-white"
+          style={{ backgroundColor: "#6ab187" }}
+        >
           {user?.first_name || user?.last_name || user?.username ? (
             getInitials()
           ) : (
-            <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <svg
+              className="w-7 h-7 text-white"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
               <circle cx="12" cy="8" r="4" />
               <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
             </svg>
@@ -91,7 +98,7 @@ const ProfileDropdown: React.FC = () => {
           width="12"
           height="12"
           viewBox="0 0 12 12"
-          style={{ color: '#6ab187' }}
+          style={{ color: "#6ab187" }}
         >
           <path
             d="M3 4.5L6 7.5L9 4.5"
