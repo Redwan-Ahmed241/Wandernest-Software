@@ -2,13 +2,21 @@ import type { FunctionComponent } from "react";
 import { useState } from "react";
 import { Star, Clock, DollarSign, Zap, CheckCircle } from "react-feather";
 
-import Layout from "../components/Layout";
+import Layout from "../components/layout";
 
 const FILTERS = [
   { label: "Popular", value: "popular", icon: <Zap className="w-4 h-4" /> },
-  { label: "Highest Rated", value: "highest", icon: <Star className="w-4 h-4" /> },
+  {
+    label: "Highest Rated",
+    value: "highest",
+    icon: <Star className="w-4 h-4" />,
+  },
   { label: "Newest", value: "newest", icon: <Clock className="w-4 h-4" /> },
-  { label: "Budget-friendly", value: "budget", icon: <DollarSign className="w-4 h-4" /> },
+  {
+    label: "Budget-friendly",
+    value: "budget",
+    icon: <DollarSign className="w-4 h-4" />,
+  },
   { label: "Fast Delivery", value: "fast", icon: <Zap className="w-4 h-4" /> },
   { label: "Halal", value: "halal", icon: <CheckCircle className="w-4 h-4" /> },
 ];
@@ -97,8 +105,7 @@ const Restaurant: FunctionComponent = () => {
           <div
             className="absolute inset-0 w-full h-full bg-cover bg-center"
             style={{
-              backgroundImage:
-                "url('/Figma_photos/tandoori-chicken.jpg')"
+              backgroundImage: "url('/Figma_photos/tandoori-chicken.jpg')",
             }}
           ></div>
           {/* Overlay for text readability */}
@@ -113,7 +120,8 @@ const Restaurant: FunctionComponent = () => {
               </span>
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-2xl mx-auto leading-relaxed drop-shadow-lg">
-              Explore the best places to eat, from local favorites to top-rated cuisine across Bangladesh.
+              Explore the best places to eat, from local favorites to top-rated
+              cuisine across Bangladesh.
             </p>
           </div>
         </section>
@@ -140,7 +148,9 @@ const Restaurant: FunctionComponent = () => {
             <div className="flex flex-col md:flex-row md:items-center gap-6 justify-between w-full">
               {/* Price Range */}
               <div className="flex items-center gap-2 min-w-[180px]">
-                <span className="text-sm text-primary-700 whitespace-nowrap">Max Price:</span>
+                <span className="text-sm text-primary-700 whitespace-nowrap">
+                  Max Price:
+                </span>
                 <input
                   type="range"
                   min={0}
@@ -149,7 +159,7 @@ const Restaurant: FunctionComponent = () => {
                   value={priceRange}
                   onChange={(e) => setPriceRange(Number(e.target.value))}
                   className="w-32 h-2 bg-green-500 rounded-lg appearance-none cursor-pointer"
-                  style={{ accentColor: '#22c55e' }}
+                  style={{ accentColor: "#22c55e" }}
                 />
                 <span className="text-sm text-primary-700">৳{priceRange}</span>
               </div>
@@ -158,10 +168,11 @@ const Restaurant: FunctionComponent = () => {
                 {FILTERS.map((f) => (
                   <button
                     key={f.value}
-                    className={`px-6 py-3 rounded-xl font-semibold transition-all flex items-center gap-2 ${selectedFilter === f.value
+                    className={`px-6 py-3 rounded-xl font-semibold transition-all flex items-center gap-2 ${
+                      selectedFilter === f.value
                         ? "bg-primary/10 text-primary shadow-lg scale-105 hover:bg-primary/20"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105 active:bg-gray-300"
-                      }`}
+                    }`}
                     onClick={() => setSelectedFilter(f.value)}
                     type="button"
                   >
@@ -191,14 +202,20 @@ const Restaurant: FunctionComponent = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
-                    <span className="text-sm font-semibold text-yellow-600">{r.rating}</span>
+                    <span className="text-sm font-semibold text-yellow-600">
+                      {r.rating}
+                    </span>
                   </div>
                   <div className="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
                     <div className="flex items-center justify-between text-white">
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium">{r.location}</span>
+                        <span className="text-sm font-medium">
+                          {r.location}
+                        </span>
                       </div>
-                      <div className="text-accent font-bold text-lg">৳{r.price}</div>
+                      <div className="text-accent font-bold text-lg">
+                        ৳{r.price}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -207,10 +224,14 @@ const Restaurant: FunctionComponent = () => {
                     <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
                       {r.name}
                     </h3>
-                    <p className="text-gray-600 mb-4 line-clamp-2 leading-relaxed">{r.cuisine}</p>
+                    <p className="text-gray-600 mb-4 line-clamp-2 leading-relaxed">
+                      {r.cuisine}
+                    </p>
                   </div>
                   <div className="flex items-center justify-between mt-auto">
-                    <div className="text-2xl font-bold text-primary">৳{r.price}</div>
+                    <div className="text-2xl font-bold text-primary">
+                      ৳{r.price}
+                    </div>
                     <span className="px-4 py-2 bg-[#6ab187] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2">
                       {r.rating}
                     </span>

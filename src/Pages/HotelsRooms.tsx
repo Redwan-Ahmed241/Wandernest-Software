@@ -4,7 +4,7 @@
 import type { FunctionComponent } from "react";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import Layout from "../components/Layout";
+import Layout from "../components/layout";
 import { useAuth } from "../Authentication/auth-context";
 import {
   Search,
@@ -342,8 +342,8 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
               {isProcessingPayment
                 ? "Processing Payment..."
                 : `Pay ৳${(
-                  (hotel?.price || 0) * form.guests
-                ).toLocaleString()} & Book Hotel`}
+                    (hotel?.price || 0) * form.guests
+                  ).toLocaleString()} & Book Hotel`}
             </button>
           </form>
 
@@ -466,12 +466,12 @@ const HotelsRooms: FunctionComponent = () => {
           hotel.image_url && hotel.image_url.startsWith("http")
             ? hotel.image_url
             : hotel.image_url
-              ? `${MEDIA_BASE}${hotel.image_url}`
-              : hotel.image && hotel.image.startsWith("http")
-                ? hotel.image
-                : hotel.image
-                  ? `${MEDIA_BASE}${hotel.image}`
-                  : "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=600",
+            ? `${MEDIA_BASE}${hotel.image_url}`
+            : hotel.image && hotel.image.startsWith("http")
+            ? hotel.image
+            : hotel.image
+            ? `${MEDIA_BASE}${hotel.image}`
+            : "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=600",
         price:
           typeof hotel.price === "string"
             ? parseFloat(hotel.price.replace(/[^\d.]/g, "")) || 0
@@ -623,21 +623,23 @@ const HotelsRooms: FunctionComponent = () => {
               {Object.keys(dynamicFilterOptions).map((filter) => (
                 <div key={filter} className="relative">
                   <button
-                    className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${selectedFilters[filter as FilterKey] &&
-                        selectedFilters[filter as FilterKey] !== "All"
+                    className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${
+                      selectedFilters[filter as FilterKey] &&
+                      selectedFilters[filter as FilterKey] !== "All"
                         ? "bg-[#4a6b5b] text-white shadow-lg scale-105 hover:bg-[#0d1c1c]"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105 active:bg-gray-300"
-                      }`}
+                    }`}
                     onClick={() => handleFilterClick(filter as FilterKey)}
                   >
                     <Filter className="w-4 h-4" />
                     {selectedFilters[filter as FilterKey] &&
-                      selectedFilters[filter as FilterKey] !== "All"
+                    selectedFilters[filter as FilterKey] !== "All"
                       ? selectedFilters[filter as FilterKey]
                       : filter}
                     <span
-                      className={`transform transition-transform duration-200 ${openFilter === (filter as FilterKey) ? "rotate-180" : ""
-                        }`}
+                      className={`transform transition-transform duration-200 ${
+                        openFilter === (filter as FilterKey) ? "rotate-180" : ""
+                      }`}
                     >
                       ▼
                     </span>
@@ -649,12 +651,13 @@ const HotelsRooms: FunctionComponent = () => {
                       ).map((option: string) => (
                         <button
                           key={option}
-                          className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 ${selectedFilters[filter as FilterKey] === option ||
-                              (!selectedFilters[filter as FilterKey] &&
-                                option === "All")
+                          className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 ${
+                            selectedFilters[filter as FilterKey] === option ||
+                            (!selectedFilters[filter as FilterKey] &&
+                              option === "All")
                               ? "bg-primary/10 text-primary font-semibold"
                               : "text-gray-700"
-                            }`}
+                          }`}
                           onClick={() =>
                             handleOptionSelect(filter as FilterKey, option)
                           }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Layout from "../components/Layout";
+import Layout from "../components/layout";
 import { Navigation, Clock, MapPin } from "react-feather";
 export default function PublicTransport() {
   const [selectedTransportType, setSelectedTransportType] = useState("all");
@@ -73,8 +73,8 @@ export default function PublicTransport() {
     selectedTransportType === "all"
       ? transportOptions
       : transportOptions.filter(
-        (option) => option.type.toLowerCase() === selectedTransportType
-      );
+          (option) => option.type.toLowerCase() === selectedTransportType
+        );
 
   return (
     <Layout>
@@ -84,8 +84,7 @@ export default function PublicTransport() {
           <div
             className="absolute inset-0 w-full h-full bg-cover bg-center"
             style={{
-              backgroundImage:
-                "url('/Figma_photos/greenline.jpeg')"
+              backgroundImage: "url('/Figma_photos/greenline.jpeg')",
             }}
           ></div>
           {/* Overlay for text readability */}
@@ -97,7 +96,8 @@ export default function PublicTransport() {
               Public Transport
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-2xl mx-auto leading-relaxed drop-shadow-lg">
-              Find the best ways to travel across Bangladesh with real-time info, routes, and schedules.
+              Find the best ways to travel across Bangladesh with real-time
+              info, routes, and schedules.
             </p>
           </div>
         </section>
@@ -129,19 +129,44 @@ export default function PublicTransport() {
             <div className="flex flex-wrap gap-2 justify-center">
               {/* Transport Type Buttons */}
               {[
-                { type: 'all', label: 'All', icon: <Navigation className="w-4 h-4" /> },
-                { type: 'bus', label: 'Bus', icon: <Navigation className="w-4 h-4" /> },
-                { type: 'metro', label: 'Metro', icon: <Navigation className="w-4 h-4" /> },
-                { type: 'tram', label: 'Tram', icon: <Navigation className="w-4 h-4" /> },
-                { type: 'ferry', label: 'Ferry', icon: <Navigation className="w-4 h-4" /> },
-                { type: 'train', label: 'Train', icon: <Navigation className="w-4 h-4" /> },
+                {
+                  type: "all",
+                  label: "All",
+                  icon: <Navigation className="w-4 h-4" />,
+                },
+                {
+                  type: "bus",
+                  label: "Bus",
+                  icon: <Navigation className="w-4 h-4" />,
+                },
+                {
+                  type: "metro",
+                  label: "Metro",
+                  icon: <Navigation className="w-4 h-4" />,
+                },
+                {
+                  type: "tram",
+                  label: "Tram",
+                  icon: <Navigation className="w-4 h-4" />,
+                },
+                {
+                  type: "ferry",
+                  label: "Ferry",
+                  icon: <Navigation className="w-4 h-4" />,
+                },
+                {
+                  type: "train",
+                  label: "Train",
+                  icon: <Navigation className="w-4 h-4" />,
+                },
               ].map(({ type, label, icon }) => (
                 <button
                   key={type}
-                  className={`px-6 py-3 rounded-xl font-semibold transition-all flex items-center gap-2 ${selectedTransportType === type
+                  className={`px-6 py-3 rounded-xl font-semibold transition-all flex items-center gap-2 ${
+                    selectedTransportType === type
                       ? "bg-primary/10 text-primary shadow-lg scale-105 hover:bg-primary/20"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105 active:bg-gray-300"
-                    }`}
+                  }`}
                   onClick={() => setSelectedTransportType(type)}
                   type="button"
                 >
@@ -162,7 +187,14 @@ export default function PublicTransport() {
               >
                 <div className="relative overflow-hidden">
                   <img
-                    src={transport.image ? transport.image.replace('/figma_photos/', '/Figma_photos/') : "/Figma_photos/placeholder.svg"}
+                    src={
+                      transport.image
+                        ? transport.image.replace(
+                            "/figma_photos/",
+                            "/Figma_photos/"
+                          )
+                        : "/Figma_photos/placeholder.svg"
+                    }
                     alt={transport.name}
                     className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
                     onError={(e) => {
@@ -171,15 +203,21 @@ export default function PublicTransport() {
                     }}
                   />
                   <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
-                    <span className="text-sm font-semibold text-primary">{transport.type}</span>
+                    <span className="text-sm font-semibold text-primary">
+                      {transport.type}
+                    </span>
                   </div>
                   <div className="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
                     <div className="flex items-center justify-between text-white">
                       <div className="flex items-center gap-2">
                         <MapPin className="w-4 h-4" />
-                        <span className="text-sm font-medium">{transport.route}</span>
+                        <span className="text-sm font-medium">
+                          {transport.route}
+                        </span>
                       </div>
-                      <div className="text-accent font-bold text-lg">{transport.price}</div>
+                      <div className="text-accent font-bold text-lg">
+                        {transport.price}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -188,20 +226,25 @@ export default function PublicTransport() {
                     <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
                       {transport.name}
                     </h3>
-                    <p className="text-gray-600 mb-4 line-clamp-2 leading-relaxed">{transport.frequency}</p>
+                    <p className="text-gray-600 mb-4 line-clamp-2 leading-relaxed">
+                      {transport.frequency}
+                    </p>
                     <div className="flex flex-wrap gap-2 mb-4">
                       {transport.features.map((feature, index) => (
-                        <span key={index} className="feature-tag bg-gray-100 px-2 py-1 rounded-full text-xs text-gray-700">
+                        <span
+                          key={index}
+                          className="feature-tag bg-gray-100 px-2 py-1 rounded-full text-xs text-gray-700"
+                        >
                           {feature}
                         </span>
                       ))}
                     </div>
                   </div>
                   <div className="flex items-center justify-between mt-auto">
-                    <div className="text-2xl font-bold text-primary">{transport.price}</div>
-                    <button
-                      className="px-6 py-2 bg-[#6ab187] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2"
-                    >
+                    <div className="text-2xl font-bold text-primary">
+                      {transport.price}
+                    </div>
+                    <button className="px-6 py-2 bg-[#6ab187] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2">
                       View Schedule
                       <Clock className="w-5 h-5 transition-transform duration-300" />
                     </button>
@@ -210,7 +253,6 @@ export default function PublicTransport() {
               </div>
             ))}
           </div>
-
         </div>
       </div>
     </Layout>

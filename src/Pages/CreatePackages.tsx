@@ -4,7 +4,7 @@ import { type FunctionComponent, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // Tailwind CSS used for all styling. Centralized color theme via tailwind.config.js
 
-import Layout from "../components/Layout";
+import Layout from "../components/layout";
 
 import { useAuth } from "../Authentication/auth-context";
 import { getHotels, type Hotel } from "../App/api-services";

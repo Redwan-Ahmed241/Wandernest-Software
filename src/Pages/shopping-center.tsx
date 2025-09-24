@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Layout from "../components/Layout";
+import Layout from "../components/layout";
 import { ShoppingBag, MapPin, Star, Clock } from "react-feather";
 export default function ShoppingCenters() {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -121,8 +121,7 @@ export default function ShoppingCenters() {
           <div
             className="absolute inset-0 w-full h-full bg-cover bg-center"
             style={{
-              backgroundImage:
-                "url('/Figma_photos/bashundara.jpeg')"
+              backgroundImage: "url('/Figma_photos/bashundara.jpeg')",
             }}
           ></div>
           {/* Overlay for text readability */}
@@ -134,7 +133,8 @@ export default function ShoppingCenters() {
               Shopping Centers
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-2xl mx-auto leading-relaxed drop-shadow-lg">
-              Discover the best places to shop, from luxury malls to local markets across Bangladesh.
+              Discover the best places to shop, from luxury malls to local
+              markets across Bangladesh.
             </p>
           </div>
         </section>
@@ -168,19 +168,44 @@ export default function ShoppingCenters() {
             <div className="flex flex-wrap gap-2 justify-center">
               {/* Category Buttons */}
               {[
-                { value: 'all', label: 'All', icon: <ShoppingBag className="w-4 h-4" /> },
-                { value: 'mall', label: 'Mall', icon: <ShoppingBag className="w-4 h-4" /> },
-                { value: 'market', label: 'Market', icon: <ShoppingBag className="w-4 h-4" /> },
-                { value: 'street', label: 'Street', icon: <MapPin className="w-4 h-4" /> },
-                { value: 'outlet', label: 'Outlet', icon: <ShoppingBag className="w-4 h-4" /> },
-                { value: 'specialty', label: 'Specialty', icon: <ShoppingBag className="w-4 h-4" /> },
+                {
+                  value: "all",
+                  label: "All",
+                  icon: <ShoppingBag className="w-4 h-4" />,
+                },
+                {
+                  value: "mall",
+                  label: "Mall",
+                  icon: <ShoppingBag className="w-4 h-4" />,
+                },
+                {
+                  value: "market",
+                  label: "Market",
+                  icon: <ShoppingBag className="w-4 h-4" />,
+                },
+                {
+                  value: "street",
+                  label: "Street",
+                  icon: <MapPin className="w-4 h-4" />,
+                },
+                {
+                  value: "outlet",
+                  label: "Outlet",
+                  icon: <ShoppingBag className="w-4 h-4" />,
+                },
+                {
+                  value: "specialty",
+                  label: "Specialty",
+                  icon: <ShoppingBag className="w-4 h-4" />,
+                },
               ].map(({ value, label, icon }) => (
                 <button
                   key={value}
-                  className={`px-6 py-3 rounded-xl font-semibold transition-all flex items-center gap-2 ${selectedCategory === value
+                  className={`px-6 py-3 rounded-xl font-semibold transition-all flex items-center gap-2 ${
+                    selectedCategory === value
                       ? "bg-primary/10 text-primary shadow-lg scale-105 hover:bg-primary/20"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105 active:bg-gray-300"
-                    }`}
+                  }`}
                   onClick={() => setSelectedCategory(value)}
                   type="button"
                 >
@@ -201,7 +226,14 @@ export default function ShoppingCenters() {
               >
                 <div className="relative overflow-hidden">
                   <img
-                    src={center.image ? center.image.replace('/figma_photos/', '/Figma_photos/') : "/Figma_photos/placeholder.svg"}
+                    src={
+                      center.image
+                        ? center.image.replace(
+                            "/figma_photos/",
+                            "/Figma_photos/"
+                          )
+                        : "/Figma_photos/placeholder.svg"
+                    }
                     alt={center.name}
                     className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
                     onError={(e) => {
@@ -210,15 +242,22 @@ export default function ShoppingCenters() {
                     }}
                   />
                   <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
-                    <span className="text-sm font-semibold text-primary">{center.category}</span>
+                    <span className="text-sm font-semibold text-primary">
+                      {center.category}
+                    </span>
                   </div>
                   <div className="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
                     <div className="flex items-center justify-between text-white">
                       <div className="flex items-center gap-2">
                         <MapPin className="w-4 h-4" />
-                        <span className="text-sm font-medium">{center.location}</span>
+                        <span className="text-sm font-medium">
+                          {center.location}
+                        </span>
                       </div>
-                      <div className="text-accent font-bold text-lg"><Star className="w-4 h-4 inline-block mr-1 text-yellow-500" />{center.rating}</div>
+                      <div className="text-accent font-bold text-lg">
+                        <Star className="w-4 h-4 inline-block mr-1 text-yellow-500" />
+                        {center.rating}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -227,21 +266,29 @@ export default function ShoppingCenters() {
                     <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
                       {center.name}
                     </h3>
-                    <p className="text-gray-600 mb-4 line-clamp-2 leading-relaxed">{center.description}</p>
+                    <p className="text-gray-600 mb-4 line-clamp-2 leading-relaxed">
+                      {center.description}
+                    </p>
                     <div className="flex flex-wrap gap-2 mb-4">
                       {center.features.map((feature, index) => (
-                        <span key={index} className="feature-tag bg-gray-100 px-2 py-1 rounded-full text-xs text-gray-700">
+                        <span
+                          key={index}
+                          className="feature-tag bg-gray-100 px-2 py-1 rounded-full text-xs text-gray-700"
+                        >
                           {feature}
                         </span>
                       ))}
                     </div>
                   </div>
                   <div className="flex items-center justify-between mt-auto">
-                    <div className="text-sm font-bold text-primary">{center.stores}</div>
-                    <div className="text-sm text-gray-500"><Clock className="w-4 h-4 inline-block mr-1" />{center.hours}</div>
-                    <button
-                      className="px-6 py-2 bg-[#6ab187] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2"
-                    >
+                    <div className="text-sm font-bold text-primary">
+                      {center.stores}
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      <Clock className="w-4 h-4 inline-block mr-1" />
+                      {center.hours}
+                    </div>
+                    <button className="px-6 py-2 bg-[#6ab187] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2">
                       View Details
                       <ShoppingBag className="w-5 h-5 transition-transform duration-300" />
                     </button>
@@ -250,7 +297,6 @@ export default function ShoppingCenters() {
               </div>
             ))}
           </div>
-
         </div>
       </div>
     </Layout>
