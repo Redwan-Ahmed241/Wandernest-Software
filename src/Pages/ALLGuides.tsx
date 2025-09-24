@@ -1,7 +1,7 @@
 import type { FunctionComponent } from "react";
 import { useCallback, useState } from "react";
 
-import Layout from "../Components/Layout";
+import Layout from "../components/Layout";
 
 const AllGuides: FunctionComponent = () => {
   const [search, setSearch] = useState("");

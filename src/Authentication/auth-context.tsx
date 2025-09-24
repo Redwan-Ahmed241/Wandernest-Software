@@ -8,6 +8,7 @@ import {
   useEffect,
   type ReactNode,
 } from "react";
+import { clearSession, getSession, setSession } from "./authStorage";
 
 interface User {
   id: string;
@@ -46,35 +47,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is logged in on app start
-    const token = localStorage.getItem("token");
-    const userData = localStorage.getItem("userData");
-
-    if (token && userData) {
-      try {
-        const parsedUserData = JSON.parse(userData);
-        setUser(parsedUserData);
-        setIsAuthenticated(true);
-      } catch (error) {
-        console.error("Error parsing user data from localStorage:", error);
-        // Clear invalid data
-        localStorage.removeItem("token");
-        localStorage.removeItem("userData");
-      }
+    // Check if user is logged in on app start (centralized helper supports legacy keys)
+    const session = getSession<User>();
+    if (session) {
+      setUser(session.user);
+      setIsAuthenticated(true);
     }
     setLoading(false);
   }, []);
 
   const login = (token: string, userData: User) => {
-    localStorage.setItem("token", token);
-    localStorage.setItem("userData", JSON.stringify(userData));
+    setSession<User>({ token, user: userData });
     setUser(userData);
     setIsAuthenticated(true);
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userData");
+    clearSession();
     setUser(null);
     setIsAuthenticated(false);
   };

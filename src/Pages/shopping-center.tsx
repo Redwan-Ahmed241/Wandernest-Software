@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Layout from "../Components/Layout";
+import Layout from "../components/Layout";
 import { ShoppingBag, MapPin, Star, Clock } from "react-feather";
 export default function ShoppingCenters() {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -177,11 +177,10 @@ export default function ShoppingCenters() {
               ].map(({ value, label, icon }) => (
                 <button
                   key={value}
-                  className={`px-6 py-3 rounded-xl font-semibold transition-all flex items-center gap-2 ${
-                    selectedCategory === value
+                  className={`px-6 py-3 rounded-xl font-semibold transition-all flex items-center gap-2 ${selectedCategory === value
                       ? "bg-primary/10 text-primary shadow-lg scale-105 hover:bg-primary/20"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105 active:bg-gray-300"
-                  }`}
+                    }`}
                   onClick={() => setSelectedCategory(value)}
                   type="button"
                 >

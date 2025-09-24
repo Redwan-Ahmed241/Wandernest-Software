@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Layout from "../Components/Layout";
+import Layout from "../components/Layout";
 
 const weekDays = ["S", "M", "T", "W", "T", "F", "S"];
 

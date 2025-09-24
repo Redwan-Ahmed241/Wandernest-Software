@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Navbar from "../Components/Navbar";
-import Footer from "../Components/Footer";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 // Blog interface (same as in Blog.tsx)
 interface BlogPost {
@@ -67,16 +67,18 @@ If you're planning to visit the Sundarbans, here are some essential tips:
 5. **Respect**: Maintain distance from wildlife and follow eco-friendly practices
 
 The Sundarbans taught me that true adventure lies not just in the thrill of spotting a tiger, but in understanding and respecting the delicate balance of nature. This experience has deepened my appreciation for Bangladesh's natural heritage and the urgent need to protect it for future generations.`,
-    excerpt: "Discover the mysterious mangrove forests and wildlife of the Sundarbans in this thrilling adventure story.",
+    excerpt:
+      "Discover the mysterious mangrove forests and wildlife of the Sundarbans in this thrilling adventure story.",
     author: "Omar Rahman",
     date: "2023-07-15",
     category: "Adventure",
-    image: "Figma_photos/fisherman-sundarbans-india-looking-catch-mangrove-islands-west-bengal-74904922.jpg",
+    image:
+      "Figma_photos/fisherman-sundarbans-india-looking-catch-mangrove-islands-west-bengal-74904922.jpg",
     readTime: 8,
     tags: ["Sundarbans", "Wildlife", "Adventure", "Bangladesh"],
     likes: 120,
     comments: 45,
-    shares: 30
+    shares: 30,
   },
   {
     id: "2",
@@ -135,7 +137,8 @@ Cox's Bazar serves as a gateway to several other attractions:
 The ideal time to visit Cox's Bazar is from October to March when the weather is pleasant and rainfall is minimal. The monsoon season (June to September) brings heavy rains but also fewer crowds and lower prices.
 
 Cox's Bazar offers something for everyone – whether you're seeking adventure, relaxation, or cultural experiences. The combination of natural beauty, warm hospitality, and affordable prices makes it a must-visit destination in Bangladesh.`,
-    excerpt: "Experience the magic of the world's longest natural sea beach and its stunning sunsets.",
+    excerpt:
+      "Experience the magic of the world's longest natural sea beach and its stunning sunsets.",
     author: "Fatima Khan",
     date: "2023-08-10",
     category: "Beach",
@@ -144,7 +147,7 @@ Cox's Bazar offers something for everyone – whether you're seeking adventure, 
     tags: ["Cox's Bazar", "Beach", "Sunset", "Bangladesh"],
     likes: 89,
     comments: 32,
-    shares: 25
+    shares: 25,
   },
   {
     id: "3",
@@ -219,7 +222,8 @@ When visiting Bandarban, it's important to practice responsible tourism:
 - Follow designated trails to minimize environmental impact
 
 Bandarban offers a unique blend of natural beauty and cultural richness that makes it one of Bangladesh's most rewarding destinations for travelers seeking authentic experiences away from the typical tourist trail.`,
-    excerpt: "Journey through the scenic hills and discover the rich cultural heritage of Bangladesh's hill tribes.",
+    excerpt:
+      "Journey through the scenic hills and discover the rich cultural heritage of Bangladesh's hill tribes.",
     author: "Rajib Hasan",
     date: "2023-09-05",
     category: "Hills",
@@ -228,7 +232,7 @@ Bandarban offers a unique blend of natural beauty and cultural richness that mak
     tags: ["Bandarban", "Hills", "Trekking", "Culture"],
     likes: 156,
     comments: 67,
-    shares: 42
+    shares: 42,
   },
   {
     id: "4",
@@ -340,7 +344,8 @@ Old Dhaka faces numerous challenges:
 Several organizations are working to preserve this heritage, including restoration projects and cultural documentation efforts.
 
 Old Dhaka represents the soul of Bangladesh – a place where history, culture, and tradition converge in the bustling streets of a living city. Each visit reveals new layers of this complex urban tapestry that has evolved over four centuries.`,
-    excerpt: "Step back in time and explore the rich history and culture of Old Dhaka's heritage sites.",
+    excerpt:
+      "Step back in time and explore the rich history and culture of Old Dhaka's heritage sites.",
     author: "Shabnam Ara",
     date: "2023-09-20",
     category: "Heritage",
@@ -349,7 +354,7 @@ Old Dhaka represents the soul of Bangladesh – a place where history, culture, 
     tags: ["Dhaka", "Heritage", "History", "Culture"],
     likes: 203,
     comments: 89,
-    shares: 56
+    shares: 56,
   },
   {
     id: "5",
@@ -498,7 +503,8 @@ While traditional cuisine remains strong, Bangladesh's food scene is evolving:
 - Food festivals celebrating regional cuisines
 
 Bangladeshi cuisine is a testament to the country's rich cultural heritage, reflecting its history, geography, and the warmth of its people. Each dish tells a story, each meal is a celebration, and every flavor carries the essence of this beautiful land.`,
-    excerpt: "Embark on a flavorful adventure through Bangladesh's diverse culinary landscape.",
+    excerpt:
+      "Embark on a flavorful adventure through Bangladesh's diverse culinary landscape.",
     author: "Chef Karim",
     date: "2023-09-12",
     category: "Food",
@@ -507,7 +513,7 @@ Bangladeshi cuisine is a testament to the country's rich cultural heritage, refl
     tags: ["Food", "Culture", "Traditional", "Bangladesh"],
     likes: 178,
     comments: 91,
-    shares: 67
+    shares: 67,
   },
   {
     id: "6",
@@ -680,7 +686,8 @@ The river's cultural and natural heritage offers significant tourism opportuniti
 The Padma River continues to be the backbone of life in central Bangladesh. Its waters carry not just silt and fish, but the dreams and struggles of millions who call its banks home. Understanding and respecting this relationship between people and river is crucial for sustainable development and cultural preservation.
 
 From the morning mist rising over fishing boats to the evening calls of boatmen returning home, the Padma offers a glimpse into the soul of Bengal – a land where rivers and people flow together in an eternal dance of life.`,
-    excerpt: "Discover the rich cultural heritage and daily life along Bangladesh's mighty Padma River.",
+    excerpt:
+      "Discover the rich cultural heritage and daily life along Bangladesh's mighty Padma River.",
     author: "Nasir Ahmed",
     date: "2023-08-28",
     category: "Culture",
@@ -689,8 +696,8 @@ From the morning mist rising over fishing boats to the evening calls of boatmen 
     tags: ["River", "Culture", "Community", "Bangladesh"],
     likes: 134,
     comments: 56,
-    shares: 38
-  }
+    shares: 38,
+  },
 ];
 
 const BlogDetail: React.FC = () => {
@@ -698,7 +705,7 @@ const BlogDetail: React.FC = () => {
   const navigate = useNavigate();
 
   // Find the blog post by ID
-  const blog = mockBlogs.find(blog => blog.id === id);
+  const blog = mockBlogs.find((blog) => blog.id === id);
 
   if (!blog) {
     return (
@@ -706,10 +713,14 @@ const BlogDetail: React.FC = () => {
         <Navbar />
         <div className="min-h-screen bg-white py-12 px-4 mt-16">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">Blog Post Not Found</h1>
-            <p className="text-gray-600 mb-8">The blog post you're looking for doesn't exist.</p>
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+              Blog Post Not Found
+            </h1>
+            <p className="text-gray-600 mb-8">
+              The blog post you're looking for doesn't exist.
+            </p>
             <button
-              onClick={() => navigate('/blogs')}
+              onClick={() => navigate("/blogs")}
               className="bg-primary-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-700 transition"
             >
               Back to Blogs
@@ -722,41 +733,48 @@ const BlogDetail: React.FC = () => {
   }
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
   const formatContent = (content: string) => {
     // Split content by double line breaks to create paragraphs
-    return content.split('\n\n').map((paragraph, index) => {
+    return content.split("\n\n").map((paragraph, index) => {
       // Check if paragraph is a heading (starts with **)
-      if (paragraph.startsWith('**') && paragraph.endsWith('**')) {
+      if (paragraph.startsWith("**") && paragraph.endsWith("**")) {
         const headingText = paragraph.slice(2, -2);
         return (
-          <h3 key={index} className="text-2xl font-bold text-gray-900 mt-8 mb-4">
+          <h3
+            key={index}
+            className="text-2xl font-bold text-gray-900 mt-8 mb-4"
+          >
             {headingText}
           </h3>
         );
       }
-      
+
       // Check if paragraph contains bullet points
-      if (paragraph.includes('- **')) {
-        const items = paragraph.split('\n').filter(line => line.trim().startsWith('- '));
+      if (paragraph.includes("- **")) {
+        const items = paragraph
+          .split("\n")
+          .filter((line) => line.trim().startsWith("- "));
         return (
           <ul key={index} className="space-y-2 mb-6">
             {items.map((item, itemIndex) => {
               // Handle bold text in list items
-              const cleanItem = item.replace('- **', '').replace(/\*\*/g, '');
-              const [boldPart, ...rest] = cleanItem.split(':');
+              const cleanItem = item.replace("- **", "").replace(/\*\*/g, "");
+              const [boldPart, ...rest] = cleanItem.split(":");
               return (
                 <li key={itemIndex} className="flex">
                   <span className="text-primary-600 mr-2">•</span>
                   <span>
                     <strong className="text-gray-900">{boldPart}:</strong>
-                    {rest.length > 0 && <span className="text-gray-700">{rest.join(':')}</span>}
+                    {rest.length > 0 && (
+                      <span className="text-gray-700">{rest.join(":")}</span>
+                    )}
                   </span>
                 </li>
               );
@@ -764,7 +782,7 @@ const BlogDetail: React.FC = () => {
           </ul>
         );
       }
-      
+
       // Regular paragraph
       return (
         <p key={index} className="text-gray-700 mb-6 leading-relaxed">
@@ -781,11 +799,21 @@ const BlogDetail: React.FC = () => {
         <div className="max-w-4xl mx-auto">
           {/* Back Button */}
           <button
-            onClick={() => navigate('/blogs')}
+            onClick={() => navigate("/blogs")}
             className="flex items-center text-primary-600 hover:text-primary-700 mb-8 transition"
           >
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            <svg
+              className="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
             </svg>
             Back to Blogs
           </button>
@@ -796,16 +824,20 @@ const BlogDetail: React.FC = () => {
               <span className="bg-primary-100 text-primary-700 px-3 py-1 rounded-full text-sm font-medium">
                 {blog.category}
               </span>
-              <span className="text-gray-500 text-sm">{blog.readTime} min read</span>
+              <span className="text-gray-500 text-sm">
+                {blog.readTime} min read
+              </span>
             </div>
-            
+
             <h1 className="text-4xl font-bold text-gray-900 mb-4 leading-tight">
               {blog.title}
             </h1>
-            
+
             <div className="flex items-center justify-between text-gray-600 mb-6">
               <div className="flex items-center gap-4">
-                <span>By <strong>{blog.author}</strong></span>
+                <span>
+                  By <strong>{blog.author}</strong>
+                </span>
                 <span>{formatDate(blog.date)}</span>
               </div>
             </div>
@@ -816,7 +848,8 @@ const BlogDetail: React.FC = () => {
               alt={blog.title}
               className="w-full h-96 object-cover rounded-lg mb-8"
               onError={(e) => {
-                (e.target as HTMLImageElement).src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0xNzUgODBMMjI1IDEyMEwxNzUgMTYwVjgwWiIgZmlsbD0iIzk5OTk5OSIvPgo8L3N2Zz4K";
+                (e.target as HTMLImageElement).src =
+                  "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0xNzUgODBMMjI1IDEyMEwxNzUgMTYwVjgwWiIgZmlsbD0iIzk5OTk5OSIvPgo8L3N2Zz4K";
               }}
             />
           </header>
@@ -846,25 +879,45 @@ const BlogDetail: React.FC = () => {
             <div className="flex items-center justify-between">
               <div className="flex gap-6 text-gray-600">
                 <span className="flex items-center gap-2">
-                  <svg className="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                  <svg
+                    className="w-5 h-5 text-red-500"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                   {blog.likes} likes
                 </span>
                 <span className="flex items-center gap-2">
-                  <svg className="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd" />
+                  <svg
+                    className="w-5 h-5 text-blue-500"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                   {blog.comments} comments
                 </span>
                 <span className="flex items-center gap-2">
-                  <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                  <svg
+                    className="w-5 h-5 text-green-500"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
                     <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
                   </svg>
                   {blog.shares} shares
                 </span>
               </div>
-              
+
               <div className="flex gap-3">
                 <button className="bg-primary-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-primary-700 transition">
                   Like
@@ -878,10 +931,12 @@ const BlogDetail: React.FC = () => {
 
           {/* Related Articles Section */}
           <div className="mt-16 pt-8 border-t border-gray-200">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">More Travel Stories</h3>
+            <h3 className="text-2xl font-bold text-gray-900 mb-6">
+              More Travel Stories
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {mockBlogs
-                .filter(relatedBlog => relatedBlog.id !== blog.id)
+                .filter((relatedBlog) => relatedBlog.id !== blog.id)
                 .slice(0, 2)
                 .map((relatedBlog) => (
                   <article
@@ -894,7 +949,8 @@ const BlogDetail: React.FC = () => {
                       alt={relatedBlog.title}
                       className="w-full h-48 object-cover"
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0xNzUgODBMMjI1IDEyMEwxNzUgMTYwVjgwWiIgZmlsbD0iIzk5OTk5OSIvPgo8L3N2Zz4K";
+                        (e.target as HTMLImageElement).src =
+                          "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0xNzUgODBMMjI1IDEyMEwxNzUgMTYwVjgwWiIgZmlsbD0iIzk5OTk5OSIvPgo8L3N2Zz4K";
                       }}
                     />
                     <div className="p-6">
@@ -902,7 +958,9 @@ const BlogDetail: React.FC = () => {
                         <span className="bg-primary-100 text-primary-700 px-2 py-1 rounded-full text-xs font-medium">
                           {relatedBlog.category}
                         </span>
-                        <span className="text-gray-500 text-sm">{relatedBlog.readTime} min read</span>
+                        <span className="text-gray-500 text-sm">
+                          {relatedBlog.readTime} min read
+                        </span>
                       </div>
                       <h4 className="text-xl font-bold text-gray-900 mb-2">
                         {relatedBlog.title}
