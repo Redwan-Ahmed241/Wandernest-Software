@@ -52,10 +52,10 @@ const ResetPassword = lazy(() => import("./Pages/reset-password"));
 const PrivacyPolicy = lazy(() => import("./Pages/PrivacyPolicy"));
 const Emergency = lazy(() => import("./Pages/Emergency"));
 // Keep these as regular imports since they're used immediately
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import ProfileDropdown from "./components/ProfileDropdown";
-import Layout from "./components/Layout";
+import Navbar from "./components/navbar";
+import Footer from "./components/footer";
+import ProfileDropdown from "./components/profiledropdown";
+import Layout from "./components/layout";
 import "./global.css";
 
 // Loading component for Suspense

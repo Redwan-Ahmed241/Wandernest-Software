@@ -4,7 +4,7 @@ import type React from "react";
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Authentication/auth-context";
-import ProfileDropdown from "./ProfileDropdown";
+import ProfileDropdown from "./profiledropdown";
 import { Menu, X } from "react-feather";
 
 const Navbar: React.FC = () => {

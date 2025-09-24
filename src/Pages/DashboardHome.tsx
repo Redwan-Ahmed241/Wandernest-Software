@@ -3,7 +3,7 @@
 import type React from "react";
 import { type FunctionComponent, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Layout from "../components/Layout";
+import Layout from "../components/layout";
 import Sidebar from "./Sidebar";
 import { useAuth } from "../Authentication/auth-context";
 import { useBooking } from "../Context/booking-context";
@@ -115,7 +115,10 @@ const DashboardHome: FunctionComponent = () => {
   return (
     <Layout>
       <BookingNotification />
-      <div className="flex bg-gray-50" style={{ minHeight: 'calc(100vh - 64px)' }}>
+      <div
+        className="flex bg-gray-50"
+        style={{ minHeight: "calc(100vh - 64px)" }}
+      >
         <Sidebar />
         <div className="flex-1 p-8">
           <div className="max-w-7xl mx-auto space-y-8">
@@ -124,7 +127,9 @@ const DashboardHome: FunctionComponent = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <h1 className="text-4xl font-extrabold mb-2 text-gray-900 drop-shadow-lg">
-                    Welcome back, {user?.first_name || user?.username || "Traveler"}! <span className="align-middle">👋</span>
+                    Welcome back,{" "}
+                    {user?.first_name || user?.username || "Traveler"}!{" "}
+                    <span className="align-middle">👋</span>
                   </h1>
                   <p className="text-xl text-gray-700 font-medium drop-shadow">
                     Ready for your next adventure?
@@ -293,12 +298,13 @@ const DashboardHome: FunctionComponent = () => {
                                 {formatCurrency(booking.price)}
                               </div>
                               <div
-                                className={`px-3 py-1 rounded-full text-xs font-medium ${booking.status === "confirmed"
+                                className={`px-3 py-1 rounded-full text-xs font-medium ${
+                                  booking.status === "confirmed"
                                     ? "bg-green-100 text-green-800"
                                     : booking.status === "cancelled"
-                                      ? "bg-red-100 text-red-800"
-                                      : "bg-gray-100 text-gray-800"
-                                  }`}
+                                    ? "bg-red-100 text-red-800"
+                                    : "bg-gray-100 text-gray-800"
+                                }`}
                               >
                                 {booking.status.charAt(0).toUpperCase() +
                                   booking.status.slice(1)}

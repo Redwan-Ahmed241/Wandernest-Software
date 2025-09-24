@@ -3,8 +3,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Authentication/auth-context";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import Navbar from "../components/navbar";
+import Footer from "../components/footer";
 
 // Blog interface
 interface BlogPost {
@@ -269,10 +269,11 @@ const BlogPage: React.FC = () => {
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition ${selectedCategory === category
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition ${
+                    selectedCategory === category
                       ? "bg-primary-600 text-white"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
+                  }`}
                 >
                   {category}
                 </button>
@@ -409,10 +410,11 @@ const BlogPage: React.FC = () => {
                   <button
                     key={page}
                     onClick={() => setCurrentPage(page)}
-                    className={`px-3 py-2 rounded-lg transition ${currentPage === page
+                    className={`px-3 py-2 rounded-lg transition ${
+                      currentPage === page
                         ? "bg-primary-600 text-white"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                      }`}
+                    }`}
                   >
                     {page}
                   </button>

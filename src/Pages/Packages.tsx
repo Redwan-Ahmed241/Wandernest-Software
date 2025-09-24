@@ -1,7 +1,7 @@
 import type { FunctionComponent } from "react";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Layout from "../components/Layout";
+import Layout from "../components/layout";
 import { useAuth } from "../Authentication/auth-context";
 import {
   Search,
@@ -212,21 +212,23 @@ const Packages: FunctionComponent = () => {
               {/* Destination filter */}
               <div className="relative">
                 <button
-                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${selectedFilters["Destination"] &&
-                      selectedFilters["Destination"] !== "All"
+                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${
+                    selectedFilters["Destination"] &&
+                    selectedFilters["Destination"] !== "All"
                       ? "bg-[#4a6b5b] text-white shadow-lg scale-105 hover:bg-[#0d1c1c]"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105 active:bg-gray-300"
-                    }`}
+                  }`}
                   onClick={() => handleFilterClick("Destination")}
                 >
                   <MapPin className="w-4 h-4" />
                   {selectedFilters["Destination"] &&
-                    selectedFilters["Destination"] !== "All"
+                  selectedFilters["Destination"] !== "All"
                     ? selectedFilters["Destination"]
                     : "Destination"}
                   <span
-                    className={`transform transition-transform duration-200 ${openFilter === "Destination" ? "rotate-180" : ""
-                      }`}
+                    className={`transform transition-transform duration-200 ${
+                      openFilter === "Destination" ? "rotate-180" : ""
+                    }`}
                   >
                     ▼
                   </span>
@@ -236,11 +238,12 @@ const Packages: FunctionComponent = () => {
                     {destinationOptions.map((option) => (
                       <button
                         key={option}
-                        className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 ${selectedFilters["Destination"] === option ||
-                            (!selectedFilters["Destination"] && option === "All")
+                        className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 ${
+                          selectedFilters["Destination"] === option ||
+                          (!selectedFilters["Destination"] && option === "All")
                             ? "bg-primary/10 text-primary font-semibold"
                             : "text-gray-700"
-                          }`}
+                        }`}
                         onClick={() =>
                           handleOptionSelect("Destination", option)
                         }
@@ -255,21 +258,23 @@ const Packages: FunctionComponent = () => {
               {/* Budget filter */}
               <div className="relative">
                 <button
-                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${selectedFilters["Budget"] &&
-                      selectedFilters["Budget"] !== "All"
+                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${
+                    selectedFilters["Budget"] &&
+                    selectedFilters["Budget"] !== "All"
                       ? "bg-[#4a6b5b] text-white shadow-lg scale-105 hover:bg-[#0d1c1c]"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105 active:bg-gray-300"
-                    }`}
+                  }`}
                   onClick={() => handleFilterClick("Budget")}
                 >
                   <Filter className="w-4 h-4" />
                   {selectedFilters["Budget"] &&
-                    selectedFilters["Budget"] !== "All"
+                  selectedFilters["Budget"] !== "All"
                     ? selectedFilters["Budget"]
                     : "Budget"}
                   <span
-                    className={`transform transition-transform duration-200 ${openFilter === "Budget" ? "rotate-180" : ""
-                      }`}
+                    className={`transform transition-transform duration-200 ${
+                      openFilter === "Budget" ? "rotate-180" : ""
+                    }`}
                   >
                     ▼
                   </span>
@@ -279,11 +284,12 @@ const Packages: FunctionComponent = () => {
                     {FILTER_OPTIONS.Budget.map((option) => (
                       <button
                         key={option}
-                        className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 ${selectedFilters["Budget"] === option ||
-                            (!selectedFilters["Budget"] && option === "All")
+                        className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 ${
+                          selectedFilters["Budget"] === option ||
+                          (!selectedFilters["Budget"] && option === "All")
                             ? "bg-primary/10 text-primary font-semibold"
                             : "text-gray-700"
-                          }`}
+                        }`}
                         onClick={() => handleOptionSelect("Budget", option)}
                       >
                         {option}
