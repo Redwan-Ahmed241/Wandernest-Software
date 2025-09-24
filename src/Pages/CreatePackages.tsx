@@ -3,9 +3,14 @@
 import { type FunctionComponent, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // Tailwind CSS used for all styling. Centralized color theme via tailwind.config.js
+
 import Layout from "../components/Layout";
 import Sidebar from "./Sidebar";
+
+import Layout from "../Components/Layout";
+
 import { useAuth } from "../Authentication/auth-context";
+import { getHotels, type Hotel } from "../App/api-services";
 
 interface PackageOption {
   id: string;
@@ -45,14 +50,80 @@ const CreatePackage: FunctionComponent = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [travelers, setTravelers] = useState(1);
-  const [budget, setBudget] = useState("");
+
   const [showStartCalendar, setShowStartCalendar] = useState(false);
   const [showEndCalendar, setShowEndCalendar] = useState(false);
 
   // Package options state
-  const [transportOptions, setTransportOptions] = useState<PackageOption[]>([]);
-  const [hotelOptions, setHotelOptions] = useState<PackageOption[]>([]);
-  const [guideOptions, setGuideOptions] = useState<PackageOption[]>([]);
+  const [transportOptions, setTransportOptions] = useState<PackageOption[]>([
+    {
+      id: "1",
+      name: "Luxury Bus",
+      description: "Comfortable AC bus with Wi-Fi and entertainment system",
+      image: "/public/Figma_photos/bus.png",
+      price: 1500
+    },
+    {
+      id: "2", 
+      name: "Private Car",
+      description: "Private sedan with professional driver",
+      image: "/public/Figma_photos/car.svg",
+      price: 3500
+    },
+    {
+      id: "3",
+      name: "Flight",
+      description: "Quick domestic flight with complimentary meals",
+      image: "/public/Figma_photos/flight.svg", 
+      price: 8500
+    }
+  ]);
+  const [hotelOptions, setHotelOptions] = useState<PackageOption[]>([
+    {
+      id: "1",
+      name: "City Center Hotel",
+      description: "Modern 4-star hotel in the heart of the city",
+      image: "/public/Figma_photos/city_center_hotel.png",
+      price: 4500
+    },
+    {
+      id: "2",
+      name: "Beach Resort",
+      description: "Luxury beachfront resort with spa and pool",
+      image: "/public/Figma_photos/city_hotel.webp", 
+      price: 7500
+    },
+    {
+      id: "3",
+      name: "Heritage Lodge",
+      description: "Traditional lodge with authentic local experience",
+      image: "/public/Figma_photos/c_lodge.jpeg",
+      price: 3200
+    }
+  ]);
+  const [guideOptions, setGuideOptions] = useState<PackageOption[]>([
+    {
+      id: "1",
+      name: "Ahmed Rahman",
+      description: "Expert local guide with 10+ years experience in cultural tours",
+      image: "/public/Figma_photos/abtahi_bro-modified-reduced.png",
+      price: 2500
+    },
+    {
+      id: "2", 
+      name: "Sarah Khan",
+      description: "Adventure specialist guide for hiking and outdoor activities",
+      image: "/public/Figma_photos/deer.jpg",
+      price: 3000
+    },
+    {
+      id: "3",
+      name: "Mahmud Hassan", 
+      description: "Historical sites expert with archaeology background",
+      image: "/public/Figma_photos/fc09d33522052723c107a6d1fe5741b0-ahsan-manzil.jpg",
+      price: 2800
+    }
+  ]);
 
   // Selection state
   const [selectedTransport, setSelectedTransport] = useState<string | null>(
@@ -88,10 +159,18 @@ const CreatePackage: FunctionComponent = () => {
     }
   }, [authLoading, isAuthenticated]);
 
+  // Redirect unauthenticated users to login
+  useEffect(() => {
+    if (!authLoading && !isAuthenticated) {
+      navigate("/login");
+    }
+  }, [authLoading, isAuthenticated, navigate]);
+
   const fetchPackageOptions = async () => {
     try {
       setIsLoadingOptions(true);
       setError(null);
+      console.log("Starting to fetch package options...");
 
       const token = localStorage.getItem("token");
       const headers = {
@@ -99,28 +178,83 @@ const CreatePackage: FunctionComponent = () => {
         ...(token && { Authorization: `Token ${token}` }),
       };
 
-      // Updated to use your actual API endpoints
-      const [transport, hotels, guides] = await Promise.all([
+      // Use real hotels API and fetch other options
+      const [transportResponse, hotelsData, guidesResponse] = await Promise.all([
         fetch(
           "https://wander-nest-ad3s.onrender.com/api/packages/transport-options/",
           { headers }
-        ),
-        fetch(
-          "https://wander-nest-ad3s.onrender.com/api/packages/create/hotel-options/",
-          { headers }
-        ),
+        ).catch(err => {
+          console.error("Transport API error:", err);
+          return { json: () => Promise.resolve([]) };
+        }),
+        getHotels().catch(err => {
+          console.error("Hotels API error:", err);
+          return [];
+        }),
         fetch(
           "https://wander-nest-ad3s.onrender.com/api/packages/guide-options/",
           { headers }
-        ),
+        ).catch(err => {
+          console.error("Guides API error:", err);
+          return { json: () => Promise.resolve([]) };
+        })
       ]);
 
-      const transportData = await transport.json();
-      const hotelsData = await hotels.json();
-      const guidesData = await guides.json();
+      const transportData = await transportResponse.json().catch(() => ([]));
+      const guidesData = await guidesResponse.json().catch(() => ([]));
+
+      console.log("Raw hotels data from API:", hotelsData);
+
+      // Map hotels data to PackageOption format with better error handling
+      let mappedHotels: PackageOption[] = [];
+      
+      if (Array.isArray(hotelsData) && hotelsData.length > 0) {
+        mappedHotels = hotelsData.map((hotel: Hotel) => ({
+          id: hotel.id?.toString() || Math.random().toString(),
+          name: hotel.name || "Unknown Hotel",
+          description: hotel.description || "No description available",
+          image: hotel.image_url || "/Figma_photos/city_center_hotel.png", // Remove /public/ prefix
+          price: hotel.price || 0
+        }));
+        console.log("Successfully mapped hotels:", mappedHotels);
+      } else {
+        console.log("No hotels data received or invalid format, using fallback");
+      }
 
       setTransportOptions(transportData.results || transportData);
-      setHotelOptions(hotelsData.results || hotelsData);
+      
+      // Set hotels with fallback data
+      if (mappedHotels.length > 0) {
+        setHotelOptions(mappedHotels);
+        console.log("Using real hotel data:", mappedHotels.length, "hotels");
+      } else {
+        const fallbackHotels = [
+          {
+            id: "fallback_1",
+            name: "City Center Hotel",
+            description: "Modern 4-star hotel in the heart of the city",
+            image: "/Figma_photos/city_center_hotel.png",
+            price: 4500
+          },
+          {
+            id: "fallback_2",
+            name: "Beach Resort",
+            description: "Luxury beachfront resort with spa and pool",
+            image: "/Figma_photos/city_hotel.webp", 
+            price: 7500
+          },
+          {
+            id: "fallback_3",
+            name: "Heritage Lodge",
+            description: "Traditional lodge with authentic local experience",
+            image: "/Figma_photos/c_lodge.jpeg",
+            price: 3200
+          }
+        ];
+        setHotelOptions(fallbackHotels);
+        console.log("Using fallback hotel data:", fallbackHotels.length, "hotels");
+      }
+      
       setGuideOptions(guidesData.results || guidesData);
     } catch (error) {
       console.error("Error fetching package options:", error);
@@ -244,7 +378,7 @@ const CreatePackage: FunctionComponent = () => {
       startDate !== "" &&
       endDate !== "" &&
       travelers > 0 &&
-      budget.trim() !== "" &&
+    
       new Date(startDate) < new Date(endDate)
     );
   };
@@ -271,7 +405,7 @@ const CreatePackage: FunctionComponent = () => {
         start_date: startDate,
         end_date: endDate,
         travelers_count: travelers,
-        budget: parseFloat(budget),
+        budget: 0, // Default budget since field was removed from UI
         transport_id: selectedTransport,
         hotel_id: selectedHotel,
         guide_id: selectedGuide,
@@ -311,8 +445,7 @@ const CreatePackage: FunctionComponent = () => {
   if (authLoading) {
     return (
       <Layout>
-        <div className="flex flex-row min-h-screen">
-          <Sidebar />
+        <div className="flex min-h-screen">
           <div className="flex-grow flex items-center justify-center p-8">
             <div className="text-lg font-semibold text-primary">Loading...</div>
           </div>
@@ -329,10 +462,9 @@ const CreatePackage: FunctionComponent = () => {
 
   return (
     <Layout>
-      <div className="flex flex-row min-h-screen">
-        <Sidebar />
-        <div className="flex-grow bg-gray-50 p-8">
-          <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-2xl p-8">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
+        <div className="container mx-auto px-4 py-8">
+          <div className="max-w-4xl mx-auto">
             <div className="mb-8">
               <div className="text-2xl font-bold text-primary mb-2">
                 Create Your Custom Package
@@ -605,34 +737,7 @@ const CreatePackage: FunctionComponent = () => {
                     required
                   />
                 </div>
-                <div className="flex flex-col gap-2">
-                  <label className="font-medium flex items-center gap-2">
-                    <svg
-                      className="w-5 h-5 text-primary"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
-                      />
-                    </svg>
-                    Budget (BDT) *
-                  </label>
-                  <input
-                    className="border rounded-lg px-3 py-2 w-full"
-                    type="number"
-                    min="0"
-                    step="100"
-                    placeholder="Enter budget"
-                    value={budget}
-                    onChange={(e) => setBudget(e.target.value)}
-                    required
-                  />
-                </div>
+               
               </div>
             </div>
             {isLoadingOptions ? (
@@ -651,7 +756,7 @@ const CreatePackage: FunctionComponent = () => {
                     </span>
                     <button
                       type="button"
-                      className="px-3 py-1 rounded-lg bg-gray-200 text-gray-700 font-medium hover:bg-primary/10"
+                      className="px-4 py-2 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 transition-all duration-200"
                       onClick={() =>
                         handleSkip(
                           skipTransport,
@@ -717,7 +822,7 @@ const CreatePackage: FunctionComponent = () => {
                     </span>
                     <button
                       type="button"
-                      className="px-3 py-1 rounded-lg bg-gray-200 text-gray-700 font-medium hover:bg-primary/10"
+                      className="px-4 py-2 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 transition-all duration-200"
                       onClick={() =>
                         handleSkip(skipHotel, setSkipHotel, setSelectedHotel)
                       }
@@ -779,7 +884,7 @@ const CreatePackage: FunctionComponent = () => {
                     </span>
                     <button
                       type="button"
-                      className="px-3 py-1 rounded-lg bg-gray-200 text-gray-700 font-medium hover:bg-primary/10"
+                      className="px-4 py-2 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 transition-all duration-200"
                       onClick={() =>
                         handleSkip(skipGuide, setSkipGuide, setSelectedGuide)
                       }
@@ -843,7 +948,7 @@ const CreatePackage: FunctionComponent = () => {
               </div>
               <button
                 type="button"
-                className="w-full md:w-auto px-6 py-3 rounded-lg bg-primary text-white font-bold shadow hover:bg-primary-dark transition-all duration-200"
+                className="w-full md:w-auto px-6 py-3 rounded-lg bg-green-500 text-white font-bold shadow hover:bg-green-600 transition-all duration-200"
                 onClick={handleCreatePackage}
                 disabled={!isFormValid() || isCreatingPackage}
               >
