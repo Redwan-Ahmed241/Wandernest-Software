@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // Tailwind CSS used for all styling. Centralized color theme via tailwind.config.js
-import Footer from "../Components/Footer";
-import Navbar from "../Components/Navbar";
+import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
 import { useAuth } from "../Authentication/auth-context";
 
 // Mock group data (replace with API call)

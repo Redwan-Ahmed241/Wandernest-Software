@@ -2,7 +2,7 @@ import type { FunctionComponent } from "react";
 import { useState } from "react";
 import { Star, Clock, DollarSign, Zap, CheckCircle } from "react-feather";
 
-import Layout from "../Components/Layout";
+import Layout from "../components/Layout";
 
 const FILTERS = [
   { label: "Popular", value: "popular", icon: <Zap className="w-4 h-4" /> },
@@ -26,7 +26,7 @@ const Restaurant: FunctionComponent = () => {
     {
       name: "NORTH END coffee",
       location: "Shahajadpur, Dhaka",
-  image: "/Figma_photos/NE.jpeg",
+      image: "/Figma_photos/NE.jpeg",
       rating: "4.8★ (1,200+ reviews)",
       cuisine: "Bengali cuisine",
       price: 350,
@@ -35,7 +35,7 @@ const Restaurant: FunctionComponent = () => {
     {
       name: "Mezzan Haile Aaiun",
       location: "Chittagong",
-  image: "/Figma_photos/local_cuisine.jpeg",
+      image: "/Figma_photos/local_cuisine.jpeg",
       rating: "4.7★ (950+ reviews)",
       cuisine: "Traditional Bangladeshi dishes",
       price: 200,
@@ -44,7 +44,7 @@ const Restaurant: FunctionComponent = () => {
     {
       name: "Panshi Restaurant",
       location: "Sylhet",
-  image: "/Figma_photos/tandoori-chicken.jpg",
+      image: "/Figma_photos/tandoori-chicken.jpg",
       rating: "4.6★ (800+ reviews)",
       cuisine: "Sylheti specialties",
       price: 150,
@@ -53,7 +53,7 @@ const Restaurant: FunctionComponent = () => {
     {
       name: "Sultans Dine",
       location: "Gulshan 2",
-  image: "/Figma_photos/s-dine.png",
+      image: "/Figma_photos/s-dine.png",
       rating: "4.9★ (1,500+ reviews)",
       cuisine: "Biryani and kebabs",
       price: 400,
@@ -62,7 +62,7 @@ const Restaurant: FunctionComponent = () => {
     {
       name: "Kamrul Hotel",
       location: "Khulna",
-  image: "/Figma_photos/hqdefault.jpg",
+      image: "/Figma_photos/hqdefault.jpg",
       rating: "4.5★ (700+ reviews)",
       cuisine: "Orginal Chuijhaal flavors",
       price: 100,
@@ -71,7 +71,7 @@ const Restaurant: FunctionComponent = () => {
     {
       name: "Kacchi Vai",
       location: "Narayanganj",
-  image: "/Figma_photos/kacchi.jpeg",
+      image: "/Figma_photos/kacchi.jpeg",
       rating: "4.7★ (600+ reviews)",
       cuisine: "Delicious Kacchi",
       price: 250,
@@ -158,11 +158,10 @@ const Restaurant: FunctionComponent = () => {
                 {FILTERS.map((f) => (
                   <button
                     key={f.value}
-                    className={`px-6 py-3 rounded-xl font-semibold transition-all flex items-center gap-2 ${
-                      selectedFilter === f.value
+                    className={`px-6 py-3 rounded-xl font-semibold transition-all flex items-center gap-2 ${selectedFilter === f.value
                         ? "bg-primary/10 text-primary shadow-lg scale-105 hover:bg-primary/20"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105 active:bg-gray-300"
-                    }`}
+                      }`}
                     onClick={() => setSelectedFilter(f.value)}
                     type="button"
                   >

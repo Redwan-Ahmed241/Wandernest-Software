@@ -1,7 +1,7 @@
 import type { FunctionComponent } from "react";
 import { useState } from "react";
 // Tailwind conversion: remove CSS import
-import Layout from "../Components/Layout";
+import Layout from "../components/Layout";
 
 interface ReviewProps {
   name: string;

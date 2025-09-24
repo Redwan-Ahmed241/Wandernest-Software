@@ -3,7 +3,9 @@
 import { type FunctionComponent, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // Tailwind CSS used for all styling. Centralized color theme via tailwind.config.js
-import Layout from "../Components/Layout";
+
+import Layout from "../components/Layout";
+
 import { useAuth } from "../Authentication/auth-context";
 import { getHotels, type Hotel } from "../App/api-services";
 
@@ -55,69 +57,71 @@ const CreatePackage: FunctionComponent = () => {
       id: "1",
       name: "Luxury Bus",
       description: "Comfortable AC bus with Wi-Fi and entertainment system",
-      image: "/public/Figma_photos/bus.png",
-      price: 1500
+      image: "/Figma_photos/bus.png",
+      price: 1500,
     },
     {
-      id: "2", 
+      id: "2",
       name: "Private Car",
       description: "Private sedan with professional driver",
-      image: "/public/Figma_photos/car.svg",
-      price: 3500
+      image: "/Figma_photos/car.svg",
+      price: 3500,
     },
     {
       id: "3",
       name: "Flight",
       description: "Quick domestic flight with complimentary meals",
-      image: "/public/Figma_photos/flight.svg", 
-      price: 8500
-    }
+      image: "/Figma_photos/flight.svg",
+      price: 8500,
+    },
   ]);
   const [hotelOptions, setHotelOptions] = useState<PackageOption[]>([
     {
       id: "1",
       name: "City Center Hotel",
       description: "Modern 4-star hotel in the heart of the city",
-      image: "/public/Figma_photos/city_center_hotel.png",
-      price: 4500
+      image: "/Figma_photos/city_center_hotel.png",
+      price: 4500,
     },
     {
       id: "2",
       name: "Beach Resort",
       description: "Luxury beachfront resort with spa and pool",
-      image: "/public/Figma_photos/city_hotel.webp", 
-      price: 7500
+      image: "/Figma_photos/city_hotel.webp",
+      price: 7500,
     },
     {
       id: "3",
       name: "Heritage Lodge",
       description: "Traditional lodge with authentic local experience",
-      image: "/public/Figma_photos/c_lodge.jpeg",
-      price: 3200
-    }
+      image: "/Figma_photos/c_lodge.jpeg",
+      price: 3200,
+    },
   ]);
   const [guideOptions, setGuideOptions] = useState<PackageOption[]>([
     {
       id: "1",
       name: "Ahmed Rahman",
-      description: "Expert local guide with 10+ years experience in cultural tours",
-      image: "/public/Figma_photos/abtahi_bro-modified-reduced.png",
-      price: 2500
+      description:
+        "Expert local guide with 10+ years experience in cultural tours",
+      image: "/Figma_photos/abtahi_bro-modified-reduced.png",
+      price: 2500,
     },
     {
-      id: "2", 
+      id: "2",
       name: "Sarah Khan",
-      description: "Adventure specialist guide for hiking and outdoor activities",
-      image: "/public/Figma_photos/deer.jpg",
-      price: 3000
+      description:
+        "Adventure specialist guide for hiking and outdoor activities",
+      image: "/Figma_photos/deer.jpg",
+      price: 3000,
     },
     {
       id: "3",
-      name: "Mahmud Hassan", 
+      name: "Mahmud Hassan",
       description: "Historical sites expert with archaeology background",
-      image: "/public/Figma_photos/fc09d33522052723c107a6d1fe5741b0-ahsan-manzil.jpg",
-      price: 2800
-    }
+      image: "/Figma_photos/fc09d33522052723c107a6d1fe5741b0-ahsan-manzil.jpg",
+      price: 2800,
+    },
   ]);
 
   // Selection state
@@ -174,50 +178,54 @@ const CreatePackage: FunctionComponent = () => {
       };
 
       // Use real hotels API and fetch other options
-      const [transportResponse, hotelsData, guidesResponse] = await Promise.all([
-        fetch(
-          "https://wander-nest-ad3s.onrender.com/api/packages/transport-options/",
-          { headers }
-        ).catch(err => {
-          console.error("Transport API error:", err);
-          return { json: () => Promise.resolve([]) };
-        }),
-        getHotels().catch(err => {
-          console.error("Hotels API error:", err);
-          return [];
-        }),
-        fetch(
-          "https://wander-nest-ad3s.onrender.com/api/packages/guide-options/",
-          { headers }
-        ).catch(err => {
-          console.error("Guides API error:", err);
-          return { json: () => Promise.resolve([]) };
-        })
-      ]);
+      const [transportResponse, hotelsData, guidesResponse] = await Promise.all(
+        [
+          fetch(
+            "https://wander-nest-ad3s.onrender.com/api/packages/transport-options/",
+            { headers }
+          ).catch((err) => {
+            console.error("Transport API error:", err);
+            return { json: () => Promise.resolve([]) };
+          }),
+          getHotels().catch((err) => {
+            console.error("Hotels API error:", err);
+            return [];
+          }),
+          fetch(
+            "https://wander-nest-ad3s.onrender.com/api/packages/guide-options/",
+            { headers }
+          ).catch((err) => {
+            console.error("Guides API error:", err);
+            return { json: () => Promise.resolve([]) };
+          }),
+        ]
+      );
 
-      const transportData = await transportResponse.json().catch(() => ([]));
-      const guidesData = await guidesResponse.json().catch(() => ([]));
+      const transportData = await transportResponse.json().catch(() => []);
+      const guidesData = await guidesResponse.json().catch(() => []);
 
       console.log("Raw hotels data from API:", hotelsData);
 
       // Map hotels data to PackageOption format with better error handling
       let mappedHotels: PackageOption[] = [];
-      
+
       if (Array.isArray(hotelsData) && hotelsData.length > 0) {
         mappedHotels = hotelsData.map((hotel: Hotel) => ({
           id: hotel.id?.toString() || Math.random().toString(),
           name: hotel.name || "Unknown Hotel",
           description: hotel.description || "No description available",
           image: hotel.image_url || "/Figma_photos/city_center_hotel.png", // Remove /public/ prefix
-          price: hotel.price || 0
+          price: hotel.price || 0,
         }));
         console.log("Successfully mapped hotels:", mappedHotels);
       } else {
-        console.log("No hotels data received or invalid format, using fallback");
+        console.log(
+          "No hotels data received or invalid format, using fallback"
+        );
       }
 
       setTransportOptions(transportData.results || transportData);
-      
+
       // Set hotels with fallback data
       if (mappedHotels.length > 0) {
         setHotelOptions(mappedHotels);
@@ -229,27 +237,31 @@ const CreatePackage: FunctionComponent = () => {
             name: "City Center Hotel",
             description: "Modern 4-star hotel in the heart of the city",
             image: "/Figma_photos/city_center_hotel.png",
-            price: 4500
+            price: 4500,
           },
           {
             id: "fallback_2",
             name: "Beach Resort",
             description: "Luxury beachfront resort with spa and pool",
-            image: "/Figma_photos/city_hotel.webp", 
-            price: 7500
+            image: "/Figma_photos/city_hotel.webp",
+            price: 7500,
           },
           {
             id: "fallback_3",
             name: "Heritage Lodge",
             description: "Traditional lodge with authentic local experience",
             image: "/Figma_photos/c_lodge.jpeg",
-            price: 3200
-          }
+            price: 3200,
+          },
         ];
         setHotelOptions(fallbackHotels);
-        console.log("Using fallback hotel data:", fallbackHotels.length, "hotels");
+        console.log(
+          "Using fallback hotel data:",
+          fallbackHotels.length,
+          "hotels"
+        );
       }
-      
+
       setGuideOptions(guidesData.results || guidesData);
     } catch (error) {
       console.error("Error fetching package options:", error);
@@ -373,7 +385,6 @@ const CreatePackage: FunctionComponent = () => {
       startDate !== "" &&
       endDate !== "" &&
       travelers > 0 &&
-    
       new Date(startDate) < new Date(endDate)
     );
   };
@@ -734,7 +745,6 @@ const CreatePackage: FunctionComponent = () => {
                     required
                   />
                 </div>
-               
               </div>
             </div>
             {isLoadingOptions ? (
