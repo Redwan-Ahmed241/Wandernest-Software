@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import Layout from "../Components/Layout";
+import Layout from "../components/layout";
 
 import { getHotels } from "../App/api-services";
 import type { Hotel } from "../App/api-services";
@@ -581,9 +581,9 @@ const ConfirmBook: React.FC = () => {
               <button
                 type="button"
                 className="ml-4 px-4 py-1 rounded-full border text-white bg-white hover:opacity-90 transition"
-                style={{ 
-                  borderColor: '#6ab187',
-                  backgroundColor: '#6ab187'
+                style={{
+                  borderColor: "#6ab187",
+                  backgroundColor: "#6ab187",
                 }}
                 onClick={() => handleSkipToggle("hotel")}
               >
@@ -777,9 +777,9 @@ const ConfirmBook: React.FC = () => {
               <button
                 type="button"
                 className="ml-4 px-4 py-1 rounded-full border text-white bg-white hover:opacity-90 transition"
-                style={{ 
-                  borderColor: '#6ab187',
-                  backgroundColor: '#6ab187'
+                style={{
+                  borderColor: "#6ab187",
+                  backgroundColor: "#6ab187",
                 }}
                 onClick={() => handleSkipToggle("vehicle")}
               >
@@ -806,9 +806,9 @@ const ConfirmBook: React.FC = () => {
               <button
                 type="button"
                 className="ml-4 px-4 py-1 rounded-full border text-white bg-white hover:opacity-90 transition"
-                style={{ 
-                  borderColor: '#6ab187',
-                  backgroundColor: '#6ab187'
+                style={{
+                  borderColor: "#6ab187",
+                  backgroundColor: "#6ab187",
                 }}
                 onClick={() => handleSkipToggle("guide")}
               >
@@ -858,7 +858,7 @@ const ConfirmBook: React.FC = () => {
           )}
           <button
             className="w-full max-w-xs px-6 py-3 rounded-lg text-white font-semibold shadow hover:opacity-90 transition disabled:opacity-60"
-            style={{ backgroundColor: '#6ab187' }}
+            style={{ backgroundColor: "#6ab187" }}
             onClick={handleConfirmBooking}
             disabled={isProcessingPayment}
           >

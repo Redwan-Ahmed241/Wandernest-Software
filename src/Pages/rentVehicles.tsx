@@ -1,7 +1,7 @@
 import type { FunctionComponent } from "react";
 import { useState } from "react";
 
-import Layout from "../Components/Layout";
+import Layout from "../components/layout";
 
 const RentVehicles: FunctionComponent = () => {
   const [search, setSearch] = useState("");

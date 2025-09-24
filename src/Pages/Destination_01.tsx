@@ -3,7 +3,7 @@
 
 import { type FunctionComponent, useState, useEffect } from "react";
 // Tailwind conversion: removed CSS module import
-import Layout from "../Components/Layout";
+import Layout from "../components/layout";
 import { useNavigate, useParams } from "react-router-dom";
 
 // API Base URL

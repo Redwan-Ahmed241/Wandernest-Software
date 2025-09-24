@@ -2,7 +2,7 @@
 
 import type { FunctionComponent } from "react";
 import { useState, useEffect, useMemo } from "react";
-import Layout from "../Components/Layout";
+import Layout from "../components/layout";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import { tripsAPI, type Trip, type ItineraryItem } from "../App/api";
@@ -468,7 +468,8 @@ const MyTrips: FunctionComponent = () => {
                                 </h3>
                                 <p className="text-gray-600">
                                   ৳
-{selectedTrip?.price !== undefined && selectedTrip?.price !== null
+                                  {selectedTrip?.price !== undefined &&
+                                  selectedTrip?.price !== null
                                     ? selectedTrip.price.toLocaleString()
                                     : "N/A"}
                                 </p>
