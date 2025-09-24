@@ -6,7 +6,7 @@ import type { FunctionComponent } from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // Tailwind CSS used for all styling. Centralized color theme via tailwind.config.js
-import Layout from "../Components/Layout";
+import Layout from "../components/Layout";
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useAuth } from "../Authentication/auth-context";
@@ -69,12 +69,12 @@ interface Flight {
   cancellation_policy: string;
   refund_policy?: string;
   status:
-    | "scheduled"
-    | "delayed"
-    | "cancelled"
-    | "boarding"
-    | "departed"
-    | "arrived";
+  | "scheduled"
+  | "delayed"
+  | "cancelled"
+  | "boarding"
+  | "departed"
+  | "arrived";
   gate?: string;
   terminal?: string;
   is_active: boolean;
@@ -115,11 +115,11 @@ interface PassengerDetails {
   passenger_type: "adult" | "child" | "infant";
   seat_preference: "window" | "aisle" | "middle";
   meal_preference:
-    | "vegetarian"
-    | "non_vegetarian"
-    | "halal"
-    | "kosher"
-    | "vegan";
+  | "vegetarian"
+  | "non_vegetarian"
+  | "halal"
+  | "kosher"
+  | "vegan";
 }
 
 interface BookingRequest {
@@ -648,10 +648,10 @@ const BookingModal: React.FC<{
         phone: contactPhone,
         emergency_contact: emergencyContactName
           ? {
-              name: emergencyContactName,
-              phone: emergencyContactPhone,
-              relationship: emergencyContactRelationship,
-            }
+            name: emergencyContactName,
+            phone: emergencyContactPhone,
+            relationship: emergencyContactRelationship,
+          }
           : undefined,
       },
       special_requests: specialRequests,
@@ -965,7 +965,7 @@ const BookingModal: React.FC<{
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Passport Number{" "}
                       {passenger.nationality !== "Bangladeshi" &&
-                      passenger.nationality
+                        passenger.nationality
                         ? "*"
                         : ""}
                     </label>
@@ -995,7 +995,7 @@ const BookingModal: React.FC<{
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Passport Expiry{" "}
                       {passenger.nationality !== "Bangladeshi" &&
-                      passenger.nationality
+                        passenger.nationality
                         ? "*"
                         : ""}
                     </label>
@@ -1105,8 +1105,8 @@ const BookingModal: React.FC<{
               {isLoading
                 ? "Booking..."
                 : `Confirm Booking (${flight.currency} ${(
-                    flight.current_price * passengers
-                  ).toLocaleString()})`}
+                  flight.current_price * passengers
+                ).toLocaleString()})`}
             </button>
           </div>
         </form>
@@ -1647,9 +1647,9 @@ const Flights: FunctionComponent = () => {
                         const exactMatch = airports.find(
                           (airport) =>
                             airport.city.toLowerCase() ===
-                              e.target.value.toLowerCase() ||
+                            e.target.value.toLowerCase() ||
                             airport.name.toLowerCase() ===
-                              e.target.value.toLowerCase()
+                            e.target.value.toLowerCase()
                         );
                         if (exactMatch) {
                           setFromAirport(exactMatch.code);
@@ -1658,11 +1658,10 @@ const Flights: FunctionComponent = () => {
                         }
                       }}
                       onFocus={() => setShowFromDropdown(true)}
-                      className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${
-                        fromAirport === toAirport && fromAirport
+                      className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${fromAirport === toAirport && fromAirport
                           ? "border-red-500"
                           : ""
-                      }`}
+                        }`}
                       required
                     />
                     {showFromDropdown && (
@@ -1723,9 +1722,9 @@ const Flights: FunctionComponent = () => {
                         const exactMatch = airports.find(
                           (airport) =>
                             airport.city.toLowerCase() ===
-                              e.target.value.toLowerCase() ||
+                            e.target.value.toLowerCase() ||
                             airport.name.toLowerCase() ===
-                              e.target.value.toLowerCase()
+                            e.target.value.toLowerCase()
                         );
                         if (exactMatch) {
                           setToAirport(exactMatch.code);
@@ -1734,11 +1733,10 @@ const Flights: FunctionComponent = () => {
                         }
                       }}
                       onFocus={() => setShowToDropdown(true)}
-                      className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${
-                        fromAirport === toAirport && toAirport
+                      className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white ${fromAirport === toAirport && toAirport
                           ? "border-red-500"
                           : ""
-                      }`}
+                        }`}
                       required
                     />
                     {showToDropdown && (
@@ -1883,17 +1881,16 @@ const Flights: FunctionComponent = () => {
                         </div>
                         {flight.status !== "scheduled" && (
                           <div
-                            className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                              flight.status === "delayed"
+                            className={`px-3 py-1 rounded-full text-xs font-semibold ${flight.status === "delayed"
                                 ? "bg-yellow-100 text-yellow-800"
                                 : flight.status === "cancelled"
-                                ? "bg-red-100 text-red-800"
-                                : flight.status === "boarding"
-                                ? "bg-blue-100 text-blue-800"
-                                : flight.status === "departed"
-                                ? "bg-green-100 text-green-800"
-                                : "bg-gray-100 text-gray-800"
-                            }`}
+                                  ? "bg-red-100 text-red-800"
+                                  : flight.status === "boarding"
+                                    ? "bg-blue-100 text-blue-800"
+                                    : flight.status === "departed"
+                                      ? "bg-green-100 text-green-800"
+                                      : "bg-gray-100 text-gray-800"
+                              }`}
                           >
                             {flight.status.toUpperCase()}
                           </div>
@@ -1948,11 +1945,10 @@ const Flights: FunctionComponent = () => {
                             Available Seats:
                           </span>
                           <span
-                            className={`ml-2 text-sm font-semibold ${
-                              flight.available_seats <= 5
+                            className={`ml-2 text-sm font-semibold ${flight.available_seats <= 5
                                 ? "text-red-600"
                                 : "text-green-600"
-                            }`}
+                              }`}
                           >
                             {flight.available_seats} left
                           </span>
@@ -2008,13 +2004,12 @@ const Flights: FunctionComponent = () => {
                       </div>
 
                       <button
-                        className={`px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl ${
-                          flight.available_seats <= 0 ||
-                          flight.status !== "scheduled" ||
-                          !flight.is_active
+                        className={`px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl ${flight.available_seats <= 0 ||
+                            flight.status !== "scheduled" ||
+                            !flight.is_active
                             ? "bg-gray-300 text-gray-500 cursor-not-allowed shadow-none hover:scale-100"
                             : "bg-[#6ab187]  hover:from-[#6ab187] hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-                        }`}
+                          }`}
                         onClick={() => handleBookFlight(flight)}
                         disabled={
                           flight.available_seats <= 0 ||
@@ -2025,11 +2020,11 @@ const Flights: FunctionComponent = () => {
                         {flight.available_seats <= 0
                           ? "Sold Out"
                           : flight.status !== "scheduled"
-                          ? flight.status.charAt(0).toUpperCase() +
+                            ? flight.status.charAt(0).toUpperCase() +
                             flight.status.slice(1)
-                          : isAuthenticated
-                          ? "Book Now"
-                          : "Sign up"}
+                            : isAuthenticated
+                              ? "Book Now"
+                              : "Sign up"}
                       </button>
                     </div>
                   </div>

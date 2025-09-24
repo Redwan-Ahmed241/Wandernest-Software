@@ -9,7 +9,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import ScrollToTop from "./ScrollToTop";
+import ScrollToTop from "./hooks/ScrollToTop";
 import { AuthProvider, useAuth } from "./Authentication/auth-context";
 import { BookingProvider } from "./Context/booking-context";
 
@@ -48,10 +48,10 @@ const FPass = lazy(() => import("./Pages/fpass"));
 const ResetPassword = lazy(() => import("./Pages/reset-password"));
 
 // Keep these as regular imports since they're used immediately
-import Navbar from "./Components/Navbar";
-import Footer from "./Components/Footer";
-import Layout from "./Components/Layout";
-import ProfileDropdown from "./Components/profile-dropdown";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import Layout from "./components/Layout";
+import ProfileDropdown from "./components/profile-dropdown";
 import "./global.css";
 
 // Loading component for Suspense

@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import Footer from "../Components/Footer";
+import Footer from "../components/Footer";
 import { useCallback } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -280,9 +280,8 @@ export default function SignupForm() {
                 <input
                   id="username"
                   name="username"
-                  className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${
-                    errors.username ? "border-red-500" : ""
-                  }`}
+                  className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${errors.username ? "border-red-500" : ""
+                    }`}
                   placeholder="Enter your username"
                   value={formData.username}
                   onChange={handleChange}
@@ -302,9 +301,8 @@ export default function SignupForm() {
                   <input
                     id="first_name"
                     name="first_name"
-                    className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${
-                      errors.first_name ? "border-red-500" : ""
-                    }`}
+                    className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${errors.first_name ? "border-red-500" : ""
+                      }`}
                     placeholder="Enter your first name"
                     value={formData.first_name}
                     onChange={handleChange}
@@ -323,9 +321,8 @@ export default function SignupForm() {
                   <input
                     id="last_name"
                     name="last_name"
-                    className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${
-                      errors.last_name ? "border-red-500" : ""
-                    }`}
+                    className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${errors.last_name ? "border-red-500" : ""
+                      }`}
                     placeholder="Enter your last name"
                     value={formData.last_name}
                     onChange={handleChange}
@@ -346,9 +343,8 @@ export default function SignupForm() {
                   <input
                     id="country"
                     name="country"
-                    className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${
-                      errors.country ? "border-red-500" : ""
-                    }`}
+                    className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${errors.country ? "border-red-500" : ""
+                      }`}
                     placeholder="Enter your country"
                     value={formData.country}
                     onChange={handleChange}
@@ -373,9 +369,8 @@ export default function SignupForm() {
                     type="number"
                     min="13"
                     max="120"
-                    className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${
-                      errors.age ? "border-red-500" : ""
-                    }`}
+                    className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${errors.age ? "border-red-500" : ""
+                      }`}
                     placeholder="Age"
                     value={formData.age || ""}
                     onChange={handleChange}
@@ -401,9 +396,8 @@ export default function SignupForm() {
                   id="email"
                   name="email"
                   type="email"
-                  className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${
-                    errors.email ? "border-red-500" : ""
-                  }`}
+                  className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${errors.email ? "border-red-500" : ""
+                    }`}
                   placeholder="Enter your email address"
                   value={formData.email}
                   onChange={handleChange}
@@ -423,9 +417,8 @@ export default function SignupForm() {
                   id="phone"
                   name="phone"
                   type="tel"
-                  className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${
-                    errors.phone ? "border-red-500" : ""
-                  }`}
+                  className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${errors.phone ? "border-red-500" : ""
+                    }`}
                   placeholder="Enter your phone number"
                   value={formData.phone}
                   onChange={handleChange}
@@ -452,9 +445,8 @@ export default function SignupForm() {
                     id="password"
                     name="password"
                     type="password"
-                    className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${
-                      errors.password ? "border-red-500" : ""
-                    }`}
+                    className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${errors.password ? "border-red-500" : ""
+                      }`}
                     placeholder="Create a password"
                     value={formData.password}
                     onChange={handleChange}
@@ -477,9 +469,8 @@ export default function SignupForm() {
                     id="confirm_password"
                     name="confirm_password"
                     type="password"
-                    className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${
-                      errors.confirm_password ? "border-red-500" : ""
-                    }`}
+                    className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${errors.confirm_password ? "border-red-500" : ""
+                      }`}
                     placeholder="Confirm your password"
                     value={formData.confirm_password}
                     onChange={handleChange}

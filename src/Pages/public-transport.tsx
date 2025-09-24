@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Layout from "../Components/Layout";
+import Layout from "../components/Layout";
 import { Navigation, Clock, MapPin } from "react-feather";
 export default function PublicTransport() {
   const [selectedTransportType, setSelectedTransportType] = useState("all");
@@ -138,11 +138,10 @@ export default function PublicTransport() {
               ].map(({ type, label, icon }) => (
                 <button
                   key={type}
-                  className={`px-6 py-3 rounded-xl font-semibold transition-all flex items-center gap-2 ${
-                    selectedTransportType === type
+                  className={`px-6 py-3 rounded-xl font-semibold transition-all flex items-center gap-2 ${selectedTransportType === type
                       ? "bg-primary/10 text-primary shadow-lg scale-105 hover:bg-primary/20"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105 active:bg-gray-300"
-                  }`}
+                    }`}
                   onClick={() => setSelectedTransportType(type)}
                   type="button"
                 >
