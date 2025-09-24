@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Layout from "../components/Layout";
+import Layout from "../components/layout";
 
 const weekDays = ["S", "M", "T", "W", "T", "F", "S"];
 
@@ -10,7 +10,7 @@ const activities = [
     image: "/figma_photos/coxsbazar.jpg",
     description: "Enjoy the world's longest sea beach.",
     icon: "🏖️",
-    category: "Beach"
+    category: "Beach",
   },
   {
     title: "St. Martin's Island Trip",
@@ -18,7 +18,7 @@ const activities = [
     image: "/figma_photos/Saint-Martin.jpg",
     description: "Unwind on the only coral island of Bangladesh.",
     icon: "🏝️",
-    category: "Island"
+    category: "Island",
   },
   {
     title: "Explore Sundarbans",
@@ -26,7 +26,7 @@ const activities = [
     image: "/figma_photos/sundarban.jpg",
     description: "Discover the world's largest mangrove forest.",
     icon: "🌿",
-    category: "Nature"
+    category: "Nature",
   },
 ];
 
@@ -62,14 +62,24 @@ const PlanATrip: React.FC = () => {
   };
 
   const monthNames = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
 
   const toggleActivity = (activityTitle: string) => {
-    setSelectedActivities(prev =>
+    setSelectedActivities((prev) =>
       prev.includes(activityTitle)
-        ? prev.filter(a => a !== activityTitle)
+        ? prev.filter((a) => a !== activityTitle)
         : [...prev, activityTitle]
     );
   };
@@ -84,7 +94,8 @@ const PlanATrip: React.FC = () => {
               Plan Your Perfect Trip
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Create unforgettable memories with our curated travel experiences in Cox's Bazar
+              Create unforgettable memories with our curated travel experiences
+              in Cox's Bazar
             </p>
           </div>
 
@@ -92,8 +103,12 @@ const PlanATrip: React.FC = () => {
             {/* Calendar Section */}
             <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
               <div className="text-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Select Your Travel Date</h2>
-                <p className="text-gray-600">Choose when you'd like to start your adventure</p>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                  Select Your Travel Date
+                </h2>
+                <p className="text-gray-600">
+                  Choose when you'd like to start your adventure
+                </p>
               </div>
 
               {/* Calendar Header */}
@@ -118,7 +133,10 @@ const PlanATrip: React.FC = () => {
               {/* Calendar Grid */}
               <div className="grid grid-cols-7 gap-2 mb-4">
                 {weekDays.map((day) => (
-                  <div key={day} className="text-center text-sm font-medium text-gray-500 py-2">
+                  <div
+                    key={day}
+                    className="text-center text-sm font-medium text-gray-500 py-2"
+                  >
                     {day}
                   </div>
                 ))}
@@ -132,23 +150,33 @@ const PlanATrip: React.FC = () => {
 
                 {/* Calendar days */}
                 {daysArray.map((day) => {
-                  const isToday = day === today.getDate() && calendarMonth === today.getMonth() && calendarYear === today.getFullYear();
+                  const isToday =
+                    day === today.getDate() &&
+                    calendarMonth === today.getMonth() &&
+                    calendarYear === today.getFullYear();
                   const isSelected = selectedDay === day;
-                  const isPast = new Date(calendarYear, calendarMonth, day) < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                  const isPast =
+                    new Date(calendarYear, calendarMonth, day) <
+                    new Date(
+                      today.getFullYear(),
+                      today.getMonth(),
+                      today.getDate()
+                    );
 
                   return (
                     <button
                       key={day}
                       onClick={() => !isPast && setSelectedDay(day)}
                       disabled={isPast}
-                      className={`h-12 rounded-lg font-medium transition-all duration-200 ${isPast
-                        ? "text-gray-300 cursor-not-allowed"
-                        : isSelected
+                      className={`h-12 rounded-lg font-medium transition-all duration-200 ${
+                        isPast
+                          ? "text-gray-300 cursor-not-allowed"
+                          : isSelected
                           ? "bg-primary text-white shadow-lg scale-105"
                           : isToday
-                            ? "bg-blue-100 text-blue-600 border-2 border-blue-300"
-                            : "text-gray-700 hover:bg-gray-100"
-                        }`}
+                          ? "bg-blue-100 text-blue-600 border-2 border-blue-300"
+                          : "text-gray-700 hover:bg-gray-100"
+                      }`}
                     >
                       {day}
                     </button>
@@ -159,7 +187,8 @@ const PlanATrip: React.FC = () => {
               {selectedDay && (
                 <div className="mt-6 p-4 bg-primary bg-opacity-10 rounded-xl border border-primary border-opacity-20">
                   <p className="text-center text-primary font-medium">
-                    Selected: {monthNames[calendarMonth]} {selectedDay}, {calendarYear}
+                    Selected: {monthNames[calendarMonth]} {selectedDay},{" "}
+                    {calendarYear}
                   </p>
                 </div>
               )}
@@ -168,8 +197,12 @@ const PlanATrip: React.FC = () => {
             {/* Quick Itinerary */}
             <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
               <div className="text-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Today's Itinerary</h2>
-                <p className="text-gray-600">Suggested activities for your perfect day</p>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                  Today's Itinerary
+                </h2>
+                <p className="text-gray-600">
+                  Suggested activities for your perfect day
+                </p>
               </div>
 
               <div className="space-y-4">
@@ -180,7 +213,9 @@ const PlanATrip: React.FC = () => {
                   <div className="flex-1">
                     <h3 className="font-semibold text-gray-900">Beach Walk</h3>
                     <p className="text-sm text-gray-600">8:00 AM</p>
-                    <p className="text-sm text-gray-500">Enjoy a morning walk along the world's longest sea beach.</p>
+                    <p className="text-sm text-gray-500">
+                      Enjoy a morning walk along the world's longest sea beach.
+                    </p>
                   </div>
                 </div>
 
@@ -189,9 +224,13 @@ const PlanATrip: React.FC = () => {
                     <span className="text-xl text-white">🍽️</span>
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900">Seafood Lunch</h3>
+                    <h3 className="font-semibold text-gray-900">
+                      Seafood Lunch
+                    </h3>
                     <p className="text-sm text-gray-600">1:00 PM</p>
-                    <p className="text-sm text-gray-500">Taste fresh seafood at a local Cox's Bazar eatery.</p>
+                    <p className="text-sm text-gray-500">
+                      Taste fresh seafood at a local Cox's Bazar eatery.
+                    </p>
                   </div>
                 </div>
 
@@ -202,7 +241,9 @@ const PlanATrip: React.FC = () => {
                   <div className="flex-1">
                     <h3 className="font-semibold text-gray-900">Boat Ride</h3>
                     <p className="text-sm text-gray-600">4:00 PM</p>
-                    <p className="text-sm text-gray-500">Take a scenic boat ride to see the sunset from the water.</p>
+                    <p className="text-sm text-gray-500">
+                      Take a scenic boat ride to see the sunset from the water.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -231,10 +272,11 @@ const PlanATrip: React.FC = () => {
                 return (
                   <div
                     key={idx}
-                    className={`bg-white rounded-2xl shadow-lg border-2 transition-all duration-300 overflow-hidden cursor-pointer transform hover:scale-105 ${isSelected
-                      ? "border-primary shadow-xl"
-                      : "border-gray-100 hover:border-gray-200 hover:shadow-xl"
-                      }`}
+                    className={`bg-white rounded-2xl shadow-lg border-2 transition-all duration-300 overflow-hidden cursor-pointer transform hover:scale-105 ${
+                      isSelected
+                        ? "border-primary shadow-xl"
+                        : "border-gray-100 hover:border-gray-200 hover:shadow-xl"
+                    }`}
                     onClick={() => toggleActivity(activity.title)}
                   >
                     <div className="relative">
@@ -264,17 +306,22 @@ const PlanATrip: React.FC = () => {
 
                     <div className="p-6">
                       <div className="flex items-center justify-between mb-3">
-                        <h3 className="text-lg font-bold text-gray-900">{activity.title}</h3>
+                        <h3 className="text-lg font-bold text-gray-900">
+                          {activity.title}
+                        </h3>
                         <span className="text-sm font-medium text-primary bg-primary bg-opacity-10 px-3 py-1 rounded-full">
                           {activity.time}
                         </span>
                       </div>
-                      <p className="text-gray-600 mb-4">{activity.description}</p>
+                      <p className="text-gray-600 mb-4">
+                        {activity.description}
+                      </p>
                       <button
-                        className={`w-full py-3 rounded-xl font-semibold transition-all duration-200 ${isSelected
-                          ? "bg-primary text-white shadow-md"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                          }`}
+                        className={`w-full py-3 rounded-xl font-semibold transition-all duration-200 ${
+                          isSelected
+                            ? "bg-primary text-white shadow-md"
+                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                        }`}
                       >
                         {isSelected ? "Added to Itinerary" : "Add to Itinerary"}
                       </button>
@@ -293,13 +340,22 @@ const PlanATrip: React.FC = () => {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
                 {selectedActivities.map((activityTitle, idx) => {
-                  const activity = activities.find(a => a.title === activityTitle);
+                  const activity = activities.find(
+                    (a) => a.title === activityTitle
+                  );
                   return (
-                    <div key={idx} className="flex items-center gap-3 p-4 bg-primary bg-opacity-10 rounded-xl border border-primary border-opacity-20">
+                    <div
+                      key={idx}
+                      className="flex items-center gap-3 p-4 bg-primary bg-opacity-10 rounded-xl border border-primary border-opacity-20"
+                    >
                       <span className="text-2xl">{activity?.icon}</span>
                       <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900">{activityTitle}</h4>
-                        <p className="text-sm text-gray-600">{activity?.time}</p>
+                        <h4 className="font-semibold text-gray-900">
+                          {activityTitle}
+                        </h4>
+                        <p className="text-sm text-gray-600">
+                          {activity?.time}
+                        </p>
                       </div>
                       <button
                         onClick={() => toggleActivity(activityTitle)}
