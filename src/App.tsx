@@ -56,7 +56,7 @@ import Navbar from "./components/navbar";
 import Footer from "./components/footer";
 import ProfileDropdown from "./components/profiledropdown";
 import Layout from "./components/layout";
-import "./global.css";
+import "./styles/global.css";
 
 // Loading component for Suspense
 const LoadingSpinner = () => (
