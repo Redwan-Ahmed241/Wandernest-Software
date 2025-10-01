@@ -81,7 +81,7 @@ const HomePage: FunctionComponent = () => {
       title: "24/7 Support",
       description: "Round-the-clock assistance during your travels",
       color: "from-purple-500 to-purple-600",
-      path: "/support",
+      path: "/help-center ",
     },
   ], []);
 

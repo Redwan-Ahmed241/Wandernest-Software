@@ -23,6 +23,8 @@ git_commits_ifty_aug22_sep24.md
 # Documentation files
 docs/
 docs/blog-api-documentation.md
+TECHNICAL_DOCUMENTATION.md
+IFTY_TECHNICAL_DOCUMENTATION.md
 # Logs
 logs
 *.log
