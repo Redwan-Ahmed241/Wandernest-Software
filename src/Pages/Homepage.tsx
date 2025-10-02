@@ -70,32 +70,29 @@ const HomePage: FunctionComponent = () => {
   );
 
   // Memoize static data to prevent unnecessary re-renders
-  const services = useMemo(
-    () => [
-      {
-        icon: <Shield className="w-8 h-8" />,
-        title: "Visa Assistance",
-        description: "Fast and reliable visa processing with expert guidance",
-        color: "from-blue-500 to-blue-600",
-        path: "/visa-assistance",
-      },
-      {
-        icon: <MapPin className="w-8 h-8" />,
-        title: "Travel Planner",
-        description: "Customize your perfect trip with our AI-powered planner",
-        color: "from-green-500 to-green-600",
-        path: "/plan-a-trip",
-      },
-      {
-        icon: <Clock className="w-8 h-8" />,
-        title: "24/7 Support",
-        description: "Round-the-clock assistance during your travels",
-        color: "from-purple-500 to-purple-600",
-        path: "/support",
-      },
-    ],
-    []
-  );
+  const services = useMemo(() => [
+    {
+      icon: <Shield className="w-8 h-8" />,
+      title: "Visa Assistance",
+      description: "Fast and reliable visa processing with expert guidance",
+      color: "from-blue-500 to-blue-600",
+      path: "/visa-assistance",
+    },
+    {
+      icon: <MapPin className="w-8 h-8" />,
+      title: "Travel Planner",
+      description: "Customize your perfect trip with our AI-powered planner",
+      color: "from-green-500 to-green-600",
+      path: "/plan-a-trip",
+    },
+    {
+      icon: <Clock className="w-8 h-8" />,
+      title: "24/7 Support",
+      description: "Round-the-clock assistance during your travels",
+      color: "from-purple-500 to-purple-600",
+      path: "/support",
+    },
+  ], []);
 
   const stats = useMemo(
     () => [
