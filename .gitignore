@@ -11,7 +11,7 @@ Qodo_AI_Frontend_Guide.txt
 contribution_logs.txt
 history.csv
 file_history.csv
-
+dashboard_api.md
 # Git commit documentation files
 git_commits_aug22_sep15.md
 git_commits_ifty_aug22_sep15.md
@@ -50,3 +50,6 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+# testing document
+TESTING_DOCUMENTATION.md

@@ -9,7 +9,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import ScrollToTop from "./ScrollToTop";
+import ScrollToTop from "./hooks/ScrollToTop";
 import { AuthProvider, useAuth } from "./Authentication/auth-context";
 import { BookingProvider } from "./Context/booking-context";
 
@@ -52,11 +52,11 @@ const ResetPassword = lazy(() => import("./Pages/reset-password"));
 const PrivacyPolicy = lazy(() => import("./Pages/PrivacyPolicy"));
 const Emergency = lazy(() => import("./Pages/Emergency"));
 // Keep these as regular imports since they're used immediately
-import Navbar from "./Components/Navbar";
-import Footer from "./Components/Footer";
-import Layout from "./Components/Layout";
-import ProfileDropdown from "./Components/profile-dropdown";
-import "./global.css";
+import Navbar from "./components/navbar";
+import Footer from "./components/footer";
+import ProfileDropdown from "./components/profiledropdown";
+import Layout from "./components/layout";
+import "./styles/global.css";
 
 // Loading component for Suspense
 const LoadingSpinner = () => (
@@ -98,13 +98,13 @@ const AppRoutes: React.FC = () => {
         <Route path="/all-guides" element={<AllGuides />} />
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/blogs/:id" element={<BlogDetail />} />
-        <Route 
-          path="/write-story" 
+        <Route
+          path="/write-story"
           element={
             <ProtectedRoute>
               <WriteStory />
             </ProtectedRoute>
-          } 
+          }
         />
         <Route path="/flights" element={<Flights />} />
         <Route path="/groups" element={<Groups />} />
@@ -188,8 +188,6 @@ const AppRoutes: React.FC = () => {
 
         {/* New Route */}
         <Route path="/fpass" element={<FPass />} />
-
-        {/* New Route */}
 
         {/* New Route for password reset confirmation */}
         <Route

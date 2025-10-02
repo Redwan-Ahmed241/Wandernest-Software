@@ -5,18 +5,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "..//Authentication/auth-context";
 import "react-datepicker/dist/react-datepicker.css";
+import type { UserProfile } from "../types/user";
 
-interface UserProfile {
-  id: string;
-  phone: string;
-  country: string;
-  age: number | null;
-  passport_no: string | null;
-  date_of_birth: string | null;
-  profile_image: string | null;
-
-  email: string;
-}
+// UserProfile type now comes from src/types/user
 
 const API_URL = "https://wander-nest-ad3s.onrender.com/api/auth/edit-profile/";
 
@@ -264,7 +255,7 @@ const ProfileSettings: React.FC = () => {
           </div>
           <button
             type="submit"
-            className="text-white font-semibold px-6 py-2 rounded-lg transition border-2 border-[#6ab187] hover:shadow-lg cursor-pointe"
+            className="text-white font-semibold px-6 py-2 rounded-lg transition bg-[#6ab187] hover:shadow-lg cursor-pointer disabled:opacity-50 disabled:bg-gray-300"
             disabled={saving}
           >
             {saving ? "Saving..." : "Save Changes"}
