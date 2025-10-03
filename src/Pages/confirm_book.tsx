@@ -2,14 +2,11 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-// Tailwind CSS used for all styling. Centralized color theme via tailwind.config.js
 
-import Layout from "../Components/Layout";
-// Removed unused imports
+import Layout from "../components/layout";
+
 import { getHotels } from "../App/api-services";
 import type { Hotel } from "../App/api-services";
-
-// Removed unused PackageOption interface
 
 const optionOrder = ["transport", "hotel", "vehicle", "guide"] as const;
 type OptionKey = (typeof optionOrder)[number];
@@ -39,14 +36,15 @@ const ConfirmBook: React.FC = () => {
   const [totalPrice, setTotalPrice] = useState("");
   const [endDate, setEndDate] = useState("");
 
-  // Skip states for options
   const [skipHotel, setSkipHotel] = useState(false);
   const [skipVehicle, setSkipVehicle] = useState(true);
   const [skipGuide, setSkipGuide] = useState(true);
 
-  // Focus state for option rows
   const [activeOption, setActiveOption] = useState<OptionKey>("transport");
-  const optionRefs: Record<OptionKey, React.RefObject<HTMLDivElement | null>> = {
+  const optionRefs: Record<
+    OptionKey,
+    React.RefObject<HTMLDivElement | null>
+  > = {
     transport: useRef<HTMLDivElement>(null),
     hotel: useRef<HTMLDivElement>(null),
     vehicle: useRef<HTMLDivElement>(null),
@@ -64,16 +62,11 @@ const ConfirmBook: React.FC = () => {
 
   const dateInputRef = React.useRef<HTMLInputElement>(null);
 
-  // Add hotel selection state
   const [hotels, setHotels] = useState<Hotel[]>([]);
   const [hotelsLoading, setHotelsLoading] = useState(false);
   const [hotelsError, setHotelsError] = useState("");
   const [selectedHotelId, setSelectedHotelId] = useState<string | null>(null);
 
-  // Add state for transport and guide options
-  // Removed unused transportOptions and guideOptions
-
-  // Helper to get correct field regardless of casing
   const getField = React.useCallback(
     (obj: PackageDetails | null, key: string): string => {
       if (!obj) return "";
@@ -88,7 +81,6 @@ const ConfirmBook: React.FC = () => {
     []
   );
 
-  // Helper to format date as DD-MM-YYYY
   const formatDisplayDate = (dateStr: string) => {
     if (!dateStr) return "";
     const d = new Date(dateStr);
@@ -99,15 +91,14 @@ const ConfirmBook: React.FC = () => {
     return `${dd}-${mm}-${yyyy}`;
   };
 
-  // Helper to extract main location
   const extractMainLocation = (str: string): string => {
     if (!str) return "";
-    // Remove any text in parentheses
+
     const cleanStr = str.replace(/\(.*?\)/g, "").trim();
-    // Extract the last part after comma (if exists)
+
     const parts = cleanStr.split(",");
     const mainPart = parts[parts.length - 1].trim();
-    // Remove any special characters and make lowercase
+
     return mainPart
       .replace(/[^\w\s]|_/g, "")
       .replace(/\s+/g, " ")
@@ -184,7 +175,8 @@ const ConfirmBook: React.FC = () => {
         } catch (err) {
           console.error("Error fetching package details:", err); // Debug log
           setError(
-            `Failed to fetch package details: ${err instanceof Error ? err.message : "Unknown error"
+            `Failed to fetch package details: ${
+              err instanceof Error ? err.message : "Unknown error"
             }`
           );
         } finally {
@@ -228,25 +220,26 @@ const ConfirmBook: React.FC = () => {
     }
   }, [packageDetails, startDate, getField]);
 
-  // Fetch all options when needed
-  // Removed unused _fetchAllOptions function
-
-  // Fetch hotels when hotel selection is not skipped
   useEffect(() => {
     if (!skipHotel) {
+      console.log("🏨 Starting hotel fetch process...");
       setHotelsLoading(true);
       setHotelsError("");
       getHotels()
         .then((hotels) => {
+          console.log("✅ Hotels fetched successfully:", hotels);
           setHotels(hotels);
           setHotelsLoading(false);
         })
-        .catch(() => {
-          setHotelsError("Failed to fetch hotels.");
+        .catch((error) => {
+          console.error("❌ Hotel fetch failed:", error);
+          const errorMessage = error.message || "Failed to fetch hotels.";
+          setHotelsError(errorMessage);
           setHotels([]);
           setHotelsLoading(false);
         });
     } else {
+      console.log("🚫 Hotel section skipped");
       setHotels([]);
     }
   }, [skipHotel]);
@@ -396,8 +389,8 @@ const ConfirmBook: React.FC = () => {
       } else {
         throw new Error(
           data.detail ||
-          data.message ||
-          "Payment gateway URL not received. Please try again."
+            data.message ||
+            "Payment gateway URL not received. Please try again."
         );
       }
     } catch (err) {
@@ -576,17 +569,22 @@ const ConfirmBook: React.FC = () => {
             {/* Hotel */}
             <div
               ref={optionRefs.hotel}
-              className={`flex flex-col gap-2 p-4 rounded-lg border ${activeOption === "hotel"
-                ? "border-primary bg-primary/5"
-                : "border-gray-200 bg-gray-50"
-                }`}
+              className={`flex flex-col gap-2 p-4 rounded-lg border ${
+                activeOption === "hotel"
+                  ? "border-primary bg-primary/5"
+                  : "border-gray-200 bg-gray-50"
+              }`}
             >
               <span className="font-medium text-base text-gray-700">
                 Select Hotel
               </span>
               <button
                 type="button"
-                className="ml-4 px-4 py-1 rounded-full border border-primary text-primary bg-white hover:bg-primary hover:text-white transition"
+                className="ml-4 px-4 py-1 rounded-full border text-white bg-white hover:opacity-90 transition"
+                style={{
+                  borderColor: "#6ab187",
+                  backgroundColor: "#6ab187",
+                }}
                 onClick={() => handleSkipToggle("hotel")}
               >
                 {skipHotel ? "Include" : "Skip"}
@@ -632,132 +630,132 @@ const ConfirmBook: React.FC = () => {
                       )}
                       {hotels.length > 0
                         ? hotels
-                          .filter((hotel) => {
-                            if (!packageDetails) return true;
-                            const pkgDest = extractMainLocation(
-                              typeof packageDetails.destination === "string"
-                                ? packageDetails.destination
-                                : typeof packageDetails.city === "string"
+                            .filter((hotel) => {
+                              if (!packageDetails) return true;
+                              const pkgDest = extractMainLocation(
+                                typeof packageDetails.destination === "string"
+                                  ? packageDetails.destination
+                                  : typeof packageDetails.city === "string"
                                   ? packageDetails.city
                                   : typeof packageDetails.title === "string"
-                                    ? packageDetails.title
-                                    : ""
-                            );
-                            const hotelLoc = extractMainLocation(
-                              hotel.location || ""
-                            );
-                            return (
-                              pkgDest &&
-                              hotelLoc &&
-                              hotelLoc.includes(pkgDest)
-                            );
-                          })
-                          .map((hotel) => {
-                            const isSelected = selectedHotelId === hotel.id;
-                            return (
-                              <div
-                                key={hotel.id}
-                                onClick={() =>
-                                  setSelectedHotelId(
-                                    isSelected ? null : hotel.id
-                                  )
-                                }
-                                style={{
-                                  cursor: "pointer",
-                                  borderRadius: 14,
-                                  border: isSelected
-                                    ? "2.5px solid #4e944f"
-                                    : "2.5px solid transparent",
-                                  boxShadow: isSelected
-                                    ? "0 4px 24px rgba(76,177,106,0.15)"
-                                    : "0 2px 8px rgba(0,0,0,0.06)",
-                                  overflow: "hidden",
-                                  background: "#fff",
-                                  minWidth: 220,
-                                  maxWidth: 240,
-                                  flex: "0 0 220px",
-                                  transition: "border 0.2s, box-shadow 0.2s",
-                                  position: "relative",
-                                }}
-                              >
-                                {/* Checkmark for selected */}
-                                {isSelected && (
-                                  <div
-                                    style={{
-                                      position: "absolute",
-                                      top: 8,
-                                      right: 8,
-                                      background: "#4e944f",
-                                      borderRadius: "50%",
-                                      width: 28,
-                                      height: 28,
-                                      display: "flex",
-                                      alignItems: "center",
-                                      justifyContent: "center",
-                                      boxShadow:
-                                        "0 2px 8px rgba(76,177,106,0.18)",
-                                    }}
-                                  >
-                                    <svg
-                                      width="18"
-                                      height="18"
-                                      viewBox="0 0 20 20"
-                                      fill="none"
-                                    >
-                                      <circle
-                                        cx="10"
-                                        cy="10"
-                                        r="10"
-                                        fill="#4e944f"
-                                      />
-                                      <path
-                                        d="M6 10.5L9 13.5L14 8.5"
-                                        stroke="#fff"
-                                        strokeWidth="2.2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                      />
-                                    </svg>
-                                  </div>
-                                )}
-                                <img
-                                  src={
-                                    hotel.image_url ||
-                                    "/placeholder.svg?height=120&width=200"
-                                  }
-                                  alt={hotel.name}
-                                  style={{
-                                    width: "100%",
-                                    height: 120,
-                                    objectFit: "cover",
-                                    display: "block",
-                                  }}
-                                />
+                                  ? packageDetails.title
+                                  : ""
+                              );
+                              const hotelLoc = extractMainLocation(
+                                hotel.location || ""
+                              );
+                              return (
+                                pkgDest &&
+                                hotelLoc &&
+                                hotelLoc.includes(pkgDest)
+                              );
+                            })
+                            .map((hotel) => {
+                              const isSelected = selectedHotelId === hotel.id;
+                              return (
                                 <div
-                                  style={{ padding: "12px 12px 8px 12px" }}
+                                  key={hotel.id}
+                                  onClick={() =>
+                                    setSelectedHotelId(
+                                      isSelected ? null : hotel.id
+                                    )
+                                  }
+                                  style={{
+                                    cursor: "pointer",
+                                    borderRadius: 14,
+                                    border: isSelected
+                                      ? "2.5px solid #4e944f"
+                                      : "2.5px solid transparent",
+                                    boxShadow: isSelected
+                                      ? "0 4px 24px rgba(76,177,106,0.15)"
+                                      : "0 2px 8px rgba(0,0,0,0.06)",
+                                    overflow: "hidden",
+                                    background: "#fff",
+                                    minWidth: 220,
+                                    maxWidth: 240,
+                                    flex: "0 0 220px",
+                                    transition: "border 0.2s, box-shadow 0.2s",
+                                    position: "relative",
+                                  }}
                                 >
-                                  <div
+                                  {/* Checkmark for selected */}
+                                  {isSelected && (
+                                    <div
+                                      style={{
+                                        position: "absolute",
+                                        top: 8,
+                                        right: 8,
+                                        background: "#4e944f",
+                                        borderRadius: "50%",
+                                        width: 28,
+                                        height: 28,
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        boxShadow:
+                                          "0 2px 8px rgba(76,177,106,0.18)",
+                                      }}
+                                    >
+                                      <svg
+                                        width="18"
+                                        height="18"
+                                        viewBox="0 0 20 20"
+                                        fill="none"
+                                      >
+                                        <circle
+                                          cx="10"
+                                          cy="10"
+                                          r="10"
+                                          fill="#4e944f"
+                                        />
+                                        <path
+                                          d="M6 10.5L9 13.5L14 8.5"
+                                          stroke="#fff"
+                                          strokeWidth="2.2"
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                        />
+                                      </svg>
+                                    </div>
+                                  )}
+                                  <img
+                                    src={
+                                      hotel.image_url ||
+                                      "/placeholder.svg?height=120&width=200"
+                                    }
+                                    alt={hotel.name}
                                     style={{
-                                      fontWeight: 600,
-                                      fontSize: 15,
-                                      marginBottom: 4,
+                                      width: "100%",
+                                      height: 120,
+                                      objectFit: "cover",
+                                      display: "block",
                                     }}
-                                  >
-                                    {hotel.name}
-                                  </div>
+                                  />
                                   <div
-                                    style={{
-                                      color: "#8a8a8a",
-                                      fontSize: 13,
-                                      marginBottom: 2,
-                                    }}
+                                    style={{ padding: "12px 12px 8px 12px" }}
                                   >
-                                    {hotel.description || "Hotel description"}
+                                    <div
+                                      style={{
+                                        fontWeight: 600,
+                                        fontSize: 15,
+                                        marginBottom: 4,
+                                      }}
+                                    >
+                                      {hotel.name}
+                                    </div>
+                                    <div
+                                      style={{
+                                        color: "#8a8a8a",
+                                        fontSize: 13,
+                                        marginBottom: 2,
+                                      }}
+                                    >
+                                      {hotel.description || "Hotel description"}
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            );
-                          })
+                              );
+                            })
                         : !hotelsLoading && <p>No hotels found.</p>}
                     </div>
                   </div>
@@ -767,17 +765,22 @@ const ConfirmBook: React.FC = () => {
             {/* Vehicle */}
             <div
               ref={optionRefs.vehicle}
-              className={`flex flex-col gap-2 p-4 rounded-lg border ${activeOption === "vehicle"
-                ? "border-primary bg-primary/5"
-                : "border-gray-200 bg-gray-50"
-                }`}
+              className={`flex flex-col gap-2 p-4 rounded-lg border ${
+                activeOption === "vehicle"
+                  ? "border-primary bg-primary/5"
+                  : "border-gray-200 bg-gray-50"
+              }`}
             >
               <span className="font-medium text-base text-gray-700">
                 Select Vehicle
               </span>
               <button
                 type="button"
-                className="ml-4 px-4 py-1 rounded-full border border-primary text-primary bg-white hover:bg-primary hover:text-white transition"
+                className="ml-4 px-4 py-1 rounded-full border text-white bg-white hover:opacity-90 transition"
+                style={{
+                  borderColor: "#6ab187",
+                  backgroundColor: "#6ab187",
+                }}
                 onClick={() => handleSkipToggle("vehicle")}
               >
                 {skipVehicle ? "Include" : "Skip"}
@@ -791,17 +794,22 @@ const ConfirmBook: React.FC = () => {
             {/* Guide */}
             <div
               ref={optionRefs.guide}
-              className={`flex flex-col gap-2 p-4 rounded-lg border ${activeOption === "guide"
-                ? "border-primary bg-primary/5"
-                : "border-gray-200 bg-gray-50"
-                }`}
+              className={`flex flex-col gap-2 p-4 rounded-lg border ${
+                activeOption === "guide"
+                  ? "border-primary bg-primary/5"
+                  : "border-gray-200 bg-gray-50"
+              }`}
             >
               <span className="font-medium text-base text-gray-700">
                 Hire a Guide
               </span>
               <button
                 type="button"
-                className="ml-4 px-4 py-1 rounded-full border border-primary text-primary bg-white hover:bg-primary hover:text-white transition"
+                className="ml-4 px-4 py-1 rounded-full border text-white bg-white hover:opacity-90 transition"
+                style={{
+                  borderColor: "#6ab187",
+                  backgroundColor: "#6ab187",
+                }}
                 onClick={() => handleSkipToggle("guide")}
               >
                 {skipGuide ? "Include" : "Skip"}
@@ -849,7 +857,8 @@ const ConfirmBook: React.FC = () => {
             </div>
           )}
           <button
-            className="w-full max-w-xs px-6 py-3 rounded-lg bg-primary text-white font-semibold shadow hover:bg-primary-dark transition disabled:opacity-60"
+            className="w-full max-w-xs px-6 py-3 rounded-lg text-white font-semibold shadow hover:opacity-90 transition disabled:opacity-60"
+            style={{ backgroundColor: "#6ab187" }}
             onClick={handleConfirmBooking}
             disabled={isProcessingPayment}
           >

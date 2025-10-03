@@ -6,7 +6,7 @@ import type { FunctionComponent } from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // Tailwind CSS used for all styling. Centralized color theme via tailwind.config.js
-import Layout from "../Components/Layout";
+import Layout from "../components/layout";
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useAuth } from "../Authentication/auth-context";
@@ -393,8 +393,8 @@ const flightAPI = {
   // Get airports for search autocomplete
   getAirports: async (search?: string): Promise<Airport[]> => {
     const url = search
-      ? `${API_BASE_URL}/airports/?search=${encodeURIComponent(search)}`
-      : `${API_BASE_URL}/airports/`;
+      ? `${API_BASE_URL}flights/airports/?search=${encodeURIComponent(search)}`
+      : `${API_BASE_URL}flights/airports/`;
 
     const response = await fetch(url);
     if (!response.ok) {
@@ -1399,6 +1399,18 @@ const Flights: FunctionComponent = () => {
     // Check if from and to airports are different
     if (fromAirport === toAirport) {
       setSearchError("Departure and destination cities must be different");
+      return;
+    }
+
+    // Ensure at least one airport is in Bangladesh
+    const bangladeshAirportCodes = ["DAC", "CGP", "ZYL", "RJH", "JSR", "BZL"];
+    if (
+      !bangladeshAirportCodes.includes(fromAirport) &&
+      !bangladeshAirportCodes.includes(toAirport)
+    ) {
+      setSearchError(
+        "At least one of the departure or destination airports must be in Bangladesh"
+      );
       return;
     }
 

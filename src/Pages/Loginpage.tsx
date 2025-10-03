@@ -5,6 +5,7 @@ import type React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Authentication/auth-context";
+import { storeTokens } from "../utils/authUtils";
 
 export default function TravelLogin() {
   const [username, setUsername] = useState("");
@@ -17,7 +18,14 @@ export default function TravelLogin() {
   // Redirect if already logged in
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/homepage");
+      // Check for stored redirect URL
+      const redirectUrl = sessionStorage.getItem('redirectAfterLogin');
+      if (redirectUrl) {
+        sessionStorage.removeItem('redirectAfterLogin');
+        navigate(redirectUrl);
+      } else {
+        navigate("/homepage");
+      }
     }
   }, [isAuthenticated, navigate]);
 
@@ -56,8 +64,16 @@ export default function TravelLogin() {
       // Use the auth context login function
       login(mockToken, mockUser);
 
-      console.log("Mock login successful, navigating to homepage");
-      navigate("/homepage");
+      console.log("Mock login successful, checking for redirect");
+      
+      // Check for stored redirect URL
+      const redirectUrl = sessionStorage.getItem('redirectAfterLogin');
+      if (redirectUrl) {
+        sessionStorage.removeItem('redirectAfterLogin');
+        navigate(redirectUrl);
+      } else {
+        navigate("/homepage");
+      }
       return;
     }
 
@@ -129,6 +145,13 @@ export default function TravelLogin() {
 
       console.log("Login successful, user data:", data);
 
+      // Store tokens in localStorage
+      storeTokens({
+        access: data.access,
+        refresh: data.refresh,
+        token: data.token,
+      });
+
       // Use the auth context login function
       login(
         data.token,
@@ -141,7 +164,14 @@ export default function TravelLogin() {
         }
       );
 
-      navigate("/homepage");
+      // Check for stored redirect URL
+      const redirectUrl = sessionStorage.getItem('redirectAfterLogin');
+      if (redirectUrl) {
+        sessionStorage.removeItem('redirectAfterLogin');
+        navigate(redirectUrl);
+      } else {
+        navigate("/homepage");
+      }
     } catch (err: any) {
       console.error("Login error:", err);
       console.error("Error details:", {
@@ -280,9 +310,7 @@ export default function TravelLogin() {
                 type="submit"
                 className="w-full py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                 style={{
-                  background: isLoading
-                    ? "linear-gradient(to right, #6ab187, #4a6b5b)"
-                    : "linear-gradient(to right, #4a6b5b, #0d1c1c)",
+                  backgroundColor: isLoading ? "#5a9c78" : "#6ab187",
                   color: "white",
                 }}
                 disabled={isLoading}
