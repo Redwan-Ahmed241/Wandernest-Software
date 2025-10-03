@@ -10,6 +10,11 @@ Object.defineProperty(window, 'scrollTo', {
   writable: true
 });
 
+// Mock HTMLCanvasElement.getContext for tests
+HTMLCanvasElement.prototype.getContext = jest.fn(() => ({
+  toDataURL: jest.fn(() => 'data:image/png;base64,'),
+})) as jest.Mock;
+
 // Mock IntersectionObserver if needed
 const mockIntersectionObserver = jest.fn();
 mockIntersectionObserver.mockReturnValue({
