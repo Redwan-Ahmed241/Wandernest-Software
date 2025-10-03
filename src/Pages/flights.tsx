@@ -387,7 +387,6 @@ const NATIONALITIES = [
   "Zambian",
   "Zimbabwean",
 ];
-//https://wander-nest-ad3s.onrender.com/api/flights/airports/
 
 // Updated API Service Functions
 const flightAPI = {
