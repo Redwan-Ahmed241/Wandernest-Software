@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import type React from "react";
@@ -168,17 +169,19 @@ export default function TravelLogin() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: "url('https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=1920')"
-        }}
-      />
-      
+      {/* Background Image - mobile: show entire photo (no crop). md+: fill the area for best desktop look */}
+      <div className="absolute inset-0 w-full h-full flex items-center justify-center bg-transparent">
+        <img
+          src="/Figma_photos/travel-background.jpg"
+          alt="Travel background"
+          className="w-full h-full object-contain md:object-cover"
+          style={{ objectPosition: "center" }}
+        />
+      </div>
+
       {/* Overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/60" />
-      
+
       {/* Content */}
       <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
         <div className="w-full max-w-md">
@@ -200,7 +203,9 @@ export default function TravelLogin() {
               </span>
             </div>
             <div className="text-center">
-              <h1 className="text-3xl font-bold text-white mb-2">Welcome back</h1>
+              <h1 className="text-3xl font-bold text-white mb-2">
+                Welcome back
+              </h1>
               <p className="text-lg text-white/80">
                 We're so excited to see you again!
               </p>
@@ -216,7 +221,7 @@ export default function TravelLogin() {
                 </p>
               </div>
             )}
-            
+
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label
@@ -235,7 +240,7 @@ export default function TravelLogin() {
                   placeholder="Enter your username"
                 />
               </div>
-              
+
               <div>
                 <label
                   htmlFor="password"
@@ -253,44 +258,52 @@ export default function TravelLogin() {
                   placeholder="Enter your password"
                 />
               </div>
-              
+
               <div className="flex justify-center">
                 <button
                   type="button"
                   className="text-sm font-medium transition-colors duration-200 hover:underline"
-                  style={{ color: '#4a6b5b' }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = '#0d1c1c'}
-                  onMouseLeave={(e) => e.currentTarget.style.color = '#4a6b5b'}
+                  style={{ color: "#4a6b5b" }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.color = "#0d1c1c")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.color = "#4a6b5b")
+                  }
                   onClick={() => navigate("/fpass")}
                 >
                   Forgot your password?
                 </button>
               </div>
-              
+
               <button
                 type="submit"
                 className="w-full py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                 style={{
-                  background: isLoading 
-                    ? 'linear-gradient(to right, #6ab187, #4a6b5b)' 
-                    : 'linear-gradient(to right, #4a6b5b, #0d1c1c)',
-                  color: 'white'
+                  background: isLoading
+                    ? "linear-gradient(to right, #6ab187, #4a6b5b)"
+                    : "linear-gradient(to right, #4a6b5b, #0d1c1c)",
+                  color: "white",
                 }}
                 disabled={isLoading}
               >
                 {isLoading ? "Logging in..." : "Log in"}
               </button>
-              
+
               <div className="text-center mt-6">
                 <p className="text-sm text-gray-600">
-                  Don't have an account?{' '}
+                  Don't have an account?{" "}
                   <button
                     type="button"
                     onClick={() => navigate("/signup")}
                     className="font-medium transition-colors duration-200 hover:underline"
-                    style={{ color: '#4a6b5b' }}
-                    onMouseEnter={(e) => e.currentTarget.style.color = '#0d1c1c'}
-                    onMouseLeave={(e) => e.currentTarget.style.color = '#4a6b5b'}
+                    style={{ color: "#4a6b5b" }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.color = "#0d1c1c")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.color = "#4a6b5b")
+                    }
                   >
                     Sign up
                   </button>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import type React from "react";
@@ -434,9 +435,8 @@ const flightAPI = {
     const data = await response.json();
     if (data.success && data.data) {
       return data.data;
-    } else {
-      throw new Error("Flight not found");
     }
+    throw new Error("Flight not found");
   },
 
   // Create booking
@@ -1160,7 +1160,6 @@ const Flights: FunctionComponent = () => {
 
   // Search states
   const [search, setSearch] = useState("");
-  const [searching, setSearching] = useState(false);
   const [currencySearch, setCurrencySearch] = useState("");
   const [activeCurrencies, setActiveCurrencies] = useState([
     "EUR",
@@ -1174,7 +1173,6 @@ const Flights: FunctionComponent = () => {
     // Load mock data for development
     loadMockData();
     loadAirports();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Mock data for development
@@ -1502,16 +1500,12 @@ const Flights: FunctionComponent = () => {
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!search.trim()) {
-      setSearching(false);
       const defaultCities = ["Dhaka", "Chittagong", "Sylhet", "Rajshahi"];
       fetchWeatherForCities(defaultCities);
       return;
     }
-
-    setSearching(true);
     setIsLoadingWeather(true);
     setWeatherError("");
-
     try {
       const weatherResult = await weatherAPI.getWeatherForCity(search.trim());
       setWeatherData([weatherResult]);
@@ -1538,10 +1532,6 @@ const Flights: FunctionComponent = () => {
     }
   };
 
-  // const _onFlightsTextClick = useCallback(() => {
-  //   navigate("/");
-  // }, [navigate]);
-
   // Check for pending booking on component mount
   useEffect(() => {
     if (isAuthenticated) {
@@ -1564,7 +1554,7 @@ const Flights: FunctionComponent = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gray-50 pt-16">
+      <div className="min-h-screen bg-gray-50 pt-0">
         {/* Success Message */}
         {bookingSuccess && (
           <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
@@ -1845,7 +1835,7 @@ const Flights: FunctionComponent = () => {
               </div>
 
               <button
-                className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:shadow-none"
+                className="w-full bg-[#6ab187] hover:from-[#6ab187] hover:to-green-700 text-white font-semibold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:shadow-none"
                 onClick={handleSearchFlights}
                 disabled={isSearchingFlights}
               >
@@ -2011,7 +2001,7 @@ const Flights: FunctionComponent = () => {
                           flight.status !== "scheduled" ||
                           !flight.is_active
                             ? "bg-gray-300 text-gray-500 cursor-not-allowed shadow-none hover:scale-100"
-                            : "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white"
+                            : "bg-[#6ab187]  hover:from-[#6ab187] hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                         }`}
                         onClick={() => handleBookFlight(flight)}
                         disabled={
@@ -2069,7 +2059,7 @@ const Flights: FunctionComponent = () => {
           <div className="mb-8">
             <div className="text-center mb-4">
               <button
-                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                className="bg-[#6ab187]  hover:from-[#6ab187] hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                 onClick={() => setShowMap(!showMap)}
               >
                 {showMap ? "Hide Map" : "Show Weather Map"}
@@ -2123,30 +2113,11 @@ const Flights: FunctionComponent = () => {
               />
               <button
                 type="submit"
-                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                className="bg-[#6ab187] hover:from-[#6ab187] hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
               >
                 Search
               </button>
             </form>
-            {searching && (
-              <button
-                type="button"
-                onClick={() => {
-                  setSearch("");
-                  setSearching(false);
-                  const defaultCities = [
-                    "Dhaka",
-                    "Chittagong",
-                    "Sylhet",
-                    "Rajshahi",
-                  ];
-                  fetchWeatherForCities(defaultCities);
-                }}
-                className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-              >
-                Reset
-              </button>
-            )}
           </div>
 
           {isLoadingWeather && (
@@ -2203,7 +2174,7 @@ const Flights: FunctionComponent = () => {
               />
               <button
                 type="submit"
-                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                className="bg-[#6ab187] hover:from-[#6ab187] hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
               >
                 Search
               </button>
@@ -2214,7 +2185,7 @@ const Flights: FunctionComponent = () => {
                     setCurrencySearch("");
                     setActiveCurrencies(["EUR", "USD", "CAD"]);
                   }}
-                  className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                  className="bg-[#6ab187] hover:from-[#6ab187] hover:to-green-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                 >
                   Reset
                 </button>
