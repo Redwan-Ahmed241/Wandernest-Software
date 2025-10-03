@@ -1,0 +1,20 @@
+# Ensure consistent line endings and case sensitivity
+* text=auto
+
+# TypeScript and JavaScript files
+*.ts text
+*.tsx text
+*.js text
+*.jsx text
+
+# CSS files
+*.css text
+
+# Configuration files
+*.json text
+*.md text
+*.yml text
+*.yaml text
+
+# Ensure case sensitivity for imports
+src/components/** text
