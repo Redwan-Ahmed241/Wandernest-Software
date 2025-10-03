@@ -3,7 +3,7 @@
 
 import { type FunctionComponent, useState, useEffect } from "react";
 // Tailwind conversion: removed CSS module import
-import Layout from "../Components/Layout";
+import Layout from "../components/layout";
 import { useNavigate, useParams } from "react-router-dom";
 
 // API Base URL
@@ -61,9 +61,11 @@ interface Experience {
 
 const DestinationPage: FunctionComponent = () => {
   const navigate = useNavigate();
-  const { destinationId } = useParams<{ destinationId: string }>();
+  const { destinationId, destinationName } = useParams<{
+    destinationId: string;
+    destinationName: string;
+  }>();
   const [activeTab, setActiveTab] = useState("overview");
-  const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -134,65 +136,12 @@ const DestinationPage: FunctionComponent = () => {
     fetchDestinationData();
   }, [destinationId]);
 
-  // Payment handler for experiences
-  const handleExperiencePayment = async (experience: Experience) => {
-    setError(null);
-    setIsProcessing(true);
-    try {
-      // Parse price (remove currency symbol if present)
-      const amount =
-        typeof experience.price === "string"
-          ? Number.parseFloat(experience.price.replace(/[^\d.]/g, "")) || 0
-          : Number(experience.price) || 0;
-
-      // Prepare payment data
-      const paymentData = {
-        service_type: "experience",
-        service_name: experience.name,
-        service_details: experience.description,
-        amount,
-        customer_name: "Guest", // Or get from user context
-        customer_email: "guest@example.com",
-        customer_phone: "0000000000",
-        service_data: JSON.stringify({
-          experience_id: experience.id,
-          experience_name: experience.name,
-          duration: experience.duration,
-          destination_id: destinationId,
-        }),
-      };
-
-      const response = await fetch(`${API_BASE_URL}/initiate-payment/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(paymentData),
-      });
-
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(
-          data.detail ||
-            data.message ||
-            `Payment failed with status ${response.status}`
-        );
-      }
-
-      if (data.status === "SUCCESS" && data.GatewayPageURL) {
-        window.location.href = data.GatewayPageURL;
-      } else {
-        setError(
-          data.detail || "Payment initialization failed. Please try again."
-        );
-      }
-    } catch (err: any) {
-      setError(err.message || "Payment failed. Please try again.");
-      console.error("Payment error:", err);
-    } finally {
-      setIsProcessing(false);
+  // Update the page title dynamically based on the destination name
+  useEffect(() => {
+    if (destinationName) {
+      document.title = `${destinationName} - Destination Details`;
     }
-  };
+  }, [destinationName]);
 
   // Loading state
   if (loading) {
@@ -219,7 +168,9 @@ const DestinationPage: FunctionComponent = () => {
             </h2>
             <p className="text-theme-primary">{error}</p>
             <button
-              onClick={() => navigate("/destinations")}
+              onClick={() =>
+                navigate(`/destinations/${destinationId}/${destinationName}`)
+              }
               className="mt-2 px-4 py-2 bg-theme-accent text-white rounded-lg font-semibold shadow hover:bg-theme-accent-dark transition-colors duration-200"
             >
               Back to Destinations
@@ -243,7 +194,9 @@ const DestinationPage: FunctionComponent = () => {
               The requested destination could not be found.
             </p>
             <button
-              onClick={() => navigate("/destinations")}
+              onClick={() =>
+                navigate(`/destinations/${destinationId}/${destinationName}`)
+              }
               className="mt-2 px-4 py-2 bg-theme-accent text-white rounded-lg font-semibold shadow hover:bg-theme-accent-dark transition-colors duration-200"
             >
               Back to Destinations
@@ -510,13 +463,7 @@ const DestinationPage: FunctionComponent = () => {
                             {experience.rating} ({experience.reviews} reviews)
                           </span>
                         </div>
-                        <button
-                          className="mt-2 px-4 py-2 bg-theme-accent text-white rounded-lg font-semibold shadow hover:bg-theme-accent-dark transition-colors duration-200"
-                          onClick={() => handleExperiencePayment(experience)}
-                          disabled={isProcessing}
-                        >
-                          {isProcessing ? "Processing..." : "Book Now"}
-                        </button>
+
                         {error && (
                           <div className="text-red-500 mt-2">{error}</div>
                         )}

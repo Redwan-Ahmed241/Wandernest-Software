@@ -3,10 +3,11 @@
 import type React from "react";
 import { type FunctionComponent, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Layout from "../Components/Layout";
+import Layout from "../components/layout";
 import Sidebar from "./Sidebar";
 import { useAuth } from "../Authentication/auth-context";
 import { useBooking } from "../Context/booking-context";
+import dashboardApi, { type Booking, type Stats } from "../api/dashboard";
 
 // Success notification component
 const BookingNotification: React.FC = () => {
@@ -58,23 +59,58 @@ const BookingNotification: React.FC = () => {
 const DashboardHome: FunctionComponent = () => {
   const navigate = useNavigate();
   const { isAuthenticated, loading: authLoading, user } = useAuth();
-  const { bookings, stats, refreshBookings, isLoading } = useBooking();
+  // Prefer the dedicated API client but keep the booking context as a fallback
+  const bookingCtx = useBooking();
+  const [bookings, setBookings] = useState<Booking[]>(bookingCtx?.bookings || []);
+  const [stats, setStats] = useState<Stats>(bookingCtx?.stats || {
+    totalBookings: 0,
+    upcomingTrips: 0,
+    totalSpent: 0,
+    completedTrips: 0,
+  });
+  const [isLoading, setIsLoading] = useState<boolean>(!!bookingCtx?.isLoading);
+  const [error, setError] = useState<string | null>(null);
 
-  // Refresh bookings on mount
   useEffect(() => {
-    if (!authLoading && isAuthenticated) {
-      refreshBookings();
+    let mounted = true;
+    async function load() {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const [remoteStats, remoteBookings] = await Promise.all([
+          dashboardApi.getDashboardStats(),
+          dashboardApi.getBookingsActive(),
+        ]);
+        if (!mounted) return;
+        if (remoteStats) setStats(remoteStats as Stats);
+        if (Array.isArray(remoteBookings)) setBookings(remoteBookings as Booking[]);
+      } catch (err) {
+        // Fallback to context values if API fails
+        if (!mounted) return;
+        console.warn('Dashboard API load failed', err);
+        setError(String(err || 'Failed to load dashboard data'));
+        if (bookingCtx?.bookings) setBookings(bookingCtx.bookings);
+        if (bookingCtx?.stats) setStats(bookingCtx.stats);
+      } finally {
+        if (mounted) setIsLoading(false);
+      }
     }
-  }, [authLoading, isAuthenticated, refreshBookings]);
+
+    if (!authLoading && isAuthenticated) {
+      load();
+    }
+
+    return () => {
+      mounted = false;
+    };
+  }, [authLoading, isAuthenticated, bookingCtx?.bookings, bookingCtx?.stats]);
 
   // Get recent bookings (last 5)
   const recentBookings = (bookings || []).slice(0, 5);
 
   // Get upcoming trips
   const upcomingTrips = (bookings || [])
-    .filter(
-      (b) => new Date(b.startDate) > new Date() && b.status === "confirmed"
-    )
+    .filter((b) => new Date(b.startDate) > new Date() && b.status === "confirmed")
     .slice(0, 3);
 
   const formatDate = (dateString: string) => {
@@ -85,8 +121,13 @@ const DashboardHome: FunctionComponent = () => {
     });
   };
 
-  const formatCurrency = (amount: number) => {
-    return `৳${amount.toLocaleString()}`;
+  const formatCurrency = (amount?: number | null) => {
+    const n = typeof amount === 'number' && !Number.isNaN(amount) ? amount : 0;
+    try {
+      return `৳${n.toLocaleString()}`;
+    } catch {
+      return `৳${String(n)}`;
+    }
   };
 
   // Show loading while auth is loading
@@ -115,16 +156,27 @@ const DashboardHome: FunctionComponent = () => {
   return (
     <Layout>
       <BookingNotification />
-      <div className="flex bg-gray-50" style={{ minHeight: 'calc(100vh - 64px)' }}>
+      <div
+        className="flex bg-gray-50"
+        style={{ minHeight: "calc(100vh - 64px)" }}
+      >
         <Sidebar />
         <div className="flex-1 p-8">
           <div className="max-w-7xl mx-auto space-y-8">
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-800 rounded-md p-3">
+                <strong className="font-semibold">Data may be stale:</strong>
+                <span className="ml-2">{error}</span>
+              </div>
+            )}
             {/* Welcome Section */}
             <div className="bg-gradient-to-br from-primary via-primary-dark to-primary-light text-white rounded-2xl p-8 shadow-xl">
               <div className="flex items-center justify-between">
                 <div>
                   <h1 className="text-4xl font-extrabold mb-2 text-gray-900 drop-shadow-lg">
-                    Welcome back, {user?.first_name || user?.username || "Traveler"}! <span className="align-middle">👋</span>
+                    Welcome back,{" "}
+                    {user?.first_name || user?.username || "Traveler"}!{" "}
+                    <span className="align-middle">👋</span>
                   </h1>
                   <p className="text-xl text-gray-700 font-medium drop-shadow">
                     Ready for your next adventure?
@@ -147,7 +199,7 @@ const DashboardHome: FunctionComponent = () => {
                   </div>
                   <div className="text-right">
                     <div className="text-2xl font-bold text-gray-900">
-                      {stats.totalBookings}
+                      {stats.totalBookings || (bookings || []).length}
                     </div>
                     <div className="text-sm text-gray-500">Total Bookings</div>
                   </div>
@@ -260,7 +312,7 @@ const DashboardHome: FunctionComponent = () => {
                       </div>
                     ) : (
                       <div className="space-y-4">
-{recentBookings.map((booking) => (
+                        {recentBookings.map((booking) => (
                           <div
                             key={booking.id}
                             className="flex items-center gap-4 p-4 rounded-xl border border-gray-100 hover:border-primary hover:shadow-md transition-all duration-200"
@@ -372,8 +424,7 @@ const DashboardHome: FunctionComponent = () => {
                               🗓️ {formatDate(trip.startDate)}
                             </p>
                             <p className="text-xs text-gray-500">
-                              👥 {trip.travelers} traveler
-                              {trip.travelers > 1 ? "s" : ""}
+                              👥 {trip.travelers ?? 1} traveler{(trip.travelers ?? 1) > 1 ? "s" : ""}
                             </p>
                           </div>
                         </div>

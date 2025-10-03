@@ -52,9 +52,12 @@ const Sidebar: FunctionComponent = () => {
           <span className="text-lg">✈️</span> My Trips
         </button>
         <button
-          className="px-4 py-3 rounded-lg text-left font-medium text-gray-400 cursor-not-allowed flex items-center gap-3 opacity-50"
-          title="This feature is coming soon!"
-          disabled
+          className={`px-4 py-3 rounded-lg text-left font-medium transition-all duration-200 flex items-center gap-3 ${
+            window.location.pathname === "/visa-assistance"
+              ? "bg-blue-50 text-blue-700 border-l-4 border-blue-500 shadow-sm"
+              : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+          }`}
+          onClick={() => navigate("/visa-assistance")}
         >
           <span className="text-lg">🛂</span> Visa Assistance
         </button>
@@ -65,9 +68,12 @@ const Sidebar: FunctionComponent = () => {
           <span className="text-lg">📝</span> Plan a Trip
         </button>
         <button
-          className="px-4 py-3 rounded-lg text-left font-medium text-gray-400 cursor-not-allowed flex items-center gap-3 opacity-50"
-          title="This feature is coming soon!"
-          disabled
+          className={`px-4 py-3 rounded-lg text-left font-medium transition-all duration-200 flex items-center gap-3 ${
+            window.location.pathname === "/groups"
+              ? "bg-blue-50 text-blue-700 border-l-4 border-blue-500 shadow-sm"
+              : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+          }`}
+          onClick={() => navigate("/groups")}
         >
           <span className="text-lg">👥</span> Groups
         </button>
