@@ -387,14 +387,15 @@ const NATIONALITIES = [
   "Zambian",
   "Zimbabwean",
 ];
+//https://wander-nest-ad3s.onrender.com/api/flights/airports/
 
 // Updated API Service Functions
 const flightAPI = {
   // Get airports for search autocomplete
   getAirports: async (search?: string): Promise<Airport[]> => {
     const url = search
-      ? `${API_BASE_URL}/airports/?search=${encodeURIComponent(search)}`
-      : `${API_BASE_URL}/airports/`;
+      ? `${API_BASE_URL}flights/airports/?search=${encodeURIComponent(search)}`
+      : `${API_BASE_URL}flights/airports/`;
 
     const response = await fetch(url);
     if (!response.ok) {
