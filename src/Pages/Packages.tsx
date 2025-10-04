@@ -12,6 +12,8 @@ import {
   Calendar,
   Users,
 } from "react-feather";
+import Pagination from "../components/Pagination";
+import { usePagination } from "../hooks/usePagination";
 
 const FILTER_OPTIONS = {
   Budget: ["All", "< 4000৳", "4000–6000৳", "6000+৳"],
@@ -147,6 +149,20 @@ const Packages: FunctionComponent = () => {
       }
     );
     return matchesSearch && matchesFilters;
+  });
+
+  // Pagination logic
+  const ITEMS_PER_PAGE = 9; // 3x3 grid
+  const {
+    currentPage,
+    totalPages,
+    currentItems: paginatedPackages,
+    goToPage,
+    totalItems,
+    itemsPerPage,
+  } = usePagination({
+    data: filteredPackages,
+    itemsPerPage: ITEMS_PER_PAGE,
   });
 
   // Dynamic Destination options
@@ -359,8 +375,9 @@ const Packages: FunctionComponent = () => {
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredPackages.map((pkg) => (
+              <div className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {paginatedPackages.map((pkg) => (
                   <div
                     key={pkg.id}
                     className="group bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col justify-between h-full min-h-[420px]"
@@ -448,8 +465,19 @@ const Packages: FunctionComponent = () => {
                         </button>
                       </div>
                     </div>
-                  </div>
-                ))}
+                    </div>
+                  ))}
+                </div>
+                {totalPages > 1 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={goToPage}
+                    itemsPerPage={itemsPerPage}
+                    totalItems={totalItems}
+                    className="mt-8"
+                  />
+                )}
               </div>
             )}
           </div>
