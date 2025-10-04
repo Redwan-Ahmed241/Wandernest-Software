@@ -15,6 +15,8 @@ import {
   Truck,
   Coffee,
 } from "react-feather";
+import Pagination from "../components/Pagination";
+import { usePagination } from "../hooks/usePagination";
 
 // Define interfaces
 interface Hotel {
@@ -561,6 +563,20 @@ const HotelsRooms: FunctionComponent = () => {
     return matchesSearch && matchesFilters;
   });
 
+  // Pagination logic
+  const ITEMS_PER_PAGE = 9; // 3x3 grid
+  const {
+    currentPage,
+    totalPages,
+    currentItems: paginatedHotels,
+    goToPage,
+    totalItems,
+    itemsPerPage,
+  } = usePagination({
+    data: filteredHotels,
+    itemsPerPage: ITEMS_PER_PAGE,
+  });
+
   const handleBookHotel = (hotel: Hotel) => {
     if (!isAuthenticated) {
       navigate("/login");
@@ -730,113 +746,125 @@ const HotelsRooms: FunctionComponent = () => {
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredHotels.map((hotel) => (
-                  <div
-                    key={hotel.id}
-                    className="group bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-105"
-                  >
-                    <div className="relative overflow-hidden">
-                      <img
-                        src={hotel.image_url}
-                        alt={hotel.name}
-                        className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          if (
-                            target.src !==
-                            "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=600"
-                          ) {
-                            target.src =
-                              "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=600";
-                          }
-                        }}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                      <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
-                        <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                        <span className="text-sm font-semibold">
-                          {hotel.star}
-                        </span>
-                      </div>
-                      <div className="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                        <div className="flex items-center justify-between text-white">
-                          <div className="flex items-center gap-2">
-                            <MapPin className="w-4 h-4" />
-                            <span className="text-sm font-medium">
-                              {hotel.location}
-                            </span>
-                          </div>
-                          <div className="text-accent font-bold text-lg">
-                            ৳{hotel.price.toLocaleString()}/night
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
-                        {hotel.name}
-                      </h3>
-                      <p className="text-gray-600 mb-4 line-clamp-2 leading-relaxed">
-                        {hotel.description}
-                      </p>
-
-                      {/* Amenities */}
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        <div className="flex items-center gap-1 text-xs bg-gray-100 px-2 py-1 rounded-full">
-                          <Wifi className="w-3 h-3" />
-                          <span>WiFi</span>
-                        </div>
-                        <div className="flex items-center gap-1 text-xs bg-gray-100 px-2 py-1 rounded-full">
-                          <Truck className="w-3 h-3" />
-                          <span>Parking</span>
-                        </div>
-                        <div className="flex items-center gap-1 text-xs bg-gray-100 px-2 py-1 rounded-full">
-                          <Coffee className="w-3 h-3" />
-                          <span>Restaurant</span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1">
-                          {Array.from({ length: hotel.star }).map((_, i) => (
-                            <Star
-                              key={i}
-                              className="w-4 h-4 text-yellow-500 fill-current"
-                            />
-                          ))}
-                          <span className="text-sm text-gray-500 ml-1">
-                            ({hotel.star} Star)
+              <div className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {paginatedHotels.map((hotel) => (
+                    <div
+                      key={hotel.id}
+                      className="group bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-105"
+                    >
+                      <div className="relative overflow-hidden">
+                        <img
+                          src={hotel.image_url}
+                          alt={hotel.name}
+                          className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            if (
+                              target.src !==
+                              "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=600"
+                            ) {
+                              target.src =
+                                "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=600";
+                            }
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
+                          <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                          <span className="text-sm font-semibold">
+                            {hotel.star}
                           </span>
                         </div>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleBookHotel(hotel);
-                          }}
-                          className="px-6 py-2 bg-[#6ab187] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2"
-                        >
-                          Book Now
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-5 h-5 transition-transform duration-300"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
+                        <div className="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                          <div className="flex items-center justify-between text-white">
+                            <div className="flex items-center gap-2">
+                              <MapPin className="w-4 h-4" />
+                              <span className="text-sm font-medium">
+                                {hotel.location}
+                              </span>
+                            </div>
+                            <div className="text-accent font-bold text-lg">
+                              ৳{hotel.price.toLocaleString()}/night
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="p-6">
+                        <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
+                          {hotel.name}
+                        </h3>
+                        <p className="text-gray-600 mb-4 line-clamp-2 leading-relaxed">
+                          {hotel.description}
+                        </p>
+
+                        {/* Amenities */}
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          <div className="flex items-center gap-1 text-xs bg-gray-100 px-2 py-1 rounded-full">
+                            <Wifi className="w-3 h-3" />
+                            <span>WiFi</span>
+                          </div>
+                          <div className="flex items-center gap-1 text-xs bg-gray-100 px-2 py-1 rounded-full">
+                            <Truck className="w-3 h-3" />
+                            <span>Parking</span>
+                          </div>
+                          <div className="flex items-center gap-1 text-xs bg-gray-100 px-2 py-1 rounded-full">
+                            <Coffee className="w-3 h-3" />
+                            <span>Restaurant</span>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-1">
+                            {Array.from({ length: hotel.star }).map((_, i) => (
+                              <Star
+                                key={i}
+                                className="w-4 h-4 text-yellow-500 fill-current"
+                              />
+                            ))}
+                            <span className="text-sm text-gray-500 ml-1">
+                              ({hotel.star} Star)
+                            </span>
+                          </div>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleBookHotel(hotel);
+                            }}
+                            className="px-6 py-2 bg-[#6ab187] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2"
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M17 8l4 4m0 0l-4 4m4-4H3"
-                            />
-                          </svg>
-                        </button>
+                            Book Now
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="w-5 h-5 transition-transform duration-300"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M17 8l4 4m0 0l-4 4m4-4H3"
+                              />
+                            </svg>
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+                {totalPages > 1 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={goToPage}
+                    itemsPerPage={itemsPerPage}
+                    totalItems={totalItems}
+                    className="mt-8"
+                  />
+                )}
               </div>
             )}
           </div>

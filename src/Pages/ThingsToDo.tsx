@@ -4,6 +4,8 @@ import type { FunctionComponent } from "react";
 //import { useNavigate } from "react-router-dom";
 import Layout from "../components/layout";
 import { Search, MapPin, Star, ArrowRight } from "react-feather";
+import Pagination from "../components/Pagination";
+import { usePagination } from "../hooks/usePagination";
 
 const filterCategories = [
   { id: "all", label: "All Activities", icon: "🌟" },
@@ -37,89 +39,7 @@ const ThingsToDo: FunctionComponent = () => {
   // Moved `cardData` inside `useEffect` to prevent unnecessary re-renders
   useEffect(() => {
     const cardData: Activity[] = [
-      {
-        title: "Explore the Sundarbans Mangrove Forest",
-        location: "Khulna",
-        description: `Immerse yourself in the lush green beauty of the Sundarbans, the world's largest mangrove forest. Capture stunning photos of diverse flora and fauna, and experience nature's tranquil essence.`,
-        image: "/Figma_photos/mangrove.jpg",
-        category: "Nature",
-        rating: 4.8,
-        duration: "Full Day",
-        price: "৳2,500",
-      },
-      {
-        title: "Savor Street Food in Old Dhaka",
-        location: "Dhaka",
-        description:
-          "Indulge in a culinary adventure through the vibrant streets of Old Dhaka. Sample local delicacies like biryani, kebabs, and flavorful chutneys.",
-        image: "/Figma_photos/puran_dhaka.jpg",
-        category: "Food",
-        rating: 4.7,
-        duration: "4 Hours",
-        price: "৳800",
-      },
-      {
-        title: "Discover Historical Sites at Lalbagh Fort",
-        location: "Dhaka",
-        description:
-          "Journey through time within the ancient walls of Lalbagh Fort, a historical Mughal-era structure. Marvel at intricate architecture, gardens, and artifacts.",
-        image: "/Figma_photos/lalbagh.jpg",
-        category: "Culture",
-        rating: 4.6,
-        duration: "3 Hours",
-        price: "৳500",
-      },
-      {
-        title: "Boat Trip on the Buriganga River",
-        location: "Dhaka",
-        description: `Take a scenic boat trip on the Buriganga River, offering captivating views of Dhaka's cityscape. Experience the hustle and bustle of river life.`,
-        image: "/Figma_photos/burigangha.jpg",
-        category: "Adventure",
-        rating: 4.5,
-        duration: "2 Hours",
-        price: "৳1,200",
-      },
-      {
-        title: `Relax at Cox's Bazar Beach`,
-        location: `Cox's Bazar`,
-        description: `Find peace and rejuvenation on the golden sands of Cox's Bazar, one of the world's longest natural beaches. Relax by the sea, and soak in the coastal atmosphere.`,
-        image: "/Figma_photos/coxsbazar.jpg",
-        category: "Nature",
-        rating: 4.9,
-        duration: "Full Day",
-        price: "৳1,800",
-      },
-      {
-        title: "Experience Traditional Cuisine in a Local Eatery",
-        location: "Dhaka",
-        description:
-          "Treat yourself to a delightful culinary adventure in a traditional Bangladeshi eatery. Relish the rich flavors of local dishes like hilsa fish curry and various vegetable preparations.",
-        image: "/Figma_photos/local_cuisine.jpeg",
-        category: "Food",
-        rating: 4.4,
-        duration: "2 Hours",
-        price: "৳600",
-      },
-      {
-        title: "Visit the National Museum of Bangladesh",
-        location: "Dhaka",
-        description: `Step into the cultural heritage of Bangladesh at the National Museum in Dhaka. Wander through exhibits showcasing art, history, and the nation's rich past.`,
-        image: "/Figma_photos/museum.jpeg",
-        category: "Culture",
-        rating: 4.3,
-        duration: "3 Hours",
-        price: "৳300",
-      },
-      {
-        title: "Cycle through the Countryside",
-        location: "Dhaka",
-        description: `Embark on a picturesque cycling tour through the serene countryside surrounding Dhaka. Witness rural life, lush green fields, and local villages as you ride.`,
-        image: "/Figma_photos/cycling.jpg",
-        category: "Adventure",
-        rating: 4.6,
-        duration: "5 Hours",
-        price: "৳1,000",
-      },
+      
     ];
 
     const fetchData = async () => {
@@ -154,6 +74,20 @@ const ThingsToDo: FunctionComponent = () => {
       locationQuery.trim() === "" ||
       card.location.toLowerCase().includes(locationQuery.toLowerCase());
     return matchesCategory && matchesActivity && matchesLocation;
+  });
+
+  // Pagination logic
+  const ITEMS_PER_PAGE = 9; // 3x3 grid
+  const {
+    currentPage,
+    totalPages,
+    currentItems: paginatedCards,
+    goToPage,
+    totalItems,
+    itemsPerPage,
+  } = usePagination({
+    data: filteredCards,
+    itemsPerPage: ITEMS_PER_PAGE,
   });
 
   return (
@@ -265,80 +199,92 @@ const ThingsToDo: FunctionComponent = () => {
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredCards.map((card, idx) => (
-                  <div
-                    key={idx}
-                    className="group bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col h-full"
-                  >
-                    <div className="relative overflow-hidden">
-                      <img
-                        className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
-                        alt={card.title}
-                        src={card.image}
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.src =
-                            "https://images.pexels.com/photos/2662116/pexels-photo-2662116.jpeg?auto=compress&cs=tinysrgb&w=600";
-                        }}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                      <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1">
-                        <span className="text-sm font-semibold text-gray-800">
-                          {card.category}
-                        </span>
-                      </div>
-                      <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
-                        <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                        <span className="text-sm font-semibold">
-                          {card.rating}
-                        </span>
-                      </div>
-                      <div className="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                        <div className="flex items-center justify-between text-white">
-                          <div className="flex items-center gap-2">
-                            <MapPin className="w-4 h-4" />
-                            <span className="text-sm font-medium">
-                              {card.location}
-                            </span>
-                          </div>
-                          <div className="text-accent font-bold">
-                            {card.price}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="p-6 flex flex-col flex-1 justify-between">
-                      <div>
-                        <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
-                          {card.title}
-                        </h3>
-                        <p className="text-gray-600 mb-4 line-clamp-3 leading-relaxed">
-                          {card.description}
-                        </p>
-                      </div>
-                      <div className="flex items-center justify-between mt-auto">
-                        <div className="flex items-center gap-4 text-sm text-gray-500">
-                          <span className="flex items-center gap-1">
-                            <span>⏱️</span>
-                            {card.duration}
+              <div className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {paginatedCards.map((card, idx) => (
+                    <div
+                      key={idx}
+                      className="group bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col h-full"
+                    >
+                      <div className="relative overflow-hidden">
+                        <img
+                          className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+                          alt={card.title}
+                          src={card.image}
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.src =
+                              "https://images.pexels.com/photos/2662116/pexels-photo-2662116.jpeg?auto=compress&cs=tinysrgb&w=600";
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1">
+                          <span className="text-sm font-semibold text-gray-800">
+                            {card.category}
                           </span>
                         </div>
-                        <button
-                          className="flex items-center gap-1 font-semibold hover:gap-2 transition-all duration-200 px-6 py-2 rounded-xl shadow-md"
-                          style={{
-                            background: "linear-gradient(to right, #6ab187)",
-                            color: "white",
-                          }}
-                        >
-                          <span>Explore</span>
-                          <ArrowRight className="w-4 h-4" />
-                        </button>
+                        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
+                          <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                          <span className="text-sm font-semibold">
+                            {card.rating}
+                          </span>
+                        </div>
+                        <div className="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                          <div className="flex items-center justify-between text-white">
+                            <div className="flex items-center gap-2">
+                              <MapPin className="w-4 h-4" />
+                              <span className="text-sm font-medium">
+                                {card.location}
+                              </span>
+                            </div>
+                            <div className="text-accent font-bold">
+                              {card.price}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="p-6 flex flex-col flex-1 justify-between">
+                        <div>
+                          <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
+                            {card.title}
+                          </h3>
+                          <p className="text-gray-600 mb-4 line-clamp-3 leading-relaxed">
+                            {card.description}
+                          </p>
+                        </div>
+                        <div className="flex items-center justify-between mt-auto">
+                          <div className="flex items-center gap-4 text-sm text-gray-500">
+                            <span className="flex items-center gap-1">
+                              <span>⏱️</span>
+                              {card.duration}
+                            </span>
+                          </div>
+                          <button
+                            className="flex items-center gap-1 font-semibold hover:gap-2 transition-all duration-200 px-6 py-2 rounded-xl shadow-md"
+                            style={{
+                              background: "linear-gradient(to right, #6ab187)",
+                              color: "white",
+                            }}
+                          >
+                            <span>Explore</span>
+                            <ArrowRight className="w-4 h-4" />
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+                {totalPages > 1 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={goToPage}
+                    itemsPerPage={itemsPerPage}
+                    totalItems={totalItems}
+                    className="mt-8"
+                  />
+                )}
               </div>
             )}
           </div>
