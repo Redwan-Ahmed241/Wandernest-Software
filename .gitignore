@@ -20,6 +20,7 @@ git_commits_shah_redwan_ahmed.md
 # Documentation files
 docs/
 docs/blog-api-documentation.md
+PAGINATION_DOCUMENTATION.md
 # Logs
 logs
 *.log
