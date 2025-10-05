@@ -383,10 +383,10 @@ const DashboardHome: FunctionComponent = () => {
                     </button>
                     <button
                       className="w-full p-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all duration-200 font-medium"
-                      onClick={() => navigate("/community")}
+                      onClick={() => navigate("/blogs")}
                     >
-                      <span className="mr-2">🌍</span>
-                      Join Community
+                      <span className="mr-2">📝</span>
+                      Visit Blog
                     </button>
                   </div>
                 </div>

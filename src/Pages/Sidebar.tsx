@@ -79,9 +79,9 @@ const Sidebar: FunctionComponent = () => {
         </button>
         <button
           className="px-4 py-3 rounded-lg text-left font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200 flex items-center gap-3"
-          onClick={() => navigate("/community")}
+          onClick={() => navigate("/blogs")}
         >
-          <span className="text-lg">🌐</span> Community
+          <span className="text-lg">📝</span> Blog
         </button>
       </nav>
     </aside>

@@ -49,7 +49,7 @@ describe('Sidebar Component', () => {
     expect(screen.getByText('Visa Assistance')).toBeInTheDocument();
     expect(screen.getByText('Plan a Trip')).toBeInTheDocument();
     expect(screen.getByText('Groups')).toBeInTheDocument();
-    expect(screen.getByText('Community')).toBeInTheDocument();
+    expect(screen.getByText('Blog')).toBeInTheDocument();
   });
 
   it('should navigate to visa-assistance when Visa Assistance button is clicked', () => {
@@ -107,15 +107,15 @@ describe('Sidebar Component', () => {
     expect(mockNavigate).toHaveBeenCalledWith('/create-packages');
   });
 
-  it('should navigate to community when Community button is clicked', () => {
+  it('should navigate to blogs when Blog button is clicked', () => {
     render(
       <TestWrapper>
         <Sidebar />
       </TestWrapper>
     );
 
-    fireEvent.click(screen.getByText('Community'));
-    expect(mockNavigate).toHaveBeenCalledWith('/community');
+    fireEvent.click(screen.getByText('Blog'));
+    expect(mockNavigate).toHaveBeenCalledWith('/blogs');
   });
 
   it('should display user information', () => {
