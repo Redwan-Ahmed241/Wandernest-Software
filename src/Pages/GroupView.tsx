@@ -456,7 +456,7 @@ const GroupView: React.FC = () => {
                   <div className="bg-white rounded-xl shadow-sm p-6">
                     <div className="flex items-start gap-3">
                       <img
-                        src={(user as any)?.avatar || '/Figma_photos/ifty.jpg'}
+                        src={'/Figma_photos/ifty.jpg'}
                         alt="Your avatar"
                         className="w-10 h-10 rounded-full object-cover"
                       />
@@ -464,7 +464,7 @@ const GroupView: React.FC = () => {
                         <textarea
                           value={postInput}
                           onChange={(e) => setPostInput(e.target.value)}
-                          placeholder={`What's on your mind, ${(user as any)?.name || 'there'}?`}
+                          placeholder={`What's on your mind, ${user?.first_name || 'there'}?`}
                           className="w-full p-3 bg-gray-100 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary border-0"
                           rows={3}
                         />
