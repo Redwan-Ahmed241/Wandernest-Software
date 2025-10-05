@@ -137,14 +137,14 @@ const HelpCenter: React.FC = () => {
                 </p>
               </a>
               <a
-                href="/community"
+                href="/blogs"
                 className="block bg-white rounded-xl shadow p-6 hover:shadow-md transition"
               >
                 <h3 className="font-semibold text-primary mb-2">
-                  Community Forum
+                  Travel Blog
                 </h3>
                 <p className="text-gray-600 text-sm">
-                  Connect with other travelers and share experiences.
+                  Read travel stories, tips, and experiences from travelers.
                 </p>
               </a>
               <a
