@@ -27,6 +27,7 @@ const BlogDetail = lazy(() => import("./Pages/BlogDetail"));
 const WriteStory = lazy(() => import("./Pages/WriteStory"));
 const Flights = lazy(() => import("./Pages/flights"));
 const Groups = lazy(() => import("./Pages/Groups"));
+const CreateGroup = lazy(() => import("./Pages/CreateGroup"));
 const Guides = lazy(() => import("./Pages/hiringGuides"));
 const LoginPage = lazy(() => import("./Pages/Loginpage"));
 const Destination01 = lazy(() => import("./Pages/Destination_01"));
@@ -111,6 +112,15 @@ const AppRoutes: React.FC = () => {
         />
         <Route path="/flights" element={<Flights />} />
         <Route path="/groups" element={<Groups />} />
+        <Route path="/groups/:id" element={<Groups />} />
+        <Route
+          path="/groups/create"
+          element={
+            <ProtectedRoute>
+              <CreateGroup />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/hiring-guides" element={<Guides />} />
         <Route path="/destination-01" element={<Destination01 />} />
         <Route path="/homepage" element={<HomePage />} />
