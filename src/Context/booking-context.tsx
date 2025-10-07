@@ -23,6 +23,11 @@ interface BookingStats {
   upcomingTrips: number;
   totalSpent: number;
   completedTrips: number;
+  pendingBookings: number;
+  cancelledBookings: number;
+  averageSpentPerTrip: number;
+  favoriteDestination: string;
+  memberSince: string;
 }
 
 interface BookingContextType {
@@ -59,15 +64,32 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
     const completed = bookings.filter(
       (b) => new Date(b.endDate) < now && b.status === "confirmed"
     );
+    const pending = bookings.filter((b) => b.status === "pending");
+    const cancelled = bookings.filter((b) => b.status === "cancelled");
+    const confirmedBookings = bookings.filter((b) => b.status === "confirmed");
+    const totalSpent = confirmedBookings.reduce((sum, b) => sum + b.price, 0);
+    
+    // Calculate favorite destination
+    const destinations = bookings
+      .filter((b) => b.location && b.status === "confirmed")
+      .map((b) => b.location!);
+    const destinationCounts = destinations.reduce((acc, dest) => {
+      acc[dest] = (acc[dest] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+    const favoriteDestination = Object.entries(destinationCounts)
+      .sort(([,a], [,b]) => b - a)[0]?.[0] || '';
 
     return {
       totalBookings: bookings.length,
       upcomingTrips: upcoming.length,
-      totalSpent: bookings.reduce(
-        (sum, b) => sum + (b.status === "confirmed" ? b.price : 0),
-        0
-      ),
+      totalSpent,
       completedTrips: completed.length,
+      pendingBookings: pending.length,
+      cancelledBookings: cancelled.length,
+      averageSpentPerTrip: confirmedBookings.length > 0 ? Math.round(totalSpent / confirmedBookings.length) : 0,
+      favoriteDestination,
+      memberSince: bookings.length > 0 ? new Date(Math.min(...bookings.map(b => new Date(b.createdAt).getTime()))).toISOString().split('T')[0] : '',
     };
   }, [bookings]);
 

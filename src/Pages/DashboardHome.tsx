@@ -67,6 +67,11 @@ const DashboardHome: FunctionComponent = () => {
     upcomingTrips: 0,
     totalSpent: 0,
     completedTrips: 0,
+    pendingBookings: 0,
+    cancelledBookings: 0,
+    averageSpentPerTrip: 0,
+    favoriteDestination: '',
+    memberSince: '',
   });
   const [isLoading, setIsLoading] = useState<boolean>(!!bookingCtx?.isLoading);
   const [error, setError] = useState<string | null>(null);
@@ -88,7 +93,14 @@ const DashboardHome: FunctionComponent = () => {
         // Fallback to context values if API fails
         if (!mounted) return;
         console.warn('Dashboard API load failed', err);
+        console.log('🔍 DEBUG - Fallback booking context data:', bookingCtx?.bookings);
         setError(String(err || 'Failed to load dashboard data'));
+        
+        // Force refresh booking context data
+        if (bookingCtx?.refreshBookings) {
+          await bookingCtx.refreshBookings();
+        }
+        
         if (bookingCtx?.bookings) setBookings(bookingCtx.bookings);
         if (bookingCtx?.stats) setStats(bookingCtx.stats);
       } finally {
@@ -103,7 +115,7 @@ const DashboardHome: FunctionComponent = () => {
     return () => {
       mounted = false;
     };
-  }, [authLoading, isAuthenticated, bookingCtx?.bookings, bookingCtx?.stats]);
+  }, [authLoading, isAuthenticated, bookingCtx?.bookings, bookingCtx?.stats, bookingCtx]);
 
   // Get recent bookings (last 5)
   const recentBookings = (bookings || []).slice(0, 5);
