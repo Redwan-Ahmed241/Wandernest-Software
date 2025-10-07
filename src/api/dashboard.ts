@@ -19,6 +19,11 @@ export interface Stats {
   upcomingTrips: number;
   totalSpent: number;
   completedTrips: number;
+  pendingBookings: number;
+  cancelledBookings: number;
+  averageSpentPerTrip: number;
+  favoriteDestination: string;
+  memberSince: string;
 }
 
 type ApiSuccess<T> = { success: true; data: T };
@@ -105,23 +110,50 @@ export async function getDashboardStats(token?: string): Promise<Stats> {
     upcomingTrips: Number(raw?.upcomingTrips ?? raw?.upcoming_trips ?? 0) || 0,
     totalSpent: Number(raw?.totalSpent ?? raw?.total_spent ?? 0) || 0,
     completedTrips: Number(raw?.completedTrips ?? raw?.completed_trips ?? 0) || 0,
+    pendingBookings: Number(raw?.pendingBookings ?? raw?.pending_bookings ?? 0) || 0,
+    cancelledBookings: Number(raw?.cancelledBookings ?? raw?.cancelled_bookings ?? 0) || 0,
+    averageSpentPerTrip: Number(raw?.averageSpentPerTrip ?? raw?.average_spent_per_trip ?? 0) || 0,
+    favoriteDestination: String(raw?.favoriteDestination ?? raw?.favorite_destination ?? ''),
+    memberSince: String(raw?.memberSince ?? raw?.member_since ?? ''),
   };
   return s;
 }
 
 export async function getBookingsActive(token?: string): Promise<Booking[]> {
   const raw = await request<unknown>('/api/bookings/active', {}, token);
+  
+  // Debug logging to see what backend returns
+  console.log('🔍 DEBUG - Raw bookings response:', raw);
+  console.log('🔍 DEBUG - Type of response:', typeof raw);
+  console.log('🔍 DEBUG - Is array?', Array.isArray(raw));
 
   // try to extract an array from multiple possible shapes
   const asRecord = (raw as Record<string, unknown> | null) ?? null;
   let items: unknown[] = [];
-  if (Array.isArray(raw)) items = raw as unknown[];
-  else if (Array.isArray(asRecord?.results as unknown)) items = asRecord!.results as unknown[];
-  else if (Array.isArray(asRecord?.data as unknown)) items = asRecord!.data as unknown[];
-  else if (Array.isArray(asRecord?.bookings as unknown)) items = asRecord!.bookings as unknown[];
-  else if (Array.isArray(asRecord?.items as unknown)) items = asRecord!.items as unknown[];
+  if (Array.isArray(raw)) {
+    items = raw as unknown[];
+    console.log('🔍 DEBUG - Found array directly, length:', items.length);
+  } else if (Array.isArray(asRecord?.results as unknown)) {
+    items = asRecord!.results as unknown[];
+    console.log('🔍 DEBUG - Found array in results, length:', items.length);
+  } else if (Array.isArray(asRecord?.data as unknown)) {
+    items = asRecord!.data as unknown[];
+    console.log('🔍 DEBUG - Found array in data, length:', items.length);
+  } else if (Array.isArray(asRecord?.bookings as unknown)) {
+    items = asRecord!.bookings as unknown[];
+    console.log('🔍 DEBUG - Found array in bookings, length:', items.length);
+  } else if (Array.isArray(asRecord?.items as unknown)) {
+    items = asRecord!.items as unknown[];
+    console.log('🔍 DEBUG - Found array in items, length:', items.length);
+  } else {
+    console.log('🔍 DEBUG - No array found in response structure');
+    console.log('🔍 DEBUG - Available keys:', asRecord ? Object.keys(asRecord) : 'null');
+  }
 
-  if (!items || items.length === 0) return [];
+  if (!items || items.length === 0) {
+    console.log('🔍 DEBUG - No items found, returning empty array');
+    return [];
+  }
 
   return items.map((item) => {
     const b = (item as Record<string, unknown>) ?? {};
