@@ -49,6 +49,50 @@ type FilterKey = keyof typeof FILTER_OPTIONS;
 
 const MEDIA_BASE = "https://wander-nest-ad3s.onrender.com";
 
+// Create hotel booking record
+const createHotelBooking = async (bookingData: {
+  hotel_id: string;
+  hotel_name: string;
+  customer_name: string;
+  customer_email: string;
+  customer_phone: string;
+  checkin_date: string;
+  guests: number;
+  total_amount: number;
+  booking_id: string;
+  status: string;
+  location: string;
+}) => {
+  const token = localStorage.getItem("token");
+  const response = await fetch(
+    "https://wander-nest-ad3s.onrender.com/api/bookings/hotels/",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+      },
+      body: JSON.stringify({
+        ...bookingData,
+        type: "hotel",
+        startDate: bookingData.checkin_date,
+        endDate: new Date(new Date(bookingData.checkin_date).getTime() + 24 * 60 * 60 * 1000).toISOString().split('T')[0], // Next day
+        price: bookingData.total_amount,
+        title: bookingData.hotel_name,
+        travelers: bookingData.guests,
+        createdAt: new Date().toISOString(),
+      }),
+    }
+  );
+
+  if (!response.ok) {
+    console.error("Failed to create booking record:", response.statusText);
+    // Don't throw error here - payment should still proceed
+  }
+
+  return response.json();
+};
+
 // Helper functions for filtering
 const checkPriceRange = (price: number, range: string): boolean => {
   switch (range) {
@@ -158,9 +202,40 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
         throw new Error(errorMessage);
       }
 
+      // Create booking record before redirecting to payment
       if (data.status === "SUCCESS" && data.GatewayPageURL) {
+        // Create booking record in the system
+        await createHotelBooking({
+          hotel_id: hotel.id,
+          hotel_name: hotel.name,
+          customer_name: form.name.trim(),
+          customer_email: form.email.trim(),
+          customer_phone: form.phone.trim(),
+          checkin_date: form.checkin,
+          guests: form.guests,
+          total_amount: totalAmount,
+          booking_id: paymentData.booking_id,
+          status: "pending",
+          location: hotel.location,
+        });
+        
         window.location.href = data.GatewayPageURL;
       } else if (data.GatewayPageURL) {
+        // Create booking record even for non-SUCCESS status
+        await createHotelBooking({
+          hotel_id: hotel.id,
+          hotel_name: hotel.name,
+          customer_name: form.name.trim(),
+          customer_email: form.email.trim(),
+          customer_phone: form.phone.trim(),
+          checkin_date: form.checkin,
+          guests: form.guests,
+          total_amount: totalAmount,
+          booking_id: paymentData.booking_id,
+          status: "pending",
+          location: hotel.location,
+        });
+        
         window.location.href = data.GatewayPageURL;
       } else {
         throw new Error("Payment gateway URL not received. Please try again.");

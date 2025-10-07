@@ -16,6 +16,7 @@ dashboard_api.md
 git_commits_aug22_sep15.md
 git_commits_ifty_aug22_sep15.md
 git_commits_shah_redwan_ahmed.md
+GIT_LOG_SEP25_OCT8_2025.md
 
 # Documentation files
 docs/
@@ -23,6 +24,10 @@ docs/blog-api-documentation.md
 PAGINATION_DOCUMENTATION.md
 GROUPS_API_DOCUMENTATION.md
 GROUPS_API_QUICK_REFERENCE.md
+PUBLIC_TRANSPORT_API_DOCUMENTATION.md
+GUIDES_API_DOCUMENTATION.md
+DESTINATION_DETAILS_API_DATA.md
+HOTELS_API_DOCUMENTATION.md
 # Logs
 logs
 *.log
