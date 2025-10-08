@@ -1,0 +1,28 @@
+```mermaid
+flowchart LR
+  subgraph Client[Client - Browser]
+    A[React SPA (src/*)] -->|Router| B[Pages & Components]
+    B --> C[AuthProvider / BookingProvider]
+    B --> D[Leaflet map]
+  end
+
+  subgraph Build[Build Tooling]
+    E[Vite + TypeScript] -->|Build| F[dist/]
+    E -->|Dev Server| Client
+  end
+
+  subgraph CDN[Static Hosting]
+    F --> G[Netlify / CDN]
+    G -->|Serve| Client
+  end
+
+  subgraph Backend[API & Services]
+    H[REST API] --> I[(Database)]
+    C -->|API calls| H
+  end
+
+  style Client fill:#f9f,stroke:#333,stroke-width:1px
+  style Backend fill:#bbf,stroke:#333,stroke-width:1px
+  style Build fill:#bfb,stroke:#333,stroke-width:1px
+  style CDN fill:#ffd,stroke:#333,stroke-width:1px
+```
