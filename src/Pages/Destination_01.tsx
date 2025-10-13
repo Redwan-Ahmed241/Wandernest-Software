@@ -7,7 +7,7 @@ import Layout from "../components/layout";
 import { useNavigate, useParams } from "react-router-dom";
 
 // API Base URL
-const API_BASE_URL = "https://wander-nest-ad3s.onrender.com/api";
+const API_BASE_URL = "https://wander-nest-ad3s.onrender.com";
 
 // Interfaces for API responses
 interface DestinationData {
@@ -89,41 +89,62 @@ const DestinationPage: FunctionComponent = () => {
         setLoading(true);
         setError(null);
 
-        // Fetch destination details
+        // ID mapping: list ID -> details ID
+        // The detail IDs start from 16, so we add 15 to the list ID
+        // List ID 1 -> Detail ID 16, List ID 2 -> Detail ID 17, etc.
+        const detailId = parseInt(destinationId) + 15;
+        
+        console.log('List ID:', destinationId, 'Detail ID:', detailId);
+
+        // Fetch destination details using the mapped ID
         const destinationResponse = await fetch(
-          `${API_BASE_URL}/destinations/${destinationId}/`
+          `${API_BASE_URL}/api/home/destinations/${detailId}/`
         );
         if (!destinationResponse.ok) {
           throw new Error("Failed to fetch destination data");
         }
         const destinationResult = await destinationResponse.json();
-        setDestinationData(destinationResult);
+        console.log('Destination details:', destinationResult);
+        
+        // Transform the API response to match the component's expected format
+        const transformedData = {
+          id: destinationResult.id?.toString() || destinationId,
+          name: destinationResult.name || "Unknown Destination",
+          subtitle: destinationResult.subtitle || destinationResult.description || "",
+          description: destinationResult.description || "",
+          location: destinationResult.location || "Bangladesh",
+          coordinates: destinationResult.coordinates || "",
+          bestTime: destinationResult.bestTime || "Year-round",
+          currency: destinationResult.currency || "BDT",
+          language: destinationResult.language || "Bengali",
+          image: destinationResult.image || destinationResult.image_url || "",
+          heroImage: destinationResult.heroImage || destinationResult.image_url || "",
+        };
+        
+        setDestinationData(transformedData);
 
-        // Fetch weather data
-        const weatherResponse = await fetch(
-          `${API_BASE_URL}/destinations/${destinationId}/weather/`
-        );
-        if (weatherResponse.ok) {
-          const weatherResult = await weatherResponse.json();
-          setWeatherData(weatherResult);
+        // Use the mapped detail ID for related data
+        // Fetch attractions from the destination details response
+        if (destinationResult.attractions && Array.isArray(destinationResult.attractions)) {
+          setAttractions(destinationResult.attractions);
         }
 
-        // Fetch attractions
-        const attractionsResponse = await fetch(
-          `${API_BASE_URL}/destinations/${destinationId}/attractions/`
-        );
-        if (attractionsResponse.ok) {
-          const attractionsResult = await attractionsResponse.json();
-          setAttractions(attractionsResult.results || attractionsResult);
+        // Fetch experiences from the destination details response (same as attractions)
+        if (destinationResult.experiences && Array.isArray(destinationResult.experiences)) {
+          setExperiences(destinationResult.experiences);
         }
 
-        // Fetch experiences
-        const experiencesResponse = await fetch(
-          `${API_BASE_URL}/destinations/${destinationId}/experiences/`
-        );
-        if (experiencesResponse.ok) {
-          const experiencesResult = await experiencesResponse.json();
-          setExperiences(experiencesResult.results || experiencesResult);
+        // Fetch weather data (if endpoint exists)
+        try {
+          const weatherResponse = await fetch(
+            `${API_BASE_URL}/api/home/destinations/${detailId}/weather/`
+          );
+          if (weatherResponse.ok) {
+            const weatherResult = await weatherResponse.json();
+            setWeatherData(weatherResult);
+          }
+        } catch {
+          console.log('Weather data not available');
         }
       } catch (err: any) {
         setError(err.message || "Failed to load destination data");
@@ -213,14 +234,21 @@ const DestinationPage: FunctionComponent = () => {
         {/* Hero Section */}
         <div className="relative w-full h-96 mb-8">
           <img
-            src={destinationData?.heroImage || "/placeholder.svg"}
+            src={
+              destinationData?.heroImage || 
+              destinationData?.image || 
+              "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200"
+            }
             alt={destinationData?.name || "Destination"}
             className="w-full h-full object-cover rounded-b-2xl"
+            onError={(e) => {
+              e.currentTarget.src = "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200";
+            }}
           />
           {/* Overlay for text readability, matching homepage/packages */}
           <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/60"></div>
           {/* Subtle brand color overlay (optional, matches homepage) */}
-          <div className="absolute inset-0 bg-gradient-to-br from-theme-accent/20 via-transparent to-theme-primary/20"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-[#6ab187]/20 via-transparent to-[#4a6b5b]/20"></div>
           <div className="absolute inset-0 flex items-end">
             <div className="p-8 w-full">
               <h1 className="text-4xl font-bold text-white mb-2">
@@ -254,8 +282,8 @@ const DestinationPage: FunctionComponent = () => {
           <button
             className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${
               activeTab === "overview"
-                ? "bg-theme-accent text-white shadow"
-                : "bg-theme-light text-theme-primary hover:bg-theme-accent/10"
+                ? "bg-[#6ab187] text-white shadow-lg"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
             }`}
             onClick={() => setActiveTab("overview")}
           >
@@ -264,8 +292,8 @@ const DestinationPage: FunctionComponent = () => {
           <button
             className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${
               activeTab === "attractions"
-                ? "bg-theme-accent text-white shadow"
-                : "bg-theme-light text-theme-primary hover:bg-theme-accent/10"
+                ? "bg-[#6ab187] text-white shadow-lg"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
             }`}
             onClick={() => setActiveTab("attractions")}
           >
@@ -274,8 +302,8 @@ const DestinationPage: FunctionComponent = () => {
           <button
             className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${
               activeTab === "experiences"
-                ? "bg-theme-accent text-white shadow"
-                : "bg-theme-light text-theme-primary hover:bg-theme-accent/10"
+                ? "bg-[#6ab187] text-white shadow-lg"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
             }`}
             onClick={() => setActiveTab("experiences")}
           >
@@ -285,8 +313,8 @@ const DestinationPage: FunctionComponent = () => {
             <button
               className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${
                 activeTab === "weather"
-                  ? "bg-theme-accent text-white shadow"
-                  : "bg-theme-light text-theme-primary hover:bg-theme-accent/10"
+                  ? "bg-[#6ab187] text-white shadow-lg"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
               }`}
               onClick={() => setActiveTab("weather")}
             >
@@ -298,50 +326,50 @@ const DestinationPage: FunctionComponent = () => {
         <div className="max-w-6xl mx-auto px-4">
           {activeTab === "overview" && (
             <div className="mb-10">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-                <div className="bg-white rounded-xl shadow p-6 flex flex-col items-center">
-                  <div className="text-3xl mb-2">📍</div>
-                  <h3 className="font-bold text-theme-primary mb-1">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center hover:shadow-xl transition-shadow duration-300">
+                  <div className="text-4xl mb-3">📍</div>
+                  <h3 className="font-bold text-gray-900 text-lg mb-2">
                     Location
                   </h3>
-                  <p className="text-theme-secondary">
+                  <p className="text-gray-700 font-medium mb-1">
                     {destinationData?.location}
                   </p>
-                  <small className="text-xs text-gray-400">
+                  <small className="text-xs text-gray-500">
                     {destinationData?.coordinates}
                   </small>
                 </div>
-                <div className="bg-white rounded-xl shadow p-6 flex flex-col items-center">
-                  <div className="text-3xl mb-2">🌤️</div>
-                  <h3 className="font-bold text-theme-primary mb-1">
+                <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center hover:shadow-xl transition-shadow duration-300">
+                  <div className="text-4xl mb-3">🌤️</div>
+                  <h3 className="font-bold text-gray-900 text-lg mb-2">
                     Best Time to Visit
                   </h3>
-                  <p className="text-theme-secondary">
+                  <p className="text-gray-700 font-medium mb-1">
                     {destinationData?.bestTime}
                   </p>
-                  <small className="text-xs text-gray-400">Peak season</small>
+                  <small className="text-xs text-gray-500">Peak season</small>
                 </div>
-                <div className="bg-white rounded-xl shadow p-6 flex flex-col items-center">
-                  <div className="text-3xl mb-2">💰</div>
-                  <h3 className="font-bold text-theme-primary mb-1">
+                <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center hover:shadow-xl transition-shadow duration-300">
+                  <div className="text-4xl mb-3">💰</div>
+                  <h3 className="font-bold text-gray-900 text-lg mb-2">
                     Currency
                   </h3>
-                  <p className="text-theme-secondary">
+                  <p className="text-gray-700 font-medium mb-1">
                     {destinationData?.currency}
                   </p>
-                  <small className="text-xs text-gray-400">
+                  <small className="text-xs text-gray-500">
                     Local currency
                   </small>
                 </div>
-                <div className="bg-white rounded-xl shadow p-6 flex flex-col items-center">
-                  <div className="text-3xl mb-2">🗣️</div>
-                  <h3 className="font-bold text-theme-primary mb-1">
+                <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center hover:shadow-xl transition-shadow duration-300">
+                  <div className="text-4xl mb-3">🗣️</div>
+                  <h3 className="font-bold text-gray-900 text-lg mb-2">
                     Language
                   </h3>
-                  <p className="text-theme-secondary">
+                  <p className="text-gray-700 font-medium mb-1">
                     {destinationData?.language}
                   </p>
-                  <small className="text-xs text-gray-400">
+                  <small className="text-xs text-gray-500">
                     Primary languages
                   </small>
                 </div>

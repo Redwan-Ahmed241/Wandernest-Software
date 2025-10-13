@@ -203,19 +203,35 @@ const ConfirmBook: React.FC = () => {
   // Recalculate end date if packageDetails or startDate changes
   useEffect(() => {
     if (packageDetails && startDate) {
-      const days = parseInt(getField(packageDetails, "days"), 10);
-      if (!isNaN(days)) {
+      // Try to get days from package details
+      const daysStr = getField(packageDetails, "days");
+      const days = parseInt(daysStr, 10);
+      
+      console.log("🗓️ Calculating end date:", { startDate, daysStr, days, packageDetails });
+      
+      if (!isNaN(days) && days > 0) {
         const start = new Date(startDate);
         const end = new Date(start);
         end.setDate(start.getDate() + days);
         const yyyy = end.getFullYear();
         const mm = String(end.getMonth() + 1).padStart(2, "0");
         const dd = String(end.getDate()).padStart(2, "0");
-        setEndDate(`${yyyy}-${mm}-${dd}`);
+        const calculatedEndDate = `${yyyy}-${mm}-${dd}`;
+        console.log("✅ End date calculated:", calculatedEndDate);
+        setEndDate(calculatedEndDate);
       } else {
-        setEndDate("");
+        console.log("⚠️ Invalid days value, using default 1 day");
+        // Fallback: if days is not valid, add 1 day as default
+        const start = new Date(startDate);
+        const end = new Date(start);
+        end.setDate(start.getDate() + 1);
+        const yyyy = end.getFullYear();
+        const mm = String(end.getMonth() + 1).padStart(2, "0");
+        const dd = String(end.getDate()).padStart(2, "0");
+        setEndDate(`${yyyy}-${mm}-${dd}`);
       }
     } else {
+      console.log("⚠️ Missing packageDetails or startDate");
       setEndDate("");
     }
   }, [packageDetails, startDate, getField]);
