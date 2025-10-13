@@ -22,6 +22,7 @@ const Destinations = lazy(() => import("./Pages/Destinations"));
 const PlanATrip = lazy(() => import("./Pages/PlanATrip"));
 const AboutUs = lazy(() => import("./Pages/aboutUs"));
 const AllGuides = lazy(() => import("./Pages/ALLGuides"));
+const GuideDetail = lazy(() => import("./Pages/GuideDetail"));
 const Blogs = lazy(() => import("./Pages/Blog"));
 const BlogDetail = lazy(() => import("./Pages/BlogDetail"));
 const WriteStory = lazy(() => import("./Pages/WriteStory"));
@@ -100,6 +101,8 @@ const AppRoutes: React.FC = () => {
         <Route path="/plan-a-trip" element={<PlanATrip />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/all-guides" element={<AllGuides />} />
+        <Route path="/guides" element={<AllGuides />} />
+        <Route path="/guide/:id" element={<GuideDetail />} />
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/blogs/:id" element={<BlogDetail />} />
         <Route
