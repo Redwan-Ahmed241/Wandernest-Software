@@ -59,6 +59,20 @@ interface Experience {
   reviews: number;
 }
 
+interface Package {
+  id: number;
+  title: string;
+  description: string;
+  destination: string;
+  source: string;
+  price: number;
+  budget: number;
+  days: number;
+  image?: string;
+  rating?: number;
+  reviews?: number;
+}
+
 const DestinationPage: FunctionComponent = () => {
   const navigate = useNavigate();
   const { destinationId, destinationName } = useParams<{
@@ -75,6 +89,8 @@ const DestinationPage: FunctionComponent = () => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [attractions, setAttractions] = useState<Attraction[]>([]);
   const [experiences, setExperiences] = useState<Experience[]>([]);
+  const [packages, setPackages] = useState<Package[]>([]);
+  const [packagesLoading, setPackagesLoading] = useState(false);
 
   // Fetch destination data
   useEffect(() => {
@@ -89,16 +105,11 @@ const DestinationPage: FunctionComponent = () => {
         setLoading(true);
         setError(null);
 
-        // ID mapping: list ID -> details ID
-        // The detail IDs start from 16, so we add 15 to the list ID
-        // List ID 1 -> Detail ID 16, List ID 2 -> Detail ID 17, etc.
-        const detailId = parseInt(destinationId) + 15;
-        
-        console.log('List ID:', destinationId, 'Detail ID:', detailId);
+        console.log('Fetching destination with ID:', destinationId);
 
-        // Fetch destination details using the mapped ID
+        // Fetch destination details using the destination ID directly
         const destinationResponse = await fetch(
-          `${API_BASE_URL}/api/home/destinations/${detailId}/`
+          `${API_BASE_URL}/api/home/destinations/${destinationId}/`
         );
         if (!destinationResponse.ok) {
           throw new Error("Failed to fetch destination data");
@@ -137,7 +148,7 @@ const DestinationPage: FunctionComponent = () => {
         // Fetch weather data (if endpoint exists)
         try {
           const weatherResponse = await fetch(
-            `${API_BASE_URL}/api/home/destinations/${detailId}/weather/`
+            `${API_BASE_URL}/api/home/destinations/${destinationId}/weather/`
           );
           if (weatherResponse.ok) {
             const weatherResult = await weatherResponse.json();
@@ -145,6 +156,31 @@ const DestinationPage: FunctionComponent = () => {
           }
         } catch {
           console.log('Weather data not available');
+        }
+
+        // Fetch packages for this destination
+        try {
+          setPackagesLoading(true);
+          const packagesResponse = await fetch(
+            `${API_BASE_URL}/api/packages/destination/${destinationId}/`
+          );
+          if (packagesResponse.ok) {
+            const packagesResult = await packagesResponse.json();
+            console.log('Packages for destination:', packagesResult);
+            // Handle both array and paginated response
+            const packagesData = Array.isArray(packagesResult) 
+              ? packagesResult 
+              : packagesResult.results || [];
+            setPackages(packagesData);
+          } else {
+            console.log('No packages found for this destination');
+            setPackages([]);
+          }
+        } catch (err) {
+          console.error('Error fetching packages:', err);
+          setPackages([]);
+        } finally {
+          setPackagesLoading(false);
         }
       } catch (err: any) {
         setError(err.message || "Failed to load destination data");
@@ -308,6 +344,16 @@ const DestinationPage: FunctionComponent = () => {
             onClick={() => setActiveTab("experiences")}
           >
             Experiences
+          </button>
+          <button
+            className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${
+              activeTab === "package"
+                ? "bg-[#6ab187] text-white shadow-lg"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            }`}
+            onClick={() => setActiveTab("package")}
+          >
+            Package
           </button>
           {weatherData && (
             <button
@@ -503,6 +549,99 @@ const DestinationPage: FunctionComponent = () => {
                 <p className="text-theme-secondary">
                   No experiences available for this destination.
                 </p>
+              )}
+            </div>
+          )}
+          {activeTab === "package" && (
+            <div className="mb-10">
+              <h2 className="text-2xl font-bold text-theme-primary mb-6">
+                Packages for {destinationData?.name}
+              </h2>
+              {packagesLoading ? (
+                <div className="flex justify-center items-center py-12">
+                  <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-[#6ab187] border-b-4"></div>
+                </div>
+              ) : packages.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                  {packages.map((pkg) => (
+                    <div
+                      key={pkg.id}
+                      className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 flex flex-col"
+                    >
+                      <div className="relative h-48">
+                        <img
+                          src={pkg.image || "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=500"}
+                          alt={pkg.title}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.currentTarget.src = "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=500";
+                          }}
+                        />
+                        <div className="absolute top-3 right-3 bg-white px-3 py-1 rounded-full shadow-md">
+                          <span className="text-[#6ab187] font-bold text-sm">
+                            {pkg.days} Days
+                          </span>
+                        </div>
+                      </div>
+                      <div className="p-6 flex flex-col flex-grow">
+                        <h3 className="font-bold text-gray-900 text-xl mb-2">
+                          {pkg.title}
+                        </h3>
+                        <p className="text-gray-600 text-sm mb-3 line-clamp-2 flex-grow">
+                          {pkg.description}
+                        </p>
+                        <div className="flex items-center gap-2 mb-3 text-sm text-gray-600">
+                          <span>📍</span>
+                          <span>{pkg.source} → {pkg.destination}</span>
+                        </div>
+                        {pkg.rating && (
+                          <div className="flex items-center gap-2 mb-4">
+                            <span className="text-yellow-500">
+                              {"★".repeat(Math.floor(pkg.rating))}
+                            </span>
+                            <span className="text-xs text-gray-500">
+                              {pkg.rating} ({pkg.reviews || 0} reviews)
+                            </span>
+                          </div>
+                        )}
+                        <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-200">
+                          <div className="flex flex-col">
+                            <span className="text-xs text-gray-500">Starting from</span>
+                            <span className="text-2xl font-bold text-[#6ab187]">
+                              ৳{pkg.price?.toLocaleString() || pkg.budget?.toLocaleString()}
+                            </span>
+                          </div>
+                          <button
+                            onClick={() => {
+                              navigate('/confirm-booking', {
+                                state: { pkg }
+                              });
+                            }}
+                            className="px-6 py-2 bg-[#6ab187] hover:bg-[#5a9f77] text-white font-semibold rounded-lg transition-colors duration-200"
+                          >
+                            Book Now
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="bg-white rounded-xl shadow-lg p-12 text-center">
+                  <div className="text-6xl mb-4">📦</div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">
+                    No Packages Available
+                  </h3>
+                  <p className="text-gray-600 mb-6">
+                    There are currently no packages available for {destinationData?.name}.
+                  </p>
+                  <button
+                    onClick={() => navigate('/packages')}
+                    className="px-6 py-2 bg-[#6ab187] hover:bg-[#5a9f77] text-white font-semibold rounded-lg transition-colors duration-200"
+                  >
+                    Browse All Packages
+                  </button>
+                </div>
               )}
             </div>
           )}
