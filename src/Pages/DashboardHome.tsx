@@ -205,7 +205,7 @@ const DashboardHome: FunctionComponent = () => {
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300">
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center justify-between">
                   <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
                     <span className="text-2xl">📊</span>
                   </div>
@@ -216,13 +216,10 @@ const DashboardHome: FunctionComponent = () => {
                     <div className="text-sm text-gray-500">Total Bookings</div>
                   </div>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-blue-500 h-2 rounded-full w-3/4"></div>
-                </div>
               </div>
 
               <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300">
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center justify-between">
                   <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
                     <span className="text-2xl">✈️</span>
                   </div>
@@ -233,13 +230,10 @@ const DashboardHome: FunctionComponent = () => {
                     <div className="text-sm text-gray-500">Upcoming Trips</div>
                   </div>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-green-500 h-2 rounded-full w-2/3"></div>
-                </div>
               </div>
 
               <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300">
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center justify-between">
                   <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
                     <span className="text-2xl">💰</span>
                   </div>
@@ -250,13 +244,10 @@ const DashboardHome: FunctionComponent = () => {
                     <div className="text-sm text-gray-500">Total Spent</div>
                   </div>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-yellow-500 h-2 rounded-full w-4/5"></div>
-                </div>
               </div>
 
               <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300">
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center justify-between">
                   <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
                     <span className="text-2xl">🏆</span>
                   </div>
@@ -266,9 +257,6 @@ const DashboardHome: FunctionComponent = () => {
                     </div>
                     <div className="text-sm text-gray-500">Completed Trips</div>
                   </div>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-purple-500 h-2 rounded-full w-1/2"></div>
                 </div>
               </div>
             </div>
