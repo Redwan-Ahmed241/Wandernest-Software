@@ -2,13 +2,14 @@
 
 import type React from "react";
 import { useCallback, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../Authentication/auth-context";
 import ProfileDropdown from "./profiledropdown";
 import { Menu, X } from "react-feather";
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { isAuthenticated, loading } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
@@ -58,24 +59,31 @@ const Navbar: React.FC = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <div key={item.label} className="relative">
-                {item.available ? (
-                  <button
-                    onClick={() => navigate(item.path)}
-                    className="text-gray-700 hover:text-primary font-medium transition-all duration-200 hover:scale-105 px-3 py-2 rounded-lg hover:bg-primary/10"
-                  >
-                    {item.label}
-                  </button>
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-400 font-medium px-3 py-2">
+            {navItems.map((item) => {
+              const isActive = location.pathname === item.path;
+              return (
+                <div key={item.label} className="relative">
+                  {item.available ? (
+                    <button
+                      onClick={() => navigate(item.path)}
+                      className={`font-medium transition-all duration-200 px-3 py-2 rounded-lg ${
+                        isActive
+                          ? "text-primary bg-primary/10 shadow-md scale-105"
+                          : "text-gray-700 hover:text-primary hover:scale-105 hover:bg-primary/10"
+                      }`}
+                    >
                       {item.label}
-                    </span>
-                  </div>
-                )}
-              </div>
-            ))}
+                    </button>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-400 font-medium px-3 py-2">
+                        {item.label}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
 
           {/* Desktop Auth & Actions */}
@@ -261,27 +269,34 @@ const Navbar: React.FC = () => {
         {isMobileMenuOpen && (
           <div className="md:hidden border-t border-gray-200 bg-white">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              {navItems.map((item) => (
-                <div key={item.label}>
-                  {item.available ? (
-                    <button
-                      onClick={() => {
-                        navigate(item.path);
-                        setIsMobileMenuOpen(false);
-                      }}
-                      className="block w-full text-left px-3 py-2 text-gray-700 hover:text-primary hover:bg-primary/10 rounded-lg font-medium transition-all duration-200"
-                    >
-                      {item.label}
-                    </button>
-                  ) : (
-                    <div className="flex items-center justify-between px-3 py-2">
-                      <span className="text-gray-400 font-medium">
+              {navItems.map((item) => {
+                const isActive = location.pathname === item.path;
+                return (
+                  <div key={item.label}>
+                    {item.available ? (
+                      <button
+                        onClick={() => {
+                          navigate(item.path);
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className={`block w-full text-left px-3 py-2 rounded-lg font-medium transition-all duration-200 ${
+                          isActive
+                            ? "text-primary bg-primary/10 shadow-md"
+                            : "text-gray-700 hover:text-primary hover:bg-primary/10"
+                        }`}
+                      >
                         {item.label}
-                      </span>
-                    </div>
-                  )}
-                </div>
-              ))}
+                      </button>
+                    ) : (
+                      <div className="flex items-center justify-between px-3 py-2">
+                        <span className="text-gray-400 font-medium">
+                          {item.label}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
 
               {!loading && (
                 <div className="pt-4 border-t border-gray-200 mt-4">
