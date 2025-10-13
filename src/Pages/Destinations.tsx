@@ -44,9 +44,11 @@ const Destinations: FunctionComponent = () => {
       setError("");
       try {
         const data = await getDestinations();
+        console.log('Fetched destinations:', data);
+        console.log('Is array?', Array.isArray(data));
         setDestinations(Array.isArray(data) ? data : []);
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (err) {
+        console.error('Error fetching destinations:', err);
         setError("Failed to fetch destinations");
         setDestinations([]);
       } finally {
@@ -72,6 +74,10 @@ const Destinations: FunctionComponent = () => {
 
     return matchesSearch && matchesCategory;
   });
+
+  console.log('Destinations:', destinations);
+  console.log('Filtered destinations:', filteredDestinations);
+  console.log('Selected category:', selectedCategory);
 
   return (
     <Layout>
@@ -204,7 +210,7 @@ const Destinations: FunctionComponent = () => {
                     className="group bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105"
                     onClick={async () => {
                       await incrementDestinationClick(dest.id);
-                      navigate(`/destination-01`);
+                      navigate(`/destination/${dest.id}`);
                     }}
                   >
                     <div className="relative overflow-hidden">

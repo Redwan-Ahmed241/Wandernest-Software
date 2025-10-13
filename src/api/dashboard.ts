@@ -94,81 +94,192 @@ async function request<T>(path: string, options: RequestInit = {}, token?: strin
 }
 
 export async function getDashboardStats(token?: string): Promise<Stats> {
-  const raw = await request<Record<string, unknown>>('/api/dashboard/stats/', {}, token);
-  // normalize to Stats shape with safe numeric defaults
-  const s: Stats = {
-    totalBookings: (() => {
-      const r = raw as Record<string, unknown> | null;
-      const candidate = Number(
-        r?.totalBookings ?? r?.total_bookings ?? r?.bookings_count ?? r?.total ?? r?.count ?? 0
-      );
-      if (!Number.isNaN(candidate) && candidate > 0) return candidate;
-      const results = r?.results;
-      if (Array.isArray(results)) return results.length;
-      return 0;
-    })(),
-    upcomingTrips: Number(raw?.upcomingTrips ?? raw?.upcoming_trips ?? 0) || 0,
-    totalSpent: Number(raw?.totalSpent ?? raw?.total_spent ?? 0) || 0,
-    completedTrips: Number(raw?.completedTrips ?? raw?.completed_trips ?? 0) || 0,
-    pendingBookings: Number(raw?.pendingBookings ?? raw?.pending_bookings ?? 0) || 0,
-    cancelledBookings: Number(raw?.cancelledBookings ?? raw?.cancelled_bookings ?? 0) || 0,
-    averageSpentPerTrip: Number(raw?.averageSpentPerTrip ?? raw?.average_spent_per_trip ?? 0) || 0,
-    favoriteDestination: String(raw?.favoriteDestination ?? raw?.favorite_destination ?? ''),
-    memberSince: String(raw?.memberSince ?? raw?.member_since ?? ''),
-  };
-  return s;
+  try {
+    const raw = await request<Record<string, unknown>>('/api/dashboard/stats/', {}, token);
+    console.log('🔍 DEBUG - Dashboard stats response:', raw);
+    
+    // normalize to Stats shape with safe numeric defaults
+    const s: Stats = {
+      totalBookings: (() => {
+        const r = raw as Record<string, unknown> | null;
+        const candidate = Number(
+          r?.totalBookings ?? r?.total_bookings ?? r?.bookings_count ?? r?.total ?? r?.count ?? 0
+        );
+        if (!Number.isNaN(candidate) && candidate > 0) return candidate;
+        const results = r?.results;
+        if (Array.isArray(results)) return results.length;
+        return 0;
+      })(),
+      upcomingTrips: Number(raw?.upcomingTrips ?? raw?.upcoming_trips ?? 0) || 0,
+      totalSpent: Number(raw?.totalSpent ?? raw?.total_spent ?? 0) || 0,
+      completedTrips: Number(raw?.completedTrips ?? raw?.completed_trips ?? 0) || 0,
+      pendingBookings: Number(raw?.pendingBookings ?? raw?.pending_bookings ?? 0) || 0,
+      cancelledBookings: Number(raw?.cancelledBookings ?? raw?.cancelled_bookings ?? 0) || 0,
+      averageSpentPerTrip: Number(raw?.averageSpentPerTrip ?? raw?.average_spent_per_trip ?? 0) || 0,
+      favoriteDestination: String(raw?.favoriteDestination ?? raw?.favorite_destination ?? ''),
+      memberSince: String(raw?.memberSince ?? raw?.member_since ?? ''),
+    };
+    
+    // If stats endpoint returns 0 bookings, try to get actual count from bookings
+    if (s.totalBookings === 0) {
+      console.log('🔍 DEBUG - Stats returned 0 bookings, fetching actual bookings to count...');
+      const bookings = await getBookingsActive(token);
+      s.totalBookings = bookings.length;
+      
+      // Calculate other stats from bookings
+      if (bookings.length > 0) {
+        s.totalSpent = bookings.reduce((sum, b) => sum + (b.price || 0), 0);
+        s.pendingBookings = bookings.filter(b => b.status === 'pending' || b.status === 'confirmed').length;
+        s.completedTrips = bookings.filter(b => b.status === 'completed').length;
+        s.cancelledBookings = bookings.filter(b => b.status === 'cancelled').length;
+        s.upcomingTrips = bookings.filter(b => new Date(b.startDate) > new Date()).length;
+        s.averageSpentPerTrip = s.totalBookings > 0 ? s.totalSpent / s.totalBookings : 0;
+        console.log('🔍 DEBUG - Calculated stats from bookings:', s);
+      }
+    }
+    
+    return s;
+  } catch (error) {
+    console.error('🔍 DEBUG - Error fetching dashboard stats:', error);
+    console.log('🔍 DEBUG - Falling back to calculating stats from bookings...');
+    
+    // Fallback: Calculate stats from bookings
+    const bookings = await getBookingsActive(token);
+    return {
+      totalBookings: bookings.length,
+      upcomingTrips: bookings.filter(b => new Date(b.startDate) > new Date()).length,
+      totalSpent: bookings.reduce((sum, b) => sum + (b.price || 0), 0),
+      completedTrips: bookings.filter(b => b.status === 'completed').length,
+      pendingBookings: bookings.filter(b => b.status === 'pending' || b.status === 'confirmed').length,
+      cancelledBookings: bookings.filter(b => b.status === 'cancelled').length,
+      averageSpentPerTrip: bookings.length > 0 ? bookings.reduce((sum, b) => sum + (b.price || 0), 0) / bookings.length : 0,
+      favoriteDestination: '',
+      memberSince: '',
+    };
+  }
 }
 
 export async function getBookingsActive(token?: string): Promise<Booking[]> {
-  const raw = await request<unknown>('/api/bookings/active', {}, token);
-  
-  // Debug logging to see what backend returns
-  console.log('🔍 DEBUG - Raw bookings response:', raw);
-  console.log('🔍 DEBUG - Type of response:', typeof raw);
-  console.log('🔍 DEBUG - Is array?', Array.isArray(raw));
+  try {
+    const raw = await request<unknown>('/api/bookings/active', {}, token);
+    
+    // Debug logging to see what backend returns
+    console.log('🔍 DEBUG - Raw bookings response from /api/bookings/active:', raw);
+    console.log('🔍 DEBUG - Type of response:', typeof raw);
+    console.log('🔍 DEBUG - Is array?', Array.isArray(raw));
 
-  // try to extract an array from multiple possible shapes
-  const asRecord = (raw as Record<string, unknown> | null) ?? null;
-  let items: unknown[] = [];
-  if (Array.isArray(raw)) {
-    items = raw as unknown[];
-    console.log('🔍 DEBUG - Found array directly, length:', items.length);
-  } else if (Array.isArray(asRecord?.results as unknown)) {
-    items = asRecord!.results as unknown[];
-    console.log('🔍 DEBUG - Found array in results, length:', items.length);
-  } else if (Array.isArray(asRecord?.data as unknown)) {
-    items = asRecord!.data as unknown[];
-    console.log('🔍 DEBUG - Found array in data, length:', items.length);
-  } else if (Array.isArray(asRecord?.bookings as unknown)) {
-    items = asRecord!.bookings as unknown[];
-    console.log('🔍 DEBUG - Found array in bookings, length:', items.length);
-  } else if (Array.isArray(asRecord?.items as unknown)) {
-    items = asRecord!.items as unknown[];
-    console.log('🔍 DEBUG - Found array in items, length:', items.length);
-  } else {
-    console.log('🔍 DEBUG - No array found in response structure');
-    console.log('🔍 DEBUG - Available keys:', asRecord ? Object.keys(asRecord) : 'null');
+    // try to extract an array from multiple possible shapes
+    const asRecord = (raw as Record<string, unknown> | null) ?? null;
+    let items: unknown[] = [];
+    if (Array.isArray(raw)) {
+      items = raw as unknown[];
+      console.log('🔍 DEBUG - Found array directly, length:', items.length);
+    } else if (Array.isArray(asRecord?.results as unknown)) {
+      items = asRecord!.results as unknown[];
+      console.log('🔍 DEBUG - Found array in results, length:', items.length);
+    } else if (Array.isArray(asRecord?.data as unknown)) {
+      items = asRecord!.data as unknown[];
+      console.log('🔍 DEBUG - Found array in data, length:', items.length);
+    } else if (Array.isArray(asRecord?.bookings as unknown)) {
+      items = asRecord!.bookings as unknown[];
+      console.log('🔍 DEBUG - Found array in bookings, length:', items.length);
+    } else if (Array.isArray(asRecord?.items as unknown)) {
+      items = asRecord!.items as unknown[];
+      console.log('🔍 DEBUG - Found array in items, length:', items.length);
+    } else {
+      console.log('🔍 DEBUG - No array found in response structure');
+      console.log('🔍 DEBUG - Available keys:', asRecord ? Object.keys(asRecord) : 'null');
+    }
+
+    if (!items || items.length === 0) {
+      console.log('🔍 DEBUG - No items found from /api/bookings/active, trying fallback endpoints...');
+      // Fallback: Try to fetch from individual booking type endpoints
+      return await getBookingsFromTypeEndpoints(token);
+    }
+
+    return items.map((item) => {
+      const b = (item as Record<string, unknown>) ?? {};
+      return {
+        id: String(b['id'] ?? b['booking_id'] ?? b['pk'] ?? '').slice(0, 100) || `b_${Date.now()}`,
+        title: String(b['title'] ?? b['name'] ?? b['package_name'] ?? b['hotel_name'] ?? 'Untitled'),
+        startDate: String(b['startDate'] ?? b['start_date'] ?? b['checkin'] ?? b['checkin_date'] ?? new Date().toISOString()),
+        endDate: String(b['endDate'] ?? b['end_date'] ?? b['checkout'] ?? new Date().toISOString()),
+        status: String(b['status'] ?? b['booking_status'] ?? 'pending'),
+        price: Number(b['price'] ?? b['amount'] ?? b['total'] ?? b['total_amount'] ?? 0) || 0,
+        image: (b['image'] ?? b['photo'] ?? b['image_url']) as string | undefined,
+        location: (b['location'] ?? b['place'] ?? b['city']) as string | undefined,
+        travelers: Number(b['travelers'] ?? b['guests'] ?? 1) || 1,
+      } as Booking;
+    });
+  } catch (error) {
+    console.error('🔍 DEBUG - Error fetching from /api/bookings/active:', error);
+    console.log('🔍 DEBUG - Falling back to type-specific endpoints...');
+    // If /api/bookings/active fails, try individual endpoints
+    return await getBookingsFromTypeEndpoints(token);
   }
+}
 
-  if (!items || items.length === 0) {
-    console.log('🔍 DEBUG - No items found, returning empty array');
+// Helper function to fetch bookings from individual type endpoints
+async function getBookingsFromTypeEndpoints(token?: string): Promise<Booking[]> {
+  try {
+    const [hotelBookings, packageBookings, tripBookings] = await Promise.all([
+      request<unknown>('/api/bookings/hotels', {}, token).catch((err) => {
+        console.error('🔍 DEBUG - Error fetching hotel bookings:', err);
+        return [];
+      }),
+      request<unknown>('/api/bookings/packages', {}, token).catch((err) => {
+        console.error('🔍 DEBUG - Error fetching package bookings:', err);
+        return [];
+      }),
+      request<unknown>('/api/bookings/trips', {}, token).catch((err) => {
+        console.error('🔍 DEBUG - Error fetching trip bookings:', err);
+        return [];
+      }),
+    ]);
+
+    console.log('🔍 DEBUG - Hotel bookings response:', hotelBookings);
+    console.log('🔍 DEBUG - Package bookings response:', packageBookings);
+    console.log('🔍 DEBUG - Trip bookings response:', tripBookings);
+
+    // Normalize each response to an array
+    const normalizeToArray = (raw: unknown): unknown[] => {
+      if (Array.isArray(raw)) return raw;
+      const asRecord = (raw as Record<string, unknown> | null) ?? null;
+      if (Array.isArray(asRecord?.results)) return asRecord!.results as unknown[];
+      if (Array.isArray(asRecord?.data)) return asRecord!.data as unknown[];
+      if (Array.isArray(asRecord?.bookings)) return asRecord!.bookings as unknown[];
+      return [];
+    };
+
+    const hotelItems = normalizeToArray(hotelBookings);
+    const packageItems = normalizeToArray(packageBookings);
+    const tripItems = normalizeToArray(tripBookings);
+
+    console.log('🔍 DEBUG - Hotel items count:', hotelItems.length);
+    console.log('🔍 DEBUG - Package items count:', packageItems.length);
+    console.log('🔍 DEBUG - Trip items count:', tripItems.length);
+
+    // Combine all bookings
+    const allBookings = [...hotelItems, ...packageItems, ...tripItems];
+
+    return allBookings.map((item) => {
+      const b = (item as Record<string, unknown>) ?? {};
+      return {
+        id: String(b['id'] ?? b['booking_id'] ?? b['pk'] ?? '').slice(0, 100) || `b_${Date.now()}`,
+        title: String(b['title'] ?? b['name'] ?? b['package_name'] ?? b['hotel_name'] ?? 'Untitled'),
+        startDate: String(b['startDate'] ?? b['start_date'] ?? b['checkin'] ?? b['checkin_date'] ?? new Date().toISOString()),
+        endDate: String(b['endDate'] ?? b['end_date'] ?? b['checkout'] ?? new Date().toISOString()),
+        status: String(b['status'] ?? b['booking_status'] ?? 'pending'),
+        price: Number(b['price'] ?? b['amount'] ?? b['total'] ?? b['total_amount'] ?? 0) || 0,
+        image: (b['image'] ?? b['photo'] ?? b['image_url']) as string | undefined,
+        location: (b['location'] ?? b['place'] ?? b['city']) as string | undefined,
+        travelers: Number(b['travelers'] ?? b['guests'] ?? 1) || 1,
+      } as Booking;
+    });
+  } catch (error) {
+    console.error('🔍 DEBUG - Error fetching from type-specific endpoints:', error);
     return [];
   }
-
-  return items.map((item) => {
-    const b = (item as Record<string, unknown>) ?? {};
-    return {
-      id: String(b['id'] ?? b['booking_id'] ?? b['pk'] ?? '').slice(0, 100) || `b_${Date.now()}`,
-      title: String(b['title'] ?? b['name'] ?? b['package_name'] ?? 'Untitled'),
-      startDate: String(b['startDate'] ?? b['start_date'] ?? b['checkin'] ?? new Date().toISOString()),
-      endDate: String(b['endDate'] ?? b['end_date'] ?? b['checkout'] ?? new Date().toISOString()),
-      status: String(b['status'] ?? b['booking_status'] ?? 'pending'),
-      price: Number(b['price'] ?? b['amount'] ?? b['total'] ?? 0) || 0,
-      image: (b['image'] ?? b['photo'] ?? b['image_url']) as string | undefined,
-      location: (b['location'] ?? b['place'] ?? b['city']) as string | undefined,
-      travelers: Number(b['travelers'] ?? b['guests'] ?? 1) || 1,
-    } as Booking;
-  });
 }
 
 export async function getBookingsHistory(token?: string): Promise<{ count?: number; results: Booking[] }>{
