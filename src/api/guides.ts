@@ -1,6 +1,6 @@
 // Guide API service functions for frontend
 
-const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_URL || "/api";
+const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_URL || "https://wandernest-backend.vercel.app/api";
 
 // Generic API request function
 const apiRequest = async (endpoint: string, options: RequestInit = {}) => {

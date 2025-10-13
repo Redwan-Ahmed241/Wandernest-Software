@@ -182,6 +182,99 @@ export const getDestinations = async () => {
   }
 };
 
+// Get single destination by ID
+export const getDestinationById = async (id: number) => {
+  try {
+    const response = await fetch(
+      `https://wander-nest-ad3s.onrender.com/api/home/destinations/${id}/`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch destination details");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Destination details fetch error:", error);
+    throw error;
+  }
+};
+
+// Transport API functions
+export interface TransportOption {
+  id: number;
+  type: string;
+  name: string;
+  route: string;
+  from_location?: string;
+  to_location?: string;
+  frequency: string;
+  price: string | number;
+  image?: string;
+  image_url?: string;
+  features: string[];
+  operator?: string;
+  availability?: boolean;
+  rating?: number;
+}
+
+export const getTransportOptions = async (params: any = {}): Promise<TransportOption[]> => {
+  try {
+    const queryString = new URLSearchParams(params).toString();
+    const response = await fetch(
+      `https://wandernest-backend.vercel.app/api/transport/options${queryString ? `?${queryString}` : ''}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (!response.ok) throw new Error("Failed to fetch transport options");
+    const data = await response.json();
+    
+    // Handle different response structures
+    let transportData = [];
+    if (data.success && data.data) {
+      transportData = data.data.transports || data.data.options || data.data;
+    } else if (Array.isArray(data)) {
+      transportData = data;
+    } else if (data.results) {
+      transportData = data.results;
+    }
+    
+    return Array.isArray(transportData) ? transportData : [];
+  } catch (error) {
+    console.error("Transport fetch error:", error);
+    return [];
+  }
+};
+
+export const getTransportById = async (id: number): Promise<TransportOption | null> => {
+  try {
+    const response = await fetch(
+      `https://wandernest-backend.vercel.app/api/transport/options/${id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (!response.ok) throw new Error("Failed to fetch transport details");
+    const data = await response.json();
+    return data.success ? data.data : data;
+  } catch (error) {
+    console.error("Transport details fetch error:", error);
+    return null;
+  }
+};
+
 export const getHotels = async (): Promise<Hotel[]> => {
   try {
     const response = await fetch(

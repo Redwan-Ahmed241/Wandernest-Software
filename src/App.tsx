@@ -125,6 +125,7 @@ const AppRoutes: React.FC = () => {
           }
         />
         <Route path="/hiring-guides" element={<Guides />} />
+        <Route path="/destination/:destinationId" element={<Destination01 />} />
         <Route path="/destination-01" element={<Destination01 />} />
         <Route path="/homepage" element={<HomePage />} />
         <Route path="/rent-vehicles" element={<RentVehicles />} />
