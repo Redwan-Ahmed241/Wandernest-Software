@@ -455,7 +455,9 @@ const Packages: FunctionComponent = () => {
                             if (!isAuthenticated) {
                               navigate("/login");
                             } else {
-                              navigate("/confirm-book", { state: { pkg } });
+                              // Use destination and package ID for navigation
+                              const destinationId = pkg.destination || 'unknown';
+                              navigate(`/confirm-book/${destinationId}/${pkg.id}`, { state: { pkg } });
                             }
                           }}
                           className="px-6 py-2 bg-[#6ab187] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2"

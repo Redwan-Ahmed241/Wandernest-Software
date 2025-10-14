@@ -140,6 +140,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/packages" element={<Packages />} />
         <Route path="/create-packages" element={<CreatePackage />} />
         <Route path="/emergency" element={<Emergency />} />
+        <Route path="/confirm-book/:destinationId/:packageId" element={<ConfirmBook />} />
         <Route path="/confirm-book" element={<ConfirmBook />} />
         <Route path="/help-center" element={<HelpCenter />} />
         {/* Redirects */}

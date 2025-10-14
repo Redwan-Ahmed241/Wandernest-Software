@@ -275,11 +275,13 @@ export const getTransportById = async (id: number): Promise<TransportOption | nu
   }
 };
 
-export const getHotels = async (): Promise<Hotel[]> => {
+export const getHotels = async (destination?: string | number): Promise<Hotel[]> => {
   try {
-    const response = await fetch(
-      "https://wander-nest-ad3s.onrender.com/api/hotels/"
-    );
+    const url = destination 
+      ? `https://wander-nest-ad3s.onrender.com/api/hotels/?destination=${destination}`
+      : "https://wander-nest-ad3s.onrender.com/api/hotels/";
+    
+    const response = await fetch(url);
     if (!response.ok) throw new Error("Failed to fetch hotels");
     const data = await response.json();
     let hotelsData = [];
@@ -316,6 +318,90 @@ export const getHotels = async (): Promise<Hotel[]> => {
     }));
   } catch (error) {
     console.error("Hotel fetch error:", error);
+    return [];
+  }
+};
+
+// Restaurant interface and API function (from API documentation)
+export interface Restaurant {
+  id: number;
+  name: string;
+  location: string;
+  destination: number;
+  image_url: string;
+  rating: string;
+  cuisine: string;
+  price: number;
+  tags: string[];
+}
+
+export const getRestaurants = async (destination?: string | number): Promise<Restaurant[]> => {
+  try {
+    const url = destination 
+      ? `https://wander-nest-ad3s.onrender.com/api/restaurants/?destination=${destination}`
+      : "https://wander-nest-ad3s.onrender.com/api/restaurants/";
+    
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Failed to fetch restaurants");
+    
+    const data = await response.json();
+    let restaurantData = [];
+    if (Array.isArray(data)) {
+      restaurantData = data;
+    } else if (Array.isArray(data?.results)) {
+      restaurantData = data.results;
+    } else if (Array.isArray(data?.data)) {
+      restaurantData = data.data;
+    } else {
+      throw new Error("Unexpected response structure");
+    }
+    
+    return restaurantData;
+  } catch (error) {
+    console.error("Restaurant fetch error:", error);
+    return [];
+  }
+};
+
+// Trip interface and API function (from API documentation)
+export interface Trip {
+  id: string;
+  title: string;
+  location: string;
+  destination: number;
+  start_date: string;
+  end_date: string;
+  status: string;
+  duration: string;
+  activities_count: number;
+  price: string;
+  travelers: number;
+}
+
+export const getTrips = async (destination?: string | number): Promise<Trip[]> => {
+  try {
+    const url = destination 
+      ? `https://wander-nest-ad3s.onrender.com/api/trips/?destination=${destination}`
+      : "https://wander-nest-ad3s.onrender.com/api/trips/";
+    
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Failed to fetch trips");
+    
+    const data = await response.json();
+    let tripData = [];
+    if (Array.isArray(data)) {
+      tripData = data;
+    } else if (Array.isArray(data?.results)) {
+      tripData = data.results;
+    } else if (Array.isArray(data?.data)) {
+      tripData = data.data;
+    } else {
+      throw new Error("Unexpected response structure");
+    }
+    
+    return tripData;
+  } catch (error) {
+    console.error("Trip fetch error:", error);
     return [];
   }
 };

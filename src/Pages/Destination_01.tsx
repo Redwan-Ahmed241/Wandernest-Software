@@ -159,23 +159,73 @@ const DestinationPage: FunctionComponent = () => {
         }
 
         // Fetch packages for this destination
+        // According to API docs:
+        // - GET /api/packages/?destination={id} for custom packages
+        // - GET /api/packages/all/?destination_detail={id} for premade packages
         try {
           setPackagesLoading(true);
-          const packagesResponse = await fetch(
-            `${API_BASE_URL}/api/packages/destination/${destinationId}/`
-          );
-          if (packagesResponse.ok) {
-            const packagesResult = await packagesResponse.json();
-            console.log('Packages for destination:', packagesResult);
-            // Handle both array and paginated response
-            const packagesData = Array.isArray(packagesResult) 
-              ? packagesResult 
-              : packagesResult.results || [];
-            setPackages(packagesData);
-          } else {
-            console.log('No packages found for this destination');
-            setPackages([]);
+          
+          console.log(`Fetching packages for destination ID: ${destinationId}`);
+          
+          // Fetch both custom and premade packages in parallel
+          const [customPackagesResponse, premadePackagesResponse] = await Promise.all([
+            fetch(`${API_BASE_URL}/api/packages/?destination=${destinationId}`).catch((err) => {
+              console.log('Custom packages API call failed:', err);
+              return null;
+            }),
+            fetch(`${API_BASE_URL}/api/packages/all/?destination_detail=${destinationId}`).catch((err) => {
+              console.log('Premade packages API call failed:', err);
+              return null;
+            })
+          ]);
+
+          let allPackages: any[] = [];
+
+          // Process custom packages
+          if (customPackagesResponse?.ok) {
+            const customResult = await customPackagesResponse.json();
+            console.log('Custom packages API response:', customResult);
+            const customData = Array.isArray(customResult) 
+              ? customResult 
+              : customResult.results || [];
+            allPackages = [...allPackages, ...customData];
+          } else if (customPackagesResponse) {
+            console.log('Custom packages API failed with status:', customPackagesResponse.status);
           }
+
+          // Process premade packages
+          if (premadePackagesResponse?.ok) {
+            const premadeResult = await premadePackagesResponse.json();
+            console.log('Premade packages API response:', premadeResult);
+            const premadeData = Array.isArray(premadeResult) 
+              ? premadeResult 
+              : premadeResult.results || [];
+            allPackages = [...allPackages, ...premadeData];
+          } else if (premadePackagesResponse) {
+            console.log('Premade packages API failed with status:', premadePackagesResponse.status);
+          }
+
+          // Client-side filtering as safety net - filter packages that match destination name or ID
+          const currentDestinationName = transformedData?.name?.toLowerCase() || '';
+          const filteredPackages = allPackages.filter((pkg) => {
+            // Check if package destination matches current destination
+            const pkgDestination = pkg.destination?.toLowerCase() || '';
+            const pkgTitle = pkg.title?.toLowerCase() || '';
+            const pkgDescription = pkg.description?.toLowerCase() || '';
+            
+            // Match by destination name in various fields
+            return pkgDestination.includes(currentDestinationName) || 
+                   pkgTitle.includes(currentDestinationName) || 
+                   pkgDescription.includes(currentDestinationName) ||
+                   pkg.destination_detail?.toString() === destinationId ||
+                   pkg.destination?.toString() === destinationId;
+          });
+
+          console.log(`Total packages from API: ${allPackages.length}`);
+          console.log(`Filtered packages for ${currentDestinationName}: ${filteredPackages.length}`);
+          
+          // Use filtered packages instead of all packages
+          setPackages(filteredPackages);
         } catch (err) {
           console.error('Error fetching packages:', err);
           setPackages([]);
@@ -613,7 +663,7 @@ const DestinationPage: FunctionComponent = () => {
                           </div>
                           <button
                             onClick={() => {
-                              navigate('/confirm-booking', {
+                              navigate(`/confirm-book/${destinationId}/${pkg.id}`, {
                                 state: { pkg }
                               });
                             }}

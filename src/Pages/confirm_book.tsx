@@ -1,27 +1,76 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import Layout from "../components/layout";
 
 import { getHotels } from "../App/api-services";
 import type { Hotel } from "../App/api-services";
 
-const optionOrder = ["transport", "hotel", "vehicle", "guide"] as const;
+interface Attraction {
+  id: number;
+  name: string;
+  description: string;
+  image: string;
+  rating: number;
+  reviews: number;
+  category: string;
+}
+
+interface Experience {
+  id: number;
+  name: string;
+  description: string;
+  image: string;
+  duration: string;
+  price: string;
+  rating: number;
+  reviews: number;
+}
+
+const optionOrder = ["transport", "hotel", "vehicle", "guide", "attractions", "experiences"] as const;
 type OptionKey = (typeof optionOrder)[number];
 
 const ConfirmBook: React.FC = () => {
   const location = useLocation();
+  const { destinationId: urlDestinationId, packageId } = useParams<{ destinationId: string; packageId: string }>();
   const pkg = location.state?.pkg;
   type PackageDetails = {
     id?: string;
     title?: string;
     source?: string;
+    from_location?: string;
+    to_location?: string;
     destination?: string;
     price?: string | number;
     budget?: string | number;
+    total_cost?: string | number;
     days?: string | number;
+    image?: string;
+    image_url?: string;
+    transport?: {
+      id: number;
+      name: string;
+      type: string;
+      price: string;
+    };
+    hotel?: {
+      id: number;
+      name: string;
+      price: string;
+      rating: string;
+    };
+    guide?: {
+      id: number;
+      name: string;
+      price: string;
+    } | null;
+    preferences?: {
+      skip_guide?: boolean;
+      skip_hotel?: boolean;
+      skip_transport?: boolean;
+    };
     [key: string]: unknown;
   };
   const [packageDetails, setPackageDetails] = useState<PackageDetails | null>(
@@ -39,6 +88,8 @@ const ConfirmBook: React.FC = () => {
   const [skipHotel, setSkipHotel] = useState(false);
   const [skipVehicle, setSkipVehicle] = useState(true);
   const [skipGuide, setSkipGuide] = useState(true);
+  const [skipAttractions, setSkipAttractions] = useState(false);
+  const [skipExperiences, setSkipExperiences] = useState(false);
 
   const [activeOption, setActiveOption] = useState<OptionKey>("transport");
   const optionRefs: Record<
@@ -49,6 +100,8 @@ const ConfirmBook: React.FC = () => {
     hotel: useRef<HTMLDivElement>(null),
     vehicle: useRef<HTMLDivElement>(null),
     guide: useRef<HTMLDivElement>(null),
+    attractions: useRef<HTMLDivElement>(null),
+    experiences: useRef<HTMLDivElement>(null),
   };
 
   // Placeholder states for options (to be replaced with API data)
@@ -62,10 +115,41 @@ const ConfirmBook: React.FC = () => {
 
   const dateInputRef = React.useRef<HTMLInputElement>(null);
 
+  // Destination ID extracted from package
+  const [destinationId, setDestinationId] = useState<string | null>(null);
+
+  // Set destination ID from URL parameter
+  useEffect(() => {
+    if (urlDestinationId) {
+      setDestinationId(urlDestinationId);
+      console.log("🎯 Using destination ID from URL:", urlDestinationId, "Type:", typeof urlDestinationId);
+      console.log("🔍 URL destination ID is numeric?", /^\d+$/.test(urlDestinationId));
+    }
+  }, [urlDestinationId]);
+
+  // Check if destination ID is provided
+  useEffect(() => {
+    if (!destinationId && !urlDestinationId) {
+      console.warn("⚠️ No destination ID provided. Attractions and experiences will not be loaded.");
+    }
+  }, [destinationId, urlDestinationId]);
+
   const [hotels, setHotels] = useState<Hotel[]>([]);
   const [hotelsLoading, setHotelsLoading] = useState(false);
   const [hotelsError, setHotelsError] = useState("");
   const [selectedHotelId, setSelectedHotelId] = useState<string | null>(null);
+
+  // Attractions state
+  const [attractions, setAttractions] = useState<Attraction[]>([]);
+  const [attractionsLoading, setAttractionsLoading] = useState(false);
+  const [attractionsError, setAttractionsError] = useState("");
+  const [selectedAttractionIds, setSelectedAttractionIds] = useState<Set<number>>(new Set());
+
+  // Experiences state
+  const [experiences, setExperiences] = useState<Experience[]>([]);
+  const [experiencesLoading, setExperiencesLoading] = useState(false);
+  const [experiencesError, setExperiencesError] = useState("");
+  const [selectedExperienceIds, setSelectedExperienceIds] = useState<Set<number>>(new Set());
 
   const getField = React.useCallback(
     (obj: PackageDetails | null, key: string): string => {
@@ -156,17 +240,58 @@ const ConfirmBook: React.FC = () => {
           console.log("Found package:", found); // Debug log
 
           if (found) {
+            console.log("📦 Package details:", found);
+            console.log("🖼️ Package image field:", found.image);
+            console.log("🖼️ Package image_url field:", found.image_url);
+            console.log("🚌 Transport info:", found.transport);
+            console.log("🏨 Hotel info:", found.hotel);
+            console.log("👨‍🦱 Guide info:", found.guide);
+            console.log("⚙️ Preferences:", found.preferences);
+            
             setPackageDetails(found);
-            setStartDate("");
-            setTravelers(1);
-            setTotalPrice(found.price || found.budget || "");
-            setTransport("Not selected");
-            setHotel("Not selected");
-            setGuide("Not selected");
-            // Removed setSkipTransport (no longer used)
-            setSkipHotel(false);
-            setSkipGuide(true);
-            setActiveOption("transport");
+            setStartDate(found.start_date || "");
+            setTravelers(found.travelers_count || 1);
+            setTotalPrice(found.total_cost || found.price || found.budget || "");
+            
+            // Pre-populate services from API response
+            if (found.transport) {
+              setTransport(`${found.transport.name} - ৳${found.transport.price}`);
+              setActiveOption("hotel"); // Move to next step
+            } else {
+              setTransport("Not selected");
+              setActiveOption("transport");
+            }
+            
+            if (found.hotel) {
+              setHotel(`${found.hotel.name} - ৳${found.hotel.price} (${found.hotel.rating}⭐)`);
+            } else {
+              setHotel("Not selected");
+            }
+            
+            if (found.guide) {
+              setGuide(`${found.guide.name} - ৳${found.guide.price}`);
+              setSkipGuide(false);
+            } else {
+              setGuide("Not selected");
+              setSkipGuide(found.preferences?.skip_guide ?? true);
+            }
+            
+            // Set skip preferences from API
+            setSkipHotel(found.preferences?.skip_hotel ?? false);
+            
+            // Extract destination ID from package data
+            const destId = found.destination || found.destination_detail || found.destination_id;
+            if (destId) {
+              console.log("🔄 Package destination info - Raw:", destId, "Type:", typeof destId);
+              console.log("🔄 URL destination ID:", urlDestinationId, "Type:", typeof urlDestinationId);
+              // Only override if URL doesn't have destination ID
+              if (!urlDestinationId) {
+                setDestinationId(String(destId));
+                console.log("🎯 Set destination ID from package:", destId);
+              } else {
+                console.log("🎯 Keeping URL destination ID:", urlDestinationId, "Package had:", destId);
+              }
+            }
           } else {
             setError(
               `Package with ID ${pkg.id} not found in the API response.`
@@ -189,7 +314,85 @@ const ConfirmBook: React.FC = () => {
       }
     };
     fetchDetails();
-  }, [pkg]);
+  }, [pkg, urlDestinationId]);
+
+  // Fetch package details using package ID from URL if no package data in state
+  useEffect(() => {
+    if (!pkg && packageId) {
+      console.log("🔄 No package data in state, fetching package details for ID:", packageId);
+      setLoading(true);
+      setError("");
+      
+      // First try custom packages API with destination filter
+      fetch(`https://wander-nest-ad3s.onrender.com/api/packages/?destination=${urlDestinationId}`)
+        .then(async (response) => {
+          if (response.ok) {
+            const data = await response.json();
+            console.log("✅ Custom packages API response:", data);
+            
+            // Handle paginated response structure
+            const packagesData = data.results || (Array.isArray(data) ? data : []);
+            const packageData = packagesData.find((p: PackageDetails) => p.id?.toString() === packageId);
+            
+            if (packageData) {
+              console.log("✅ Package details fetched from custom packages:", packageData);
+              console.log("🚌 Transport info:", packageData.transport);
+              console.log("🏨 Hotel info:", packageData.hotel);
+              console.log("👨‍🦱 Guide info:", packageData.guide);
+              
+              setPackageDetails(packageData);
+              
+              // Pre-populate services from API response
+              if (packageData.transport) {
+                setTransport(`${packageData.transport.name} - ৳${packageData.transport.price}`);
+              }
+              if (packageData.hotel) {
+                setHotel(`${packageData.hotel.name} - ৳${packageData.hotel.price} (${packageData.hotel.rating}⭐)`);
+              }
+              if (packageData.guide) {
+                setGuide(`${packageData.guide.name} - ৳${packageData.guide.price}`);
+              }
+              
+              setLoading(false);
+              return;
+            } else {
+              throw new Error("Package not found in custom packages, trying premade packages");
+            }
+          } else {
+            // Try premade packages if custom package not found
+            throw new Error("Custom packages API failed, trying premade packages");
+          }
+        })
+        .catch(async () => {
+          // Fallback to premade packages
+          try {
+            const response = await fetch(`https://wander-nest-ad3s.onrender.com/api/packages/all/`);
+            if (!response.ok) throw new Error("Failed to fetch premade packages");
+            
+            const data = await response.json();
+            const packages = data.results || (Array.isArray(data) ? data : []);
+            const found = packages.find((p: { id: string | number }) => p.id?.toString() === packageId);
+            
+            if (found) {
+              console.log("✅ Package details fetched from premade packages:", found);
+              setPackageDetails(found);
+              
+              // Since we have destination ID from URL, we don't need to extract it from package
+              const foundPackage = found as { destination?: string | number; destination_detail?: string | number; destination_id?: string | number };
+              const destId = foundPackage.destination || foundPackage.destination_detail || foundPackage.destination_id;
+              console.log("📋 Package destination ID:", destId, "URL destination ID:", urlDestinationId);
+              setLoading(false);
+            } else {
+              throw new Error("Package not found in any API");
+            }
+          } catch (err) {
+            console.error("❌ Failed to fetch package details:", err);
+            setError("Failed to load package details");
+            setLoading(false);
+          }
+        });
+    }
+  }, [packageId, pkg, urlDestinationId]);
 
   useEffect(() => {
     if (packageDetails) {
@@ -260,6 +463,82 @@ const ConfirmBook: React.FC = () => {
     }
   }, [skipHotel]);
 
+  // Fetch attractions for the destination
+  useEffect(() => {
+    if (!skipAttractions && destinationId) {
+      console.log("🎯 Starting attractions fetch process for destination:", destinationId);
+      setAttractionsLoading(true);
+      setAttractionsError("");
+      
+      const apiUrl = `https://wander-nest-ad3s.onrender.com/api/home/destinations/${destinationId}/`;
+      console.log("🌐 Fetching from URL:", apiUrl);
+      
+      fetch(apiUrl)
+        .then((response) => {
+          console.log("📡 Response status:", response.status, response.statusText);
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: Failed to fetch destination data`);
+          }
+          return response.json();
+        })
+        .then((destinationData) => {
+          console.log("✅ Destination data fetched:", destinationData);
+          const attractionsData = destinationData.attractions || [];
+          console.log("🎯 Attractions found:", attractionsData.length);
+          setAttractions(attractionsData);
+          setAttractionsLoading(false);
+        })
+        .catch((error) => {
+          console.error("❌ Attractions fetch failed:", error);
+          setAttractionsError(error.message || "Failed to fetch destination data");
+          setAttractions([]);
+          setAttractionsLoading(false);
+        });
+    } else {
+      console.log("🚫 Attractions section skipped or no destination ID. Skip:", skipAttractions, "DestID:", destinationId);
+      setAttractions([]);
+      setAttractionsLoading(false);
+    }
+  }, [skipAttractions, destinationId]);
+
+  // Fetch experiences for the destination
+  useEffect(() => {
+    if (!skipExperiences && destinationId) {
+      console.log("🌟 Starting experiences fetch process for destination:", destinationId);
+      setExperiencesLoading(true);
+      setExperiencesError("");
+      
+      const apiUrl = `https://wander-nest-ad3s.onrender.com/api/home/destinations/${destinationId}/`;
+      console.log("🌐 Fetching from URL:", apiUrl);
+      
+      fetch(apiUrl)
+        .then((response) => {
+          console.log("📡 Response status:", response.status, response.statusText);
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: Failed to fetch destination data`);
+          }
+          return response.json();
+        })
+        .then((destinationData) => {
+          console.log("✅ Destination data fetched:", destinationData);
+          const experiencesData = destinationData.experiences || [];
+          console.log("🌟 Experiences found:", experiencesData.length);
+          setExperiences(experiencesData);
+          setExperiencesLoading(false);
+        })
+        .catch((error) => {
+          console.error("❌ Experiences fetch failed:", error);
+          setExperiencesError(error.message || "Failed to fetch destination data");
+          setExperiences([]);
+          setExperiencesLoading(false);
+        });
+    } else {
+      console.log("🚫 Experiences section skipped or no destination ID. Skip:", skipExperiences, "DestID:", destinationId);
+      setExperiences([]);
+      setExperiencesLoading(false);
+    }
+  }, [skipExperiences, destinationId]);
+
   const handleTravelersChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = Math.max(1, parseInt(e.target.value) || 1);
     setTravelers(val);
@@ -303,6 +582,20 @@ const ConfirmBook: React.FC = () => {
       case "guide":
         setSkipGuide((prev) => {
           if (!prev) setActiveOption("guide");
+          return !prev;
+        });
+        break;
+      case "attractions":
+        setSkipAttractions((prev) => {
+          if (!prev) setActiveOption("attractions");
+          else focusNextOption("attractions");
+          return !prev;
+        });
+        break;
+      case "experiences":
+        setSkipExperiences((prev) => {
+          if (!prev) setActiveOption("experiences");
+          else focusNextOption("experiences");
           return !prev;
         });
         break;
@@ -449,6 +742,64 @@ const ConfirmBook: React.FC = () => {
   return (
     <Layout>
       <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8 mt-8 mb-12">
+        {packageDetails?.title && (
+          <div className="mb-4 p-4 bg-gradient-to-r from-[#6ab187]/10 to-[#4a6b5b]/10 rounded-lg border-l-4 border-[#6ab187]">
+            <div className="flex gap-4 items-start">
+              {/* Always show an image - either package image or default */}
+              <div className="flex-shrink-0">
+                <img
+                  src={
+                    (packageDetails.image && typeof packageDetails.image === 'string') 
+                      ? packageDetails.image 
+                      : (packageDetails.image_url && typeof packageDetails.image_url === 'string')
+                      ? packageDetails.image_url
+                      : "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=300&h=300&fit=crop"
+                  }
+                  alt={typeof packageDetails.title === 'string' ? packageDetails.title : 'Package'}
+                  className="w-24 h-24 object-cover rounded-lg shadow-md"
+                  onError={(e) => {
+                    console.log("Image failed to load, using fallback");
+                    e.currentTarget.src = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&h=300&fit=crop";
+                  }}
+                />
+              </div>
+              <div className="flex-grow">
+                <h2 className="text-2xl font-bold text-[#6ab187] mb-1">
+                  {packageDetails.title}
+                </h2>
+                {packageDetails.days && (
+                  <p className="text-gray-600">
+                    {packageDetails.days} Days Package
+                  </p>
+                )}
+                
+                {/* Show included services from API response */}
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {packageDetails.transport && (
+                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800">
+                      🚌 {packageDetails.transport.name} - ৳{packageDetails.transport.price}
+                    </span>
+                  )}
+                  {packageDetails.hotel && (
+                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">
+                      🏨 {packageDetails.hotel.name} - ৳{packageDetails.hotel.price}
+                    </span>
+                  )}
+                  {packageDetails.guide && (
+                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-purple-100 text-purple-800">
+                      👨‍🦱 {packageDetails.guide.name} - ৳{packageDetails.guide.price}
+                    </span>
+                  )}
+                  {packageDetails.preferences?.skip_guide && (
+                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-gray-100 text-gray-600">
+                      No Guide
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         <h1 className="text-3xl font-bold text-primary mb-6">
           Confirm Your Booking
         </h1>
@@ -465,7 +816,7 @@ const ConfirmBook: React.FC = () => {
                 <input
                   className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
                   type="text"
-                  value={getField(packageDetails, "source")}
+                  value={getField(packageDetails, "from_location") || getField(packageDetails, "source")}
                   readOnly
                 />
               </div>
@@ -476,7 +827,7 @@ const ConfirmBook: React.FC = () => {
                 <input
                   className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
                   type="text"
-                  value={getField(packageDetails, "destination")}
+                  value={getField(packageDetails, "to_location") || getField(packageDetails, "destination")}
                   readOnly
                 />
               </div>
@@ -833,6 +1184,382 @@ const ConfirmBook: React.FC = () => {
               {!skipGuide && (
                 <div className="p-4 bg-white rounded-lg shadow">
                   Guide options go here
+                </div>
+              )}
+            </div>
+
+            {/* Attractions */}
+            <div
+              ref={optionRefs.attractions}
+              className={`flex flex-col gap-2 p-4 rounded-lg border ${
+                activeOption === "attractions"
+                  ? "border-primary bg-primary/5"
+                  : "border-gray-200 bg-gray-50"
+              }`}
+            >
+              <span className="font-medium text-base text-gray-700">
+                Select Attractions
+              </span>
+              <button
+                type="button"
+                className="ml-4 px-4 py-1 rounded-full border text-white bg-white hover:opacity-90 transition"
+                style={{
+                  borderColor: "#6ab187",
+                  backgroundColor: "#6ab187",
+                }}
+                onClick={() => handleSkipToggle("attractions")}
+              >
+                {skipAttractions ? "Include" : "Skip"}
+              </button>
+              {/* Only show attractions if not skipped */}
+              {!skipAttractions && (
+                <div style={{ width: "100%", marginTop: 24 }}>
+                  <div style={{ position: "relative" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: 24,
+                        overflowX: "auto",
+                        scrollBehavior: "smooth",
+                        paddingBottom: 8,
+                        margin: "0 48px",
+                      }}
+                    >
+                      {attractionsLoading && <p>Loading attractions...</p>}
+                      {attractionsError && (
+                        <p style={{ color: "red" }}>{attractionsError}</p>
+                      )}
+                      {attractions.length > 0
+                        ? attractions.map((attraction) => {
+                            const isSelected = selectedAttractionIds.has(attraction.id);
+                            return (
+                              <div
+                                key={attraction.id}
+                                onClick={() => {
+                                  const newSelected = new Set(selectedAttractionIds);
+                                  if (isSelected) {
+                                    newSelected.delete(attraction.id);
+                                  } else {
+                                    newSelected.add(attraction.id);
+                                  }
+                                  setSelectedAttractionIds(newSelected);
+                                }}
+                                style={{
+                                  cursor: "pointer",
+                                  borderRadius: 14,
+                                  border: isSelected
+                                    ? "2.5px solid #4e944f"
+                                    : "2.5px solid transparent",
+                                  boxShadow: isSelected
+                                    ? "0 4px 24px rgba(76,177,106,0.15)"
+                                    : "0 2px 8px rgba(0,0,0,0.06)",
+                                  overflow: "hidden",
+                                  background: "#fff",
+                                  minWidth: 220,
+                                  maxWidth: 240,
+                                  flex: "0 0 220px",
+                                  transition: "border 0.2s, box-shadow 0.2s",
+                                  position: "relative",
+                                }}
+                              >
+                                {/* Checkmark for selected */}
+                                {isSelected && (
+                                  <div
+                                    style={{
+                                      position: "absolute",
+                                      top: 8,
+                                      right: 8,
+                                      background: "#4e944f",
+                                      borderRadius: "50%",
+                                      width: 28,
+                                      height: 28,
+                                      display: "flex",
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                      boxShadow:
+                                        "0 2px 8px rgba(76,177,106,0.18)",
+                                    }}
+                                  >
+                                    <svg
+                                      width="18"
+                                      height="18"
+                                      viewBox="0 0 20 20"
+                                      fill="none"
+                                    >
+                                      <circle
+                                        cx="10"
+                                        cy="10"
+                                        r="10"
+                                        fill="#4e944f"
+                                      />
+                                      <path
+                                        d="M6 10.5L9 13.5L14 8.5"
+                                        stroke="#fff"
+                                        strokeWidth="2.2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                      />
+                                    </svg>
+                                  </div>
+                                )}
+                                <img
+                                  src={
+                                    attraction.image ||
+                                    "/placeholder.svg?height=120&width=200"
+                                  }
+                                  alt={attraction.name}
+                                  style={{
+                                    width: "100%",
+                                    height: 120,
+                                    objectFit: "cover",
+                                    display: "block",
+                                  }}
+                                />
+                                <div style={{ padding: 16 }}>
+                                  <h4 style={{ 
+                                    fontSize: "16px", 
+                                    fontWeight: 600, 
+                                    margin: "0 0 8px 0",
+                                    color: "#1f2937"
+                                  }}>
+                                    {attraction.name}
+                                  </h4>
+                                  <p style={{ 
+                                    fontSize: "14px", 
+                                    color: "#6b7280", 
+                                    margin: "0 0 8px 0",
+                                    lineHeight: "1.4"
+                                  }}>
+                                    {attraction.description}
+                                  </p>
+                                  <div style={{ 
+                                    display: "flex", 
+                                    alignItems: "center", 
+                                    gap: 4 
+                                  }}>
+                                    <span style={{ color: "#fbbf24" }}>
+                                      {"★".repeat(Math.floor(attraction.rating || 0))}
+                                    </span>
+                                    <span style={{ fontSize: "12px", color: "#9ca3af" }}>
+                                      {attraction.rating} ({attraction.reviews || 0} reviews)
+                                    </span>
+                                  </div>
+                                  <div style={{ 
+                                    marginTop: 8,
+                                    fontSize: "12px",
+                                    color: "#6b7280",
+                                    backgroundColor: "#f3f4f6",
+                                    padding: "4px 8px",
+                                    borderRadius: "12px",
+                                    display: "inline-block"
+                                  }}>
+                                    {attraction.category}
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })
+                        : !attractionsLoading && (
+                            <p style={{ color: "#9ca3af", fontStyle: "italic" }}>
+                              No attractions available for this destination.
+                            </p>
+                          )}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Experiences */}
+            <div
+              ref={optionRefs.experiences}
+              className={`flex flex-col gap-2 p-4 rounded-lg border ${
+                activeOption === "experiences"
+                  ? "border-primary bg-primary/5"
+                  : "border-gray-200 bg-gray-50"
+              }`}
+            >
+              <span className="font-medium text-base text-gray-700">
+                Select Experiences
+              </span>
+              <button
+                type="button"
+                className="ml-4 px-4 py-1 rounded-full border text-white bg-white hover:opacity-90 transition"
+                style={{
+                  borderColor: "#6ab187",
+                  backgroundColor: "#6ab187",
+                }}
+                onClick={() => handleSkipToggle("experiences")}
+              >
+                {skipExperiences ? "Include" : "Skip"}
+              </button>
+              {/* Only show experiences if not skipped */}
+              {!skipExperiences && (
+                <div style={{ width: "100%", marginTop: 24 }}>
+                  <div style={{ position: "relative" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: 24,
+                        overflowX: "auto",
+                        scrollBehavior: "smooth",
+                        paddingBottom: 8,
+                        margin: "0 48px",
+                      }}
+                    >
+                      {experiencesLoading && <p>Loading experiences...</p>}
+                      {experiencesError && (
+                        <p style={{ color: "red" }}>{experiencesError}</p>
+                      )}
+                      {experiences.length > 0
+                        ? experiences.map((experience) => {
+                            const isSelected = selectedExperienceIds.has(experience.id);
+                            return (
+                              <div
+                                key={experience.id}
+                                onClick={() => {
+                                  const newSelected = new Set(selectedExperienceIds);
+                                  if (isSelected) {
+                                    newSelected.delete(experience.id);
+                                  } else {
+                                    newSelected.add(experience.id);
+                                  }
+                                  setSelectedExperienceIds(newSelected);
+                                }}
+                                style={{
+                                  cursor: "pointer",
+                                  borderRadius: 14,
+                                  border: isSelected
+                                    ? "2.5px solid #4e944f"
+                                    : "2.5px solid transparent",
+                                  boxShadow: isSelected
+                                    ? "0 4px 24px rgba(76,177,106,0.15)"
+                                    : "0 2px 8px rgba(0,0,0,0.06)",
+                                  overflow: "hidden",
+                                  background: "#fff",
+                                  minWidth: 220,
+                                  maxWidth: 240,
+                                  flex: "0 0 220px",
+                                  transition: "border 0.2s, box-shadow 0.2s",
+                                  position: "relative",
+                                }}
+                              >
+                                {/* Checkmark for selected */}
+                                {isSelected && (
+                                  <div
+                                    style={{
+                                      position: "absolute",
+                                      top: 8,
+                                      right: 8,
+                                      background: "#4e944f",
+                                      borderRadius: "50%",
+                                      width: 28,
+                                      height: 28,
+                                      display: "flex",
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                      boxShadow:
+                                        "0 2px 8px rgba(76,177,106,0.18)",
+                                    }}
+                                  >
+                                    <svg
+                                      width="18"
+                                      height="18"
+                                      viewBox="0 0 20 20"
+                                      fill="none"
+                                    >
+                                      <circle
+                                        cx="10"
+                                        cy="10"
+                                        r="10"
+                                        fill="#4e944f"
+                                      />
+                                      <path
+                                        d="M6 10.5L9 13.5L14 8.5"
+                                        stroke="#fff"
+                                        strokeWidth="2.2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                      />
+                                    </svg>
+                                  </div>
+                                )}
+                                <img
+                                  src={
+                                    experience.image ||
+                                    "/placeholder.svg?height=120&width=200"
+                                  }
+                                  alt={experience.name}
+                                  style={{
+                                    width: "100%",
+                                    height: 120,
+                                    objectFit: "cover",
+                                    display: "block",
+                                  }}
+                                />
+                                <div style={{ padding: 16 }}>
+                                  <h4 style={{ 
+                                    fontSize: "16px", 
+                                    fontWeight: 600, 
+                                    margin: "0 0 8px 0",
+                                    color: "#1f2937"
+                                  }}>
+                                    {experience.name}
+                                  </h4>
+                                  <p style={{ 
+                                    fontSize: "14px", 
+                                    color: "#6b7280", 
+                                    margin: "0 0 8px 0",
+                                    lineHeight: "1.4"
+                                  }}>
+                                    {experience.description}
+                                  </p>
+                                  <div style={{ 
+                                    display: "flex", 
+                                    alignItems: "center", 
+                                    gap: 4,
+                                    marginBottom: 8
+                                  }}>
+                                    <span style={{ color: "#fbbf24" }}>
+                                      {"★".repeat(Math.floor(experience.rating || 0))}
+                                    </span>
+                                    <span style={{ fontSize: "12px", color: "#9ca3af" }}>
+                                      {experience.rating} ({experience.reviews || 0} reviews)
+                                    </span>
+                                  </div>
+                                  <div style={{ 
+                                    display: "flex", 
+                                    justifyContent: "space-between",
+                                    alignItems: "center"
+                                  }}>
+                                    <span style={{ 
+                                      fontSize: "12px",
+                                      color: "#6b7280",
+                                      backgroundColor: "#f3f4f6",
+                                      padding: "4px 8px",
+                                      borderRadius: "12px"
+                                    }}>
+                                      {experience.duration}
+                                    </span>
+                                    <span style={{ 
+                                      fontSize: "14px",
+                                      fontWeight: 600,
+                                      color: "#4e944f"
+                                    }}>
+                                      {experience.price}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })
+                        : !experiencesLoading && (
+                            <p style={{ color: "#9ca3af", fontStyle: "italic" }}>
+                              No experiences available for this destination.
+                            </p>
+                          )}
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
