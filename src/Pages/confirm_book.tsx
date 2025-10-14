@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import Layout from "../components/layout";
+import { useAuth } from "../Authentication/auth-context";
 
 import { getHotels } from "../App/api-services";
 import type { Hotel } from "../App/api-services";
@@ -33,7 +34,11 @@ const optionOrder = ["transport", "hotel", "vehicle", "guide", "attractions", "e
 type OptionKey = (typeof optionOrder)[number];
 
 const ConfirmBook: React.FC = () => {
+  // FIRST: Authentication check - must be at the top
+  const { isAuthenticated, loading: authLoading } = useAuth();
+  
   const location = useLocation();
+  const navigate = useNavigate();
   const { destinationId: urlDestinationId, packageId } = useParams<{ destinationId: string; packageId: string }>();
   const pkg = location.state?.pkg;
   type PackageDetails = {
@@ -111,9 +116,29 @@ const ConfirmBook: React.FC = () => {
 
   const [warning, setWarning] = useState("");
 
-  const navigate = useNavigate();
-
   const dateInputRef = React.useRef<HTMLInputElement>(null);
+
+  // Authentication protection - redirect to login if not authenticated
+  useEffect(() => {
+    console.log('🔐 Auth check:', { authLoading, isAuthenticated });
+    
+    if (!authLoading && !isAuthenticated) {
+      console.log('🔐 Redirecting to login - user not authenticated');
+      
+      // Store the current URL to redirect back after login
+      const currentPath = location.pathname + location.search;
+      sessionStorage.setItem("redirectAfterLogin", currentPath);
+      
+      // Use replace to prevent back button issues
+      navigate('/login', { 
+        state: { 
+          from: currentPath,
+          message: 'Please log in to book this package'
+        },
+        replace: true
+      });
+    }
+  }, [authLoading, isAuthenticated, navigate, location.pathname, location.search]);
 
   // Destination ID extracted from package
   const [destinationId, setDestinationId] = useState<string | null>(null);
@@ -733,6 +758,54 @@ const ConfirmBook: React.FC = () => {
       </Layout>
     );
   }
+
+  // Show loading spinner while checking authentication
+  if (authLoading) {
+    console.log('🔐 Showing loading spinner - auth is loading');
+    return (
+      <Layout>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
+            <p className="text-gray-600">Checking authentication...</p>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  // If not authenticated, show auth required screen and trigger redirect
+  if (!isAuthenticated) {
+    console.log('🔐 Not authenticated - showing auth required screen');
+    
+    // Additional fallback redirect (in case useEffect doesn't work)
+    setTimeout(() => {
+      if (!isAuthenticated) {
+        console.log('🔐 Fallback redirect after 1 second');
+        window.location.href = '/login';
+      }
+    }, 1000);
+    
+    return (
+      <Layout>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span className="text-2xl">🔒</span>
+            </div>
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">Authentication Required</h2>
+            <p className="text-gray-600">Please log in to book this package. Redirecting to login...</p>
+            <div className="mt-4">
+              <div className="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-primary mb-2"></div>
+              <p className="text-sm text-gray-500">Redirecting...</p>
+            </div>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  console.log('🔐 User is authenticated - rendering booking form');
 
   return (
     <Layout>

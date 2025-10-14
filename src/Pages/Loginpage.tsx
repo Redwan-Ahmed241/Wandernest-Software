@@ -3,7 +3,7 @@
 
 import type React from "react";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../Authentication/auth-context";
 import { storeTokens } from "../utils/authUtils";
 
@@ -13,7 +13,11 @@ export default function TravelLogin() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { isAuthenticated, login } = useAuth();
+  
+  // Get the message from navigation state
+  const redirectMessage = location.state?.message;
 
   // Redirect if already logged in
   useEffect(() => {
@@ -244,6 +248,17 @@ export default function TravelLogin() {
 
           {/* Login Form */}
           <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-8">
+            {redirectMessage && (
+              <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                <div className="flex items-center gap-2 justify-center">
+                  <span className="text-blue-600 text-lg">🔒</span>
+                  <p className="text-blue-700 text-sm font-medium">
+                    {redirectMessage}
+                  </p>
+                </div>
+              </div>
+            )}
+
             {error && (
               <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
                 <p className="text-red-600 text-sm font-medium text-center">
