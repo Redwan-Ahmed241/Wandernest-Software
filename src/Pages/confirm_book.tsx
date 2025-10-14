@@ -497,30 +497,37 @@ const ConfirmBook: React.FC = () => {
   // Removed skip toggle functions since we're not allowing customization
 
   const handleConfirmBooking = async () => {
+    // Debug logging
+    console.log("Validation Debug:", {
+      source: packageDetails?.source,
+      title: packageDetails?.title,
+      startDate,
+      endDate,
+      travelers,
+      customerName,
+      customerEmail,
+      customerPhone
+    });
+
     // Validation: required fields
+    const hasSource = packageDetails?.source || packageDetails?.from_location;
+    const hasDestination = packageDetails?.destination || packageDetails?.to_location;
+    
     if (
-      !packageDetails?.source ||
+      !hasSource ||
+      !hasDestination ||
       !packageDetails?.title ||
       !startDate ||
       !endDate ||
       !travelers
     ) {
+      console.log("Failed validation: Missing required traveler fields");
       setWarning("Please fill in all traveler details.");
       return;
     }
     
     // Skip customer detail validation as they are optional
     // The booking will proceed with package and travel details only
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(customerEmail)) {
-      setWarning("Please enter a valid email.");
-      return;
-    }
-    if (customerPhone.length < 10) {
-      setWarning("Please enter a valid phone number.");
-      return;
-    }
     setWarning("");
     setPaymentError("");
     setIsProcessingPayment(true);
@@ -937,7 +944,7 @@ const ConfirmBook: React.FC = () => {
                         margin: "0 48px",
                       }}
                     >
-                      {packageDetails?.accommodation ? (
+                      {packageDetails?.hotel ? (
                         <div
                           style={{
                             borderRadius: 14,
@@ -968,10 +975,9 @@ const ConfirmBook: React.FC = () => {
                           </div>
                           <img
                             src={
-                              packageDetails.accommodation.image ||
                               "/placeholder.svg?height=120&width=200"
                             }
-                            alt={packageDetails.accommodation.name}
+                            alt={packageDetails.hotel.name}
                             style={{
                               width: "100%",
                               height: 120,
@@ -987,7 +993,7 @@ const ConfirmBook: React.FC = () => {
                                 marginBottom: 4,
                               }}
                             >
-                              {packageDetails.accommodation.name}
+                              {packageDetails.hotel.name}
                             </div>
                             <div
                               style={{
@@ -996,9 +1002,9 @@ const ConfirmBook: React.FC = () => {
                                 marginBottom: 2,
                               }}
                             >
-                              {packageDetails.accommodation.description || "Hotel accommodation"}
+                              {packageDetails.hotel.description || "Hotel accommodation"}
                             </div>
-                            {packageDetails.accommodation.rating && (
+                            {packageDetails.hotel.rating && (
                               <div
                                 style={{
                                   display: "flex",
@@ -1010,14 +1016,26 @@ const ConfirmBook: React.FC = () => {
                                   ★
                                 </span>
                                 <span style={{ fontSize: 12, color: "#666" }}>
-                                  {packageDetails.accommodation.rating}
+                                  {packageDetails.hotel.rating}
                                 </span>
+                              </div>
+                            )}
+                            {packageDetails.hotel.price && (
+                              <div
+                                style={{
+                                  color: "#4e944f",
+                                  fontSize: 14,
+                                  fontWeight: 600,
+                                  marginTop: 4,
+                                }}
+                              >
+                                ৳{packageDetails.hotel.price} per night
                               </div>
                             )}
                           </div>
                         </div>
                       ) : (
-                        <p>No accommodation information available.</p>
+                        <p>No hotel information available.</p>
                       )}
                     </div>
                   </div>
@@ -1139,9 +1157,15 @@ const ConfirmBook: React.FC = () => {
           <span className="font-medium text-lg text-gray-800 mb-3">
             🎯 Available Attractions
           </span>
-          {attractionsLoading && <p>Loading attractions...</p>}
+          {attractionsLoading && (
+            <div className="flex items-center justify-center py-4">
+              <p className="text-gray-600">Loading attractions...</p>
+            </div>
+          )}
           {attractionsError && (
-            <p style={{ color: "red" }}>{attractionsError}</p>
+            <div className="p-4 bg-red-50 rounded-lg border border-red-200">
+              <p className="text-red-600">{attractionsError}</p>
+            </div>
           )}
           {attractions.length > 0 ? (
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
@@ -1150,14 +1174,32 @@ const ConfirmBook: React.FC = () => {
                   key={attraction.id}
                   style={{
                     borderRadius: 8,
-                    border: "2px solid #d1d5db",
+                    border: "2px solid #4e944f",
                     backgroundColor: "#fff",
                     padding: 12,
                     minWidth: 200,
                     maxWidth: 250,
                     boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                    position: "relative",
                   }}
                 >
+                  {/* INCLUDED badge */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 8,
+                      left: 8,
+                      background: "#4e944f",
+                      color: "white",
+                      padding: "4px 8px",
+                      borderRadius: 6,
+                      fontSize: 12,
+                      fontWeight: 600,
+                      zIndex: 1,
+                    }}
+                  >
+                    INCLUDED
+                  </div>
                   <img
                     src={attraction.image || "/placeholder.svg"}
                     alt={attraction.name}
@@ -1211,9 +1253,26 @@ const ConfirmBook: React.FC = () => {
                     margin: "0 48px",
                   }}
                 >
-                  {experiencesLoading && <p>Loading experiences...</p>}
+                  {experiencesLoading && (
+                    <div style={{ 
+                      display: "flex", 
+                      alignItems: "center", 
+                      justifyContent: "center", 
+                      padding: "2rem",
+                      color: "#666" 
+                    }}>
+                      <p>Loading experiences...</p>
+                    </div>
+                  )}
                   {experiencesError && (
-                    <p style={{ color: "red" }}>{experiencesError}</p>
+                    <div style={{ 
+                      padding: "1rem", 
+                      backgroundColor: "#fef2f2", 
+                      border: "1px solid #fecaca", 
+                      borderRadius: "8px" 
+                    }}>
+                      <p style={{ color: "#dc2626" }}>{experiencesError}</p>
+                    </div>
                   )}
                   {experiences.length > 0
                     ? experiences.map((experience) => {
