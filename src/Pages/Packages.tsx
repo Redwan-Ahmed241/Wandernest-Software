@@ -24,13 +24,19 @@ type FilterKey = "Destination" | "Budget";
 interface Package {
   id: number;
   title: string;
-  subtitle: string;
+  subtitle?: string;
   pic?: string;
-  price: string;
-  image_url: string;
-  destination: string;
-  source: string;
-  days: number;
+  price?: string;
+  budget?: string;
+  total_cost?: string;
+  image_url?: string;
+  package_type: 'premade' | 'custom';
+  from_location: string;
+  to_location: string;
+  destination: number;
+  destination_name: string;
+  days?: number;
+  status: string;
 }
 
 // Helper to extract place name from package title
@@ -76,15 +82,46 @@ const Packages: FunctionComponent = () => {
       setLoading(true);
       setError("");
       try {
+        console.log("🚀 Starting API call to:", "https://wander-nest-ad3s.onrender.com/api/packages/unified/");
+        
         const response = await fetch(
-          "https://wander-nest-ad3s.onrender.com/api/packages/all/"
+          "https://wander-nest-ad3s.onrender.com/api/packages/unified/"
         );
+        
+        console.log("📡 Response status:", response.status);
+        console.log("📡 Response ok:", response.ok);
+        console.log("📡 Response headers:", response.headers);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
         const data = await response.json();
-        const packagesData = data.results || (Array.isArray(data) ? data : []);
-        setPackages(packagesData);
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        console.log("📦 Raw API response:", data);
+        console.log("📦 Response type:", typeof data);
+        console.log("📦 Is array:", Array.isArray(data));
+        
+        if (data && data.results) {
+          // Handle paginated response
+          console.log("📦 Paginated response detected");
+          console.log("📦 Results array:", data.results);
+          const packagesData = Array.isArray(data.results) ? data.results : [];
+          setPackages(packagesData);
+          console.log("📦 Number of packages received:", packagesData.length);
+        } else {
+          // Handle direct array response
+          const packagesData = Array.isArray(data) ? data : [];
+          setPackages(packagesData);
+          console.log("📦 Number of packages received:", packagesData.length);
+        }
+        
+        console.log("📦 First package sample:", data[0] || data.results?.[0]);
+        console.log("📦 Package fields:", (data[0] || data.results?.[0]) ? Object.keys(data[0] || data.results?.[0]) : 'No packages');
       } catch (err) {
-        setError("Failed to fetch packages");
+        console.error("❌ Packages fetch error:", err);
+        console.error("❌ Error type:", typeof err);
+        console.error("❌ Error message:", err instanceof Error ? err.message : String(err));
+        setError(`Failed to fetch packages: ${err instanceof Error ? err.message : String(err)}`);
         setPackages([]);
       } finally {
         setLoading(false);
@@ -130,16 +167,21 @@ const Packages: FunctionComponent = () => {
 
   // Filter packages by search and selected filters
   const filteredPackages = packages.filter((pkg) => {
-    const matchesSearch = pkg.title
+    const matchesSearch = search.length === 0 || (pkg.title && pkg.title
       .toLowerCase()
-      .includes(search.toLowerCase());
+      .includes(search.toLowerCase()));
+    
     const matchesFilters = Object.entries(selectedFilters).every(
       ([filter, value]) => {
         if (filter === "Destination") {
-          return extractPlaceName(pkg.title) === value || value === "All";
+          // Use destination_name from unified API instead of extracting from title
+          return !value || value === "All" || pkg.destination_name === value;
         }
         if (filter === "Budget") {
-          const price = Number(pkg.price);
+          // Handle multiple possible price fields from unified API
+          const priceString = pkg.price || pkg.total_cost || pkg.budget || '0';
+          const price = Number(priceString.replace(/[^0-9.-]/g, ''));
+          if (!value || value === "All") return true;
           if (value === "< 4000৳") return price < 4000;
           if (value === "4000–6000৳") return price >= 4000 && price <= 6000;
           if (value === "6000+৳") return price > 6000;
@@ -150,6 +192,13 @@ const Packages: FunctionComponent = () => {
     );
     return matchesSearch && matchesFilters;
   });
+
+  // Debug logging
+  console.log('Packages total:', packages.length);
+  console.log('Filtered packages:', filteredPackages.length);
+  console.log('Search term:', search);
+  console.log('Selected filters:', selectedFilters);
+  console.log('Sample package:', packages[0]);
 
   // Pagination logic
   const ITEMS_PER_PAGE = 9; // 3x3 grid
@@ -165,11 +214,16 @@ const Packages: FunctionComponent = () => {
     itemsPerPage: ITEMS_PER_PAGE,
   });
 
+  // More debug logging for pagination
+  console.log('Paginated packages:', paginatedPackages.length);
+  console.log('Current page:', currentPage);
+  console.log('Total pages:', totalPages);
+
   // Dynamic Destination options
   const destinationOptions = [
     "All",
     ...Array.from(
-      new Set(packages.map((pkg) => extractPlaceName(pkg.title)))
+      new Set(packages.map((pkg) => pkg.destination_name).filter(Boolean))
     ).sort(),
   ];
 
@@ -418,7 +472,7 @@ const Packages: FunctionComponent = () => {
                             </span>
                           </div>
                           <div className="text-accent font-bold text-xl">
-                            ৳{Number(pkg.price).toLocaleString()}
+                            ৳{Number(pkg.price || pkg.total_cost || pkg.budget || 0).toLocaleString()}
                           </div>
                         </div>
                       </div>
@@ -436,7 +490,7 @@ const Packages: FunctionComponent = () => {
                           <div className="flex items-center gap-4 text-sm text-gray-500">
                             <span className="flex items-center gap-1">
                               <MapPin className="w-4 h-4" />
-                              {extractPlaceName(pkg.title)}
+                              {pkg.destination_name || extractPlaceName(pkg.title)}
                             </span>
                             <span className="flex items-center gap-1">
                               <Calendar className="w-4 h-4" />
@@ -447,7 +501,7 @@ const Packages: FunctionComponent = () => {
                       </div>
                       <div className="flex items-center justify-between mt-auto">
                         <div className="text-2xl font-bold text-primary">
-                          ৳{Number(pkg.price).toLocaleString()}
+                          ৳{Number(pkg.price || pkg.total_cost || pkg.budget || 0).toLocaleString()}
                         </div>
                         <button
                           onClick={(e) => {
@@ -455,7 +509,9 @@ const Packages: FunctionComponent = () => {
                             if (!isAuthenticated) {
                               navigate("/login");
                             } else {
-                              navigate("/confirm-book", { state: { pkg } });
+                              // Use destination and package ID for navigation
+                              const destinationId = pkg.destination || 'unknown';
+                              navigate(`/confirm-book/${destinationId}/${pkg.id}`, { state: { pkg } });
                             }
                           }}
                           className="px-6 py-2 bg-[#6ab187] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2"

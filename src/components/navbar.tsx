@@ -66,9 +66,9 @@ const Navbar: React.FC = () => {
                   {item.available ? (
                     <button
                       onClick={() => navigate(item.path)}
-                      className={`font-medium transition-all duration-200 px-3 py-2 rounded-lg ${
+                      className={`font-medium transition-all duration-200 px-4 py-2 rounded-lg ${
                         isActive
-                          ? "text-primary bg-primary/10 shadow-md scale-105"
+                          ? "text-white bg-[#6ab187] shadow-lg scale-105 font-semibold"
                           : "text-gray-700 hover:text-primary hover:scale-105 hover:bg-primary/10"
                       }`}
                     >
@@ -281,7 +281,7 @@ const Navbar: React.FC = () => {
                         }}
                         className={`block w-full text-left px-3 py-2 rounded-lg font-medium transition-all duration-200 ${
                           isActive
-                            ? "text-primary bg-primary/10 shadow-md"
+                            ? "text-white bg-[#6ab187] shadow-lg font-semibold"
                             : "text-gray-700 hover:text-primary hover:bg-primary/10"
                         }`}
                       >
