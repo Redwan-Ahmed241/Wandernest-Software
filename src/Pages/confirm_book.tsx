@@ -219,7 +219,7 @@ const ConfirmBook: React.FC = () => {
           console.log("Fetching package with ID:", pkg.id); // Debug log
 
           const response = await fetch(
-            "https://wander-nest-ad3s.onrender.com/api/packages/all/"
+            "https://wander-nest-ad3s.onrender.com/api/packages/unified/"
           );
 
           if (!response.ok) {
@@ -323,19 +323,19 @@ const ConfirmBook: React.FC = () => {
       setLoading(true);
       setError("");
       
-      // First try custom packages API with destination filter
-      fetch(`https://wander-nest-ad3s.onrender.com/api/packages/?destination=${urlDestinationId}`)
+      // Use the unified packages API to fetch package details
+      fetch(`https://wander-nest-ad3s.onrender.com/api/packages/unified/?destination=${urlDestinationId}`)
         .then(async (response) => {
           if (response.ok) {
             const data = await response.json();
-            console.log("✅ Custom packages API response:", data);
+            console.log("✅ Unified packages API response:", data);
             
-            // Handle paginated response structure
-            const packagesData = data.results || (Array.isArray(data) ? data : []);
+            // The unified API returns an array directly
+            const packagesData = Array.isArray(data) ? data : [];
             const packageData = packagesData.find((p: PackageDetails) => p.id?.toString() === packageId);
             
             if (packageData) {
-              console.log("✅ Package details fetched from custom packages:", packageData);
+              console.log("✅ Package details found:", packageData);
               console.log("🚌 Transport info:", packageData.transport);
               console.log("🏨 Hotel info:", packageData.hotel);
               console.log("👨‍🦱 Guide info:", packageData.guide);
@@ -356,37 +356,32 @@ const ConfirmBook: React.FC = () => {
               setLoading(false);
               return;
             } else {
-              throw new Error("Package not found in custom packages, trying premade packages");
+              throw new Error("Package not found in unified packages response");
             }
           } else {
-            // Try premade packages if custom package not found
-            throw new Error("Custom packages API failed, trying premade packages");
+            throw new Error(`Unified packages API failed with status: ${response.status}`);
           }
         })
         .catch(async () => {
-          // Fallback to premade packages
+          // Fallback: try fetching all packages without destination filter
           try {
-            const response = await fetch(`https://wander-nest-ad3s.onrender.com/api/packages/all/`);
-            if (!response.ok) throw new Error("Failed to fetch premade packages");
+            console.log("🔄 Trying fallback: fetch all packages");
+            const response = await fetch(`https://wander-nest-ad3s.onrender.com/api/packages/unified/`);
+            if (!response.ok) throw new Error("Failed to fetch packages");
             
             const data = await response.json();
-            const packages = data.results || (Array.isArray(data) ? data : []);
+            const packages = Array.isArray(data) ? data : [];
             const found = packages.find((p: { id: string | number }) => p.id?.toString() === packageId);
             
             if (found) {
-              console.log("✅ Package details fetched from premade packages:", found);
+              console.log("✅ Package details found in fallback search:", found);
               setPackageDetails(found);
-              
-              // Since we have destination ID from URL, we don't need to extract it from package
-              const foundPackage = found as { destination?: string | number; destination_detail?: string | number; destination_id?: string | number };
-              const destId = foundPackage.destination || foundPackage.destination_detail || foundPackage.destination_id;
-              console.log("📋 Package destination ID:", destId, "URL destination ID:", urlDestinationId);
               setLoading(false);
             } else {
-              throw new Error("Package not found in any API");
+              throw new Error("Package not found in any API response");
             }
-          } catch (err) {
-            console.error("❌ Failed to fetch package details:", err);
+          } catch (fallbackErr) {
+            console.error("❌ All attempts failed:", fallbackErr);
             setError("Failed to load package details");
             setLoading(false);
           }

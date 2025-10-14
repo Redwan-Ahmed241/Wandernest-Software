@@ -13,9 +13,7 @@ import { useNavigate } from "react-router-dom";
 import Layout from "../components/layout";
 import OptimizedImage from "../components/optimizedimages";
 import { ArrowRight, MapPin, Star, Shield, Clock } from "react-feather";
-
-const FEATURED_API_URL =
-  "https://wander-nest-ad3s.onrender.com/api/home/destinations/";
+import { getDestinations } from "../App/api-services";
 
 const HomePage: FunctionComponent = () => {
   const [destinations, setDestinations] = useState<any[]>([]);
@@ -28,9 +26,8 @@ const HomePage: FunctionComponent = () => {
     setLoading(true);
     setError("");
     try {
-      const response = await fetch(FEATURED_API_URL);
-      if (!response.ok) throw new Error("Failed to fetch destinations");
-      const data = await response.json();
+      const data = await getDestinations();
+      // Sort by clicks (highest first) and take top 6 for featured section
       const sorted = (Array.isArray(data) ? data : [])
         .sort((a, b) => (b.click || 0) - (a.click || 0))
         .slice(0, 6);
@@ -181,8 +178,7 @@ const HomePage: FunctionComponent = () => {
                 Featured Destinations
               </h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Discover the most popular and breathtaking destinations in
-                Bangladesh
+                Explore Bangladesh's most visited destinations - curated based on traveler interest and popularity
               </p>
             </div>
 
@@ -234,6 +230,10 @@ const HomePage: FunctionComponent = () => {
                           <Star className="w-4 h-4 text-yellow-500 fill-current" />
                           <span className="text-sm font-semibold">4.8</span>
                         </div>
+                        {/* Popular badge for high-click destinations */}
+                        <div className="absolute top-4 left-4 bg-primary/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
+                          <span className="text-xs font-semibold text-white">🔥 Popular</span>
+                        </div>
                       </div>
                       <div className="p-6">
                         <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
@@ -253,10 +253,31 @@ const HomePage: FunctionComponent = () => {
                             <ArrowRight className="w-4 h-4" />
                           </div>
                         </div>
+                        {/* Click count indicator */}
+                        {place.click && (
+                          <div className="mt-3 pt-3 border-t border-gray-100">
+                            <div className="flex items-center gap-1 text-xs text-gray-500">
+                              <span>👁️ {place.click.toLocaleString()} views</span>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}
             </div>
+
+            {/* View All Destinations Button */}
+            {!loading && destinations.length > 0 && (
+              <div className="text-center mt-12">
+                <button
+                  onClick={() => navigate("/destinations")}
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:bg-primary-dark"
+                >
+                  <span>View All Destinations</span>
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+              </div>
+            )}
 
             {!loading && destinations.length === 0 && !error && (
               <div className="text-center py-16">
