@@ -6,8 +6,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Layout from "../components/layout";
 import { useAuth } from "../Authentication/auth-context";
 
-import { getHotels } from "../App/api-services";
-import type { Hotel } from "../App/api-services";
+
 
 interface Attraction {
   id: number;
@@ -30,8 +29,7 @@ interface Experience {
   reviews: number;
 }
 
-const optionOrder = ["transport", "hotel", "vehicle", "guide", "attractions", "experiences"] as const;
-type OptionKey = (typeof optionOrder)[number];
+
 
 const ConfirmBook: React.FC = () => {
   // FIRST: Authentication check - must be at the top
@@ -59,18 +57,42 @@ const ConfirmBook: React.FC = () => {
       name: string;
       type: string;
       price: string;
+      capacity?: number;
+      features?: string[];
+      description?: string;
     };
     hotel?: {
       id: number;
       name: string;
       price: string;
       rating: string;
+      description?: string;
+      amenities?: string[];
+      location?: string;
+      room_type?: string;
     };
     guide?: {
       id: number;
       name: string;
       price: string;
+      description?: string;
+      image?: string;
+      rating?: string;
+      experience_years?: number;
+      languages?: string[];
+      specialties?: string[];
     } | null;
+    accommodation?: {
+      id?: number;
+      name: string;
+      description?: string;
+      image?: string;
+      rating?: string;
+      price?: string;
+      amenities?: string[];
+      location?: string;
+      room_type?: string;
+    };
     preferences?: {
       skip_guide?: boolean;
       skip_hotel?: boolean;
@@ -90,33 +112,13 @@ const ConfirmBook: React.FC = () => {
   const [totalPrice, setTotalPrice] = useState("");
   const [endDate, setEndDate] = useState("");
 
-  const [skipHotel, setSkipHotel] = useState(false);
-  const [skipVehicle, setSkipVehicle] = useState(true);
-  const [skipGuide, setSkipGuide] = useState(true);
-  const [skipAttractions, setSkipAttractions] = useState(false);
-  const [skipExperiences, setSkipExperiences] = useState(false);
-
-  const [activeOption, setActiveOption] = useState<OptionKey>("transport");
-  const optionRefs: Record<
-    OptionKey,
-    React.RefObject<HTMLDivElement | null>
-  > = {
-    transport: useRef<HTMLDivElement>(null),
-    hotel: useRef<HTMLDivElement>(null),
-    vehicle: useRef<HTMLDivElement>(null),
-    guide: useRef<HTMLDivElement>(null),
-    attractions: useRef<HTMLDivElement>(null),
-    experiences: useRef<HTMLDivElement>(null),
-  };
-
-  // Placeholder states for options (to be replaced with API data)
-  const [, setTransport] = useState<string>("Not selected");
-  const [, setHotel] = useState<string>("Not selected");
-  const [, setGuide] = useState<string>("Not selected");
+  // Removed skip states since we're not allowing customization anymore
 
   const [warning, setWarning] = useState("");
 
-  const dateInputRef = React.useRef<HTMLInputElement>(null);
+  const dateInputRef = useRef<HTMLInputElement>(null);
+
+
 
   // Authentication protection - redirect to login if not authenticated
   useEffect(() => {
@@ -159,22 +161,17 @@ const ConfirmBook: React.FC = () => {
     }
   }, [destinationId, urlDestinationId]);
 
-  const [hotels, setHotels] = useState<Hotel[]>([]);
-  const [hotelsLoading, setHotelsLoading] = useState(false);
-  const [hotelsError, setHotelsError] = useState("");
-  const [selectedHotelId, setSelectedHotelId] = useState<string | null>(null);
+
 
   // Attractions state
   const [attractions, setAttractions] = useState<Attraction[]>([]);
   const [attractionsLoading, setAttractionsLoading] = useState(false);
   const [attractionsError, setAttractionsError] = useState("");
-  const [selectedAttractionIds, setSelectedAttractionIds] = useState<Set<number>>(new Set());
 
   // Experiences state
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const [experiencesLoading, setExperiencesLoading] = useState(false);
   const [experiencesError, setExperiencesError] = useState("");
-  const [selectedExperienceIds, setSelectedExperienceIds] = useState<Set<number>>(new Set());
 
   const getField = React.useCallback(
     (obj: PackageDetails | null, key: string): string => {
@@ -200,19 +197,7 @@ const ConfirmBook: React.FC = () => {
     return `${dd}-${mm}-${yyyy}`;
   };
 
-  const extractMainLocation = (str: string): string => {
-    if (!str) return "";
 
-    const cleanStr = str.replace(/\(.*?\)/g, "").trim();
-
-    const parts = cleanStr.split(",");
-    const mainPart = parts[parts.length - 1].trim();
-
-    return mainPart
-      .replace(/[^\w\s]|_/g, "")
-      .replace(/\s+/g, " ")
-      .toLowerCase();
-  };
 
   // Helper to get tomorrow's date in yyyy-mm-dd format
   const getTomorrow = () => {
@@ -278,31 +263,7 @@ const ConfirmBook: React.FC = () => {
             setTravelers(found.travelers_count || 1);
             setTotalPrice(found.total_cost || found.price || found.budget || "");
             
-            // Pre-populate services from API response
-            if (found.transport) {
-              setTransport(`${found.transport.name} - ৳${found.transport.price}`);
-              setActiveOption("hotel"); // Move to next step
-            } else {
-              setTransport("Not selected");
-              setActiveOption("transport");
-            }
-            
-            if (found.hotel) {
-              setHotel(`${found.hotel.name} - ৳${found.hotel.price} (${found.hotel.rating}⭐)`);
-            } else {
-              setHotel("Not selected");
-            }
-            
-            if (found.guide) {
-              setGuide(`${found.guide.name} - ৳${found.guide.price}`);
-              setSkipGuide(false);
-            } else {
-              setGuide("Not selected");
-              setSkipGuide(found.preferences?.skip_guide ?? true);
-            }
-            
-            // Set skip preferences from API
-            setSkipHotel(found.preferences?.skip_hotel ?? false);
+            // Services are displayed directly from package data in the UI
             
             // Extract destination ID from package data
             const destId = found.destination || found.destination_detail || found.destination_id;
@@ -367,16 +328,7 @@ const ConfirmBook: React.FC = () => {
               
               setPackageDetails(packageData);
               
-              // Pre-populate services from API response
-              if (packageData.transport) {
-                setTransport(`${packageData.transport.name} - ৳${packageData.transport.price}`);
-              }
-              if (packageData.hotel) {
-                setHotel(`${packageData.hotel.name} - ৳${packageData.hotel.price} (${packageData.hotel.rating}⭐)`);
-              }
-              if (packageData.guide) {
-                setGuide(`${packageData.guide.name} - ৳${packageData.guide.price}`);
-              }
+              // Services are displayed directly from package data in the UI
               
               setLoading(false);
               return;
@@ -459,33 +411,11 @@ const ConfirmBook: React.FC = () => {
     }
   }, [packageDetails, startDate, getField]);
 
-  useEffect(() => {
-    if (!skipHotel) {
-      console.log("🏨 Starting hotel fetch process...");
-      setHotelsLoading(true);
-      setHotelsError("");
-      getHotels()
-        .then((hotels) => {
-          console.log("✅ Hotels fetched successfully:", hotels);
-          setHotels(hotels);
-          setHotelsLoading(false);
-        })
-        .catch((error) => {
-          console.error("❌ Hotel fetch failed:", error);
-          const errorMessage = error.message || "Failed to fetch hotels.";
-          setHotelsError(errorMessage);
-          setHotels([]);
-          setHotelsLoading(false);
-        });
-    } else {
-      console.log("🚫 Hotel section skipped");
-      setHotels([]);
-    }
-  }, [skipHotel]);
+  // Removed hotel fetching since we're only showing package included hotels
 
   // Fetch attractions for the destination
   useEffect(() => {
-    if (!skipAttractions && destinationId) {
+    if (destinationId) {
       console.log("🎯 Starting attractions fetch process for destination:", destinationId);
       setAttractionsLoading(true);
       setAttractionsError("");
@@ -515,15 +445,15 @@ const ConfirmBook: React.FC = () => {
           setAttractionsLoading(false);
         });
     } else {
-      console.log("🚫 Attractions section skipped or no destination ID. Skip:", skipAttractions, "DestID:", destinationId);
+      console.log("🚫 No destination ID provided for attractions");
       setAttractions([]);
       setAttractionsLoading(false);
     }
-  }, [skipAttractions, destinationId]);
+  }, [destinationId]);
 
   // Fetch experiences for the destination
   useEffect(() => {
-    if (!skipExperiences && destinationId) {
+    if (destinationId) {
       console.log("🌟 Starting experiences fetch process for destination:", destinationId);
       setExperiencesLoading(true);
       setExperiencesError("");
@@ -553,76 +483,18 @@ const ConfirmBook: React.FC = () => {
           setExperiencesLoading(false);
         });
     } else {
-      console.log("🚫 Experiences section skipped or no destination ID. Skip:", skipExperiences, "DestID:", destinationId);
+      console.log("🚫 No destination ID provided for experiences");
       setExperiences([]);
       setExperiencesLoading(false);
     }
-  }, [skipExperiences, destinationId]);
+  }, [destinationId]);
 
   const handleTravelersChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = Math.max(1, parseInt(e.target.value) || 1);
     setTravelers(val);
   };
 
-  // Focus next division after skip
-  const focusNextOption = (current: OptionKey) => {
-    const idx = optionOrder.indexOf(current);
-    if (idx !== -1 && idx < optionOrder.length - 1) {
-      const next = optionOrder[idx + 1];
-      setActiveOption(next);
-      setTimeout(() => {
-        optionRefs[next].current?.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-      }, 100);
-    }
-  };
-
-  // Toggle skip/unskip handlers
-  const handleSkipToggle = (option: OptionKey) => {
-    switch (option) {
-      case "transport":
-        // Removed setSkipTransport (no longer used)
-        break;
-      case "hotel":
-        setSkipHotel((prev) => {
-          if (!prev) setActiveOption("hotel");
-          else focusNextOption("hotel");
-          return !prev;
-        });
-        break;
-      case "vehicle":
-        setSkipVehicle((prev) => {
-          if (!prev) setActiveOption("vehicle");
-          else focusNextOption("vehicle");
-          return !prev;
-        });
-        break;
-      case "guide":
-        setSkipGuide((prev) => {
-          if (!prev) setActiveOption("guide");
-          return !prev;
-        });
-        break;
-      case "attractions":
-        setSkipAttractions((prev) => {
-          if (!prev) setActiveOption("attractions");
-          else focusNextOption("attractions");
-          return !prev;
-        });
-        break;
-      case "experiences":
-        setSkipExperiences((prev) => {
-          if (!prev) setActiveOption("experiences");
-          else focusNextOption("experiences");
-          return !prev;
-        });
-        break;
-      default:
-        break;
-    }
-  };
+  // Removed skip toggle functions since we're not allowing customization
 
   const handleConfirmBooking = async () => {
     // Validation: required fields
@@ -636,18 +508,9 @@ const ConfirmBook: React.FC = () => {
       setWarning("Please fill in all traveler details.");
       return;
     }
-    if (!customerName.trim()) {
-      setWarning("Name is required.");
-      return;
-    }
-    if (!customerEmail.trim()) {
-      setWarning("Email is required.");
-      return;
-    }
-    if (!customerPhone.trim()) {
-      setWarning("Phone is required.");
-      return;
-    }
+    
+    // Skip customer detail validation as they are optional
+    // The booking will proceed with package and travel details only
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(customerEmail)) {
@@ -668,9 +531,9 @@ const ConfirmBook: React.FC = () => {
         service_name: packageDetails?.title || "Package Booking",
         service_details: `Package booking for ${travelers} travelers from ${packageDetails?.source} to ${packageDetails?.destination}`,
         amount: Number(totalPrice),
-        customer_name: customerName,
-        customer_email: customerEmail,
-        customer_phone: customerPhone,
+        customer_name: customerName || "Guest",
+        customer_email: customerEmail || "guest@wandernest.com",
+        customer_phone: customerPhone || "N/A",
         service_data: {
           package_id: packageDetails?.id,
           package_title: packageDetails?.title,
@@ -998,34 +861,49 @@ const ConfirmBook: React.FC = () => {
         <hr className="my-8 border-t border-gray-200" />
         <div className="mb-8">
           <h2 className="text-xl font-semibold text-secondary mb-4">
-            Customize Your Package
+            Package Details
           </h2>
           <div className="space-y-8">
             {/* Hotel */}
-            <div
-              ref={optionRefs.hotel}
-              className={`flex flex-col gap-2 p-4 rounded-lg border ${
-                activeOption === "hotel"
-                  ? "border-primary bg-primary/5"
-                  : "border-gray-200 bg-gray-50"
-              }`}
-            >
-              <span className="font-medium text-base text-gray-700">
-                Select Hotel
+            <div className="flex flex-col gap-2 p-4 rounded-lg border border-gray-200 bg-white">
+              <span className="font-medium text-lg text-gray-800 mb-3">
+                🏨 Hotel Accommodation
               </span>
-              <button
-                type="button"
-                className="ml-4 px-4 py-1 rounded-full border text-white bg-white hover:opacity-90 transition"
-                style={{
-                  borderColor: "#6ab187",
-                  backgroundColor: "#6ab187",
-                }}
-                onClick={() => handleSkipToggle("hotel")}
-              >
-                {skipHotel ? "Include" : "Skip"}
-              </button>
-              {/* Only show scroll buttons and hotel cards if not skipped */}
-              {!skipHotel && (
+              
+              {/* Show package's included hotel */}
+              {packageDetails?.hotel ? (
+                <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                  <h4 className="font-semibold text-gray-800 mb-2 flex items-center">
+                    <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full mr-2">
+                      INCLUDED
+                    </span>
+                    {packageDetails.hotel.name}
+                  </h4>
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      {packageDetails.hotel.rating && (
+                        <div className="flex items-center text-yellow-500 mb-2">
+                          <span className="mr-1">⭐</span>
+                          <span className="text-gray-700 font-medium">{packageDetails.hotel.rating}/5</span>
+                        </div>
+                      )}
+                      {packageDetails.hotel.price && (
+                        <p className="text-blue-600 font-semibold">
+                          ৳{packageDetails.hotel.price} per night
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="mt-3 p-2 bg-blue-100 rounded-lg">
+                    <p className="text-blue-800 text-sm font-medium">✅ Hotel accommodation is included in your package</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="p-4 bg-gray-100 rounded-lg">
+                  <p className="text-gray-600">No hotel included in this package</p>
+                </div>
+              )}
+            </div>
                 <div style={{ width: "100%", marginTop: 24 }}>
                   <div style={{ position: "relative" }}>
                     <button
@@ -1059,629 +937,447 @@ const ConfirmBook: React.FC = () => {
                         margin: "0 48px",
                       }}
                     >
-                      {hotelsLoading && <p>Loading hotels...</p>}
-                      {hotelsError && (
-                        <p style={{ color: "red" }}>{hotelsError}</p>
+                      {packageDetails?.accommodation ? (
+                        <div
+                          style={{
+                            borderRadius: 14,
+                            border: "2.5px solid #4e944f",
+                            boxShadow: "0 4px 24px rgba(76,177,106,0.15)",
+                            overflow: "hidden",
+                            background: "#fff",
+                            minWidth: 220,
+                            maxWidth: 240,
+                            flex: "0 0 220px",
+                            position: "relative",
+                          }}
+                        >
+                          <div
+                            style={{
+                              position: "absolute",
+                              top: 8,
+                              left: 8,
+                              background: "#4e944f",
+                              color: "white",
+                              padding: "4px 8px",
+                              borderRadius: 6,
+                              fontSize: 12,
+                              fontWeight: 600,
+                            }}
+                          >
+                            INCLUDED
+                          </div>
+                          <img
+                            src={
+                              packageDetails.accommodation.image ||
+                              "/placeholder.svg?height=120&width=200"
+                            }
+                            alt={packageDetails.accommodation.name}
+                            style={{
+                              width: "100%",
+                              height: 120,
+                              objectFit: "cover",
+                              display: "block",
+                            }}
+                          />
+                          <div style={{ padding: "12px 12px 8px 12px" }}>
+                            <div
+                              style={{
+                                fontWeight: 600,
+                                fontSize: 15,
+                                marginBottom: 4,
+                              }}
+                            >
+                              {packageDetails.accommodation.name}
+                            </div>
+                            <div
+                              style={{
+                                color: "#8a8a8a",
+                                fontSize: 13,
+                                marginBottom: 2,
+                              }}
+                            >
+                              {packageDetails.accommodation.description || "Hotel accommodation"}
+                            </div>
+                            {packageDetails.accommodation.rating && (
+                              <div
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  marginTop: 4,
+                                }}
+                              >
+                                <span style={{ color: "#ffa500", marginRight: 4 }}>
+                                  ★
+                                </span>
+                                <span style={{ fontSize: 12, color: "#666" }}>
+                                  {packageDetails.accommodation.rating}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ) : (
+                        <p>No accommodation information available.</p>
                       )}
-                      {hotels.length > 0
-                        ? hotels
-                            .filter((hotel) => {
-                              if (!packageDetails) return true;
-                              const pkgDest = extractMainLocation(
-                                typeof packageDetails.destination === "string"
-                                  ? packageDetails.destination
-                                  : typeof packageDetails.city === "string"
-                                  ? packageDetails.city
-                                  : typeof packageDetails.title === "string"
-                                  ? packageDetails.title
-                                  : ""
-                              );
-                              const hotelLoc = extractMainLocation(
-                                hotel.location || ""
-                              );
-                              return (
-                                pkgDest &&
-                                hotelLoc &&
-                                hotelLoc.includes(pkgDest)
-                              );
-                            })
-                            .map((hotel) => {
-                              const isSelected = selectedHotelId === hotel.id;
-                              return (
-                                <div
-                                  key={hotel.id}
-                                  onClick={() =>
-                                    setSelectedHotelId(
-                                      isSelected ? null : hotel.id
-                                    )
-                                  }
-                                  style={{
-                                    cursor: "pointer",
-                                    borderRadius: 14,
-                                    border: isSelected
-                                      ? "2.5px solid #4e944f"
-                                      : "2.5px solid transparent",
-                                    boxShadow: isSelected
-                                      ? "0 4px 24px rgba(76,177,106,0.15)"
-                                      : "0 2px 8px rgba(0,0,0,0.06)",
-                                    overflow: "hidden",
-                                    background: "#fff",
-                                    minWidth: 220,
-                                    maxWidth: 240,
-                                    flex: "0 0 220px",
-                                    transition: "border 0.2s, box-shadow 0.2s",
-                                    position: "relative",
-                                  }}
-                                >
-                                  {/* Checkmark for selected */}
-                                  {isSelected && (
-                                    <div
-                                      style={{
-                                        position: "absolute",
-                                        top: 8,
-                                        right: 8,
-                                        background: "#4e944f",
-                                        borderRadius: "50%",
-                                        width: 28,
-                                        height: 28,
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        boxShadow:
-                                          "0 2px 8px rgba(76,177,106,0.18)",
-                                      }}
-                                    >
-                                      <svg
-                                        width="18"
-                                        height="18"
-                                        viewBox="0 0 20 20"
-                                        fill="none"
-                                      >
-                                        <circle
-                                          cx="10"
-                                          cy="10"
-                                          r="10"
-                                          fill="#4e944f"
-                                        />
-                                        <path
-                                          d="M6 10.5L9 13.5L14 8.5"
-                                          stroke="#fff"
-                                          strokeWidth="2.2"
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                        />
-                                      </svg>
-                                    </div>
-                                  )}
-                                  <img
-                                    src={
-                                      hotel.image_url ||
-                                      "/placeholder.svg?height=120&width=200"
-                                    }
-                                    alt={hotel.name}
-                                    style={{
-                                      width: "100%",
-                                      height: 120,
-                                      objectFit: "cover",
-                                      display: "block",
-                                    }}
-                                  />
-                                  <div
-                                    style={{ padding: "12px 12px 8px 12px" }}
-                                  >
-                                    <div
-                                      style={{
-                                        fontWeight: 600,
-                                        fontSize: 15,
-                                        marginBottom: 4,
-                                      }}
-                                    >
-                                      {hotel.name}
-                                    </div>
-                                    <div
-                                      style={{
-                                        color: "#8a8a8a",
-                                        fontSize: 13,
-                                        marginBottom: 2,
-                                      }}
-                                    >
-                                      {hotel.description || "Hotel description"}
-                                    </div>
-                                  </div>
-                                </div>
-                              );
-                            })
-                        : !hotelsLoading && <p>No hotels found.</p>}
                     </div>
                   </div>
                 </div>
-              )}
-            </div>
             {/* Vehicle */}
-            <div
-              ref={optionRefs.vehicle}
-              className={`flex flex-col gap-2 p-4 rounded-lg border ${
-                activeOption === "vehicle"
-                  ? "border-primary bg-primary/5"
-                  : "border-gray-200 bg-gray-50"
-              }`}
-            >
-              <span className="font-medium text-base text-gray-700">
-                Select Vehicle
+            <div className="flex flex-col gap-2 p-4 rounded-lg border border-gray-200 bg-white">
+              <span className="font-medium text-lg text-gray-800 mb-3">
+                🚗 Transport & Vehicle
               </span>
-              <button
-                type="button"
-                className="ml-4 px-4 py-1 rounded-full border text-white bg-white hover:opacity-90 transition"
-                style={{
-                  borderColor: "#6ab187",
-                  backgroundColor: "#6ab187",
-                }}
-                onClick={() => handleSkipToggle("vehicle")}
-              >
-                {skipVehicle ? "Include" : "Skip"}
-              </button>
-              {!skipVehicle && (
-                <div className="p-4 bg-white rounded-lg shadow">
-                  Vehicle options go here
+              
+              {/* Show package's included transport */}
+              {packageDetails?.transport ? (
+                <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+                  <h4 className="font-semibold text-gray-800 mb-2 flex items-center">
+                    <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded-full mr-2">
+                      INCLUDED
+                    </span>
+                    {packageDetails.transport.name}
+                  </h4>
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <p className="text-gray-600 text-sm mt-1">
+                        Type: {packageDetails.transport.type?.charAt(0).toUpperCase() + packageDetails.transport.type?.slice(1)}
+                      </p>
+                      {packageDetails.transport.features && packageDetails.transport.features.length > 0 && (
+                        <div className="mt-2">
+                          <p className="text-sm text-gray-600 mb-1">Features:</p>
+                          <div className="flex flex-wrap gap-1">
+                            {packageDetails.transport.features.map((feature: string, index: number) => (
+                              <span key={index} className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">
+                                {feature}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      {packageDetails.transport.price && (
+                        <p className="text-green-600 font-semibold mt-2">
+                          ৳{packageDetails.transport.price}
+                        </p>
+                      )}
+                    </div>
+                    <div className="ml-4">
+                      <div className="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center">
+                        <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-3 p-2 bg-green-100 rounded-lg">
+                    <p className="text-green-800 text-sm font-medium">✅ Transport is included in this package</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="p-4 bg-gray-100 rounded-lg">
+                  <p className="text-gray-600">No transport included in this package</p>
                 </div>
               )}
             </div>
             {/* Guide */}
-            <div
-              ref={optionRefs.guide}
-              className={`flex flex-col gap-2 p-4 rounded-lg border ${
-                activeOption === "guide"
-                  ? "border-primary bg-primary/5"
-                  : "border-gray-200 bg-gray-50"
-              }`}
-            >
-              <span className="font-medium text-base text-gray-700">
-                Hire a Guide
+            <div className="flex flex-col gap-2 p-4 rounded-lg border border-gray-200 bg-white">
+              <span className="font-medium text-lg text-gray-800 mb-3">
+                👨‍🏫 Tour Guide
               </span>
-              <button
-                type="button"
-                className="ml-4 px-4 py-1 rounded-full border text-white bg-white hover:opacity-90 transition"
-                style={{
-                  borderColor: "#6ab187",
-                  backgroundColor: "#6ab187",
-                }}
-                onClick={() => handleSkipToggle("guide")}
-              >
-                {skipGuide ? "Include" : "Skip"}
-              </button>
-              {!skipGuide && (
-                <div className="p-4 bg-white rounded-lg shadow">
-                  Guide options go here
-                </div>
-              )}
-            </div>
-
-            {/* Attractions */}
-            <div
-              ref={optionRefs.attractions}
-              className={`flex flex-col gap-2 p-4 rounded-lg border ${
-                activeOption === "attractions"
-                  ? "border-primary bg-primary/5"
-                  : "border-gray-200 bg-gray-50"
-              }`}
-            >
-              <span className="font-medium text-base text-gray-700">
-                Select Attractions
-              </span>
-              <button
-                type="button"
-                className="ml-4 px-4 py-1 rounded-full border text-white bg-white hover:opacity-90 transition"
-                style={{
-                  borderColor: "#6ab187",
-                  backgroundColor: "#6ab187",
-                }}
-                onClick={() => handleSkipToggle("attractions")}
-              >
-                {skipAttractions ? "Include" : "Skip"}
-              </button>
-              {/* Only show attractions if not skipped */}
-              {!skipAttractions && (
-                <div style={{ width: "100%", marginTop: 24 }}>
-                  <div style={{ position: "relative" }}>
-                    <div
-                      style={{
-                        display: "flex",
-                        gap: 24,
-                        overflowX: "auto",
-                        scrollBehavior: "smooth",
-                        paddingBottom: 8,
-                        margin: "0 48px",
-                      }}
-                    >
-                      {attractionsLoading && <p>Loading attractions...</p>}
-                      {attractionsError && (
-                        <p style={{ color: "red" }}>{attractionsError}</p>
+              
+              {/* Show package's included guide */}
+              {packageDetails?.guide ? (
+                <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                  <h4 className="font-semibold text-gray-800 mb-2 flex items-center">
+                    <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full mr-2">
+                      INCLUDED
+                    </span>
+                    {packageDetails.guide.name}
+                  </h4>
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      {packageDetails.guide.specialties && packageDetails.guide.specialties.length > 0 && (
+                        <div className="mt-2">
+                          <p className="text-sm text-gray-600 mb-1">Specialties:</p>
+                          <div className="flex flex-wrap gap-1">
+                            {packageDetails.guide.specialties.map((specialty: string, index: number) => (
+                              <span key={index} className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full">
+                                {specialty}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
                       )}
-                      {attractions.length > 0
-                        ? attractions.map((attraction) => {
-                            const isSelected = selectedAttractionIds.has(attraction.id);
-                            return (
-                              <div
-                                key={attraction.id}
-                                onClick={() => {
-                                  const newSelected = new Set(selectedAttractionIds);
-                                  if (isSelected) {
-                                    newSelected.delete(attraction.id);
-                                  } else {
-                                    newSelected.add(attraction.id);
-                                  }
-                                  setSelectedAttractionIds(newSelected);
-                                }}
-                                style={{
-                                  cursor: "pointer",
-                                  borderRadius: 14,
-                                  border: isSelected
-                                    ? "2.5px solid #4e944f"
-                                    : "2.5px solid transparent",
-                                  boxShadow: isSelected
-                                    ? "0 4px 24px rgba(76,177,106,0.15)"
-                                    : "0 2px 8px rgba(0,0,0,0.06)",
-                                  overflow: "hidden",
-                                  background: "#fff",
-                                  minWidth: 220,
-                                  maxWidth: 240,
-                                  flex: "0 0 220px",
-                                  transition: "border 0.2s, box-shadow 0.2s",
-                                  position: "relative",
-                                }}
-                              >
-                                {/* Checkmark for selected */}
-                                {isSelected && (
-                                  <div
-                                    style={{
-                                      position: "absolute",
-                                      top: 8,
-                                      right: 8,
-                                      background: "#4e944f",
-                                      borderRadius: "50%",
-                                      width: 28,
-                                      height: 28,
-                                      display: "flex",
-                                      alignItems: "center",
-                                      justifyContent: "center",
-                                      boxShadow:
-                                        "0 2px 8px rgba(76,177,106,0.18)",
-                                    }}
-                                  >
-                                    <svg
-                                      width="18"
-                                      height="18"
-                                      viewBox="0 0 20 20"
-                                      fill="none"
-                                    >
-                                      <circle
-                                        cx="10"
-                                        cy="10"
-                                        r="10"
-                                        fill="#4e944f"
-                                      />
-                                      <path
-                                        d="M6 10.5L9 13.5L14 8.5"
-                                        stroke="#fff"
-                                        strokeWidth="2.2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                      />
-                                    </svg>
-                                  </div>
-                                )}
-                                <img
-                                  src={
-                                    attraction.image ||
-                                    "/placeholder.svg?height=120&width=200"
-                                  }
-                                  alt={attraction.name}
-                                  style={{
-                                    width: "100%",
-                                    height: 120,
-                                    objectFit: "cover",
-                                    display: "block",
-                                  }}
-                                />
-                                <div style={{ padding: 16 }}>
-                                  <h4 style={{ 
-                                    fontSize: "16px", 
-                                    fontWeight: 600, 
-                                    margin: "0 0 8px 0",
-                                    color: "#1f2937"
-                                  }}>
-                                    {attraction.name}
-                                  </h4>
-                                  <p style={{ 
-                                    fontSize: "14px", 
-                                    color: "#6b7280", 
-                                    margin: "0 0 8px 0",
-                                    lineHeight: "1.4"
-                                  }}>
-                                    {attraction.description}
-                                  </p>
-                                  <div style={{ 
-                                    display: "flex", 
-                                    alignItems: "center", 
-                                    gap: 4 
-                                  }}>
-                                    <span style={{ color: "#fbbf24" }}>
-                                      {"★".repeat(Math.floor(attraction.rating || 0))}
-                                    </span>
-                                    <span style={{ fontSize: "12px", color: "#9ca3af" }}>
-                                      {attraction.rating} ({attraction.reviews || 0} reviews)
-                                    </span>
-                                  </div>
-                                  <div style={{ 
-                                    marginTop: 8,
-                                    fontSize: "12px",
-                                    color: "#6b7280",
-                                    backgroundColor: "#f3f4f6",
-                                    padding: "4px 8px",
-                                    borderRadius: "12px",
-                                    display: "inline-block"
-                                  }}>
-                                    {attraction.category}
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })
-                        : !attractionsLoading && (
-                            <p style={{ color: "#9ca3af", fontStyle: "italic" }}>
-                              No attractions available for this destination.
-                            </p>
-                          )}
+                      {packageDetails.guide.price && (
+                        <p className="text-blue-600 font-semibold mt-2">
+                          ৳{packageDetails.guide.price}
+                        </p>
+                      )}
+                    </div>
+                    <div className="ml-4">
+                      <div className="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
-            </div>
-
-            {/* Experiences */}
-            <div
-              ref={optionRefs.experiences}
-              className={`flex flex-col gap-2 p-4 rounded-lg border ${
-                activeOption === "experiences"
-                  ? "border-primary bg-primary/5"
-                  : "border-gray-200 bg-gray-50"
-              }`}
-            >
-              <span className="font-medium text-base text-gray-700">
-                Select Experiences
-              </span>
-              <button
-                type="button"
-                className="ml-4 px-4 py-1 rounded-full border text-white bg-white hover:opacity-90 transition"
-                style={{
-                  borderColor: "#6ab187",
-                  backgroundColor: "#6ab187",
-                }}
-                onClick={() => handleSkipToggle("experiences")}
-              >
-                {skipExperiences ? "Include" : "Skip"}
-              </button>
-              {/* Only show experiences if not skipped */}
-              {!skipExperiences && (
-                <div style={{ width: "100%", marginTop: 24 }}>
-                  <div style={{ position: "relative" }}>
-                    <div
-                      style={{
-                        display: "flex",
-                        gap: 24,
-                        overflowX: "auto",
-                        scrollBehavior: "smooth",
-                        paddingBottom: 8,
-                        margin: "0 48px",
-                      }}
-                    >
-                      {experiencesLoading && <p>Loading experiences...</p>}
-                      {experiencesError && (
-                        <p style={{ color: "red" }}>{experiencesError}</p>
-                      )}
-                      {experiences.length > 0
-                        ? experiences.map((experience) => {
-                            const isSelected = selectedExperienceIds.has(experience.id);
-                            return (
-                              <div
-                                key={experience.id}
-                                onClick={() => {
-                                  const newSelected = new Set(selectedExperienceIds);
-                                  if (isSelected) {
-                                    newSelected.delete(experience.id);
-                                  } else {
-                                    newSelected.add(experience.id);
-                                  }
-                                  setSelectedExperienceIds(newSelected);
-                                }}
-                                style={{
-                                  cursor: "pointer",
-                                  borderRadius: 14,
-                                  border: isSelected
-                                    ? "2.5px solid #4e944f"
-                                    : "2.5px solid transparent",
-                                  boxShadow: isSelected
-                                    ? "0 4px 24px rgba(76,177,106,0.15)"
-                                    : "0 2px 8px rgba(0,0,0,0.06)",
-                                  overflow: "hidden",
-                                  background: "#fff",
-                                  minWidth: 220,
-                                  maxWidth: 240,
-                                  flex: "0 0 220px",
-                                  transition: "border 0.2s, box-shadow 0.2s",
-                                  position: "relative",
-                                }}
-                              >
-                                {/* Checkmark for selected */}
-                                {isSelected && (
-                                  <div
-                                    style={{
-                                      position: "absolute",
-                                      top: 8,
-                                      right: 8,
-                                      background: "#4e944f",
-                                      borderRadius: "50%",
-                                      width: 28,
-                                      height: 28,
-                                      display: "flex",
-                                      alignItems: "center",
-                                      justifyContent: "center",
-                                      boxShadow:
-                                        "0 2px 8px rgba(76,177,106,0.18)",
-                                    }}
-                                  >
-                                    <svg
-                                      width="18"
-                                      height="18"
-                                      viewBox="0 0 20 20"
-                                      fill="none"
-                                    >
-                                      <circle
-                                        cx="10"
-                                        cy="10"
-                                        r="10"
-                                        fill="#4e944f"
-                                      />
-                                      <path
-                                        d="M6 10.5L9 13.5L14 8.5"
-                                        stroke="#fff"
-                                        strokeWidth="2.2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                      />
-                                    </svg>
-                                  </div>
-                                )}
-                                <img
-                                  src={
-                                    experience.image ||
-                                    "/placeholder.svg?height=120&width=200"
-                                  }
-                                  alt={experience.name}
-                                  style={{
-                                    width: "100%",
-                                    height: 120,
-                                    objectFit: "cover",
-                                    display: "block",
-                                  }}
-                                />
-                                <div style={{ padding: 16 }}>
-                                  <h4 style={{ 
-                                    fontSize: "16px", 
-                                    fontWeight: 600, 
-                                    margin: "0 0 8px 0",
-                                    color: "#1f2937"
-                                  }}>
-                                    {experience.name}
-                                  </h4>
-                                  <p style={{ 
-                                    fontSize: "14px", 
-                                    color: "#6b7280", 
-                                    margin: "0 0 8px 0",
-                                    lineHeight: "1.4"
-                                  }}>
-                                    {experience.description}
-                                  </p>
-                                  <div style={{ 
-                                    display: "flex", 
-                                    alignItems: "center", 
-                                    gap: 4,
-                                    marginBottom: 8
-                                  }}>
-                                    <span style={{ color: "#fbbf24" }}>
-                                      {"★".repeat(Math.floor(experience.rating || 0))}
-                                    </span>
-                                    <span style={{ fontSize: "12px", color: "#9ca3af" }}>
-                                      {experience.rating} ({experience.reviews || 0} reviews)
-                                    </span>
-                                  </div>
-                                  <div style={{ 
-                                    display: "flex", 
-                                    justifyContent: "space-between",
-                                    alignItems: "center"
-                                  }}>
-                                    <span style={{ 
-                                      fontSize: "12px",
-                                      color: "#6b7280",
-                                      backgroundColor: "#f3f4f6",
-                                      padding: "4px 8px",
-                                      borderRadius: "12px"
-                                    }}>
-                                      {experience.duration}
-                                    </span>
-                                    <span style={{ 
-                                      fontSize: "14px",
-                                      fontWeight: 600,
-                                      color: "#4e944f"
-                                    }}>
-                                      {experience.price}
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })
-                        : !experiencesLoading && (
-                            <p style={{ color: "#9ca3af", fontStyle: "italic" }}>
-                              No experiences available for this destination.
-                            </p>
-                          )}
-                    </div>
+                  <div className="mt-3 p-2 bg-blue-100 rounded-lg">
+                    <p className="text-blue-800 text-sm font-medium">✅ Professional guide is included in this package</p>
                   </div>
+                </div>
+              ) : (
+                <div className="p-4 bg-gray-100 rounded-lg">
+                  <p className="text-gray-600">No guide included in this package</p>
                 </div>
               )}
             </div>
           </div>
         </div>
-        <hr className="my-8 border-t border-gray-200" />
-        <div className="flex flex-col gap-4 items-center mt-8">
+
+        {/* Attractions */}
+        <div className="flex flex-col gap-2 p-4 rounded-lg border border-gray-200 bg-white">
+          <span className="font-medium text-lg text-gray-800 mb-3">
+            🎯 Available Attractions
+          </span>
+          {attractionsLoading && <p>Loading attractions...</p>}
+          {attractionsError && (
+            <p style={{ color: "red" }}>{attractionsError}</p>
+          )}
+          {attractions.length > 0 ? (
+            <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+              {attractions.map((attraction) => (
+                <div
+                  key={attraction.id}
+                  style={{
+                    borderRadius: 8,
+                    border: "2px solid #d1d5db",
+                    backgroundColor: "#fff",
+                    padding: 12,
+                    minWidth: 200,
+                    maxWidth: 250,
+                    boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                  }}
+                >
+                  <img
+                    src={attraction.image || "/placeholder.svg"}
+                    alt={attraction.name}
+                    style={{
+                      width: "100%",
+                      height: 120,
+                      objectFit: "cover",
+                      borderRadius: 6,
+                      marginBottom: 8,
+                    }}
+                  />
+                  <h4 style={{ margin: "0 0 4px 0", fontWeight: 600 }}>
+                    {attraction.name}
+                  </h4>
+                  <p style={{ fontSize: 14, color: "#666", margin: "0 0 8px 0" }}>
+                    {attraction.description}
+                  </p>
+                  {attraction.rating && (
+                    <p style={{ fontSize: 12, color: "#888" }}>
+                      ⭐ {attraction.rating}/5 ({attraction.reviews || 0} reviews)
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            !attractionsLoading && (
+              <p style={{ color: "#999", fontStyle: "italic" }}>
+                No attractions available for this destination.
+              </p>
+            )
+          )}
+        </div>
+
+        {/* Experiences */}
+        <div className="flex flex-col gap-2 p-4 rounded-lg border border-gray-200 bg-white">
+          <span className="font-medium text-lg text-gray-800 mb-3">
+            🎪 Available Experiences
+          </span>
+          {/* Show experiences */}
+          {experiences.length > 0 ? (
+            <div style={{ width: "100%", marginTop: 24 }}>
+              <div style={{ position: "relative" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: 24,
+                    overflowX: "auto",
+                    scrollBehavior: "smooth",
+                    paddingBottom: 8,
+                    margin: "0 48px",
+                  }}
+                >
+                  {experiencesLoading && <p>Loading experiences...</p>}
+                  {experiencesError && (
+                    <p style={{ color: "red" }}>{experiencesError}</p>
+                  )}
+                  {experiences.length > 0
+                    ? experiences.map((experience) => {
+                        return (
+                          <div
+                            key={experience.id}
+                            style={{
+                              borderRadius: 14,
+                              border: "2.5px solid #4e944f",
+                              boxShadow: "0 4px 24px rgba(76,177,106,0.15)",
+                              overflow: "hidden",
+                              background: "#fff",
+                              minWidth: 220,
+                              maxWidth: 240,
+                              flex: "0 0 220px",
+                              position: "relative",
+                            }}
+                          >
+                            {/* INCLUDED badge */}
+                            <div
+                              style={{
+                                position: "absolute",
+                                top: 8,
+                                left: 8,
+                                background: "#4e944f",
+                                color: "white",
+                                padding: "4px 8px",
+                                borderRadius: 6,
+                                fontSize: 12,
+                                fontWeight: 600,
+                              }}
+                            >
+                              INCLUDED
+                            </div>
+                            <img
+                              src={
+                                experience.image ||
+                                "/placeholder.svg?height=120&width=200"
+                              }
+                              alt={experience.name}
+                              style={{
+                                width: "100%",
+                                height: 120,
+                                objectFit: "cover",
+                                display: "block",
+                              }}
+                            />
+                            <div style={{ padding: 16 }}>
+                              <h4 style={{ 
+                                fontSize: "16px", 
+                                fontWeight: 600, 
+                                margin: "0 0 8px 0",
+                                color: "#1f2937"
+                              }}>
+                                {experience.name}
+                              </h4>
+                              <p style={{ 
+                                fontSize: "14px", 
+                                color: "#6b7280", 
+                                margin: "0 0 8px 0",
+                                lineHeight: "1.4"
+                              }}>
+                                {experience.description}
+                              </p>
+                              <div style={{ 
+                                display: "flex", 
+                                alignItems: "center", 
+                                gap: 4,
+                                marginBottom: 8
+                              }}>
+                                <span style={{ color: "#fbbf24" }}>
+                                  {"★".repeat(Math.floor(experience.rating || 0))}
+                                </span>
+                                <span style={{ fontSize: "12px", color: "#9ca3af" }}>
+                                  {experience.rating} ({experience.reviews || 0} reviews)
+                                </span>
+                              </div>
+                              <div style={{ 
+                                display: "flex", 
+                                justifyContent: "space-between",
+                                alignItems: "center"
+                              }}>
+                                <span style={{ 
+                                  fontSize: "12px",
+                                  color: "#6b7280",
+                                  backgroundColor: "#f3f4f6",
+                                  padding: "4px 8px",
+                                  borderRadius: "12px"
+                                }}>
+                                  {experience.duration}
+                                </span>
+                                <span style={{ 
+                                  fontSize: "14px",
+                                  fontWeight: 600,
+                                  color: "#4e944f"
+                                }}>
+                                  {experience.price}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })
+                    : !experiencesLoading && (
+                        <p style={{ color: "#9ca3af", fontStyle: "italic" }}>
+                          No experiences available for this destination.
+                        </p>
+                      )}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="p-4 bg-gray-100 rounded-lg">
+              <p className="text-gray-600">Loading experiences...</p>
+            </div>
+          )}
+        </div>
+
+        {/* Booking Actions */}
+        <div className="flex flex-col gap-4 items-center mt-6">
           {warning && (
             <div
               style={{
-                color: "#b94a48",
-                background: "#fbeeea",
+                background: "#fef2f2",
+                border: "1px solid #fecaca",
                 borderRadius: 8,
-                padding: "12px 18px",
-                marginBottom: 12,
-                fontWeight: 600,
-                fontSize: "1.05rem",
-                textAlign: "center",
+                padding: 16,
+                marginBottom: 24,
               }}
             >
-              {warning}
+              <span style={{ color: "#dc2626" }}>{warning}</span>
             </div>
           )}
+          
           {paymentError && (
             <div
               style={{
-                color: "red",
-                background: "#fbeeea",
+                background: "#fef2f2",
+                border: "1px solid #fecaca",
                 borderRadius: 8,
-                padding: "12px 18px",
-                marginBottom: 12,
-                fontWeight: 600,
-                fontSize: "1.05rem",
-                textAlign: "center",
+                padding: 16,
+                marginBottom: 24,
               }}
             >
-              {paymentError}
+              <span style={{ color: "#dc2626" }}>{paymentError}</span>
             </div>
           )}
-          <button
-            className="w-full max-w-xs px-6 py-3 rounded-lg text-white font-semibold shadow hover:opacity-90 transition disabled:opacity-60"
-            style={{ backgroundColor: "#6ab187" }}
-            onClick={handleConfirmBooking}
-            disabled={isProcessingPayment}
-          >
-            {isProcessingPayment ? "Processing Payment..." : "Confirm Booking"}
-          </button>
-          <button
-            type="button"
-            className="w-full max-w-xs px-6 py-3 rounded-lg bg-gray-200 text-gray-700 font-semibold shadow hover:bg-gray-300 transition"
-            onClick={() => navigate("/packages")}
-          >
-            <span className="mr-2">←</span> Cancel Booking
-          </button>
+
+          <div className="flex gap-4">
+            <button
+              className="bg-[#4e944f] hover:bg-[#3d7540] text-white font-bold py-3 px-8 rounded-lg transition-colors duration-300 disabled:opacity-60"
+              onClick={handleConfirmBooking}
+              disabled={isProcessingPayment}
+            >
+              {isProcessingPayment ? "Processing..." : "Confirm Booking"}
+            </button>
+            
+            <button
+              className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-3 px-8 rounded-lg transition-colors duration-300"
+              onClick={() => navigate("/packages")}
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
     </Layout>

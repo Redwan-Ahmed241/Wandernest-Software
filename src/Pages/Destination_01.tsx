@@ -512,18 +512,16 @@ const DestinationPage: FunctionComponent = () => {
           >
             Package
           </button>
-          {weatherData && (
-            <button
-              className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${
-                activeTab === "weather"
-                  ? "bg-[#6ab187] text-white shadow-lg"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              }`}
-              onClick={() => setActiveTab("weather")}
-            >
-              Weather
-            </button>
-          )}
+          <button
+            className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${
+              activeTab === "weather"
+                ? "bg-[#6ab187] text-white shadow-lg"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            }`}
+            onClick={() => setActiveTab("weather")}
+          >
+            Weather
+          </button>
         </div>
         {/* Content Area */}
         <div className="max-w-6xl mx-auto px-4">
@@ -814,69 +812,80 @@ const DestinationPage: FunctionComponent = () => {
               )}
             </div>
           )}
-          {activeTab === "weather" && weatherData && (
+          {activeTab === "weather" && (
             <div className="mb-10">
               <h2 className="text-2xl font-bold text-theme-primary mb-6">
                 Weather in {destinationData?.name}
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="bg-white rounded-xl shadow p-6 flex flex-col gap-4">
-                  <h3 className="font-bold text-theme-primary mb-2">
-                    Current Weather
-                  </h3>
-                  <div className="flex flex-col gap-2 items-center">
-                    <img 
-                      src={getWeatherIconUrl(weatherData.current.icon)} 
-                      alt={weatherData.current.condition}
-                      className="w-16 h-16 mb-2"
-                    />
-                    <span className="text-3xl font-bold text-theme-accent">
-                      {weatherData.current.temperature}°C
-                    </span>
-                    <span className="text-theme-secondary capitalize">
-                      {weatherData.current.condition}
-                    </span>
-                    <div className="flex gap-4 mt-2">
-                      <div className="flex flex-col items-center">
-                        <span className="font-semibold">Humidity</span>
-                        <span>{weatherData.current.humidity}</span>
-                      </div>
-                      <div className="flex flex-col items-center">
-                        <span className="font-semibold">Wind Speed</span>
-                        <span>{weatherData.current.windSpeed}</span>
+              {weatherData ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="bg-white rounded-xl shadow p-6 flex flex-col gap-4">
+                    <h3 className="font-bold text-theme-primary mb-2">
+                      Current Weather
+                    </h3>
+                    <div className="flex flex-col gap-2 items-center">
+                      <img 
+                        src={getWeatherIconUrl(weatherData.current.icon)} 
+                        alt={weatherData.current.condition}
+                        className="w-16 h-16 mb-2"
+                      />
+                      <span className="text-3xl font-bold text-theme-accent">
+                        {weatherData.current.temperature}°C
+                      </span>
+                      <span className="text-theme-secondary capitalize">
+                        {weatherData.current.condition}
+                      </span>
+                      <div className="flex gap-4 mt-2">
+                        <div className="flex flex-col items-center">
+                          <span className="font-semibold">Humidity</span>
+                          <span>{weatherData.current.humidity}</span>
+                        </div>
+                        <div className="flex flex-col items-center">
+                          <span className="font-semibold">Wind Speed</span>
+                          <span>{weatherData.current.windSpeed}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="bg-white rounded-xl shadow p-6 flex flex-col gap-4">
-                  <h3 className="font-bold text-theme-primary mb-2">
-                    7-Day Forecast
-                  </h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    {weatherData.forecast.map((day, index) => (
-                      <div
-                        key={index}
-                        className="bg-theme-light rounded-lg p-3 flex flex-col items-center"
-                      >
-                        <span className="font-semibold text-theme-primary">
-                          {day.day}
-                        </span>
-                        <img 
-                          src={getWeatherIconUrl(day.icon)} 
-                          alt={day.condition}
-                          className="w-10 h-10 my-1"
-                        />
-                        <span className="text-theme-secondary capitalize text-sm text-center">
-                          {day.condition}
-                        </span>
-                        <span className="text-theme-accent font-bold">
-                          {day.temp}°
-                        </span>
-                      </div>
-                    ))}
+                  <div className="bg-white rounded-xl shadow p-6 flex flex-col gap-4">
+                    <h3 className="font-bold text-theme-primary mb-2">
+                      7-Day Forecast
+                    </h3>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                      {weatherData.forecast?.map((day, index) => (
+                        <div
+                          key={index}
+                          className="bg-theme-light rounded-lg p-3 flex flex-col items-center"
+                        >
+                          <span className="font-semibold text-theme-primary">
+                            {day.day}
+                          </span>
+                          <img 
+                            src={getWeatherIconUrl(day.icon)} 
+                            alt={day.condition}
+                            className="w-10 h-10 my-1"
+                          />
+                          <span className="text-theme-secondary capitalize text-sm text-center">
+                            {day.condition}
+                          </span>
+                          <span className="text-theme-accent font-bold">
+                            {day.temp}°
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
+              ) : (
+                <div className="bg-white rounded-xl shadow p-6">
+                  <div className="flex items-center justify-center py-8">
+                    <div className="text-center">
+                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-theme-primary mx-auto mb-4"></div>
+                      <p className="text-theme-secondary">Loading weather information...</p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
