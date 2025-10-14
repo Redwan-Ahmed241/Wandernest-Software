@@ -9,6 +9,10 @@ import { useNavigate, useParams } from "react-router-dom";
 // API Base URL
 const API_BASE_URL = "https://wander-nest-ad3s.onrender.com";
 
+// OpenWeatherMap API configuration
+const OPENWEATHER_API_KEY = "bd5e378503939ddaee76f12ad7a97608"; // You should move this to environment variables
+const OPENWEATHER_BASE_URL = "https://api.openweathermap.org/data/2.5";
+
 // Interfaces for API responses
 interface DestinationData {
   id: string;
@@ -30,11 +34,13 @@ interface WeatherData {
     condition: string;
     humidity: string;
     windSpeed: string;
+    icon: string;
   };
   forecast: Array<{
     day: string;
     temp: number;
     condition: string;
+    icon: string;
   }>;
 }
 
@@ -62,16 +68,66 @@ interface Experience {
 interface Package {
   id: number;
   title: string;
-  description: string;
-  destination: string;
-  source: string;
-  price: number;
-  budget: number;
-  days: number;
-  image?: string;
-  rating?: number;
-  reviews?: number;
+  subtitle?: string;
+  description?: string;
+  image_url?: string;
+  package_type: 'premade' | 'custom';
+  from_location: string;
+  to_location: string;
+  destination: number;
+  destination_name: string;
+  start_date?: string;
+  end_date?: string;
+  days?: number;
+  travelers_count?: number;
+  budget?: string;
+  total_cost?: string;
+  price?: string;
+  status: string;
+  created_at: string;
+  transport?: {
+    id: number;
+    name: string;
+    price: string;
+    type: string;
+    capacity?: number;
+    features?: string[];
+  };
+  hotel?: {
+    id: number;
+    name: string;
+    price: string;
+    rating: string;
+    amenities?: string[];
+  };
+  guide?: {
+    id: number;
+    name: string;
+    price: string;
+  } | null;
+  preferences?: Record<string, any>;
 }
+
+// Helper function to parse coordinates
+const parseCoordinates = (coordString: string): { lat: number; lon: number } | null => {
+  if (!coordString) return null;
+  
+  // Parse formats like "21.4272° N, 92.0058° E" or "21.4272, 92.0058"
+  const coords = coordString.replace(/[°NSEW\s]/g, '').split(',');
+  if (coords.length === 2) {
+    const lat = parseFloat(coords[0].trim());
+    const lon = parseFloat(coords[1].trim());
+    if (!isNaN(lat) && !isNaN(lon)) {
+      return { lat, lon };
+    }
+  }
+  return null;
+};
+
+// Helper function to get weather icon URL
+const getWeatherIconUrl = (iconCode: string): string => {
+  return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+};
 
 const DestinationPage: FunctionComponent = () => {
   const navigate = useNavigate();
@@ -91,6 +147,67 @@ const DestinationPage: FunctionComponent = () => {
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const [packages, setPackages] = useState<Package[]>([]);
   const [packagesLoading, setPackagesLoading] = useState(false);
+
+  // Function to fetch weather data from OpenWeatherMap
+  const fetchWeatherData = async (cityName: string, coordinates: string) => {
+    try {
+      let weatherUrl = '';
+      
+      // Try to use coordinates first for better accuracy
+      const coords = parseCoordinates(coordinates);
+      if (coords) {
+        weatherUrl = `${OPENWEATHER_BASE_URL}/weather?lat=${coords.lat}&lon=${coords.lon}&appid=${OPENWEATHER_API_KEY}&units=metric`;
+      } else {
+        // Fallback to city name
+        weatherUrl = `${OPENWEATHER_BASE_URL}/weather?q=${encodeURIComponent(cityName)}&appid=${OPENWEATHER_API_KEY}&units=metric`;
+      }
+
+      const [currentResponse, forecastResponse] = await Promise.all([
+        fetch(weatherUrl),
+        fetch(weatherUrl.replace('/weather?', '/forecast?'))
+      ]);
+
+      if (!currentResponse.ok) {
+        throw new Error('Failed to fetch current weather');
+      }
+
+      const currentWeather = await currentResponse.json();
+      const forecastWeather = forecastResponse.ok ? await forecastResponse.json() : null;
+
+      // Transform OpenWeatherMap data to our format
+      const weatherData: WeatherData = {
+        current: {
+          temperature: Math.round(currentWeather.main.temp),
+          condition: currentWeather.weather[0].description,
+          humidity: `${currentWeather.main.humidity}%`,
+          windSpeed: `${currentWeather.wind.speed} m/s`,
+          icon: currentWeather.weather[0].icon,
+        },
+        forecast: []
+      };
+
+      // Process 5-day forecast if available
+      if (forecastWeather?.list) {
+        const dailyForecasts = forecastWeather.list
+          .filter((_: any, index: number) => index % 8 === 0) // Get one forecast per day (every 8th item = 24 hours)
+          .slice(0, 7) // Limit to 7 days
+          .map((item: any) => ({
+            day: new Date(item.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' }),
+            temp: Math.round(item.main.temp),
+            condition: item.weather[0].description,
+            icon: item.weather[0].icon,
+          }));
+
+        weatherData.forecast = dailyForecasts;
+      }
+
+      setWeatherData(weatherData);
+      console.log('✅ Weather data fetched from OpenWeatherMap:', weatherData);
+    } catch (error) {
+      console.error('❌ Failed to fetch weather data:', error);
+      setWeatherData(null);
+    }
+  };
 
   // Fetch destination data
   useEffect(() => {
@@ -145,39 +262,79 @@ const DestinationPage: FunctionComponent = () => {
           setExperiences(destinationResult.experiences);
         }
 
-        // Fetch weather data (if endpoint exists)
+        // Fetch weather data from OpenWeatherMap API
         try {
-          const weatherResponse = await fetch(
-            `${API_BASE_URL}/api/home/destinations/${destinationId}/weather/`
-          );
-          if (weatherResponse.ok) {
-            const weatherResult = await weatherResponse.json();
-            setWeatherData(weatherResult);
-          }
-        } catch {
-          console.log('Weather data not available');
+          await fetchWeatherData(transformedData.name, transformedData.coordinates);
+        } catch (error) {
+          console.log('Weather data not available:', error);
         }
 
         // Fetch packages for this destination
+        // According to API docs:
+        // - GET /api/packages/?destination={id} for custom packages
+        // - GET /api/packages/all/?destination_detail={id} for premade packages
         try {
           setPackagesLoading(true);
-          const packagesResponse = await fetch(
-            `${API_BASE_URL}/api/packages/destination/${destinationId}/`
-          );
+          
+          console.log(`Fetching packages for destination ID: ${destinationId}`);
+          
+          // Fetch ALL packages first, then filter client-side for better control
+          console.log(`🚀 Fetching packages for destination ID: ${destinationId}`);
+          
+          const packagesResponse = await fetch(`${API_BASE_URL}/api/packages/unified/`);
+          
+          let allPackages: any[] = [];
+
           if (packagesResponse.ok) {
             const packagesResult = await packagesResponse.json();
-            console.log('Packages for destination:', packagesResult);
-            // Handle both array and paginated response
-            const packagesData = Array.isArray(packagesResult) 
-              ? packagesResult 
-              : packagesResult.results || [];
-            setPackages(packagesData);
+            console.log('📦 Unified packages API response:', packagesResult);
+            console.log('📦 Response type:', typeof packagesResult);
+            console.log('📦 Is array:', Array.isArray(packagesResult));
+            
+            // Handle both direct array and paginated responses
+            if (packagesResult && packagesResult.results) {
+              allPackages = Array.isArray(packagesResult.results) ? packagesResult.results : [];
+              console.log('📦 Using paginated results:', allPackages.length);
+            } else {
+              allPackages = Array.isArray(packagesResult) ? packagesResult : [];
+              console.log('📦 Using direct array:', allPackages.length);
+            }
           } else {
-            console.log('No packages found for this destination');
-            setPackages([]);
+            console.error('❌ Unified packages API failed with status:', packagesResponse.status);
           }
+
+          // Filter packages by destination ID (more precise than API query parameter)
+          const destinationIdNum = parseInt(destinationId);
+          console.log(`🔍 Filtering for destination ID: ${destinationIdNum} (type: ${typeof destinationIdNum})`);
+          
+          const filteredPackages = allPackages.filter((pkg) => {
+            const pkgDestId = pkg.destination;
+            console.log(`📋 Package "${pkg.title}" - destination: ${pkgDestId} (type: ${typeof pkgDestId})`);
+            
+            // Primary filter: exact destination ID match
+            const matchesDestination = pkgDestId === destinationIdNum || pkgDestId === destinationId;
+            
+            // Secondary filter: only show confirmed packages
+            const isConfirmed = pkg.status === 'confirmed';
+            
+            const shouldInclude = matchesDestination && isConfirmed;
+            
+            if (shouldInclude) {
+              console.log(`✅ Including package: ${pkg.title}`);
+            }
+            
+            return shouldInclude;
+          });
+
+          console.log(`📊 Total packages from API: ${allPackages.length}`);
+          console.log(`📊 Filtered packages for destination ${destinationId}: ${filteredPackages.length}`);
+          console.log('📋 Filtered package titles:', filteredPackages.map(p => p.title));
+          
+          setPackages(filteredPackages);
         } catch (err) {
-          console.error('Error fetching packages:', err);
+          console.error('❌ Error fetching packages:', err);
+          console.error('❌ Error type:', typeof err);
+          console.error('❌ Error message:', err instanceof Error ? err.message : String(err));
           setPackages([]);
         } finally {
           setPackagesLoading(false);
@@ -427,10 +584,15 @@ const DestinationPage: FunctionComponent = () => {
                   </h2>
                   <div className="flex flex-col md:flex-row gap-6 items-center">
                     <div className="flex flex-col items-center">
+                      <img 
+                        src={getWeatherIconUrl(weatherData.current.icon)} 
+                        alt={weatherData.current.condition}
+                        className="w-16 h-16 mb-2"
+                      />
                       <span className="text-3xl font-bold text-theme-accent">
                         {weatherData.current.temperature}°C
                       </span>
-                      <span className="text-theme-secondary">
+                      <span className="text-theme-secondary capitalize">
                         {weatherData.current.condition}
                       </span>
                     </div>
@@ -570,7 +732,7 @@ const DestinationPage: FunctionComponent = () => {
                     >
                       <div className="relative h-48">
                         <img
-                          src={pkg.image || "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=500"}
+                          src={pkg.image_url || "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=500"}
                           alt={pkg.title}
                           className="w-full h-full object-cover"
                           onError={(e) => {
@@ -579,28 +741,35 @@ const DestinationPage: FunctionComponent = () => {
                         />
                         <div className="absolute top-3 right-3 bg-white px-3 py-1 rounded-full shadow-md">
                           <span className="text-[#6ab187] font-bold text-sm">
-                            {pkg.days} Days
+                            {pkg.days || 'Multi'} Days
                           </span>
                         </div>
+                        {pkg.package_type && (
+                          <div className="absolute top-3 left-3 bg-[#6ab187] px-2 py-1 rounded-full shadow-md">
+                            <span className="text-white font-bold text-xs capitalize">
+                              {pkg.package_type}
+                            </span>
+                          </div>
+                        )}
                       </div>
                       <div className="p-6 flex flex-col flex-grow">
                         <h3 className="font-bold text-gray-900 text-xl mb-2">
                           {pkg.title}
                         </h3>
                         <p className="text-gray-600 text-sm mb-3 line-clamp-2 flex-grow">
-                          {pkg.description}
+                          {pkg.subtitle || pkg.description || 'Explore this amazing destination'}
                         </p>
                         <div className="flex items-center gap-2 mb-3 text-sm text-gray-600">
                           <span>📍</span>
-                          <span>{pkg.source} → {pkg.destination}</span>
+                          <span>{pkg.from_location} → {pkg.to_location}</span>
                         </div>
-                        {pkg.rating && (
+                        {pkg.hotel?.rating && (
                           <div className="flex items-center gap-2 mb-4">
                             <span className="text-yellow-500">
-                              {"★".repeat(Math.floor(pkg.rating))}
+                              {"★".repeat(Math.floor(parseFloat(pkg.hotel.rating)))}
                             </span>
                             <span className="text-xs text-gray-500">
-                              {pkg.rating} ({pkg.reviews || 0} reviews)
+                              Hotel Rating: {pkg.hotel.rating}
                             </span>
                           </div>
                         )}
@@ -608,12 +777,12 @@ const DestinationPage: FunctionComponent = () => {
                           <div className="flex flex-col">
                             <span className="text-xs text-gray-500">Starting from</span>
                             <span className="text-2xl font-bold text-[#6ab187]">
-                              ৳{pkg.price?.toLocaleString() || pkg.budget?.toLocaleString()}
+                              ৳{parseFloat(pkg.price || pkg.total_cost || pkg.budget || '0').toLocaleString()}
                             </span>
                           </div>
                           <button
                             onClick={() => {
-                              navigate('/confirm-booking', {
+                              navigate(`/confirm-book/${destinationId}/${pkg.id}`, {
                                 state: { pkg }
                               });
                             }}
@@ -656,10 +825,15 @@ const DestinationPage: FunctionComponent = () => {
                     Current Weather
                   </h3>
                   <div className="flex flex-col gap-2 items-center">
+                    <img 
+                      src={getWeatherIconUrl(weatherData.current.icon)} 
+                      alt={weatherData.current.condition}
+                      className="w-16 h-16 mb-2"
+                    />
                     <span className="text-3xl font-bold text-theme-accent">
                       {weatherData.current.temperature}°C
                     </span>
-                    <span className="text-theme-secondary">
+                    <span className="text-theme-secondary capitalize">
                       {weatherData.current.condition}
                     </span>
                     <div className="flex gap-4 mt-2">
@@ -687,7 +861,12 @@ const DestinationPage: FunctionComponent = () => {
                         <span className="font-semibold text-theme-primary">
                           {day.day}
                         </span>
-                        <span className="text-theme-secondary">
+                        <img 
+                          src={getWeatherIconUrl(day.icon)} 
+                          alt={day.condition}
+                          className="w-10 h-10 my-1"
+                        />
+                        <span className="text-theme-secondary capitalize text-sm text-center">
                           {day.condition}
                         </span>
                         <span className="text-theme-accent font-bold">
