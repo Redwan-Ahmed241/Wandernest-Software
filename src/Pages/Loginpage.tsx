@@ -19,9 +19,9 @@ export default function TravelLogin() {
   useEffect(() => {
     if (isAuthenticated) {
       // Check for stored redirect URL
-      const redirectUrl = sessionStorage.getItem('redirectAfterLogin');
+      const redirectUrl = sessionStorage.getItem("redirectAfterLogin");
       if (redirectUrl) {
-        sessionStorage.removeItem('redirectAfterLogin');
+        sessionStorage.removeItem("redirectAfterLogin");
         navigate(redirectUrl);
       } else {
         navigate("/homepage");
@@ -65,11 +65,11 @@ export default function TravelLogin() {
       login(mockToken, mockUser);
 
       console.log("Mock login successful, checking for redirect");
-      
+
       // Check for stored redirect URL
-      const redirectUrl = sessionStorage.getItem('redirectAfterLogin');
+      const redirectUrl = sessionStorage.getItem("redirectAfterLogin");
       if (redirectUrl) {
-        sessionStorage.removeItem('redirectAfterLogin');
+        sessionStorage.removeItem("redirectAfterLogin");
         navigate(redirectUrl);
       } else {
         navigate("/homepage");
@@ -165,9 +165,9 @@ export default function TravelLogin() {
       );
 
       // Check for stored redirect URL
-      const redirectUrl = sessionStorage.getItem('redirectAfterLogin');
+      const redirectUrl = sessionStorage.getItem("redirectAfterLogin");
       if (redirectUrl) {
-        sessionStorage.removeItem('redirectAfterLogin');
+        sessionStorage.removeItem("redirectAfterLogin");
         navigate(redirectUrl);
       } else {
         navigate("/homepage");
@@ -204,7 +204,7 @@ export default function TravelLogin() {
         <img
           src="/Figma_photos/travel-background.jpg"
           alt="Travel background"
-          className="w-full h-full object-contain md:object-cover"
+          className="w-full h-full object-cover"
           style={{ objectPosition: "center" }}
         />
       </div>
