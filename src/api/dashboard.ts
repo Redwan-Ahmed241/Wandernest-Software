@@ -26,6 +26,124 @@ export interface Stats {
   memberSince: string;
 }
 
+// Additional interfaces for new endpoints
+export interface UserProfile {
+  id: string;
+  first_name: string;
+  last_name: string;
+  username: string;
+  email: string;
+  phone?: string;
+  profile_image?: string;
+  membership_level?: string;
+  join_date: string;
+  preferences?: {
+    currency: string;
+    language: string;
+    timezone: string;
+    notifications_enabled: boolean;
+  };
+  verification?: {
+    email_verified: boolean;
+    phone_verified: boolean;
+    identity_verified: boolean;
+  };
+}
+
+export interface TravelPreferences {
+  budget_range: {
+    min: number;
+    max: number;
+    currency: string;
+  };
+  preferred_destinations: string[];
+  travel_style: string;
+  group_size: string;
+  accommodation_type: string[];
+  transportation: string[];
+  interests: string[];
+  dietary_restrictions: string[];
+  accessibility_needs: string[];
+}
+
+export interface PaymentMethod {
+  id: string;
+  type: string;
+  brand: string;
+  last_four: string;
+  expiry_month: number;
+  expiry_year: number;
+  is_default: boolean;
+  billing_address: {
+    country: string;
+    city: string;
+  };
+}
+
+export interface Transaction {
+  id: string;
+  booking_id: string;
+  amount: number;
+  currency: string;
+  status: string;
+  transaction_date: string;
+  description: string;
+  payment_method: string;
+}
+
+export interface LoyaltyStatus {
+  current_points: number;
+  points_to_next_tier: number;
+  current_tier: string;
+  next_tier: string;
+  tier_benefits: string[];
+  points_expiring_soon: {
+    amount: number;
+    expiry_date: string;
+  };
+}
+
+export interface Reward {
+  id: string;
+  title: string;
+  description: string;
+  points_required: number;
+  category: string;
+  validity: string;
+  terms_conditions: string[];
+  available: boolean;
+}
+
+export interface Notification {
+  id: string;
+  title: string;
+  message: string;
+  type: string;
+  priority: string;
+  read: boolean;
+  created_at: string;
+  action_url?: string;
+}
+
+export interface WishlistItem {
+  id: string;
+  name: string;
+  image: string;
+  estimated_cost: number;
+  best_time_to_visit: string;
+  added_date: string;
+  price_alerts_enabled: boolean;
+}
+
+export interface SavedSearch {
+  id: string;
+  name: string;
+  search_type: string;
+  criteria: Record<string, unknown>;
+  created_date: string;
+  alert_enabled: boolean;
+}
+
 type ApiSuccess<T> = { success: true; data: T };
 
 const meta = (import.meta as unknown) as { env?: Record<string, string> };
@@ -290,14 +408,345 @@ export async function getUpcomingTrips(token?: string): Promise<Booking[]> {
   return request<Booking[]>('/api/dashboard/upcoming-trips/', {}, token);
 }
 
-export async function getUserProfile(token?: string): Promise<Record<string, unknown>> {
-  return request<Record<string, unknown>>('/api/user/profile/', {}, token);
+export async function getUserProfile(token?: string): Promise<UserProfile> {
+  return request<UserProfile>('/api/user/profile/', {}, token);
+}
+
+// Additional User Profile & Stats endpoints
+export async function getUserStats(token?: string): Promise<Stats> {
+  return request<Stats>('/api/users/stats', {}, token);
+}
+
+export async function updateUserProfile(userData: Partial<UserProfile>, token?: string): Promise<UserProfile> {
+  return request<UserProfile>('/api/users/profile', {
+    method: 'PUT',
+    body: JSON.stringify(userData),
+  }, token);
+}
+
+// Booking Documents endpoints
+export async function getBookingDocuments(bookingId: string, token?: string): Promise<Record<string, unknown>> {
+  return request<Record<string, unknown>>(`/api/bookings/${bookingId}/documents`, {}, token);
+}
+
+export async function downloadBookingDocument(bookingId: string, documentType: string, token?: string): Promise<Blob> {
+  const url = `/api/bookings/${bookingId}/documents/${documentType}/download`;
+  const resolvedToken = token ?? (typeof localStorage !== 'undefined'
+    ? (localStorage.getItem('token') || localStorage.getItem('access') || localStorage.getItem('access_token') || undefined)
+    : undefined);
+
+  const headers: Record<string, string> = {};
+  
+  if (resolvedToken) {
+    let tokenStr = String(resolvedToken).trim();
+    tokenStr = tokenStr.replace(/^Bearer\s+/i, '').replace(/^Token\s+/i, '');
+    const looksLikeJwt = tokenStr.split('.').length === 3 || /^ey[A-Za-z0-9_-]/.test(tokenStr);
+    const scheme = looksLikeJwt ? 'Bearer' : 'Token';
+    headers['Authorization'] = `${scheme} ${tokenStr}`;
+  }
+
+  const response = await fetch(`${API_BASE}${url}`, { headers });
+  
+  if (!response.ok) {
+    throw new Error(`Failed to download document: ${response.statusText}`);
+  }
+  
+  return response.blob();
+}
+
+// Travel Preferences endpoints
+export async function getTravelPreferences(token?: string): Promise<TravelPreferences> {
+  return request<TravelPreferences>('/api/users/travel-preferences', {}, token);
+}
+
+export async function updateTravelPreferences(preferences: Partial<TravelPreferences>, token?: string): Promise<TravelPreferences> {
+  return request<TravelPreferences>('/api/users/travel-preferences', {
+    method: 'PUT',
+    body: JSON.stringify(preferences),
+  }, token);
+}
+
+// Security Settings endpoints
+export async function getSecuritySettings(token?: string): Promise<Record<string, unknown>> {
+  return request<Record<string, unknown>>('/api/users/security-settings', {}, token);
+}
+
+export async function updateSecuritySettings(settings: Record<string, unknown>, token?: string): Promise<Record<string, unknown>> {
+  return request<Record<string, unknown>>('/api/users/security-settings', {
+    method: 'PUT',
+    body: JSON.stringify(settings),
+  }, token);
+}
+
+// Privacy Settings endpoints
+export async function getPrivacySettings(token?: string): Promise<Record<string, unknown>> {
+  return request<Record<string, unknown>>('/api/users/privacy-settings', {}, token);
+}
+
+export async function updatePrivacySettings(settings: Record<string, unknown>, token?: string): Promise<Record<string, unknown>> {
+  return request<Record<string, unknown>>('/api/users/privacy-settings', {
+    method: 'PUT',
+    body: JSON.stringify(settings),
+  }, token);
+}
+
+// Wishlist endpoints
+export async function getWishlist(token?: string): Promise<WishlistItem[]> {
+  return request<WishlistItem[]>('/api/users/wishlist', {}, token);
+}
+
+export async function addToWishlist(destination: Partial<WishlistItem>, token?: string): Promise<WishlistItem> {
+  return request<WishlistItem>('/api/users/wishlist', {
+    method: 'POST',
+    body: JSON.stringify(destination),
+  }, token);
+}
+
+export async function removeFromWishlist(destinationId: string, token?: string): Promise<{ success: boolean }> {
+  return request<{ success: boolean }>(`/api/users/wishlist/${destinationId}`, {
+    method: 'DELETE',
+  }, token);
+}
+
+// Analytics & Insights endpoints
+export async function getTravelAnalytics(token?: string): Promise<Record<string, unknown>> {
+  return request<Record<string, unknown>>('/api/analytics/travel-stats', {}, token);
+}
+
+export async function getBudgetTracking(token?: string): Promise<Record<string, unknown>> {
+  return request<Record<string, unknown>>('/api/analytics/budget-tracking', {}, token);
+}
+
+// Recommendations & Discovery endpoints
+export async function getDashboardRecommendations(token?: string): Promise<Record<string, unknown>> {
+  return request<Record<string, unknown>>('/api/recommendations/dashboard', {}, token);
+}
+
+export async function getTrendingDestinations(limit: number = 6, token?: string): Promise<Record<string, unknown>[]> {
+  return request<Record<string, unknown>[]>(`/api/destinations/trending?limit=${limit}`, {}, token);
+}
+
+export async function getWeatherInformation(token?: string): Promise<Record<string, unknown>[]> {
+  return request<Record<string, unknown>[]>('/api/weather/destinations', {}, token);
+}
+
+export async function getTravelAdvisories(token?: string): Promise<Record<string, unknown>[]> {
+  return request<Record<string, unknown>[]>('/api/travel/advisories', {}, token);
+}
+
+// Notifications & Alerts endpoints
+export async function getPriceDropAlerts(token?: string): Promise<Array<Record<string, unknown>>> {
+  return request<Array<Record<string, unknown>>>('/api/alerts/price-drops', {}, token);
+}
+
+export async function getNotifications(token?: string): Promise<Notification[]> {
+  return request<Notification[]>('/api/notifications/', {}, token);
+}
+
+export async function markNotificationAsRead(notificationId: string, token?: string): Promise<{ success: boolean }> {
+  return request<{ success: boolean }>(`/api/notifications/${notificationId}/read`, {
+    method: 'POST',
+  }, token);
+}
+
+// Financial Management endpoints
+export async function getPaymentMethods(token?: string): Promise<PaymentMethod[]> {
+  return request<PaymentMethod[]>('/api/users/payment-methods', {}, token);
+}
+
+export async function addPaymentMethod(paymentData: Partial<PaymentMethod>, token?: string): Promise<PaymentMethod> {
+  return request<PaymentMethod>('/api/users/payment-methods', {
+    method: 'POST',
+    body: JSON.stringify(paymentData),
+  }, token);
+}
+
+export async function removePaymentMethod(paymentMethodId: string, token?: string): Promise<{ success: boolean }> {
+  return request<{ success: boolean }>(`/api/users/payment-methods/${paymentMethodId}`, {
+    method: 'DELETE',
+  }, token);
+}
+
+export async function getRecentTransactions(token?: string): Promise<Transaction[]> {
+  return request<Transaction[]>('/api/transactions/recent', {}, token);
+}
+
+// Loyalty & Rewards endpoints
+export async function getLoyaltyStatus(token?: string): Promise<LoyaltyStatus> {
+  return request<LoyaltyStatus>('/api/loyalty/status', {}, token);
+}
+
+export async function getAvailableRewards(token?: string): Promise<Reward[]> {
+  return request<Reward[]>('/api/loyalty/rewards', {}, token);
+}
+
+export async function redeemReward(rewardId: string, token?: string): Promise<{ success: boolean; message: string }> {
+  return request<{ success: boolean; message: string }>(`/api/loyalty/rewards/${rewardId}/redeem`, {
+    method: 'POST',
+  }, token);
+}
+
+// Quick Booking & Searches endpoints
+export async function getQuickBookingOptions(token?: string): Promise<Record<string, unknown>[]> {
+  return request<Record<string, unknown>[]>('/api/quick-booking/options', {}, token);
+}
+
+export async function getSavedSearches(token?: string): Promise<SavedSearch[]> {
+  return request<SavedSearch[]>('/api/users/saved-searches', {}, token);
+}
+
+export async function createSavedSearch(searchData: Partial<SavedSearch>, token?: string): Promise<SavedSearch> {
+  return request<SavedSearch>('/api/users/saved-searches', {
+    method: 'POST',
+    body: JSON.stringify(searchData),
+  }, token);
+}
+
+export async function deleteSavedSearch(searchId: string, token?: string): Promise<{ success: boolean }> {
+  return request<{ success: boolean }>(`/api/users/saved-searches/${searchId}`, {
+    method: 'DELETE',
+  }, token);
+}
+
+// Data Management endpoints
+export async function exportUserData(dataTypes: string[], fileFormat: string = 'json', token?: string): Promise<Record<string, unknown>> {
+  return request<Record<string, unknown>>('/api/users/export-data', {
+    method: 'POST',
+    body: JSON.stringify({ data_types: dataTypes, file_format: fileFormat }),
+  }, token);
+}
+
+export async function getExportStatus(exportId: string, token?: string): Promise<Record<string, unknown>> {
+  return request<Record<string, unknown>>(`/api/users/export-data/${exportId}/status`, {}, token);
+}
+
+export async function downloadExportedData(exportId: string, token?: string): Promise<Blob> {
+  const url = `/api/users/export-data/${exportId}/download`;
+  const resolvedToken = token ?? (typeof localStorage !== 'undefined'
+    ? (localStorage.getItem('token') || localStorage.getItem('access') || localStorage.getItem('access_token') || undefined)
+    : undefined);
+
+  const headers: Record<string, string> = {};
+  
+  if (resolvedToken) {
+    let tokenStr = String(resolvedToken).trim();
+    tokenStr = tokenStr.replace(/^Bearer\s+/i, '').replace(/^Token\s+/i, '');
+    const looksLikeJwt = tokenStr.split('.').length === 3 || /^ey[A-Za-z0-9_-]/.test(tokenStr);
+    const scheme = looksLikeJwt ? 'Bearer' : 'Token';
+    headers['Authorization'] = `${scheme} ${tokenStr}`;
+  }
+
+  const response = await fetch(`${API_BASE}${url}`, { headers });
+  
+  if (!response.ok) {
+    throw new Error(`Failed to download exported data: ${response.statusText}`);
+  }
+  
+  return response.blob();
+}
+
+// Support & Communication endpoints
+export async function getWebSocketInfo(token?: string): Promise<Record<string, unknown>> {
+  return request<Record<string, unknown>>('/api/ws-info/dashboard', {}, token);
+}
+
+export async function supportChatEcho(message: string, token?: string): Promise<Record<string, unknown>> {
+  return request<Record<string, unknown>>('/api/support/chat/echo', {
+    method: 'POST',
+    body: JSON.stringify({ message }),
+  }, token);
+}
+
+// Legacy endpoints (for backward compatibility)
+export async function getLegacyDashboardStats(token?: string): Promise<Record<string, unknown>> {
+  return request<Record<string, unknown>>('/api/dashboard/stats/', {}, token);
+}
+
+export async function getLegacyRecentActivity(token?: string): Promise<Record<string, unknown>[]> {
+  return request<Record<string, unknown>[]>('/api/dashboard/recent-activity/', {}, token);
+}
+
+export async function getLegacyNotifications(token?: string): Promise<Record<string, unknown>[]> {
+  return request<Record<string, unknown>[]>('/api/notifications/', {}, token);
+}
+
+export async function getLegacyQuickActions(token?: string): Promise<Record<string, unknown>[]> {
+  return request<Record<string, unknown>[]>('/api/dashboard/quick-actions/', {}, token);
 }
 
 export default {
+  // Core dashboard functions
   getDashboardStats,
   getBookingsActive,
   getBookingsHistory,
   getUpcomingTrips,
   getUserProfile,
+  
+  // User Profile & Stats
+  getUserStats,
+  updateUserProfile,
+  
+  // Booking Management
+  getBookingDocuments,
+  downloadBookingDocument,
+  
+  // Preferences & Settings
+  getTravelPreferences,
+  updateTravelPreferences,
+  getSecuritySettings,
+  updateSecuritySettings,
+  getPrivacySettings,
+  updatePrivacySettings,
+  
+  // Wishlist
+  getWishlist,
+  addToWishlist,
+  removeFromWishlist,
+  
+  // Analytics & Insights
+  getTravelAnalytics,
+  getBudgetTracking,
+  
+  // Recommendations & Discovery
+  getDashboardRecommendations,
+  getTrendingDestinations,
+  getWeatherInformation,
+  getTravelAdvisories,
+  
+  // Notifications & Alerts
+  getPriceDropAlerts,
+  getNotifications,
+  markNotificationAsRead,
+  
+  // Financial Management
+  getPaymentMethods,
+  addPaymentMethod,
+  removePaymentMethod,
+  getRecentTransactions,
+  
+  // Loyalty & Rewards
+  getLoyaltyStatus,
+  getAvailableRewards,
+  redeemReward,
+  
+  // Quick Booking & Searches
+  getQuickBookingOptions,
+  getSavedSearches,
+  createSavedSearch,
+  deleteSavedSearch,
+  
+  // Data Management
+  exportUserData,
+  getExportStatus,
+  downloadExportedData,
+  
+  // Support & Communication
+  getWebSocketInfo,
+  supportChatEcho,
+  
+  // Legacy endpoints
+  getLegacyDashboardStats,
+  getLegacyRecentActivity,
+  getLegacyNotifications,
+  getLegacyQuickActions,
 };
