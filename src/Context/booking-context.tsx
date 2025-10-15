@@ -128,29 +128,52 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 
   // Refresh from API
-  const refreshBookings = useCallback(async () => {
+  const refreshBookings = async () => {
     setIsLoading(true);
     try {
-      // Simulate API calls - replace with real endpoints
-      const [hotelBookings, packageBookings, tripBookings] = await Promise.all([
-        fetch("/api/bookings/hotels")
-          .then((r) => r.json())
-          .catch(() => []),
-        fetch("/api/bookings/packages")
-          .then((r) => r.json())
-          .catch(() => []),
-        fetch("/api/bookings/trips")
-          .then((r) => r.json())
-          .catch(() => []),
-      ]);
+      const API_BASE = "https://wander-nest-ad3s.onrender.com";
+
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      };
+
+      console.log("Refreshing bookings with headers:", headers);
+
+      const hotelBookingsResponse = await fetch(`${API_BASE}/api/bookings/hotels/`, {
+        method: "GET",
+        headers,
+      });
+
+      const hotelBookings = hotelBookingsResponse.ok
+        ? await hotelBookingsResponse.json()
+        : [];
+
+      const packageBookingsResponse = await fetch(`${API_BASE}/api/bookings/packages/`, {
+        method: "GET",
+        headers,
+      });
+
+      const packageBookings = packageBookingsResponse.ok
+        ? await packageBookingsResponse.json()
+        : [];
+
+      const tripBookingsResponse = await fetch(`${API_BASE}/api/bookings/trips/`, {
+        method: "GET",
+        headers,
+      });
+
+      const tripBookings = tripBookingsResponse.ok
+        ? await tripBookingsResponse.json()
+        : [];
 
       const allBookings = [
-        ...hotelBookings.map((b: any) => ({ ...b, type: "hotel" as const })),
-        ...packageBookings.map((b: any) => ({
+        ...Array.isArray(hotelBookings) ? hotelBookings.map((b: any) => ({ ...b, type: "hotel" as const })) : [],
+        ...Array.isArray(packageBookings) ? packageBookings.map((b: any) => ({
           ...b,
           type: "package" as const,
-        })),
-        ...tripBookings.map((b: any) => ({ ...b, type: "trip" as const })),
+        })) : [],
+        ...Array.isArray(tripBookings) ? tripBookings.map((b: any) => ({ ...b, type: "trip" as const })) : [],
       ];
 
       setBookings(allBookings);
@@ -159,7 +182,7 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }; // Removed the empty dependency array to fix syntax error
 
   return (
     <BookingContext.Provider

@@ -61,7 +61,7 @@ const HomePage: FunctionComponent = () => {
   const handleCardClick = useCallback(
     async (dest: any) => {
       await incrementDestinationClick(dest.id);
-      navigate("/destination-01");
+      navigate(`/destination/${dest.id}`); // Fix navigation to include destination ID
     },
     [incrementDestinationClick, navigate]
   );
