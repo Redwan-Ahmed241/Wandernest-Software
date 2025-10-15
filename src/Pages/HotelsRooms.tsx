@@ -50,6 +50,22 @@ type FilterKey = keyof typeof FILTER_OPTIONS;
 const MEDIA_BASE = "https://wander-nest-ad3s.onrender.com";
 
 // Create hotel booking record
+// Helper to get normalized token and scheme
+function getAuthHeaders() {
+  const rawToken = typeof localStorage !== 'undefined'
+    ? (localStorage.getItem('token') || localStorage.getItem('access') || localStorage.getItem('access_token') || undefined)
+    : undefined;
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  if (rawToken) {
+    let tokenStr = String(rawToken).trim();
+    tokenStr = tokenStr.replace(/^Bearer\s+/i, '').replace(/^Token\s+/i, '');
+    const looksLikeJwt = tokenStr.split('.').length === 3 || /^ey[A-Za-z0-9_-]/.test(tokenStr);
+    const scheme = looksLikeJwt ? 'Bearer' : 'Token';
+    headers['Authorization'] = `${scheme} ${tokenStr}`;
+  }
+  return headers;
+}
+
 const createHotelBooking = async (bookingData: {
   hotel_id: string;
   hotel_name: string;
@@ -63,15 +79,11 @@ const createHotelBooking = async (bookingData: {
   status: string;
   location: string;
 }) => {
-  const token = localStorage.getItem("token");
   const response = await fetch(
     "https://wander-nest-ad3s.onrender.com/api/bookings/hotels/",
     {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${token}`,
-      },
+      headers: getAuthHeaders(),
       body: JSON.stringify({
         ...bookingData,
         type: "hotel",

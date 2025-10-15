@@ -128,29 +128,52 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 
   // Refresh from API
-  const refreshBookings = useCallback(async () => {
+  const refreshBookings = async () => {
     setIsLoading(true);
     try {
-      // Simulate API calls - replace with real endpoints
-      const [hotelBookings, packageBookings, tripBookings] = await Promise.all([
-        fetch("/api/bookings/hotels")
-          .then((r) => r.json())
-          .catch(() => []),
-        fetch("/api/bookings/packages")
-          .then((r) => r.json())
-          .catch(() => []),
-        fetch("/api/bookings/trips")
-          .then((r) => r.json())
-          .catch(() => []),
-      ]);
+      // Use absolute API URLs to ensure requests go to the deployed API server
+      const API_BASE = "https://wander-nest-ad3s.onrender.com";
+
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      };
+
+      console.log("Refreshing bookings with headers:", headers);
+
+      const hotelBookingsResponse = await fetch(`${API_BASE}/api/bookings/hotels/`, {
+        method: "GET", // Update method if required
+        headers,
+      });
+
+      if (!hotelBookingsResponse.ok) {
+        console.error("Failed to fetch hotel bookings. Status:", hotelBookingsResponse.status);
+        throw new Error(`Error fetching hotel bookings: ${hotelBookingsResponse.status}`);
+      }
+
+      const hotelBookings = await hotelBookingsResponse.json();
+      console.log("Hotel bookings fetched successfully:", hotelBookings);
+
+      const packageBookingsResponse = await fetch(`${API_BASE}/api/bookings/packages/`, {
+        method: "GET", // Update method if required
+        headers,
+      });
+
+      const packageBookings = await packageBookingsResponse.json();
+      const tripBookingsResponse = await fetch(`${API_BASE}/api/bookings/trips/`, {
+        method: "GET", // Update method if required
+        headers,
+      });
+
+      const tripBookings = await tripBookingsResponse.json();
 
       const allBookings = [
-        ...hotelBookings.map((b: any) => ({ ...b, type: "hotel" as const })),
-        ...packageBookings.map((b: any) => ({
+        ...Array.isArray(hotelBookings) ? hotelBookings.map((b: any) => ({ ...b, type: "hotel" as const })) : [],
+        ...Array.isArray(packageBookings) ? packageBookings.map((b: any) => ({
           ...b,
           type: "package" as const,
-        })),
-        ...tripBookings.map((b: any) => ({ ...b, type: "trip" as const })),
+        })) : [],
+        ...Array.isArray(tripBookings) ? tripBookings.map((b: any) => ({ ...b, type: "trip" as const })) : [],
       ];
 
       setBookings(allBookings);
@@ -159,7 +182,7 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }; // Removed the empty dependency array to fix syntax error
 
   return (
     <BookingContext.Provider

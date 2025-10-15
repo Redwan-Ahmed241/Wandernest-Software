@@ -105,11 +105,14 @@ const MyTrips: FunctionComponent = () => {
     }
   }, [selectedTrip, activeView]);
 
+  // Add logging to verify API responses
   const fetchTrips = async (status: "upcoming" | "past" | "cancelled") => {
     try {
       setIsLoadingTrips(true);
       setError(null);
+      console.log(`Fetching trips with status: ${status}`); // Log the status
       const tripsData = await tripsAPI.getTrips(status);
+      console.log("Trips data fetched:", tripsData); // Log the fetched data
       setTrips(tripsData.results || tripsData);
       setSelectedTrip(null);
     } catch (error) {
@@ -124,7 +127,9 @@ const MyTrips: FunctionComponent = () => {
   const fetchItinerary = async (tripId: string) => {
     try {
       setIsLoadingItinerary(true);
+      console.log(`Fetching itinerary for trip ID: ${tripId}`); // Log the trip ID
       const itineraryData = await tripsAPI.getTripItinerary(tripId);
+      console.log("Itinerary data fetched:", itineraryData); // Log the fetched data
       setItinerary(itineraryData.results || itineraryData);
     } catch (error) {
       console.error("Error fetching itinerary:", error);
