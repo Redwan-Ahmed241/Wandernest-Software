@@ -679,7 +679,20 @@ const ConfirmBook: React.FC = () => {
 
   return (
     <Layout>
-      <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8 mt-8 mb-12">
+      <div 
+        className="min-h-screen relative bg-gradient-to-br from-green-50 to-blue-50"
+        style={{
+          backgroundImage: 'url("/Figma_photos/Ratargul-2.jpg")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
+        {/* Subtle overlay for better form readability */}
+        <div className="absolute inset-0 bg-white bg-opacity-15"></div>
+        
+        {/* Main content with background */}
+        <div className="relative z-10 max-w-4xl mx-auto bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-8 mt-8 mb-12">
         {packageDetails?.title && (
           <div className="mb-4 p-4 bg-gradient-to-r from-[#6ab187]/10 to-[#4a6b5b]/10 rounded-lg border-l-4 border-[#6ab187]">
             <div className="flex gap-4 items-start">
@@ -1438,6 +1451,7 @@ const ConfirmBook: React.FC = () => {
             </button>
           </div>
         </div>
+      </div>
       </div>
     </Layout>
   );

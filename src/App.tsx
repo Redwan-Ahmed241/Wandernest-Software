@@ -48,6 +48,7 @@ const DashboardHome = lazy(() => import("./Pages/DashboardHome"));
 const Community = lazy(() => import("./Pages/Community"));
 const ProfileSettings = lazy(() => import("./Pages/ProfileSettings"));
 const AdminDashboard = lazy(() => import("./Pages/Admin/AdminDashboard"));
+const PaymentSuccess = lazy(() => import("./Pages/PaymentSuccess"));
 const ConfirmBook = lazy(() => import("./Pages/confirm_book"));
 const FPass = lazy(() => import("./Pages/fpass"));
 const ResetPassword = lazy(() => import("./Pages/reset-password"));
@@ -144,6 +145,9 @@ const AppRoutes: React.FC = () => {
         <Route path="/confirm-book" element={<ConfirmBook />} />
         <Route path="/help-center" element={<HelpCenter />} />
         {/* Redirects */}
+        {/* Payment Success Route */}
+        <Route path="/payment/success" element={<PaymentSuccess />} />
+        
         {/* Auth Routes */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupForm />} />

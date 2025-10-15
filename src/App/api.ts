@@ -6,9 +6,21 @@ const getAuthToken = (): string | null => {
   return localStorage.getItem("token")
 }
 
+// Utility function to rehydrate token after hard reload
+export const rehydrateToken = () => {
+  const token = localStorage.getItem("token")
+  if (token) {
+    console.log("Rehydrating token:", token)
+    return token
+  } else {
+    console.warn("No token found in localStorage during rehydration.")
+    return null
+  }
+}
+
 // Generic API request function
 const apiRequest = async (endpoint: string, options: RequestInit = {}) => {
-  const token = getAuthToken()
+  const token = rehydrateToken()
 
   const config: RequestInit = {
     headers: {

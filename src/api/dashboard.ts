@@ -341,15 +341,16 @@ export async function getBookingsActive(token?: string): Promise<Booking[]> {
 async function getBookingsFromTypeEndpoints(token?: string): Promise<Booking[]> {
   try {
     const [hotelBookings, packageBookings, tripBookings] = await Promise.all([
-      request<unknown>('/api/bookings/hotels', {}, token).catch((err) => {
+      // Use trailing slashes to match backend routing (Django/DRF often requires them)
+      request<unknown>('/api/bookings/hotels/', {}, token).catch((err) => {
         console.error('🔍 DEBUG - Error fetching hotel bookings:', err);
         return [];
       }),
-      request<unknown>('/api/bookings/packages', {}, token).catch((err) => {
+      request<unknown>('/api/bookings/packages/', {}, token).catch((err) => {
         console.error('🔍 DEBUG - Error fetching package bookings:', err);
         return [];
       }),
-      request<unknown>('/api/bookings/trips', {}, token).catch((err) => {
+      request<unknown>('/api/bookings/trips/', {}, token).catch((err) => {
         console.error('🔍 DEBUG - Error fetching trip bookings:', err);
         return [];
       }),
