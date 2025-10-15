@@ -168,22 +168,32 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
         service_type: "hotel",
         service_name: hotel?.name || "Hotel Booking",
         service_details: `Hotel booking for ${form.guests} guests`,
-        amount: totalAmount,
+        price: totalAmount.toFixed(2), // Align with backend's `price` format
         customer_name: form.name.trim(),
         customer_email: form.email.trim(),
         customer_phone: form.phone.trim(),
         service_data: {
           hotel_id: hotel.id,
-          hotel_name: hotel.name,
-          checkin_date: form.checkin,
-          guests: form.guests,
-          location: hotel.location,
+          title: hotel.name, // Align with `title`
+          start_date: form.checkin, // Align with `start_date`
+          end_date: new Date(new Date(form.checkin).getTime() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // Example: 3 nights
+          travelers: form.guests, // Align with `travelers`
+          room_type: hotel.roomTypes?.[0] || "standard", // Add `room_type`
         },
         booking_id: `booking_${Date.now()}`,
         currency: "BDT",
       };
 
       const token = localStorage.getItem("token");
+
+      // DEBUG: log outgoing payment payload to help backend debug
+      console.debug("[Payments] Sending payment payload:", paymentData);
+
+      // Some backend variants expect `total_amount` instead of `amount` or both keys.
+      // Provide both to maximize compatibility.
+      const requestBody: any = { ...paymentData };
+      if (!requestBody.total_amount) requestBody.total_amount = requestBody.amount;
+
       const response = await fetch(
         "https://wander-nest-ad3s.onrender.com/api/payments/sslc/initiate/",
         {
@@ -193,11 +203,13 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
             Accept: "application/json",
             Authorization: `Token ${token}`,
           },
-          body: JSON.stringify(paymentData),
+          body: JSON.stringify(requestBody),
         }
       );
 
       const responseText = await response.text();
+      // DEBUG: log raw response text for server-side troubleshooting
+      console.debug("[Payments] Raw response text:", responseText);
       let data;
       try {
         data = JSON.parse(responseText);

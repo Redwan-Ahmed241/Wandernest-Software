@@ -131,7 +131,6 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
   const refreshBookings = async () => {
     setIsLoading(true);
     try {
-      // Use absolute API URLs to ensure requests go to the deployed API server
       const API_BASE = "https://wander-nest-ad3s.onrender.com";
 
       const headers = {
@@ -142,30 +141,31 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
       console.log("Refreshing bookings with headers:", headers);
 
       const hotelBookingsResponse = await fetch(`${API_BASE}/api/bookings/hotels/`, {
-        method: "GET", // Update method if required
+        method: "GET",
         headers,
       });
 
-      if (!hotelBookingsResponse.ok) {
-        console.error("Failed to fetch hotel bookings. Status:", hotelBookingsResponse.status);
-        throw new Error(`Error fetching hotel bookings: ${hotelBookingsResponse.status}`);
-      }
-
-      const hotelBookings = await hotelBookingsResponse.json();
-      console.log("Hotel bookings fetched successfully:", hotelBookings);
+      const hotelBookings = hotelBookingsResponse.ok
+        ? await hotelBookingsResponse.json()
+        : [];
 
       const packageBookingsResponse = await fetch(`${API_BASE}/api/bookings/packages/`, {
-        method: "GET", // Update method if required
+        method: "GET",
         headers,
       });
 
-      const packageBookings = await packageBookingsResponse.json();
+      const packageBookings = packageBookingsResponse.ok
+        ? await packageBookingsResponse.json()
+        : [];
+
       const tripBookingsResponse = await fetch(`${API_BASE}/api/bookings/trips/`, {
-        method: "GET", // Update method if required
+        method: "GET",
         headers,
       });
 
-      const tripBookings = await tripBookingsResponse.json();
+      const tripBookings = tripBookingsResponse.ok
+        ? await tripBookingsResponse.json()
+        : [];
 
       const allBookings = [
         ...Array.isArray(hotelBookings) ? hotelBookings.map((b: any) => ({ ...b, type: "hotel" as const })) : [],

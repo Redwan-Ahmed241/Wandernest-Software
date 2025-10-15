@@ -59,25 +59,26 @@ const Destinations: FunctionComponent = () => {
   }, []);
 
   const filteredDestinations = destinations.filter((dest) => {
+    const name = dest.name?.toLowerCase() || ""; // Default to empty string
+    const description = dest.description?.toLowerCase() || ""; // Default to empty string
+    const category = dest.category?.toLowerCase() || "all"; // Default to "all"
+
     const matchesSearch =
       !searchQuery ||
-      dest.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      dest.description?.toLowerCase().includes(searchQuery.toLowerCase());
+      name.includes(searchQuery.toLowerCase()) ||
+      description.includes(searchQuery.toLowerCase());
 
-    // Normalize both category and selectedCategory for robust matching
-    const destCategory = (dest.category || "all").toLowerCase();
-    const selected = selectedCategory.toLowerCase();
     const matchesCategory =
-      selected === "all" ||
-      destCategory === selected ||
-      destCategory.includes(selected); // allow partial match for flexibility
+      selectedCategory.toLowerCase() === "all" ||
+      category === selectedCategory.toLowerCase();
 
     return matchesSearch && matchesCategory;
   });
 
-  console.log('Destinations:', destinations);
-  console.log('Filtered destinations:', filteredDestinations);
-  console.log('Selected category:', selectedCategory);
+  console.debug("[Filter Debug] Destinations:", destinations);
+  console.debug("[Filter Debug] Filtered Destinations:", filteredDestinations);
+  console.debug("[Filter Debug] Selected Category:", selectedCategory);
+  console.debug("[Filter Debug] Search Query:", searchQuery);
 
   return (
     <Layout>
