@@ -17,6 +17,7 @@ import {
 } from "react-feather";
 import Pagination from "../components/Pagination";
 import { usePagination } from "../hooks/usePagination";
+import { initiatePayment } from "../api/payments";
 
 // Define interfaces
 interface Hotel {
@@ -52,16 +53,23 @@ const MEDIA_BASE = "https://wander-nest-ad3s.onrender.com";
 // Create hotel booking record
 // Helper to get normalized token and scheme
 function getAuthHeaders() {
-  const rawToken = typeof localStorage !== 'undefined'
-    ? (localStorage.getItem('token') || localStorage.getItem('access') || localStorage.getItem('access_token') || undefined)
-    : undefined;
-  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  const rawToken =
+    typeof localStorage !== "undefined"
+      ? localStorage.getItem("token") ||
+        localStorage.getItem("access") ||
+        localStorage.getItem("access_token") ||
+        undefined
+      : undefined;
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
   if (rawToken) {
     let tokenStr = String(rawToken).trim();
-    tokenStr = tokenStr.replace(/^Bearer\s+/i, '').replace(/^Token\s+/i, '');
-    const looksLikeJwt = tokenStr.split('.').length === 3 || /^ey[A-Za-z0-9_-]/.test(tokenStr);
-    const scheme = looksLikeJwt ? 'Bearer' : 'Token';
-    headers['Authorization'] = `${scheme} ${tokenStr}`;
+    tokenStr = tokenStr.replace(/^Bearer\s+/i, "").replace(/^Token\s+/i, "");
+    const looksLikeJwt =
+      tokenStr.split(".").length === 3 || /^ey[A-Za-z0-9_-]/.test(tokenStr);
+    const scheme = looksLikeJwt ? "Bearer" : "Token";
+    headers["Authorization"] = `${scheme} ${tokenStr}`;
   }
   return headers;
 }
@@ -75,7 +83,7 @@ const createHotelBooking = async (bookingData: {
   checkin_date: string;
   guests: number;
   total_amount: number;
-  booking_id: string;
+  booking_id?: string; // Make optional
   status: string;
   location: string;
 }) => {
@@ -87,8 +95,12 @@ const createHotelBooking = async (bookingData: {
       body: JSON.stringify({
         ...bookingData,
         type: "hotel",
-        startDate: bookingData.checkin_date,
-        endDate: new Date(new Date(bookingData.checkin_date).getTime() + 24 * 60 * 60 * 1000).toISOString().split('T')[0], // Next day
+        start_date: bookingData.checkin_date, // Backend expects snake_case
+        end_date: new Date(
+          new Date(bookingData.checkin_date).getTime() + 24 * 60 * 60 * 1000
+        )
+          .toISOString()
+          .split("T")[0], // Next day
         price: bookingData.total_amount,
         title: bookingData.hotel_name,
         travelers: bookingData.guests,
@@ -98,11 +110,18 @@ const createHotelBooking = async (bookingData: {
   );
 
   if (!response.ok) {
-    console.error("Failed to create booking record:", response.statusText);
-    // Don't throw error here - payment should still proceed
+    const errorText = await response.text();
+    console.error(
+      "Failed to create booking record:",
+      response.statusText,
+      errorText
+    );
+    throw new Error(`Failed to create hotel booking: ${response.statusText}`);
   }
 
-  return response.json();
+  const bookingResult = await response.json();
+  console.log("Hotel booking created successfully:", bookingResult);
+  return bookingResult;
 };
 
 // Helper functions for filtering
@@ -164,106 +183,57 @@ const BookingModal: React.FC<BookingModalProps> = ({ hotel, onClose }) => {
     setIsProcessingPayment(true);
     try {
       const totalAmount = (hotel?.price || 0) * form.guests;
-      const paymentData = {
-        service_type: "hotel",
+
+      // STEP 1: Create booking record FIRST to get the booking_id (UUID)
+      const bookingResponse = await createHotelBooking({
+        hotel_id: hotel.id,
+        hotel_name: hotel.name,
+        customer_name: form.name.trim(),
+        customer_email: form.email.trim(),
+        customer_phone: form.phone.trim(),
+        checkin_date: form.checkin,
+        guests: form.guests,
+        total_amount: totalAmount,
+        status: "pending",
+        location: hotel.location,
+      });
+
+      console.log("[Hotel Payment] Booking created:", bookingResponse);
+
+      // Extract the UUID booking ID from the response
+      // Backend returns UUID in 'id' field
+      const bookingId = bookingResponse?.id;
+
+      if (!bookingId) {
+        throw new Error(
+          "Failed to get booking ID from server. Please try again."
+        );
+      }
+
+      console.log("[Hotel Payment] Using booking_id:", bookingId);
+
+      // STEP 2: Initiate payment with the UUID booking_id from Step 1
+      const paymentResponse = await initiatePayment({
+        amount: totalAmount,
+        currency: "BDT",
+        booking_id: bookingId, // UUID from database
+        service_type: "hotel" as const,
         service_name: hotel?.name || "Hotel Booking",
         service_details: `Hotel booking for ${form.guests} guests`,
-        price: totalAmount.toFixed(2), // Align with backend's `price` format
         customer_name: form.name.trim(),
         customer_email: form.email.trim(),
         customer_phone: form.phone.trim(),
         service_data: {
           hotel_id: hotel.id,
-          title: hotel.name, // Align with `title`
-          start_date: form.checkin, // Align with `start_date`
-          end_date: new Date(new Date(form.checkin).getTime() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // Example: 3 nights
-          travelers: form.guests, // Align with `travelers`
-          room_type: hotel.roomTypes?.[0] || "standard", // Add `room_type`
+          hotel_name: hotel.name,
+          checkin_date: form.checkin,
+          guests: form.guests,
+          location: hotel.location,
         },
-        booking_id: `booking_${Date.now()}`,
-        currency: "BDT",
-      };
+      });
 
-      const token = localStorage.getItem("token");
-
-      // DEBUG: log outgoing payment payload to help backend debug
-      console.debug("[Payments] Sending payment payload:", paymentData);
-
-      // Some backend variants expect `total_amount` instead of `amount` or both keys.
-      // Provide both to maximize compatibility.
-      const requestBody: any = { ...paymentData };
-      if (!requestBody.total_amount) requestBody.total_amount = requestBody.amount;
-
-      const response = await fetch(
-        "https://wander-nest-ad3s.onrender.com/api/payments/sslc/initiate/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: `Token ${token}`,
-          },
-          body: JSON.stringify(requestBody),
-        }
-      );
-
-      const responseText = await response.text();
-      // DEBUG: log raw response text for server-side troubleshooting
-      console.debug("[Payments] Raw response text:", responseText);
-      let data;
-      try {
-        data = JSON.parse(responseText);
-      } catch {
-        throw new Error("Invalid response format from server");
-      }
-
-      if (!response.ok) {
-        const errorMessage =
-          data?.detail ||
-          data?.message ||
-          data?.error ||
-          `Server error: ${response.status}`;
-        throw new Error(errorMessage);
-      }
-
-      // Create booking record before redirecting to payment
-      if (data.status === "SUCCESS" && data.GatewayPageURL) {
-        // Create booking record in the system
-        await createHotelBooking({
-          hotel_id: hotel.id,
-          hotel_name: hotel.name,
-          customer_name: form.name.trim(),
-          customer_email: form.email.trim(),
-          customer_phone: form.phone.trim(),
-          checkin_date: form.checkin,
-          guests: form.guests,
-          total_amount: totalAmount,
-          booking_id: paymentData.booking_id,
-          status: "pending",
-          location: hotel.location,
-        });
-        
-        window.location.href = data.GatewayPageURL;
-      } else if (data.GatewayPageURL) {
-        // Create booking record even for non-SUCCESS status
-        await createHotelBooking({
-          hotel_id: hotel.id,
-          hotel_name: hotel.name,
-          customer_name: form.name.trim(),
-          customer_email: form.email.trim(),
-          customer_phone: form.phone.trim(),
-          checkin_date: form.checkin,
-          guests: form.guests,
-          total_amount: totalAmount,
-          booking_id: paymentData.booking_id,
-          status: "pending",
-          location: hotel.location,
-        });
-        
-        window.location.href = data.GatewayPageURL;
-      } else {
-        throw new Error("Payment gateway URL not received. Please try again.");
-      }
+      // STEP 3: Redirect to payment gateway
+      window.location.href = paymentResponse.GatewayPageURL;
     } catch (err: unknown) {
       let errorMessage = "Payment failed. Please try again.";
       if (err instanceof TypeError && err.message.includes("fetch")) {
