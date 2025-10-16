@@ -68,18 +68,18 @@ const ProfileDropdown: React.FC = () => {
   return (
     <div className="relative" ref={dropdownRef}>
       <div
-        className="flex items-center gap-2 cursor-pointer px-3 py-2 rounded-lg bg-white shadow hover:bg-gray-100 transition"
+        className="flex items-center gap-2 cursor-pointer px-2.5 pr-3 py-1.5 rounded-full bg-white/70 backdrop-blur border border-gray-200 shadow-sm hover:shadow-md transition"
         onClick={() => setIsOpen(!isOpen)}
       >
         <div
-          className="w-9 h-9 rounded-full flex items-center justify-center font-bold text-lg shadow text-white"
+          className="w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center font-bold text-base sm:text-lg text-white ring-2 ring-white shadow"
           style={{ backgroundColor: "#6ab187" }}
         >
           {user?.first_name || user?.last_name || user?.username ? (
             getInitials()
           ) : (
             <svg
-              className="w-7 h-7 text-white"
+              className="w-6 h-6 sm:w-7 sm:h-7 text-white"
               fill="currentColor"
               viewBox="0 0 24 24"
             >
@@ -88,7 +88,7 @@ const ProfileDropdown: React.FC = () => {
             </svg>
           )}
         </div>
-        <span className="ml-2 font-medium text-gray-800">
+        <span className="ml-1 sm:ml-2 font-medium text-gray-900 hidden md:inline">
           {user?.first_name || user?.username}
         </span>
         <svg
@@ -110,7 +110,7 @@ const ProfileDropdown: React.FC = () => {
       </div>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg z-50 border border-gray-200 animate-fade-in">
+        <div className="absolute right-0 mt-2 w-64 bg-white/90 backdrop-blur rounded-2xl shadow-xl z-50 border border-gray-200 animate-fade-in">
           <div className="px-4 py-3">
             <div className="font-semibold text-gray-900">
               {user?.first_name} {user?.last_name}
