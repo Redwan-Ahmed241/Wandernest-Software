@@ -72,8 +72,10 @@ class CommunityAPI {
   }
 
   static async getBlogs(page = 1, limit = 12): Promise<Blog[]> {
-    const data = await this.request(`/blogs/?page=${page}&limit=${limit}`);
-    return data.results || data;
+    const data = await this.request(
+      `/community/blogs/?page=${page}&limit=${limit}`
+    );
+    return data.blogs || data.results || data;
   }
 
   static async getGroups(page = 1, limit = 20): Promise<Group[]> {
