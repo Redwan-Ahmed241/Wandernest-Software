@@ -38,12 +38,17 @@ class BlogAPI {
       return null;
     }
     // Check all possible token keys
-    return (
+    const token =
       localStorage.getItem("token") ||
       localStorage.getItem("authToken") ||
       localStorage.getItem("accessToken") ||
-      null
+      null;
+
+    console.log(
+      "BlogAPI.getToken() found:",
+      token ? `${token.substring(0, 20)}...` : "null"
     );
+    return token;
   }
 
   private static async request(endpoint: string, options: RequestInit = {}) {
@@ -57,14 +62,30 @@ class BlogAPI {
     // Only add Authorization header if token exists
     if (token) {
       headers.Authorization = `Bearer ${token}`;
+      console.log("BlogAPI sending request WITH token");
+    } else {
+      console.log("BlogAPI sending request WITHOUT token (anonymous)");
     }
+
+    console.log("BlogAPI request to:", `${this.baseURL}${endpoint}`);
 
     const response = await fetch(`${this.baseURL}${endpoint}`, {
       headers,
       ...options,
     });
 
+    console.log("BlogAPI response status:", response.status);
+
     if (!response.ok) {
+      // If 401 and we had a token, it's invalid - clear it
+      if (response.status === 401 && token) {
+        console.warn("Token is invalid/expired, clearing localStorage");
+        if (typeof localStorage !== "undefined") {
+          localStorage.removeItem("token");
+          localStorage.removeItem("authToken");
+          localStorage.removeItem("accessToken");
+        }
+      }
       throw new Error(`API Error: ${response.status}`);
     }
 
