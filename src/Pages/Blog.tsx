@@ -1,6 +1,6 @@
 //
 // Tailwind conversion: remove CSS import
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Authentication/auth-context";
 import Navbar from "../components/navbar";
@@ -11,170 +11,133 @@ interface BlogPost {
   id: string;
   title: string;
   content: string;
-  excerpt: string;
-  author: string;
-  date: string;
-  category: string;
-  image: string;
-  readTime: number;
-  tags: string[];
-  likes: number;
-  comments: number;
-  shares: number;
+  excerpt?: string;
+  author: {
+    id: string;
+    username: string;
+    first_name: string;
+    last_name: string;
+    profile_image?: string;
+  };
+  image?: string;
+  created_at: string;
+  updated_at: string;
+  tags?: string[];
+  likes_count: number;
+  comments_count: number;
+  is_liked?: boolean;
 }
 
-// Mock data for fallback
-const mockBlogs: BlogPost[] = [
-  {
-    id: "1",
-    title: "Adventure in Sundarbans",
-    content:
-      "The Sundarbans, a UNESCO World Heritage Site, is a sprawling mangrove forest shared by India and Bangladesh. Its unique biodiversity, including the famous Royal Bengal Tiger, makes it a haven for nature enthusiasts and adventure seekers alike. This blog narrates my thrilling journey exploring the dense wilderness, spotting rare wildlife, and connecting with the local communities who call this enchanting place home.",
-    excerpt:
-      "Discover the mysterious mangrove forests and wildlife of the Sundarbans in this thrilling adventure story.",
-    author: "Omar Rahman",
-    date: "2023-07-15",
-    category: "Adventure",
-    image:
-      "Figma_photos/fisherman-sundarbans-india-looking-catch-mangrove-islands-west-bengal-74904922.jpg",
-    readTime: 8,
-    tags: ["Sundarbans", "Wildlife", "Adventure", "Bangladesh"],
-    likes: 120,
-    comments: 45,
-    shares: 30,
-  },
-  {
-    id: "2",
-    title: "Cox's Bazar: World's Longest Sea Beach",
-    content:
-      "Cox's Bazar boasts the world's longest unbroken sandy sea beach, stretching over 120 kilometers along the Bay of Bengal. This coastal paradise offers breathtaking sunsets, fresh seafood, and endless opportunities for relaxation and adventure.",
-    excerpt:
-      "Experience the magic of the world's longest natural sea beach and its stunning sunsets.",
-    author: "Fatima Khan",
-    date: "2023-08-10",
-    category: "Beach",
-    image: "Figma_photos/cox-s-bazaar-syed-zakir-hossain-1584366863439.jpg",
-    readTime: 6,
-    tags: ["Cox's Bazar", "Beach", "Sunset", "Bangladesh"],
-    likes: 89,
-    comments: 32,
-    shares: 25,
-  },
-  {
-    id: "3",
-    title: "Exploring the Hills of Bandarban",
-    content:
-      "Bandarban, nestled in the Chittagong Hill Tracts, offers a perfect escape into nature with its rolling hills, pristine lakes, and indigenous communities. From trekking to Nilgiri to experiencing the unique culture of hill tribes, Bandarban is a treasure trove for adventurous travelers.",
-    excerpt:
-      "Journey through the scenic hills and discover the rich cultural heritage of Bangladesh's hill tribes.",
-    author: "Rajib Hasan",
-    date: "2023-09-05",
-    category: "Hills",
-    image: "Figma_photos/bandarban.jpg",
-    readTime: 10,
-    tags: ["Bandarban", "Hills", "Trekking", "Culture"],
-    likes: 156,
-    comments: 67,
-    shares: 42,
-  },
-  {
-    id: "4",
-    title: "Heritage Walk in Old Dhaka",
-    content:
-      "Old Dhaka is a living museum of Mughal architecture, bustling bazaars, and centuries-old traditions. Walk through the narrow lanes of Shankhari Bazaar, visit the historic Lalbagh Fort, and experience the vibrant street food culture that defines this ancient city.",
-    excerpt:
-      "Step back in time and explore the rich history and culture of Old Dhaka's heritage sites.",
-    author: "Shabnam Ara",
-    date: "2023-09-20",
-    category: "Heritage",
-    image: "Figma_photos/fc09d33522052723c107a6d1fe5741b0-ahsan-manzil.jpg",
-    readTime: 7,
-    tags: ["Dhaka", "Heritage", "History", "Culture"],
-    likes: 203,
-    comments: 89,
-    shares: 56,
-  },
-  {
-    id: "5",
-    title: "Culinary Journey Through Bangladesh",
-    content:
-      "From the spicy fish curries of Sylhet to the sweet delicacies of Comilla, Bangladesh offers a rich tapestry of flavors. This culinary journey explores the diverse regional cuisines, street food culture, and traditional cooking methods that make Bangladeshi cuisine unique.",
-    excerpt:
-      "Embark on a flavorful adventure through Bangladesh's diverse culinary landscape.",
-    author: "Chef Karim",
-    date: "2023-09-12",
-    category: "Food",
-    image: "Figma_photos/555536.jpg",
-    readTime: 9,
-    tags: ["Food", "Culture", "Traditional", "Bangladesh"],
-    likes: 178,
-    comments: 91,
-    shares: 67,
-  },
-  {
-    id: "6",
-    title: "River Life on the Padma",
-    content:
-      "The mighty Padma River is the lifeline of Bangladesh, supporting millions of people along its banks. Experience the vibrant river culture, from fishing communities to river markets, and witness how this great river shapes the daily lives of the Bengali people.",
-    excerpt:
-      "Discover the rich cultural heritage and daily life along Bangladesh's mighty Padma River.",
-    author: "Nasir Ahmed",
-    date: "2023-08-28",
-    category: "Culture",
-    image: "Figma_photos/burigangha.jpg",
-    readTime: 7,
-    tags: ["River", "Culture", "Community", "Bangladesh"],
-    likes: 134,
-    comments: 56,
-    shares: 38,
-  },
-];
+// API Service
+class BlogAPI {
+  private static baseURL = "https://wander-nest-ad3s.onrender.com/api";
 
+  private static async request(endpoint: string, options: RequestInit = {}) {
+    const token = localStorage.getItem("authToken");
+    const response = await fetch(`${this.baseURL}${endpoint}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : "",
+        ...options.headers,
+      },
+      ...options,
+    });
+
+    if (!response.ok) {
+      throw new Error(`API Error: ${response.status}`);
+    }
+
+    return response.json();
+  }
+
+  static async getBlogs(
+    page = 1,
+    limit = 12
+  ): Promise<{
+    blogs: BlogPost[];
+    total: number;
+    page: number;
+    limit: number;
+    hasNext: boolean;
+    hasPrev: boolean;
+  }> {
+    const data = await this.request(
+      `/community/blogs/?page=${page}&limit=${limit}`
+    );
+    return data;
+  }
+
+  static async searchBlogs(query: string): Promise<BlogPost[]> {
+    const data = await this.request(
+      `/community/blogs/search/?q=${encodeURIComponent(query)}`
+    );
+    return data;
+  }
+}
+
+// Component
 const BlogPage: React.FC = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
-  const [blogs] = useState<BlogPost[]>(mockBlogs); // Initialize with mock data
+  const [blogs, setBlogs] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
-  const [blogsPerPage] = useState(6);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isSearching, setIsSearching] = useState(false);
+  const blogsPerPage = 12;
 
-  console.log(
-    "BlogPage rendered, blogs count:",
-    blogs.length,
-    "currentBlogs will be:",
-    blogs.slice(0, 6).length
-  );
+  // Fetch blogs from API
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await BlogAPI.getBlogs(currentPage, blogsPerPage);
+        setBlogs(data.blogs || data);
+        setTotalPages(
+          Math.ceil((data.total || data.blogs?.length || 0) / blogsPerPage)
+        );
+      } catch (err) {
+        console.error("Error fetching blogs:", err);
+        setError("Failed to load blogs");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // Categories for filtering
-  const categories = [
-    "All",
-    "Adventure",
-    "Beach",
-    "Hills",
-    "Heritage",
-    "Culture",
-    "Food",
-  ];
+    if (!isSearching) {
+      fetchBlogs();
+    }
+  }, [currentPage, isSearching]);
 
-  // Filter blogs based on search and category
-  const filteredBlogs = blogs.filter((blog) => {
-    const matchesSearch =
-      blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      blog.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      blog.tags.some((tag) =>
-        tag.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    const matchesCategory =
-      selectedCategory === "All" || blog.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
+  // Search blogs with debouncing
+  useEffect(() => {
+    if (!searchTerm.trim()) {
+      setIsSearching(false);
+      return;
+    }
 
-  // Pagination
-  const indexOfLastBlog = currentPage * blogsPerPage;
-  const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
-  const currentBlogs = filteredBlogs.slice(indexOfFirstBlog, indexOfLastBlog);
-  const totalPages = Math.ceil(filteredBlogs.length / blogsPerPage);
+    const timer = setTimeout(async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        setIsSearching(true);
+        const data = await BlogAPI.searchBlogs(searchTerm);
+        setBlogs(Array.isArray(data) ? data : []);
+        setTotalPages(1); // Search results on single page
+        setCurrentPage(1);
+      } catch (err) {
+        console.error("Error searching blogs:", err);
+        setError("Failed to search blogs");
+      } finally {
+        setLoading(false);
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -183,6 +146,27 @@ const BlogPage: React.FC = () => {
       day: "numeric",
     });
   };
+
+  if (loading && blogs.length === 0) {
+    return (
+      <>
+        <Navbar />
+        <div className="min-h-screen bg-white py-12 px-4 mt-16">
+          <div className="max-w-6xl mx-auto">
+            <div className="animate-pulse space-y-8">
+              <div className="h-12 bg-gray-200 rounded w-1/3 mx-auto" />
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div key={i} className="bg-gray-200 rounded-lg h-80" />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>
@@ -198,48 +182,36 @@ const BlogPage: React.FC = () => {
               Discover amazing travel stories, tips, and destinations from
               fellow wanderers around Bangladesh and beyond.
             </p>
-
-            {/* Write Blog Button - Available for all users */}
-            <div className="flex flex-col items-center gap-3">
-              <button
-                onClick={() => {
-                  if (isAuthenticated) {
-                    navigate("/write-story");
-                  } else {
-                    // Store the intended destination and redirect to login
-                    sessionStorage.setItem(
-                      "redirectAfterLogin",
-                      "/write-story"
-                    );
-                    navigate("/login");
-                  }
-                }}
-                className="inline-flex items-center px-8 py-3 font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 text-white hover:opacity-90"
-                style={{ backgroundColor: "#6ab187" }}
+            <button
+              className="inline-flex items-center gap-2 bg-primary-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-700 transition"
+              onClick={() => {
+                if (isAuthenticated) {
+                  navigate("/community");
+                } else {
+                  sessionStorage.setItem("redirectAfterLogin", "/community");
+                  navigate("/login");
+                }
+              }}
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-                <svg
-                  className="w-5 h-5 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                  />
-                </svg>
-                {isAuthenticated
-                  ? "Write Your Travel Story"
-                  : "Share Your Story"}
-              </button>
-            </div>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                />
+              </svg>
+              {isAuthenticated ? "Write Your Travel Story" : "Share Your Story"}
+            </button>
           </div>
 
-          {/* Search and Filter Section */}
+          {/* Search Section */}
           <div className="mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
-            {/* Search Bar */}
             <div className="relative flex-1 max-w-md">
               <input
                 type="text"
@@ -262,27 +234,17 @@ const BlogPage: React.FC = () => {
                 />
               </svg>
             </div>
-
-            {/* Category Filter */}
-            <div className="flex gap-2 flex-wrap">
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition ${
-                    selectedCategory === category
-                      ? "bg-primary-600 text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
           </div>
 
+          {/* Error Message */}
+          {error && (
+            <div className="mb-8 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg">
+              {error}
+            </div>
+          )}
+
           {/* Blog Grid */}
-          {currentBlogs.length === 0 ? (
+          {blogs.length === 0 ? (
             <div className="text-center py-16">
               <p className="text-gray-500 text-lg">
                 No blogs found matching your criteria.
@@ -290,14 +252,17 @@ const BlogPage: React.FC = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              {currentBlogs.map((blog) => (
+              {blogs.map((blog) => (
                 <article
                   key={blog.id}
                   onClick={() => navigate(`/blogs/${blog.id}`)}
                   className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
                 >
                   <img
-                    src={blog.image}
+                    src={
+                      blog.image ||
+                      "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0xNzUgODBMMjI1IDEyMEwxNzUgMTYwVjgwWiIgZmlsbD0iIzk5OTk5OSIvPgo8L3N2Zz4K"
+                    }
                     alt={blog.title}
                     className="w-full h-48 object-cover"
                     onError={(e) => {
@@ -305,88 +270,48 @@ const BlogPage: React.FC = () => {
                         "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0xNzUgODBMMjI1IDEyMEwxNzUgMTYwVjgwWiIgZmlsbD0iIzk5OTk5OSIvPgo8L3N2Zz4K";
                     }}
                   />
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="bg-primary-100 text-primary-700 px-2 py-1 rounded-full text-xs font-medium">
-                        {blog.category}
-                      </span>
-                      <span className="text-gray-500 text-sm">
-                        {blog.readTime} min read
-                      </span>
-                    </div>
+                  <div className="p-5">
                     <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">
                       {blog.title}
                     </h3>
-                    <p className="text-gray-600 mb-4 line-clamp-3">
-                      {blog.excerpt}
+                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                      {blog.excerpt || blog.content.substring(0, 150) + "..."}
                     </p>
-                    <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
-                      <span>By {blog.author}</span>
-                      <span>{formatDate(blog.date)}</span>
+                    <div className="flex items-center justify-between text-sm text-gray-500">
+                      <span>
+                        By {blog.author.first_name} {blog.author.last_name}
+                      </span>
+                      <span>{formatDate(blog.created_at)}</span>
                     </div>
-
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-1 mb-4">
-                      {blog.tags.slice(0, 3).map((tag) => (
-                        <span
-                          key={tag}
-                          className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs"
+                    <div className="mt-4 flex items-center gap-4 text-sm text-gray-500">
+                      <span className="flex items-center gap-1">
+                        <svg
+                          className="w-4 h-4 text-red-500"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
                         >
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div className="flex gap-4 text-sm text-gray-500">
-                        <span className="flex items-center gap-1">
-                          <svg
-                            className="w-4 h-4"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                          {blog.likes}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <svg
-                            className="w-4 h-4"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                          {blog.comments}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <svg
-                            className="w-4 h-4"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
-                          </svg>
-                          {blog.shares}
-                        </span>
-                      </div>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          navigate(`/blogs/${blog.id}`);
-                        }}
-                        className="bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-700 transition"
-                      >
-                        Read More
-                      </button>
+                          <path
+                            fillRule="evenodd"
+                            d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        {blog.likes_count}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <svg
+                          className="w-4 h-4 text-blue-500"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        {blog.comments_count}
+                      </span>
                     </div>
                   </div>
                 </article>
@@ -395,72 +320,29 @@ const BlogPage: React.FC = () => {
           )}
 
           {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="flex justify-center items-center gap-2">
+          {!isSearching && totalPages > 1 && (
+            <div className="flex justify-center gap-2 mt-8">
               <button
-                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
                 disabled={currentPage === 1}
-                className="px-3 py-2 rounded-lg bg-gray-100 text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200 transition"
+                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-300 transition"
               >
                 Previous
               </button>
-
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                (page) => (
-                  <button
-                    key={page}
-                    onClick={() => setCurrentPage(page)}
-                    className={`px-3 py-2 rounded-lg transition ${
-                      currentPage === page
-                        ? "bg-primary-600 text-white"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
-                  >
-                    {page}
-                  </button>
-                )
-              )}
-
+              <span className="px-4 py-2 text-gray-700">
+                Page {currentPage} of {totalPages}
+              </span>
               <button
                 onClick={() =>
-                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                  setCurrentPage((prev) => Math.min(totalPages, prev + 1))
                 }
                 disabled={currentPage === totalPages}
-                className="px-3 py-2 rounded-lg bg-gray-100 text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200 transition"
+                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-300 transition"
               >
                 Next
               </button>
             </div>
           )}
-
-          {/* Call to Action */}
-          <div className="mt-16 text-center bg-primary-50 rounded-lg p-8">
-            <h3 className="text-2xl font-bold text-primary-700 mb-4">
-              Have a Travel Story to Share?
-            </h3>
-            <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-              Join our community of travel writers and share your adventures
-              with fellow wanderers. Your story could inspire someone's next
-              great journey!
-            </p>
-            <div className="flex justify-center">
-              <button
-                className="text-white px-8 py-3 rounded-lg font-medium hover:opacity-90 transition"
-                style={{ backgroundColor: "#6ab187" }}
-                onClick={() => {
-                  if (isAuthenticated) {
-                    navigate("/community");
-                  } else {
-                    // Store the intended destination and redirect to login
-                    sessionStorage.setItem("redirectAfterLogin", "/community");
-                    navigate("/login");
-                  }
-                }}
-              >
-                Join Community
-              </button>
-            </div>
-          </div>
         </div>
       </div>
       <Footer />

@@ -606,37 +606,194 @@ const ConfirmBook: React.FC = () => {
     setPaymentError("");
     setIsProcessingPayment(true);
     try {
-      // TODO: Create package booking first, then get booking_id
-      // For now, using temporary ID - backend will reject if package doesn't exist
-      const tempBookingId = `package_${Date.now()}`;
+      // STEP 1: Create package booking first to get Package.id
+      console.log("[Package Booking] Creating package booking...");
 
-      // Initiate payment using centralized service
+      // Get authentication token (same approach as HotelsRooms.tsx)
+      const token =
+        localStorage.getItem("token") ||
+        localStorage.getItem("access") ||
+        localStorage.getItem("access_token");
+
+      if (!token) {
+        throw new Error("Authentication required. Please login to continue.");
+      }
+
+      // Prepare package creation payload
+      const packageCreationPayload = {
+        title: packageDetails?.title || "Package Booking",
+        from_location:
+          packageDetails?.from_location || packageDetails?.source || "",
+        to_location:
+          packageDetails?.to_location || packageDetails?.destination || "",
+        start_date: startDate,
+        end_date: endDate,
+        travelers_count: travelers,
+        budget: Number(totalPrice) || 0,
+        transport_id: packageDetails?.transport?.id || null,
+        hotel_id: packageDetails?.hotel?.id || null,
+        guide_id: packageDetails?.guide?.id || null,
+        preferences: {
+          skip_transport: packageDetails?.preferences?.skip_transport || false,
+          skip_hotel: packageDetails?.preferences?.skip_hotel || false,
+          skip_guide: packageDetails?.preferences?.skip_guide || false,
+        },
+      };
+
+      console.log("[Package Booking] Payload:", packageCreationPayload);
+
+      // Create the package booking
+      const createResponse = await fetch(
+        "https://wander-nest-ad3s.onrender.com/api/packages/create/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${token}`,
+          },
+          body: JSON.stringify(packageCreationPayload),
+        }
+      );
+
+      console.log("[Package Booking] Response status:", createResponse.status);
+      console.log(
+        "[Package Booking] Response headers:",
+        Object.fromEntries(createResponse.headers.entries())
+      );
+
+      if (!createResponse.ok) {
+        const errorData = await createResponse.json().catch(() => ({}));
+        const errorMsg =
+          errorData.detail ||
+          errorData.error ||
+          errorData.message ||
+          "Failed to create package booking";
+        console.error("[Package Booking] Creation failed:", errorData);
+        throw new Error(errorMsg);
+      }
+
+      const createdPackage = await createResponse.json();
+      console.log("[Package Booking] Created successfully:", createdPackage);
+      console.log(
+        "[Package Booking] Response keys:",
+        Object.keys(createdPackage)
+      );
+      console.log(
+        "[Package Booking] Full response:",
+        JSON.stringify(createdPackage, null, 2)
+      );
+      console.log("[Package Booking] Response type:", typeof createdPackage);
+      console.log(
+        "[Package Booking] Is Array?:",
+        Array.isArray(createdPackage)
+      );
+
+      // Backend might return id, pk, or package_id - check all possibilities
+      const packageId =
+        createdPackage.id || createdPackage.pk || createdPackage.package_id;
+
+      if (!packageId) {
+        console.error(
+          "[Package Booking] No ID found in response:",
+          createdPackage
+        );
+        console.error(
+          "[Package Booking] Backend may not be implementing POST /packages/create/ correctly"
+        );
+        console.error(
+          "[Package Booking] Expected response with 'id' and 'total_cost' fields"
+        );
+
+        // TEMPORARY WORKAROUND: Use the package template ID from URL/state
+        // This is NOT ideal but allows testing until backend is fixed
+        console.warn(
+          "[Package Booking] WORKAROUND: Using package template ID from state"
+        );
+
+        const fallbackPackageId = packageDetails?.id || packageId;
+
+        if (!fallbackPackageId) {
+          throw new Error(
+            "Package booking created but no ID returned. The backend endpoint may not be implemented correctly. Check console logs."
+          );
+        }
+
+        console.warn(
+          "[Package Booking] Using fallback Package ID:",
+          fallbackPackageId
+        );
+
+        // Use the fallback ID and continue
+        const fallbackPaymentResponse = await initiatePayment({
+          amount: createdPackage.total_cost || totalPrice,
+          currency: "BDT",
+          booking_id: String(fallbackPackageId),
+          service_type: "package" as const,
+          service_name: packageDetails?.title || "Package Booking",
+          service_details: `Package booking for ${travelers} travelers from ${
+            packageDetails?.source || packageDetails?.from_location
+          } to ${packageDetails?.destination || packageDetails?.to_location}`,
+          customer_name: customerName || "Guest",
+          customer_email: customerEmail || "guest@wandernest.com",
+          customer_phone: customerPhone || "N/A",
+          service_data: {
+            package_booking_id: fallbackPackageId,
+            original_template_id: packageDetails?.id,
+            package_title: packageDetails?.title,
+            from: packageDetails?.source || packageDetails?.from_location,
+            to: packageDetails?.destination || packageDetails?.to_location,
+            start_date: startDate,
+            end_date: endDate,
+            travelers: travelers,
+            note: "Using template ID as workaround - backend did not return booking ID",
+          },
+        });
+
+        console.log(
+          "[Payment] Payment initiated successfully (workaround):",
+          fallbackPaymentResponse
+        );
+        window.location.href = fallbackPaymentResponse.GatewayPageURL;
+        return; // Exit early
+      }
+
+      console.log("[Package Booking] Extracted Package ID:", packageId);
+
+      // STEP 2: Initiate payment with the real Package.id (as string, payments.ts will convert to integer)
+      console.log("[Payment] Initiating payment for Package ID:", packageId);
+
       const paymentResponse = await initiatePayment({
-        amount: Number(totalPrice),
+        amount: createdPackage.total_cost || totalPrice,
         currency: "BDT",
-        booking_id: tempBookingId, // FIXME: Need real package booking ID from backend
+        booking_id: String(packageId), // Convert to string, payments.ts will convert to integer
         service_type: "package" as const,
         service_name: packageDetails?.title || "Package Booking",
-        service_details: `Package booking for ${travelers} travelers from ${packageDetails?.source} to ${packageDetails?.destination}`,
+        service_details: `Package booking for ${travelers} travelers from ${
+          packageDetails?.source || packageDetails?.from_location
+        } to ${packageDetails?.destination || packageDetails?.to_location}`,
         customer_name: customerName || "Guest",
         customer_email: customerEmail || "guest@wandernest.com",
         customer_phone: customerPhone || "N/A",
         service_data: {
-          package_id: packageDetails?.id,
+          package_booking_id: packageId,
+          original_template_id: packageDetails?.id,
           package_title: packageDetails?.title,
-          from: packageDetails?.source,
-          to: packageDetails?.destination,
+          from: packageDetails?.source || packageDetails?.from_location,
+          to: packageDetails?.destination || packageDetails?.to_location,
           start_date: startDate,
           end_date: endDate,
           travelers: travelers,
         },
       });
 
-      // Redirect to payment gateway
+      console.log("[Payment] Payment initiated successfully:", paymentResponse);
+
+      // STEP 3: Redirect to payment gateway
       window.location.href = paymentResponse.GatewayPageURL;
     } catch (err) {
       let errorMessage = "Payment failed. Please try again.";
       if (err instanceof Error) errorMessage = err.message;
+      console.error("[Package Booking/Payment] Error:", err);
       setPaymentError(errorMessage);
     } finally {
       setIsProcessingPayment(false);

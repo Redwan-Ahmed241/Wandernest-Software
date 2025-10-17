@@ -74,12 +74,29 @@ export async function initiatePayment(
     ? parseFloat(paymentData.amount) 
     : Number(paymentData.amount);
 
+  // Format booking_id based on service_type
+  // Backend expects integer for packages, string UUID for hotel/flight/trip
+  let formattedBookingId: string | number = paymentData.booking_id;
+  
+  if (paymentData.service_type === 'package') {
+    // For packages, convert to integer (backend expects Package.id as integer)
+    const pkgId = parseInt(paymentData.booking_id, 10);
+    if (isNaN(pkgId)) {
+      throw new Error(
+        `Package booking_id must be a valid integer. Received: "${paymentData.booking_id}"`
+      );
+    }
+    formattedBookingId = pkgId;
+    console.debug("[Payment API] Converted package booking_id to integer:", formattedBookingId);
+  }
+  // For hotel/flight/trip: keep as string UUID (no change to existing behavior)
+
   const requestBody: Record<string, unknown> = {
     service_type: paymentData.service_type,
     service_name: paymentData.service_name,
     service_details: paymentData.service_details,
     amount: amount,
-    booking_id: paymentData.booking_id,  // Always include booking_id (required by backend)
+    booking_id: formattedBookingId,  // Integer for packages, UUID string for others
     currency: paymentData.currency || 'BDT',
     customer_name: paymentData.customer_name,
     customer_email: paymentData.customer_email,
