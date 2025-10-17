@@ -32,18 +32,60 @@ interface BlogPost {
 class BlogAPI {
   private static baseURL = "https://wander-nest-ad3s.onrender.com/api";
 
+  private static getToken(): string | null {
+    // Check if localStorage is available (browser only)
+    if (typeof window === "undefined" || typeof localStorage === "undefined") {
+      return null;
+    }
+    // Check all possible token keys
+    const token =
+      localStorage.getItem("token") ||
+      localStorage.getItem("authToken") ||
+      localStorage.getItem("accessToken") ||
+      null;
+
+    console.log(
+      "BlogAPI.getToken() found:",
+      token ? `${token.substring(0, 20)}...` : "null"
+    );
+    return token;
+  }
+
   private static async request(endpoint: string, options: RequestInit = {}) {
-    const token = localStorage.getItem("authToken");
+    const token = this.getToken();
+
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+      ...(options.headers as Record<string, string>),
+    };
+
+    // Only add Authorization header if token exists
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+      console.log("BlogAPI sending request WITH token");
+    } else {
+      console.log("BlogAPI sending request WITHOUT token (anonymous)");
+    }
+
+    console.log("BlogAPI request to:", `${this.baseURL}${endpoint}`);
+
     const response = await fetch(`${this.baseURL}${endpoint}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token ? `Bearer ${token}` : "",
-        ...options.headers,
-      },
+      headers,
       ...options,
     });
 
+    console.log("BlogAPI response status:", response.status);
+
     if (!response.ok) {
+      // If 401 and we had a token, it's invalid - clear it
+      if (response.status === 401 && token) {
+        console.warn("Token is invalid/expired, clearing localStorage");
+        if (typeof localStorage !== "undefined") {
+          localStorage.removeItem("token");
+          localStorage.removeItem("authToken");
+          localStorage.removeItem("accessToken");
+        }
+      }
       throw new Error(`API Error: ${response.status}`);
     }
 
@@ -61,17 +103,19 @@ class BlogAPI {
     hasNext: boolean;
     hasPrev: boolean;
   }> {
-    const data = await this.request(
+    const response = await this.request(
       `/community/blogs/?page=${page}&limit=${limit}`
     );
-    return data;
+    // API wraps response in { success, data, message }
+    return response.data || response;
   }
 
   static async searchBlogs(query: string): Promise<BlogPost[]> {
-    const data = await this.request(
+    const response = await this.request(
       `/community/blogs/search/?q=${encodeURIComponent(query)}`
     );
-    return data;
+    // API wraps response in { success, data, message }
+    return response.data || response;
   }
 }
 
