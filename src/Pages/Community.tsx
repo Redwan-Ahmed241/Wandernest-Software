@@ -53,14 +53,35 @@ interface Review {
 class CommunityAPI {
   private static baseURL = "https://wander-nest-ad3s.onrender.com/api";
 
+  private static getToken(): string | null {
+    // Check if localStorage is available (browser only)
+    if (typeof window === "undefined" || typeof localStorage === "undefined") {
+      return null;
+    }
+    // Check all possible token keys
+    return (
+      localStorage.getItem("token") ||
+      localStorage.getItem("authToken") ||
+      localStorage.getItem("accessToken") ||
+      null
+    );
+  }
+
   private static async request(endpoint: string, options: RequestInit = {}) {
-    const token = localStorage.getItem("authToken");
+    const token = this.getToken();
+
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+      ...(options.headers as Record<string, string>),
+    };
+
+    // Only add Authorization header if token exists
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
     const response = await fetch(`${this.baseURL}${endpoint}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token ? `Bearer ${token}` : "",
-        ...options.headers,
-      },
+      headers,
       ...options,
     });
 
@@ -72,8 +93,15 @@ class CommunityAPI {
   }
 
   static async getBlogs(page = 1, limit = 12): Promise<Blog[]> {
-    const data = await this.request(`/blogs/?page=${page}&limit=${limit}`);
-    return data.results || data;
+    const response = await this.request(
+      `/community/blogs/?page=${page}&limit=${limit}`
+    );
+    // API wraps response in { success, data, message }
+    // data contains { blogs, total, page, limit, hasNext, hasPrev }
+    if (response.data && response.data.blogs) {
+      return response.data.blogs;
+    }
+    return response.blogs || response.results || response.data || response;
   }
 
   static async getGroups(page = 1, limit = 20): Promise<Group[]> {
