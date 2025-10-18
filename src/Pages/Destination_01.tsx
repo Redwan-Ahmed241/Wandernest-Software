@@ -9,9 +9,6 @@ import { useNavigate, useParams } from "react-router-dom";
 // API Base URL
 const API_BASE_URL = "https://wander-nest-ad3s.onrender.com";
 
-// OpenWeatherMap API configuration
-const OPENWEATHER_API_KEY = "bd5e378503939ddaee76f12ad7a97608"; // You should move this to environment variables
-const OPENWEATHER_BASE_URL = "https://api.openweathermap.org/data/2.5";
 
 // Interfaces for API responses
 interface DestinationData {
