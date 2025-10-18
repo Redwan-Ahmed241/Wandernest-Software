@@ -435,9 +435,14 @@ const Packages: FunctionComponent = () => {
                   <div
                     key={pkg.id}
                     className="group bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col justify-between h-full min-h-[420px]"
-                    onClick={() =>
-                      navigate(`/packages/${encodeURIComponent(pkg.title)}`)
-                    }
+                    onClick={() => {
+                      if (!isAuthenticated) {
+                        navigate("/login");
+                      } else {
+                        const destinationId = pkg.destination || 'unknown';
+                        navigate(`/confirm-book/${destinationId}/${pkg.id}`, { state: { pkg } });
+                      }
+                    }}
                   >
                     <div className="relative overflow-hidden">
                       <img
@@ -509,7 +514,6 @@ const Packages: FunctionComponent = () => {
                             if (!isAuthenticated) {
                               navigate("/login");
                             } else {
-                              // Use destination and package ID for navigation
                               const destinationId = pkg.destination || 'unknown';
                               navigate(`/confirm-book/${destinationId}/${pkg.id}`, { state: { pkg } });
                             }
