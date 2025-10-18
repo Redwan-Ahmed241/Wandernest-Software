@@ -38,9 +38,7 @@ const ThingsToDo: FunctionComponent = () => {
 
   // Moved `cardData` inside `useEffect` to prevent unnecessary re-renders
   useEffect(() => {
-    const cardData: Activity[] = [
-      
-    ];
+    const cardData: Activity[] = [];
 
     const fetchData = async () => {
       try {
@@ -237,8 +235,9 @@ const ThingsToDo: FunctionComponent = () => {
                                 {card.location}
                               </span>
                             </div>
-                            <div className="text-accent font-bold">
-                              {card.price}
+                            <div className="flex items-center gap-1 text-accent font-semibold">
+                              <span>Explore</span>
+                              <ArrowRight className="w-4 h-4" />
                             </div>
                           </div>
                         </div>
@@ -249,27 +248,20 @@ const ThingsToDo: FunctionComponent = () => {
                           <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
                             {card.title}
                           </h3>
-                          <p className="text-gray-600 mb-4 line-clamp-3 leading-relaxed">
+                          <p className="text-gray-600 line-clamp-2 leading-relaxed">
                             {card.description}
                           </p>
                         </div>
-                        <div className="flex items-center justify-between mt-auto">
-                          <div className="flex items-center gap-4 text-sm text-gray-500">
+                        <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+                          <div className="flex items-center gap-2 text-sm text-gray-500">
                             <span className="flex items-center gap-1">
                               <span>⏱️</span>
                               {card.duration}
                             </span>
                           </div>
-                          <button
-                            className="flex items-center gap-1 font-semibold hover:gap-2 transition-all duration-200 px-6 py-2 rounded-xl shadow-md"
-                            style={{
-                              background: "linear-gradient(to right, #6ab187)",
-                              color: "white",
-                            }}
-                          >
-                            <span>Explore</span>
-                            <ArrowRight className="w-4 h-4" />
-                          </button>
+                          <div className="text-lg font-bold text-primary">
+                            {card.price}
+                          </div>
                         </div>
                       </div>
                     </div>
