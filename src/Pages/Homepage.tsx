@@ -280,7 +280,8 @@ const HomePage: FunctionComponent = () => {
               <div className="text-center mt-12">
                 <button
                   onClick={() => navigate("/destinations")}
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:bg-primary-dark"
+                  className="inline-flex items-center gap-2 px-8 py-4 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                  style={{ backgroundColor: "#6ab187" }}
                 >
                   <span>View All Destinations</span>
                   <ArrowRight className="w-5 h-5" />
