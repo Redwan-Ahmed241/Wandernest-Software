@@ -125,8 +125,12 @@ const parseCoordinates = (coordString: string): { lat: number; lon: number } | n
 };
 
 // Helper function to get weather icon URL
-const getWeatherIconUrl = (iconCode: string): string => {
-  return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+// WeatherAPI.com returns absolute icon URLs
+const getWeatherIconUrl = (iconUrl: string): string => {
+  if (!iconUrl) return "";
+  if (iconUrl.startsWith("//")) return "https:" + iconUrl;
+  if (iconUrl.startsWith("http")) return iconUrl;
+  return iconUrl;
 };
 
 const DestinationPage: FunctionComponent = () => {
@@ -151,20 +155,21 @@ const DestinationPage: FunctionComponent = () => {
   // Function to fetch weather data from OpenWeatherMap
   const fetchWeatherData = async (cityName: string, coordinates: string) => {
     try {
-      let weatherUrl = '';
-      
-      // Try to use coordinates first for better accuracy
+      // Use WeatherAPI.com
+      const WEATHERAPI_KEY = "7883430411a0463b8ad135316251810";
+      let query = cityName;
       const coords = parseCoordinates(coordinates);
       if (coords) {
-        weatherUrl = `${OPENWEATHER_BASE_URL}/weather?lat=${coords.lat}&lon=${coords.lon}&appid=${OPENWEATHER_API_KEY}&units=metric`;
-      } else {
-        // Fallback to city name
-        weatherUrl = `${OPENWEATHER_BASE_URL}/weather?q=${encodeURIComponent(cityName)}&appid=${OPENWEATHER_API_KEY}&units=metric`;
+        query = `${coords.lat},${coords.lon}`;
       }
+      // Current weather
+      const currentUrl = `http://api.weatherapi.com/v1/current.json?key=${WEATHERAPI_KEY}&q=${encodeURIComponent(query)}`;
+      // 7-day forecast
+      const forecastUrl = `http://api.weatherapi.com/v1/forecast.json?key=${WEATHERAPI_KEY}&q=${encodeURIComponent(query)}&days=7`;
 
       const [currentResponse, forecastResponse] = await Promise.all([
-        fetch(weatherUrl),
-        fetch(weatherUrl.replace('/weather?', '/forecast?'))
+        fetch(currentUrl),
+        fetch(forecastUrl)
       ]);
 
       if (!currentResponse.ok) {
@@ -174,35 +179,30 @@ const DestinationPage: FunctionComponent = () => {
       const currentWeather = await currentResponse.json();
       const forecastWeather = forecastResponse.ok ? await forecastResponse.json() : null;
 
-      // Transform OpenWeatherMap data to our format
+      // Transform WeatherAPI.com data to our format
       const weatherData: WeatherData = {
         current: {
-          temperature: Math.round(currentWeather.main.temp),
-          condition: currentWeather.weather[0].description,
-          humidity: `${currentWeather.main.humidity}%`,
-          windSpeed: `${currentWeather.wind.speed} m/s`,
-          icon: currentWeather.weather[0].icon,
+          temperature: Math.round(currentWeather.current.temp_c),
+          condition: currentWeather.current.condition.text,
+          humidity: `${currentWeather.current.humidity}%`,
+          windSpeed: `${currentWeather.current.wind_kph} kph`,
+          icon: currentWeather.current.condition.icon,
         },
         forecast: []
       };
 
-      // Process 5-day forecast if available
-      if (forecastWeather?.list) {
-        const dailyForecasts = forecastWeather.list
-          .filter((_: any, index: number) => index % 8 === 0) // Get one forecast per day (every 8th item = 24 hours)
-          .slice(0, 7) // Limit to 7 days
-          .map((item: any) => ({
-            day: new Date(item.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' }),
-            temp: Math.round(item.main.temp),
-            condition: item.weather[0].description,
-            icon: item.weather[0].icon,
-          }));
-
-        weatherData.forecast = dailyForecasts;
+      // Process 7-day forecast if available
+      if (forecastWeather?.forecast?.forecastday) {
+        weatherData.forecast = forecastWeather.forecast.forecastday.map((item: any) => ({
+          day: new Date(item.date).toLocaleDateString('en-US', { weekday: 'short' }),
+          temp: Math.round(item.day.avgtemp_c),
+          condition: item.day.condition.text,
+          icon: item.day.condition.icon,
+        }));
       }
 
       setWeatherData(weatherData);
-      console.log('✅ Weather data fetched from OpenWeatherMap:', weatherData);
+      console.log('✅ Weather data fetched from WeatherAPI.com:', weatherData);
     } catch (error) {
       console.error('❌ Failed to fetch weather data:', error);
       setWeatherData(null);

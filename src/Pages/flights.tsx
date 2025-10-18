@@ -182,6 +182,7 @@ interface WeatherData {
   description: string;
   humidity: number;
   windSpeed: number;
+  icon: string;
 }
 
 interface CurrencyRate {
@@ -495,39 +496,31 @@ const flightAPI = {
   },
 };
 
-// Weather API Service (unchanged)
+// WeatherAPI.com integration
+const WEATHERAPI_KEY = "7883430411a0463b8ad135316251810";
 const weatherAPI = {
   getWeatherForCity: async (city: string): Promise<WeatherData> => {
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${WEATHER_API_KEY}&units=metric`;
+    const url = `http://api.weatherapi.com/v1/current.json?key=${WEATHERAPI_KEY}&q=${encodeURIComponent(city)}`;
     const response = await fetch(url);
-
     if (!response.ok) {
-      throw new Error(`Weather API failed for ${city}`);
+      throw new Error(`WeatherAPI.com failed for ${city}`);
     }
-
     const data = await response.json();
-
     return {
-      city: data.name,
-      temperature: data.main.temp,
-      condition: data.weather[0].main,
-      description: data.weather[0].description,
-      humidity: data.main.humidity,
-      windSpeed: data.wind.speed,
+      city: data.location.name,
+      temperature: data.current.temp_c,
+      condition: data.current.condition.text,
+      description: data.current.condition.text,
+      humidity: data.current.humidity,
+      windSpeed: data.current.wind_kph,
+      icon: data.current.condition.icon,
     };
   },
-
-  getWeatherForMultipleCities: async (
-    cities: string[]
-  ): Promise<WeatherData[]> => {
+  getWeatherForMultipleCities: async (cities: string[]): Promise<WeatherData[]> => {
     const promises = cities.map((city) => weatherAPI.getWeatherForCity(city));
     const results = await Promise.allSettled(promises);
-
     return results
-      .filter(
-        (result): result is PromiseFulfilledResult<WeatherData> =>
-          result.status === "fulfilled"
-      )
+      .filter((result): result is PromiseFulfilledResult<WeatherData> => result.status === "fulfilled")
       .map((result) => result.value);
   },
 };
@@ -1186,6 +1179,7 @@ const Flights: FunctionComponent = () => {
         description: "partly cloudy",
         humidity: 65,
         windSpeed: 15,
+        icon: "https://cdn.weatherapi.com/weather/64x64/day/116.png",
       },
       {
         city: "Chittagong",
@@ -1194,6 +1188,7 @@ const Flights: FunctionComponent = () => {
         description: "clear sky",
         humidity: 70,
         windSpeed: 12,
+        icon: "https://cdn.weatherapi.com/weather/64x64/day/113.png",
       },
       {
         city: "Sylhet",
@@ -1202,6 +1197,7 @@ const Flights: FunctionComponent = () => {
         description: "light rain",
         humidity: 85,
         windSpeed: 8,
+        icon: "https://cdn.weatherapi.com/weather/64x64/day/296.png",
       },
       {
         city: "Rajshahi",
@@ -1210,6 +1206,7 @@ const Flights: FunctionComponent = () => {
         description: "clear sky",
         humidity: 55,
         windSpeed: 18,
+        icon: "https://cdn.weatherapi.com/weather/64x64/day/113.png",
       },
     ];
 
