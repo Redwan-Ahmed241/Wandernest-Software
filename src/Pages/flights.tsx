@@ -182,6 +182,7 @@ interface WeatherData {
   description: string;
   humidity: number;
   windSpeed: number;
+  icon: string;
 }
 
 interface CurrencyRate {
@@ -495,8 +496,7 @@ const flightAPI = {
   },
 };
 
-// Weather API Service (unchanged)
-const weatherAPI = {
+// WeatherAPI.com integration
 const WEATHERAPI_KEY = "7883430411a0463b8ad135316251810";
 const weatherAPI = {
   getWeatherForCity: async (city: string): Promise<WeatherData> => {
@@ -510,6 +510,7 @@ const weatherAPI = {
       city: data.location.name,
       temperature: data.current.temp_c,
       condition: data.current.condition.text,
+      description: data.current.condition.text,
       humidity: data.current.humidity,
       windSpeed: data.current.wind_kph,
       icon: data.current.condition.icon,
@@ -1178,6 +1179,7 @@ const Flights: FunctionComponent = () => {
         description: "partly cloudy",
         humidity: 65,
         windSpeed: 15,
+        icon: "https://cdn.weatherapi.com/weather/64x64/day/116.png",
       },
       {
         city: "Chittagong",
@@ -1186,6 +1188,7 @@ const Flights: FunctionComponent = () => {
         description: "clear sky",
         humidity: 70,
         windSpeed: 12,
+        icon: "https://cdn.weatherapi.com/weather/64x64/day/113.png",
       },
       {
         city: "Sylhet",
@@ -1194,6 +1197,7 @@ const Flights: FunctionComponent = () => {
         description: "light rain",
         humidity: 85,
         windSpeed: 8,
+        icon: "https://cdn.weatherapi.com/weather/64x64/day/296.png",
       },
       {
         city: "Rajshahi",
@@ -1202,6 +1206,7 @@ const Flights: FunctionComponent = () => {
         description: "clear sky",
         humidity: 55,
         windSpeed: 18,
+        icon: "https://cdn.weatherapi.com/weather/64x64/day/113.png",
       },
     ];
 
