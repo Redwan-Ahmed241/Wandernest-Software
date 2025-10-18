@@ -178,7 +178,8 @@ const HomePage: FunctionComponent = () => {
                 Featured Destinations
               </h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Explore Bangladesh's most visited destinations - curated based on traveler interest and popularity
+                Explore Bangladesh's most visited destinations - curated based
+                on traveler interest and popularity
               </p>
             </div>
 
@@ -225,39 +226,47 @@ const HomePage: FunctionComponent = () => {
                           loading="lazy"
                           decoding="async"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
                           <Star className="w-4 h-4 text-yellow-500 fill-current" />
                           <span className="text-sm font-semibold">4.8</span>
                         </div>
                         {/* Popular badge for high-click destinations */}
                         <div className="absolute top-4 left-4 bg-primary/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
-                          <span className="text-xs font-semibold text-white">🔥 Popular</span>
+                          <span className="text-xs font-semibold text-white">
+                            🔥 Popular
+                          </span>
+                        </div>
+                        <div className="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                          <div className="flex items-center justify-between text-white">
+                            <div className="flex items-center gap-2">
+                              <MapPin className="w-4 h-4" />
+                              <span className="text-sm font-medium">
+                                Bangladesh
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-1 text-accent font-semibold">
+                              <span>Explore</span>
+                              <ArrowRight className="w-4 h-4" />
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div className="p-6">
                         <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
                           {place.name}
                         </h3>
-                        <p className="text-gray-600 mb-4 line-clamp-2">
+                        <p className="text-gray-600 line-clamp-2 leading-relaxed">
                           {place.description ||
                             "Experience the beauty and culture of this amazing destination"}
                         </p>
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2 text-gray-500">
-                            <MapPin className="w-4 h-4" />
-                            <span className="text-sm">Bangladesh</span>
-                          </div>
-                          <div className="flex items-center gap-1 text-primary font-semibold group-hover:gap-2 transition-all duration-200">
-                            <span>Explore</span>
-                            <ArrowRight className="w-4 h-4" />
-                          </div>
-                        </div>
                         {/* Click count indicator */}
                         {place.click && (
                           <div className="mt-3 pt-3 border-t border-gray-100">
                             <div className="flex items-center gap-1 text-xs text-gray-500">
-                              <span>👁️ {place.click.toLocaleString()} views</span>
+                              <span>
+                                👁️ {place.click.toLocaleString()} views
+                              </span>
                             </div>
                           </div>
                         )}
