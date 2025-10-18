@@ -30,7 +30,7 @@ interface Package {
   budget?: string;
   total_cost?: string;
   image_url?: string;
-  package_type: 'premade' | 'custom';
+  package_type: "premade" | "custom";
   from_location: string;
   to_location: string;
   destination: number;
@@ -82,25 +82,28 @@ const Packages: FunctionComponent = () => {
       setLoading(true);
       setError("");
       try {
-        console.log("🚀 Starting API call to:", "https://wander-nest-ad3s.onrender.com/api/packages/unified/");
-        
+        console.log(
+          "🚀 Starting API call to:",
+          "https://wander-nest-ad3s.onrender.com/api/packages/unified/"
+        );
+
         const response = await fetch(
           "https://wander-nest-ad3s.onrender.com/api/packages/unified/"
         );
-        
+
         console.log("📡 Response status:", response.status);
         console.log("📡 Response ok:", response.ok);
         console.log("📡 Response headers:", response.headers);
-        
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const data = await response.json();
         console.log("📦 Raw API response:", data);
         console.log("📦 Response type:", typeof data);
         console.log("📦 Is array:", Array.isArray(data));
-        
+
         if (data && data.results) {
           // Handle paginated response
           console.log("📦 Paginated response detected");
@@ -114,14 +117,26 @@ const Packages: FunctionComponent = () => {
           setPackages(packagesData);
           console.log("📦 Number of packages received:", packagesData.length);
         }
-        
+
         console.log("📦 First package sample:", data[0] || data.results?.[0]);
-        console.log("📦 Package fields:", (data[0] || data.results?.[0]) ? Object.keys(data[0] || data.results?.[0]) : 'No packages');
+        console.log(
+          "📦 Package fields:",
+          data[0] || data.results?.[0]
+            ? Object.keys(data[0] || data.results?.[0])
+            : "No packages"
+        );
       } catch (err) {
         console.error("❌ Packages fetch error:", err);
         console.error("❌ Error type:", typeof err);
-        console.error("❌ Error message:", err instanceof Error ? err.message : String(err));
-        setError(`Failed to fetch packages: ${err instanceof Error ? err.message : String(err)}`);
+        console.error(
+          "❌ Error message:",
+          err instanceof Error ? err.message : String(err)
+        );
+        setError(
+          `Failed to fetch packages: ${
+            err instanceof Error ? err.message : String(err)
+          }`
+        );
         setPackages([]);
       } finally {
         setLoading(false);
@@ -167,10 +182,10 @@ const Packages: FunctionComponent = () => {
 
   // Filter packages by search and selected filters
   const filteredPackages = packages.filter((pkg) => {
-    const matchesSearch = search.length === 0 || (pkg.title && pkg.title
-      .toLowerCase()
-      .includes(search.toLowerCase()));
-    
+    const matchesSearch =
+      search.length === 0 ||
+      (pkg.title && pkg.title.toLowerCase().includes(search.toLowerCase()));
+
     const matchesFilters = Object.entries(selectedFilters).every(
       ([filter, value]) => {
         if (filter === "Destination") {
@@ -179,8 +194,8 @@ const Packages: FunctionComponent = () => {
         }
         if (filter === "Budget") {
           // Handle multiple possible price fields from unified API
-          const priceString = pkg.price || pkg.total_cost || pkg.budget || '0';
-          const price = Number(priceString.replace(/[^0-9.-]/g, ''));
+          const priceString = pkg.price || pkg.total_cost || pkg.budget || "0";
+          const price = Number(priceString.replace(/[^0-9.-]/g, ""));
           if (!value || value === "All") return true;
           if (value === "< 4000৳") return price < 4000;
           if (value === "4000–6000৳") return price >= 4000 && price <= 6000;
@@ -194,11 +209,11 @@ const Packages: FunctionComponent = () => {
   });
 
   // Debug logging
-  console.log('Packages total:', packages.length);
-  console.log('Filtered packages:', filteredPackages.length);
-  console.log('Search term:', search);
-  console.log('Selected filters:', selectedFilters);
-  console.log('Sample package:', packages[0]);
+  console.log("Packages total:", packages.length);
+  console.log("Filtered packages:", filteredPackages.length);
+  console.log("Search term:", search);
+  console.log("Selected filters:", selectedFilters);
+  console.log("Sample package:", packages[0]);
 
   // Pagination logic
   const ITEMS_PER_PAGE = 9; // 3x3 grid
@@ -215,9 +230,9 @@ const Packages: FunctionComponent = () => {
   });
 
   // More debug logging for pagination
-  console.log('Paginated packages:', paginatedPackages.length);
-  console.log('Current page:', currentPage);
-  console.log('Total pages:', totalPages);
+  console.log("Paginated packages:", paginatedPackages.length);
+  console.log("Current page:", currentPage);
+  console.log("Total pages:", totalPages);
 
   // Dynamic Destination options
   const destinationOptions = [
@@ -432,95 +447,106 @@ const Packages: FunctionComponent = () => {
               <div className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {paginatedPackages.map((pkg) => (
-                  <div
-                    key={pkg.id}
-                    className="group bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col justify-between h-full min-h-[420px]"
-                    onClick={() =>
-                      navigate(`/packages/${encodeURIComponent(pkg.title)}`)
-                    }
-                  >
-                    <div className="relative overflow-hidden">
-                      <img
-                        className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
-                        alt={pkg.title}
-                        src={
-                          pkg.image_url ||
-                          "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=600"
-                        }
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          if (
-                            target.src !==
+                    <div
+                      key={pkg.id}
+                      className="group bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col justify-between h-full min-h-[420px]"
+                      onClick={() =>
+                        navigate(`/packages/${encodeURIComponent(pkg.title)}`)
+                      }
+                    >
+                      <div className="relative overflow-hidden">
+                        <img
+                          className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+                          alt={pkg.title}
+                          src={
+                            pkg.image_url ||
                             "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=600"
-                          ) {
-                            target.src =
-                              "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=600";
                           }
-                        }}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                      <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
-                        <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                        <span className="text-sm font-semibold">4.8</span>
-                      </div>
-                      <div className="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                        <div className="flex items-center justify-between text-white">
-                          <div className="flex items-center gap-2">
-                            <Calendar className="w-4 h-4" />
-                            <span className="text-sm font-medium">
-                              {pkg.days} Days
-                            </span>
-                          </div>
-                          <div className="text-accent font-bold text-xl">
-                            ৳{Number(pkg.price || pkg.total_cost || pkg.budget || 0).toLocaleString()}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="p-6 flex flex-col flex-1 justify-between">
-                      <div>
-                        <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
-                          {pkg.title}
-                        </h3>
-                        <p className="text-gray-600 mb-4 line-clamp-2 leading-relaxed">
-                          {pkg.subtitle ||
-                            "Experience the beauty and culture of this amazing destination"}
-                        </p>
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="flex items-center gap-4 text-sm text-gray-500">
-                            <span className="flex items-center gap-1">
-                              <MapPin className="w-4 h-4" />
-                              {pkg.destination_name || extractPlaceName(pkg.title)}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Calendar className="w-4 h-4" />
-                              {pkg.days} Days
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between mt-auto">
-                        <div className="text-2xl font-bold text-primary">
-                          ৳{Number(pkg.price || pkg.total_cost || pkg.budget || 0).toLocaleString()}
-                        </div>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (!isAuthenticated) {
-                              navigate("/login");
-                            } else {
-                              // Use destination and package ID for navigation
-                              const destinationId = pkg.destination || 'unknown';
-                              navigate(`/confirm-book/${destinationId}/${pkg.id}`, { state: { pkg } });
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            if (
+                              target.src !==
+                              "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=600"
+                            ) {
+                              target.src =
+                                "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=600";
                             }
                           }}
-                          className="px-6 py-2 bg-[#6ab187] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2"
-                        >
-                          Book Now
-                          <ArrowRight className="w-5 h-5 transition-transform duration-300" />
-                        </button>
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
+                          <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                          <span className="text-sm font-semibold">4.8</span>
+                        </div>
+                        <div className="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                          <div className="flex items-center justify-between text-white">
+                            <div className="flex items-center gap-2">
+                              <Calendar className="w-4 h-4" />
+                              <span className="text-sm font-medium">
+                                {pkg.days} Days
+                              </span>
+                            </div>
+                            <div className="text-accent font-bold text-xl">
+                              ৳
+                              {Number(
+                                pkg.price || pkg.total_cost || pkg.budget || 0
+                              ).toLocaleString()}
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                      <div className="p-6 flex flex-col flex-1 justify-between">
+                        <div>
+                          <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors duration-200">
+                            {pkg.title}
+                          </h3>
+                          <p className="text-gray-600 mb-4 line-clamp-2 leading-relaxed">
+                            {pkg.subtitle ||
+                              "Experience the beauty and culture of this amazing destination"}
+                          </p>
+                          <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center gap-4 text-sm text-gray-500">
+                              <span className="flex items-center gap-1">
+                                <MapPin className="w-4 h-4" />
+                                {pkg.destination_name ||
+                                  extractPlaceName(pkg.title)}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Calendar className="w-4 h-4" />
+                                {pkg.days} Days
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between mt-auto">
+                          <div className="text-2xl font-bold text-primary">
+                            ৳
+                            {Number(
+                              pkg.price || pkg.total_cost || pkg.budget || 0
+                            ).toLocaleString()}
+                          </div>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (!isAuthenticated) {
+                                navigate("/login");
+                              } else {
+                                // Use destination and package ID for navigation
+                                const destinationId =
+                                  pkg.destination || "unknown";
+                                navigate(
+                                  `/confirm-book/${destinationId}/${pkg.id}`,
+                                  { state: { pkg } }
+                                );
+                              }
+                            }}
+                            className="px-6 py-2 bg-[#6ab187] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2"
+                          >
+                            Book Now
+                            <ArrowRight className="w-5 h-5 transition-transform duration-300" />
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -551,7 +577,8 @@ const Packages: FunctionComponent = () => {
             </p>
             <button
               onClick={() => navigate("/create-packages")}
-              className="px-8 py-4 bg-white text-black font-bold text-lg rounded-xl shadow-lg border border-primary/30 hover:bg-white/10 hover:text-accent hover:border-accent hover:shadow-xl transition-all duration-200 hover:scale-105 flex items-center justify-center gap-2 mx-auto focus:outline-none focus:ring-2 focus:ring-accent"
+              className="px-8 py-4 text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 flex items-center justify-center gap-2 mx-auto focus:outline-none focus:ring-2 focus:ring-accent"
+              style={{ backgroundColor: "#6ab187" }}
             >
               <Users className="w-5 h-5 mr-2" />
               Create Custom Package

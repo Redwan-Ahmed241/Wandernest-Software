@@ -44,11 +44,11 @@ const Destinations: FunctionComponent = () => {
       setError("");
       try {
         const data = await getDestinations();
-        console.log('Fetched destinations:', data);
-        console.log('Is array?', Array.isArray(data));
+        console.log("Fetched destinations:", data);
+        console.log("Is array?", Array.isArray(data));
         setDestinations(Array.isArray(data) ? data : []);
       } catch (err) {
-        console.error('Error fetching destinations:', err);
+        console.error("Error fetching destinations:", err);
         setError("Failed to fetch destinations");
         setDestinations([]);
       } finally {
@@ -262,27 +262,6 @@ const Destinations: FunctionComponent = () => {
                 ))}
               </div>
             )}
-          </div>
-        </section>
-
-        {/* Call to Action */}
-        <section className="py-16 bg-gradient-to-r from-accent via-accent-light to-accent">
-          <div className="max-w-4xl mx-auto px-4 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-primary-dark mb-6">
-              Can't Find What You're Looking For?
-            </h2>
-            <p className="text-lg text-primary-dark/80 mb-8 max-w-2xl mx-auto">
-              Let us create a custom travel package tailored to your preferences
-              and budget
-            </p>
-            <button
-              onClick={() => navigate("/plan-a-trip")}
-              className="px-8 py-4 bg-primary text-white font-bold text-lg rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2 mx-auto focus:outline-none focus:ring-4 focus:ring-accent/40"
-              style={{ backgroundColor: "#4a6b5b", color: "#fff", opacity: 1 }}
-            >
-              <MapPin className="w-5 h-5" />
-              Plan Custom Trip
-            </button>
           </div>
         </section>
       </div>
