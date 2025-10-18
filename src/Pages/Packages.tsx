@@ -447,19 +447,30 @@ const Packages: FunctionComponent = () => {
               <div className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {paginatedPackages.map((pkg) => (
-                    <div
-                      key={pkg.id}
-                      className="group bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col justify-between h-full min-h-[420px]"
-                      onClick={() =>
-                        navigate(`/packages/${encodeURIComponent(pkg.title)}`)
+                  <div
+                    key={pkg.id}
+                    className="group bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col justify-between h-full min-h-[420px]"
+                    onClick={() => {
+                      if (!isAuthenticated) {
+                        navigate("/login");
+                      } else {
+                        const destinationId = pkg.destination || 'unknown';
+                        navigate(`/confirm-book/${destinationId}/${pkg.id}`, { state: { pkg } });
                       }
-                    >
-                      <div className="relative overflow-hidden">
-                        <img
-                          className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
-                          alt={pkg.title}
-                          src={
-                            pkg.image_url ||
+                    }}
+                  >
+                    <div className="relative overflow-hidden">
+                      <img
+                        className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+                        alt={pkg.title}
+                        src={
+                          pkg.image_url ||
+                          "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=600"
+                        }
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          if (
+                            target.src !==
                             "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=600"
                           }
                           onError={(e) => {
@@ -546,6 +557,21 @@ const Packages: FunctionComponent = () => {
                             <ArrowRight className="w-5 h-5 transition-transform duration-300" />
                           </button>
                         </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (!isAuthenticated) {
+                              navigate("/login");
+                            } else {
+                              const destinationId = pkg.destination || 'unknown';
+                              navigate(`/confirm-book/${destinationId}/${pkg.id}`, { state: { pkg } });
+                            }
+                          }}
+                          className="px-6 py-2 bg-[#6ab187] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2"
+                        >
+                          Book Now
+                          <ArrowRight className="w-5 h-5 transition-transform duration-300" />
+                        </button>
                       </div>
                     </div>
                   ))}
