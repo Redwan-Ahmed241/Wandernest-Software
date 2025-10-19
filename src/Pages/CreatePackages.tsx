@@ -46,21 +46,13 @@ interface PackageOption {
 
 interface CreatePackageData {
   title: string;
-  from_location: string;
-  to_location: string;
   start_date: string;
   end_date: string;
   travelers_count: number;
-  budget: number;
-  transport_id: string | null;
-  hotel_id: string | null;
-  guide_id: string | null;
-  preferences: {
-    skip_transport: boolean;
-    skip_hotel: boolean;
-    skip_vehicle: boolean;
-    skip_guide: boolean;
-  };
+  transport_id: number | null;
+  hotel_id: number | null;
+  guide_id: number | null;
+  price: number;
 }
 
 const CreatePackage: FunctionComponent = () => {
@@ -189,42 +181,48 @@ const CreatePackage: FunctionComponent = () => {
       setError(null);
       console.log("Starting to fetch package options...");
 
-      // Use real APIs for all services
-      const [transportData, hotelsData, guidesData] = await Promise.all(
-        [
-          getTransportOptions().catch((err) => {
-            console.error("Transport API error:", err);
-            return [];
-          }),
-          getHotels().catch((err) => {
-            console.error("Hotels API error:", err);
-            return [];
-          }),
-          guidesAPI.getGuides().catch((err) => {
-            console.error("Guides API error:", err);
-            return { guides: [] };
-          }),
-        ]
-      );
+      // Use real APIs for all services with safe fallbacks
+      const [transportData, hotelsData, guidesData] = await Promise.all([
+        getTransportOptions().catch((err) => {
+          console.error("Transport API error:", err);
+          return [] as TransportOption[];
+        }),
+        // getHotels may return different shapes; return empty array on error
+        getHotels().catch((err) => {
+          console.error("Hotels API error:", err);
+          return [] as Hotel[];
+        }),
+        // guidesAPI returns an object { guides: [] } usually
+        guidesAPI.getGuides().catch((err) => {
+          console.error("Guides API error:", err);
+          return { guides: [] } as { guides: Guide[] };
+        }),
+      ]);
 
-      console.log("Raw hotels data from API:", hotelsData);
-
-      // Map hotels data to PackageOption format with better error handling
+      // Normalize hotels data into mappedHotels for downstream usage
       let mappedHotels: PackageOption[] = [];
 
-      if (Array.isArray(hotelsData) && hotelsData.length > 0) {
-        mappedHotels = hotelsData.map((hotel: Hotel) => ({
-          id: hotel.id?.toString() || Math.random().toString(),
-          name: hotel.name || "Unknown Hotel",
-          description: hotel.description || "No description available",
-          image: hotel.image_url || "/Figma_photos/city_center_hotel.png", // Remove /public/ prefix
-          price: hotel.price || 0,
-        }));
-        console.log("Successfully mapped hotels:", mappedHotels);
-      } else {
-        console.log(
-          "No hotels data received or invalid format, using fallback"
-        );
+      const rawToPackageOption = (raw: unknown): PackageOption => {
+        const obj = (raw || {}) as Record<string, unknown>;
+        const id = (typeof obj.id === "number" || typeof obj.id === "string") ? String(obj.id) : Math.random().toString();
+        const name = typeof obj.name === "string" ? obj.name : (typeof obj.title === "string" ? obj.title : "Unknown Hotel");
+        const description = typeof obj.description === "string" ? obj.description : (typeof obj.summary === "string" ? obj.summary : "No description available");
+        const image = typeof obj.image === "string" ? obj.image : (typeof obj.image_url === "string" ? obj.image_url : "/Figma_photos/city_center_hotel.png");
+        let price = 0;
+        if (typeof obj.price === "number") price = obj.price;
+        else if (typeof obj.room_price === "number") price = obj.room_price;
+        else if (typeof obj.price === "string") price = parseFloat(obj.price) || 0;
+
+        return { id, name, description, image, price };
+      };
+
+      if (Array.isArray(hotelsData) && (hotelsData as unknown[]).length > 0) {
+        mappedHotels = (hotelsData as unknown[]).map(rawToPackageOption);
+      } else if (hotelsData && typeof hotelsData === "object") {
+        const maybe = hotelsData as unknown as Record<string, unknown>;
+        if (Array.isArray(maybe.hotels)) {
+          mappedHotels = (maybe.hotels as unknown[]).map(rawToPackageOption);
+        }
       }
 
       // Map transport data to PackageOption format
@@ -632,23 +630,21 @@ const CreatePackage: FunctionComponent = () => {
         ...(token && { Authorization: `Token ${token}` }),
       };
 
+      // Calculate total price from selected options
+      const transportPrice = transportOptions.find(t => t.id === selectedTransport)?.price || 0;
+      const hotelPrice = hotelOptions.find(h => h.id === selectedHotel)?.price || 0;
+      const guidePrice = guideOptions.find(g => g.id === selectedGuide)?.price || 0;
+      const totalPrice = Number(transportPrice) + Number(hotelPrice) + Number(guidePrice);
+
       const packageData: CreatePackageData = {
         title: "Custom Travel Package",
-        from_location: "",
-        to_location: "",
         start_date: startDate,
         end_date: endDate,
         travelers_count: travelers,
-        budget: 0, // Default budget since field was removed from UI
-        transport_id: selectedTransport,
-        hotel_id: selectedHotel,
-        guide_id: selectedGuide,
-        preferences: {
-          skip_transport: skipTransport,
-          skip_hotel: skipHotel,
-          skip_vehicle: true,
-          skip_guide: skipGuide,
-        },
+        transport_id: selectedTransport ? Number(selectedTransport) : null,
+        hotel_id: selectedHotel ? Number(selectedHotel) : null,
+        guide_id: selectedGuide ? Number(selectedGuide) : null,
+        price: totalPrice,
       };
 
       const response = await fetch(
@@ -1036,10 +1032,16 @@ const CreatePackage: FunctionComponent = () => {
                       getFilteredTransportOptions().map((option) => (
                       <div
                         key={option.id}
-                        className={`bg-white rounded-xl shadow p-4 flex flex-col items-center cursor-pointer transition-all duration-200 border-2
-                          ${selectedTransport === option.id ? "border-primary ring-2 ring-primary scale-105 shadow-lg" : "border-transparent"}
-                        `}
-                        style={selectedTransport === option.id ? { boxShadow: "0 0 0 3px #38bdf8, 0 4px 24px rgba(56,189,248,0.15)" } : {}}
+                        className={`bg-white rounded-xl shadow-sm p-6 flex flex-col items-center text-center cursor-pointer transition-all duration-200 border-2 ${
+                          selectedTransport === option.id
+                            ? "border-primary ring-2 ring-primary/40 scale-105 shadow-lg z-10"
+                            : "border-transparent"
+                        }`}
+                        style={
+                          selectedTransport === option.id
+                            ? { boxShadow: "0 8px 24px rgba(16,24,40,0.08)" }
+                            : {}
+                        }
                         onClick={() =>
                           handleOptionSelect(
                             option.id,
@@ -1049,28 +1051,19 @@ const CreatePackage: FunctionComponent = () => {
                           )
                         }
                       >
-                        <img
-                          className="w-full h-32 object-cover rounded mb-2"
-                          alt={option.name}
-                          src={
-                            option.image ||
-                            "/placeholder.svg?height=200&width=300"
-                          }
-                        />
-                        <div className="w-full text-center">
-                          <div className="font-bold text-primary mb-1">
-                            {option.name}
-                          </div>
-                          <div className="text-gray-600 text-sm mb-1">
-                            {option.description}
-                          </div>
-                          <div className="font-semibold text-lg">
-                            ৳{option.price}
-                          </div>
-                          {selectedTransport === option.id && (
-                            <span className="text-green-600 font-bold">✔</span>
-                          )}
+                        <div className="w-24 h-24 rounded-full overflow-hidden mb-4 border border-gray-100">
+                          <img
+                            className="w-full h-full object-cover"
+                            alt={option.name}
+                            src={option.image || "/placeholder.svg?height=200&width=300"}
+                          />
                         </div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-1">{option.name}</h3>
+                        <p className="text-sm text-gray-500 mb-4">{option.description}</p>
+                        <div className="mt-auto text-lg font-bold">৳{option.price}</div>
+                        {selectedTransport === option.id && (
+                          <span className="text-green-600 font-bold mt-2">✔</span>
+                        )}
                       </div>
                       ))
                     ) : (
@@ -1342,10 +1335,16 @@ const CreatePackage: FunctionComponent = () => {
                       getFilteredGuideOptions().map((option) => (
                       <div
                         key={option.id}
-                        className={`bg-white rounded-xl shadow p-4 flex flex-col items-center cursor-pointer transition-all duration-200 border-2
-                          ${selectedGuide === option.id ? "border-primary ring-2 ring-primary scale-105 shadow-lg" : "border-transparent"}
-                        `}
-                        style={selectedGuide === option.id ? { boxShadow: "0 0 0 3px #38bdf8, 0 4px 24px rgba(56,189,248,0.15)" } : {}}
+                        className={`bg-white rounded-xl shadow-sm p-6 flex flex-col items-center text-center cursor-pointer transition-all duration-200 border-2 ${
+                          selectedGuide === option.id
+                            ? "border-primary ring-2 ring-primary/40 scale-105 shadow-lg z-10"
+                            : "border-transparent"
+                        }`}
+                        style={
+                          selectedGuide === option.id
+                            ? { boxShadow: "0 8px 24px rgba(16,24,40,0.08)" }
+                            : {}
+                        }
                         onClick={() =>
                           handleOptionSelect(
                             option.id,
@@ -1355,28 +1354,19 @@ const CreatePackage: FunctionComponent = () => {
                           )
                         }
                       >
-                        <img
-                          className="w-full h-32 object-cover rounded mb-2"
-                          alt={option.name}
-                          src={
-                            option.image ||
-                            "/placeholder.svg?height=200&width=300"
-                          }
-                        />
-                        <div className="w-full text-center">
-                          <div className="font-bold text-primary mb-1">
-                            {option.name}
-                          </div>
-                          <div className="text-gray-600 text-sm mb-1">
-                            {option.description}
-                          </div>
-                          <div className="font-semibold text-lg">
-                            ৳{option.price}/day
-                          </div>
-                          {selectedGuide === option.id && (
-                            <span className="text-green-600 font-bold">✔</span>
-                          )}
+                        <div className="w-24 h-24 rounded-full overflow-hidden mb-4 border border-gray-100">
+                          <img
+                            className="w-full h-full object-cover"
+                            alt={option.name}
+                            src={option.image || "/placeholder.svg?height=200&width=300"}
+                          />
                         </div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-1">{option.name}</h3>
+                        <p className="text-sm text-gray-500 mb-4">{option.description}</p>
+                        <div className="mt-auto text-lg font-bold">৳{option.price}/day</div>
+                        {selectedGuide === option.id && (
+                          <span className="text-green-600 font-bold mt-2">✔</span>
+                        )}
                       </div>
                       ))
                     ) : (

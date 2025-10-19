@@ -130,6 +130,39 @@ const DashboardHome: FunctionComponent = () => {
   // Prefer the dedicated API client but keep the booking context as a fallback
   const bookingCtx = useBooking();
   const [bookings, setBookings] = useState<Booking[]>(bookingCtx?.bookings || []);
+  // Fallback bookings if none exist
+  const fallbackBookings: Booking[] = [
+    {
+      id: "1",
+      title: "Cox's Bazar Beach Escape",
+      location: "Cox's Bazar",
+      image: "/Figma_photos/coxsbazar.jpg",
+      startDate: "2025-11-10",
+      endDate: "2025-11-15",
+      status: "confirmed",
+      price: 12000,
+    },
+    {
+      id: "2",
+      title: "Sundarbans Adventure",
+      location: "Sundarbans",
+      image: "/Figma_photos/sundarban.jpg",
+      startDate: "2025-12-01",
+      endDate: "2025-12-05",
+      status: "confirmed",
+      price: 9500,
+    },
+    {
+      id: "3",
+      title: "Sylhet Tea Garden Tour",
+      location: "Sylhet",
+      image: "/Figma_photos/srimangal.png",
+      startDate: "2026-01-20",
+      endDate: "2026-01-23",
+      status: "confirmed",
+      price: 8000,
+    },
+  ];
   const [stats, setStats] = useState<Stats>(bookingCtx?.stats || {
     totalBookings: 0,
     upcomingTrips: 0,
@@ -279,6 +312,8 @@ const DashboardHome: FunctionComponent = () => {
 
   // Get recent bookings (last 5)
   const recentBookings = (bookings || []).slice(0, 5);
+  // Use fallback if no real bookings
+  const displayBookings = recentBookings.length > 0 ? recentBookings : fallbackBookings;
 
   // Get upcoming trips
   const upcomingTrips = (bookings || [])
@@ -455,24 +490,44 @@ const DashboardHome: FunctionComponent = () => {
                         </div>
                       </div>
                     ) : recentBookings.length === 0 ? (
-                      <div className="text-center py-12 space-y-4">
-                        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
-                          <span className="text-3xl">📝</span>
-                        </div>
-                        <div>
-                          <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                            No bookings yet
-                          </h3>
-                          <p className="text-gray-500 mb-4">
-                            Start planning your first adventure
-                          </p>
-                          <button
-                            className="px-6 py-3 bg-white text-black font-bold rounded-xl border border-primary/30 shadow-lg hover:bg-white/10 hover:text-accent hover:border-accent hover:shadow-xl transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-accent"
-                            onClick={() => navigate("/packages")}
+                      <div className="space-y-4">
+                        {displayBookings.map((booking) => (
+                          <div
+                            key={booking.id}
+                            className="flex items-center gap-4 p-4 rounded-xl border border-gray-100 hover:border-primary hover:shadow-md transition-all duration-200"
                           >
-                            Book Your First Trip
-                          </button>
-                        </div>
+                            <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 shadow-md">
+                              <img
+                                src={
+                                  booking.image ||
+                                  "https://images.pexels.com/photos/1371360/pexels-photo-1371360.jpeg?auto=compress&cs=tinysrgb&w=400"
+                                }
+                                alt={booking.title}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h3 className="font-semibold text-gray-900 truncate">
+                                {booking.title}
+                              </h3>
+                              <p className="text-sm text-gray-500 flex items-center gap-1">
+                                <span>📍</span>
+                                {booking.location}
+                              </p>
+                              <p className="text-xs text-gray-400">
+                                {formatDate(booking.startDate)} - {formatDate(booking.endDate)}
+                              </p>
+                            </div>
+                            <div className="text-right">
+                              <div className="font-bold text-primary text-lg">
+                                {formatCurrency(booking.price)}
+                              </div>
+                              <div className="text-xs text-gray-500 capitalize">
+                                {booking.status}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     ) : (
                       <div className="space-y-4">

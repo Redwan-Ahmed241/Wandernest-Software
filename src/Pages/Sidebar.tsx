@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Authentication/auth-context"; // Using your auth context
 
 import type { FunctionComponent } from "react";
+import { FiBarChart2, FiMapPin, FiShield, FiFileText, FiUsers, FiBookOpen, FiSettings, FiLogOut } from "react-icons/fi";
 const Sidebar: FunctionComponent = () => {
   const navigate = useNavigate();
   const { user, isAuthenticated, loading } = useAuth();
@@ -20,70 +21,71 @@ const Sidebar: FunctionComponent = () => {
     return null;
   }
   return (
-    <aside className="bg-white shadow-lg border-r border-gray-200 w-64 min-h-screen flex flex-col">
-      <div className="flex flex-col items-center gap-3 p-6 pb-4">
-        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center font-bold text-xl border-4 border-yellow-400 shadow-lg select-none">
-          {getInitial()}
+    <aside className="bg-[#1a2536] w-64 min-h-screen flex flex-col justify-between shadow-xl">
+      <div>
+        <div className="flex flex-col items-center gap-2 pt-8 pb-4">
+          <div className="w-14 h-14 rounded-full bg-[#22c55e] text-white flex items-center justify-center font-bold text-2xl shadow-lg select-none">
+            {getInitial()}
+          </div>
+          <div className="text-lg font-bold text-white mt-2">
+            {user?.first_name || user?.username}
+          </div>
+          <div className="text-xs text-[#b6c2d6]">Travel Management</div>
         </div>
-        <div className="text-xl font-bold text-gray-800">
-          {user?.first_name || user?.username}
+        <nav className="flex flex-col gap-1 px-6 pt-2">
+          <button
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-left transition-all duration-200 ${window.location.pathname === "/dashboard" ? "bg-[#174c3c] text-white" : "text-[#e2e8f0] hover:bg-[#22304a] hover:text-white"}`}
+            onClick={() => navigate("/dashboard")}
+          >
+            <FiBarChart2 className="text-xl" /> Dashboard
+          </button>
+          <button
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-left transition-all duration-200 ${window.location.pathname === "/my-trips" ? "bg-[#174c3c] text-white" : "text-[#e2e8f0] hover:bg-[#22304a] hover:text-white"}`}
+            onClick={() => navigate("/my-trips")}
+          >
+            <FiMapPin className="text-xl" /> My Trips
+          </button>
+          <button
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-left transition-all duration-200 ${window.location.pathname === "/visa-assistance" ? "bg-[#174c3c] text-white" : "text-[#e2e8f0] hover:bg-[#22304a] hover:text-white"}`}
+            onClick={() => navigate("/visa-assistance")}
+          >
+            <FiShield className="text-xl" /> Visa Assistance
+          </button>
+          <button
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-left transition-all duration-200 ${window.location.pathname === "/create-packages" ? "bg-[#174c3c] text-white" : "text-[#e2e8f0] hover:bg-[#22304a] hover:text-white"}`}
+            onClick={() => navigate("/create-packages")}
+          >
+            <FiFileText className="text-xl" /> Plan a Trip
+          </button>
+          <button
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-left transition-all duration-200 ${window.location.pathname === "/groups" ? "bg-[#174c3c] text-white" : "text-[#e2e8f0] hover:bg-[#22304a] hover:text-white"}`}
+            onClick={() => navigate("/groups")}
+          >
+            <FiUsers className="text-xl" /> Groups
+          </button>
+          <button
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-left transition-all duration-200 ${window.location.pathname === "/blogs" ? "bg-[#174c3c] text-white" : "text-[#e2e8f0] hover:bg-[#22304a] hover:text-white"}`}
+            onClick={() => navigate("/blogs")}
+          >
+            <FiBookOpen className="text-xl" /> Blog
+          </button>
+        </nav>
+        <div className="border-t border-[#22304a] mx-6 mt-6 pt-4">
+          <button
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-left text-[#b6c2d6] hover:bg-[#22304a] hover:text-white transition-all duration-200 w-full`}
+            onClick={() => navigate("/settings")}
+          >
+            <FiSettings className="text-xl" /> Settings
+          </button>
+          <button
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-left text-red-500 border border-red-500 bg-transparent hover:bg-red-50 transition-all duration-200 mt-2"
+            onClick={() => navigate("/logout")}
+          >
+            <FiLogOut className="text-xl" /> Sign Out
+          </button>
         </div>
-        <div className="text-sm text-gray-500 text-center">Plan your next adventure</div>
       </div>
-      <nav className="flex flex-col gap-1 px-4 pb-6">
-        <button
-          className={`px-4 py-3 rounded-lg text-left font-medium transition-all duration-200 flex items-center gap-3 ${
-            window.location.pathname === "/dashboard"
-              ? "bg-blue-50 text-blue-700 border-l-4 border-blue-500 shadow-sm"
-              : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
-          }`}
-          onClick={() => navigate("/dashboard")}
-        >
-          <span className="text-lg">📊</span> Dashboard
-        </button>
-        <button
-          className={`px-4 py-3 rounded-lg text-left font-medium transition-all duration-200 flex items-center gap-3 ${
-            window.location.pathname === "/my-trips"
-              ? "bg-blue-50 text-blue-700 border-l-4 border-blue-500 shadow-sm"
-              : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
-          }`}
-          onClick={() => navigate("/my-trips")}
-        >
-          <span className="text-lg">✈️</span> My Trips
-        </button>
-        <button
-          className={`px-4 py-3 rounded-lg text-left font-medium transition-all duration-200 flex items-center gap-3 ${
-            window.location.pathname === "/visa-assistance"
-              ? "bg-blue-50 text-blue-700 border-l-4 border-blue-500 shadow-sm"
-              : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
-          }`}
-          onClick={() => navigate("/visa-assistance")}
-        >
-          <span className="text-lg">🛂</span> Visa Assistance
-        </button>
-        <button
-          className="px-4 py-3 rounded-lg text-left font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200 flex items-center gap-3"
-          onClick={() => navigate("/create-packages")}
-        >
-          <span className="text-lg">📝</span> Plan a Trip
-        </button>
-        <button
-          className={`px-4 py-3 rounded-lg text-left font-medium transition-all duration-200 flex items-center gap-3 ${
-            window.location.pathname === "/groups"
-              ? "bg-blue-50 text-blue-700 border-l-4 border-blue-500 shadow-sm"
-              : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
-          }`}
-          onClick={() => navigate("/groups")}
-        >
-          <span className="text-lg">👥</span> Groups
-        </button>
-        <button
-          className="px-4 py-3 rounded-lg text-left font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200 flex items-center gap-3"
-          onClick={() => navigate("/blogs")}
-        >
-          <span className="text-lg">📝</span> Blog
-        </button>
-      </nav>
+      <div className="h-6" />
     </aside>
   );
 };
