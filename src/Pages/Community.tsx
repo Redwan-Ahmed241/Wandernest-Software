@@ -53,32 +53,41 @@ interface Review {
 class CommunityAPI {
   private static baseURL = "https://wander-nest-ad3s.onrender.com/api";
 
-  private static getToken(): string | null {
-    // Check if localStorage is available (browser only)
-    if (typeof window === "undefined" || typeof localStorage === "undefined") {
-      return null;
+  private static getAuthHeaders(): Record<string, string> {
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+
+    // Get token from localStorage - prioritize accessToken (JWT), fallback to simple token
+    const rawToken =
+      (typeof localStorage !== "undefined" &&
+        (localStorage.getItem("accessToken") ||
+         localStorage.getItem("token") ||
+         localStorage.getItem("authToken"))) ||
+      undefined;
+
+    if (rawToken) {
+      let tokenStr = String(rawToken).trim();
+      // Remove any existing Bearer/Token prefixes
+      tokenStr = tokenStr.replace(/^Bearer\s+/i, "").replace(/^Token\s+/i, "");
+
+      // Detect if it's a JWT (3 parts with dots, or starts with "ey")
+      const looksLikeJwt =
+        tokenStr.split(".").length === 3 || /^ey[A-Za-z0-9_-]/.test(tokenStr);
+
+      // Use Bearer for JWT, Token for simple tokens
+      const scheme = looksLikeJwt ? "Bearer" : "Token";
+      headers["Authorization"] = `${scheme} ${tokenStr}`;
     }
-    // Check all possible token keys
-    return (
-      localStorage.getItem("token") ||
-      localStorage.getItem("authToken") ||
-      localStorage.getItem("accessToken") ||
-      null
-    );
+
+    return headers;
   }
 
   private static async request(endpoint: string, options: RequestInit = {}) {
-    const token = this.getToken();
-
-    const headers: Record<string, string> = {
-      "Content-Type": "application/json",
+    const headers = {
+      ...this.getAuthHeaders(),
       ...(options.headers as Record<string, string>),
     };
-
-    // Only add Authorization header if token exists
-    if (token) {
-      headers.Authorization = `Bearer ${token}`;
-    }
 
     const response = await fetch(`${this.baseURL}${endpoint}`, {
       headers,
@@ -86,6 +95,15 @@ class CommunityAPI {
     });
 
     if (!response.ok) {
+      // If 401 and we had a token, it's invalid - clear it
+      if (response.status === 401 && headers.Authorization) {
+        console.warn("Token is invalid/expired, clearing localStorage");
+        if (typeof localStorage !== "undefined") {
+          localStorage.removeItem("token");
+          localStorage.removeItem("authToken");
+          localStorage.removeItem("accessToken");
+        }
+      }
       throw new Error(`API Error: ${response.status}`);
     }
 
