@@ -1,32 +1,4 @@
-"use client";
 
-import React, { useEffect, useState, useRef } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-
-import Layout from "../components/layout";
-import { useAuth } from "../Authentication/auth-context";
-import { initiatePayment } from "../api/payments";
-
-interface Attraction {
-  id: number;
-  name: string;
-  description: string;
-  image: string;
-  rating: number;
-  reviews: number;
-  category: string;
-}
-
-interface Experience {
-  id: number;
-  name: string;
-  description: string;
-  image: string;
-  duration: string;
-  price: string;
-  rating: number;
-  reviews: number;
-}
 
 const ConfirmBook: React.FC = () => {
   // FIRST: Authentication check - must be at the top
@@ -1711,7 +1683,7 @@ const ConfirmBook: React.FC = () => {
 
             <div className="flex gap-4">
               <button
-                className="bg-[#4e944f] hover:bg-[#3d7540] text-white font-bold py-3 px-8 rounded-lg transition-colors duration-300 disabled:opacity-60"
+                className="bg-[#6ab187] hover:bg-[#4a6b5b] text-white font-bold py-3 px-8 rounded-lg transition-colors duration-300 disabled:opacity-60"
                 onClick={handleConfirmBooking}
                 disabled={isProcessingPayment}
               >
@@ -1733,3 +1705,37 @@ const ConfirmBook: React.FC = () => {
 };
 
 export default ConfirmBook;
+
+import React, { useState, useEffect, useRef } from "react";
+// Minimal type definitions for Attractions and Experiences
+export type Attraction = {
+  id?: number;
+  name: string;
+  description?: string;
+  image?: string;
+  location?: string;
+  rating?: number;
+  reviews?: number;
+  duration?: string;
+  price?: string | number;
+  // Add more fields as needed for JSX usage
+  [key: string]: unknown;
+};
+
+export type Experience = {
+  id?: number;
+  name: string;
+  description?: string;
+  image?: string;
+  location?: string;
+  rating?: number;
+  reviews?: number;
+  duration?: string;
+  price?: string | number;
+  // Add more fields as needed for JSX usage
+  [key: string]: unknown;
+};
+import { useAuth } from "../Authentication/auth-context";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import Layout from "../components/layout";
+import { initiatePayment } from "../api/payments";

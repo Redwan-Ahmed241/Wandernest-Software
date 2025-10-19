@@ -926,7 +926,10 @@ const CreatePackage: FunctionComponent = () => {
                     </span>
                     <button
                       type="button"
-                      className="px-4 py-2 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 transition-all duration-200"
+                      className="px-4 py-2 rounded-lg font-medium text-white transition-all duration-200"
+                      style={{ backgroundColor: '#6ab187' }}
+                      onMouseOver={e => (e.currentTarget.style.backgroundColor = '#519a6b')}
+                      onMouseOut={e => (e.currentTarget.style.backgroundColor = '#6ab187')}
                       onClick={() => {
                         handleSkip(
                           skipTransport,
@@ -1033,11 +1036,10 @@ const CreatePackage: FunctionComponent = () => {
                       getFilteredTransportOptions().map((option) => (
                       <div
                         key={option.id}
-                        className={`bg-white rounded-xl shadow p-4 flex flex-col items-center cursor-pointer transition-all duration-200 border-2 ${
-                          selectedTransport === option.id
-                            ? "border-primary"
-                            : "border-transparent"
-                        }`}
+                        className={`bg-white rounded-xl shadow p-4 flex flex-col items-center cursor-pointer transition-all duration-200 border-2
+                          ${selectedTransport === option.id ? "border-primary ring-2 ring-primary scale-105 shadow-lg" : "border-transparent"}
+                        `}
+                        style={selectedTransport === option.id ? { boxShadow: "0 0 0 3px #38bdf8, 0 4px 24px rgba(56,189,248,0.15)" } : {}}
                         onClick={() =>
                           handleOptionSelect(
                             option.id,
@@ -1095,7 +1097,10 @@ const CreatePackage: FunctionComponent = () => {
                     </span>
                     <button
                       type="button"
-                      className="px-4 py-2 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 transition-all duration-200"
+                      className="px-4 py-2 rounded-lg font-medium text-white transition-all duration-200"
+                      style={{ backgroundColor: '#6ab187' }}
+                      onMouseOver={e => (e.currentTarget.style.backgroundColor = '#519a6b')}
+                      onMouseOut={e => (e.currentTarget.style.backgroundColor = '#6ab187')}
                       onClick={() => {
                         handleSkip(skipHotel, setSkipHotel, setSelectedHotel);
                         // Clear hotel filters when skipping hotels
@@ -1184,11 +1189,10 @@ const CreatePackage: FunctionComponent = () => {
                       getFilteredHotelOptions().map((option) => (
                       <div
                         key={option.id}
-                        className={`bg-white rounded-xl shadow p-4 flex flex-col items-center cursor-pointer transition-all duration-200 border-2 ${
-                          selectedHotel === option.id
-                            ? "border-primary"
-                            : "border-transparent"
-                        }`}
+                        className={`bg-white rounded-xl shadow p-4 flex flex-col items-center cursor-pointer transition-all duration-200 border-2
+                          ${selectedHotel === option.id ? "border-primary ring-2 ring-primary scale-105 shadow-lg" : "border-transparent"}
+                        `}
+                        style={selectedHotel === option.id ? { boxShadow: "0 0 0 3px #38bdf8, 0 4px 24px rgba(56,189,248,0.15)" } : {}}
                         onClick={() =>
                           handleOptionSelect(
                             option.id,
@@ -1246,7 +1250,10 @@ const CreatePackage: FunctionComponent = () => {
                     </span>
                     <button
                       type="button"
-                      className="px-4 py-2 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 transition-all duration-200"
+                      className="px-4 py-2 rounded-lg font-medium text-white transition-all duration-200"
+                      style={{ backgroundColor: '#6ab187' }}
+                      onMouseOver={e => (e.currentTarget.style.backgroundColor = '#519a6b')}
+                      onMouseOut={e => (e.currentTarget.style.backgroundColor = '#6ab187')}
                       onClick={() => {
                         handleSkip(skipGuide, setSkipGuide, setSelectedGuide);
                         // Clear guide filters when skipping guides
@@ -1335,11 +1342,10 @@ const CreatePackage: FunctionComponent = () => {
                       getFilteredGuideOptions().map((option) => (
                       <div
                         key={option.id}
-                        className={`bg-white rounded-xl shadow p-4 flex flex-col items-center cursor-pointer transition-all duration-200 border-2 ${
-                          selectedGuide === option.id
-                            ? "border-primary"
-                            : "border-transparent"
-                        }`}
+                        className={`bg-white rounded-xl shadow p-4 flex flex-col items-center cursor-pointer transition-all duration-200 border-2
+                          ${selectedGuide === option.id ? "border-primary ring-2 ring-primary scale-105 shadow-lg" : "border-transparent"}
+                        `}
+                        style={selectedGuide === option.id ? { boxShadow: "0 0 0 3px #38bdf8, 0 4px 24px rgba(56,189,248,0.15)" } : {}}
                         onClick={() =>
                           handleOptionSelect(
                             option.id,
@@ -1399,7 +1405,10 @@ const CreatePackage: FunctionComponent = () => {
               </div>
               <button
                 type="button"
-                className="w-full md:w-auto px-6 py-3 rounded-lg bg-green-500 text-white font-bold shadow hover:bg-green-600 transition-all duration-200"
+                className="w-full md:w-auto px-6 py-3 rounded-lg font-bold text-white shadow transition-all duration-200"
+                style={{ backgroundColor: '#6ab187' }}
+                onMouseOver={e => (e.currentTarget.style.backgroundColor = '#519a6b')}
+                onMouseOut={e => (e.currentTarget.style.backgroundColor = '#6ab187')}
                 onClick={handleCreatePackage}
                 disabled={isCreatingPackage}
               >

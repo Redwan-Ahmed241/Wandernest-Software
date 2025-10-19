@@ -41,10 +41,10 @@ const Navbar: React.FC = () => {
             onClick={goHome}
           >
             <img
-              src="/Figma_photos/Gemini_Generated_Image_8c7rnh8c7rnh8c7r.svg"
+              src="/Figma_photos/Screenshot 2025-10-19 185315.svg"
               alt="WanderNest Logo"
-              className="w-14 h-14 object-cover object-center rounded-full"
-              style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}
+              className="w-16 h-16 object-contain"
+              style={{ boxShadow: "none", background: "none", objectPosition: 'center', objectFit: 'contain' }}
             />
             <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-black">
               WanderNest

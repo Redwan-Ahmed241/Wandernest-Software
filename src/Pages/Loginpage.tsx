@@ -227,7 +227,7 @@ export default function TravelLogin() {
             >
               <div className="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
                 <img
-                  src="/Figma_photos/wandernest.svg"
+                  src="/Figma_photos/Screenshot 2025-10-19 185315.svg"
                   alt="WanderNest Logo"
                   className="w-7 h-7"
                 />
