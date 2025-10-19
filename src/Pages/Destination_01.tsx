@@ -136,7 +136,6 @@ const DestinationPage: FunctionComponent = () => {
     destinationId: string;
     destinationName: string;
   }>();
-  const [activeTab, setActiveTab] = useState("overview");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -420,9 +419,9 @@ const DestinationPage: FunctionComponent = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-theme-bg">
+  <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
-        <div className="relative w-full h-96 mb-8">
+  <div className="relative w-full h-96 mb-12">
           <img
             src={
               destinationData?.heroImage || 
@@ -441,25 +440,27 @@ const DestinationPage: FunctionComponent = () => {
           <div className="absolute inset-0 bg-gradient-to-br from-[#6ab187]/20 via-transparent to-[#4a6b5b]/20"></div>
           <div className="absolute inset-0 flex items-end">
             <div className="p-8 w-full">
-              <h1 className="text-4xl font-bold text-white mb-2">
+              <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-2 drop-shadow-lg">
                 {destinationData?.name}
               </h1>
-              <p className="text-lg text-theme-accent mb-2">
+              <p className="text-xl text-[#6ab187] mb-2 font-semibold drop-shadow">
                 {destinationData?.subtitle}
               </p>
-              <p className="text-white mb-4">{destinationData?.description}</p>
-              <div className="flex gap-6 text-white">
-                <div className="flex items-center gap-2">
+              <p className="text-white/90 mb-4 text-lg max-w-2xl drop-shadow">
+                {destinationData?.description}
+              </p>
+              <div className="flex flex-wrap gap-6 text-white mt-2">
+                <div className="flex items-center gap-2 bg-black/30 px-3 py-1 rounded-full">
                   <span>📍</span>
                   <span>{destinationData?.location}</span>
                 </div>
                 {weatherData && (
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 bg-black/30 px-3 py-1 rounded-full">
                     <span>🌤️</span>
                     <span>{weatherData.current.temperature}°C</span>
                   </div>
                 )}
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 bg-black/30 px-3 py-1 rounded-full">
                   <span>💰</span>
                   <span>{destinationData?.currency}</span>
                 </div>
@@ -467,77 +468,25 @@ const DestinationPage: FunctionComponent = () => {
             </div>
           </div>
         </div>
-        {/* Navigation Tabs */}
-        <div className="flex gap-2 justify-center mt-6 mb-8">
-          <button
-            className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${
-              activeTab === "overview"
-                ? "bg-[#6ab187] text-white shadow-lg"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            }`}
-            onClick={() => setActiveTab("overview")}
-          >
-            Overview
-          </button>
-          <button
-            className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${
-              activeTab === "attractions"
-                ? "bg-[#6ab187] text-white shadow-lg"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            }`}
-            onClick={() => setActiveTab("attractions")}
-          >
-            Attractions
-          </button>
-          <button
-            className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${
-              activeTab === "experiences"
-                ? "bg-[#6ab187] text-white shadow-lg"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            }`}
-            onClick={() => setActiveTab("experiences")}
-          >
-            Experiences
-          </button>
-          <button
-            className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${
-              activeTab === "package"
-                ? "bg-[#6ab187] text-white shadow-lg"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            }`}
-            onClick={() => setActiveTab("package")}
-          >
-            Package
-          </button>
-          <button
-            className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${
-              activeTab === "weather"
-                ? "bg-[#6ab187] text-white shadow-lg"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            }`}
-            onClick={() => setActiveTab("weather")}
-          >
-            Weather
-          </button>
-        </div>
-        {/* Content Area */}
+        {/* All Sections Inline - No Tabs */}
         <div className="max-w-6xl mx-auto px-4">
-          {activeTab === "overview" && (
-            <div className="mb-10">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center hover:shadow-xl transition-shadow duration-300">
+          {/* Removed Section Divider */}
+          {/* Overview Section */}
+          <div className="mb-16">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+                <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 flex flex-col items-center text-center hover:shadow-2xl transition-shadow duration-300">
                   <div className="text-4xl mb-3">📍</div>
-                  <h3 className="font-bold text-gray-900 text-lg mb-2">
+                  <h3 className="font-extrabold text-gray-900 text-xl mb-2 tracking-tight">
                     Location
                   </h3>
-                  <p className="text-gray-700 font-medium mb-1">
+                  <p className="text-gray-700 font-semibold mb-1 text-base">
                     {destinationData?.location}
                   </p>
-                  <small className="text-xs text-gray-500">
+                  <small className="text-xs text-gray-400">
                     {destinationData?.coordinates}
                   </small>
                 </div>
-                <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center hover:shadow-xl transition-shadow duration-300">
+                <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 flex flex-col items-center text-center hover:shadow-2xl transition-shadow duration-300">
                   <div className="text-4xl mb-3">🌤️</div>
                   <h3 className="font-bold text-gray-900 text-lg mb-2">
                     Best Time to Visit
@@ -547,7 +496,7 @@ const DestinationPage: FunctionComponent = () => {
                   </p>
                   <small className="text-xs text-gray-500">Peak season</small>
                 </div>
-                <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center hover:shadow-xl transition-shadow duration-300">
+                <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 flex flex-col items-center text-center hover:shadow-2xl transition-shadow duration-300">
                   <div className="text-4xl mb-3">💰</div>
                   <h3 className="font-bold text-gray-900 text-lg mb-2">
                     Currency
@@ -559,7 +508,7 @@ const DestinationPage: FunctionComponent = () => {
                     Local currency
                   </small>
                 </div>
-                <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center hover:shadow-xl transition-shadow duration-300">
+                <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 flex flex-col items-center text-center hover:shadow-2xl transition-shadow duration-300">
                   <div className="text-4xl mb-3">🗣️</div>
                   <h3 className="font-bold text-gray-900 text-lg mb-2">
                     Language
@@ -573,7 +522,7 @@ const DestinationPage: FunctionComponent = () => {
                 </div>
               </div>
               {weatherData && (
-                <div className="bg-white rounded-xl shadow p-6 mb-8">
+                <div className="bg-white rounded-2xl shadow-lg p-8 mb-8 border border-gray-100">
                   <h2 className="text-xl font-bold text-theme-primary mb-2">
                     Current Weather
                   </h2>
@@ -605,18 +554,18 @@ const DestinationPage: FunctionComponent = () => {
                 </div>
               )}
             </div>
-          )}
-          {activeTab === "attractions" && (
-            <div className="mb-10">
-              <h2 className="text-2xl font-bold text-theme-primary mb-6">
+          {/* Removed Section Divider */}
+          {/* Attractions Section */}
+          <div className="mb-16">
+              <h2 className="text-3xl font-extrabold text-theme-primary mb-8 tracking-tight">
                 Top Attractions in {destinationData?.name}
               </h2>
               {attractions.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
                   {attractions.map((attraction) => (
                     <div
                       key={attraction.id}
-                      className="bg-white rounded-xl shadow p-6 flex flex-col gap-4 hover:shadow-lg transition-shadow duration-200"
+                      className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 flex flex-col gap-4 hover:shadow-2xl transition-shadow duration-200"
                     >
                       <div className="relative">
                         <img
@@ -629,13 +578,13 @@ const DestinationPage: FunctionComponent = () => {
                         </div>
                       </div>
                       <div>
-                        <h3 className="font-semibold text-theme-primary text-lg mb-1">
+                        <h3 className="font-bold text-theme-primary text-xl mb-2 tracking-tight">
                           {attraction.name}
                         </h3>
-                        <p className="text-theme-secondary mb-2">
+                        <p className="text-theme-secondary mb-3 text-base">
                           {attraction.description}
                         </p>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 mt-2">
                           <span className="text-yellow-500">
                             {"★".repeat(Math.floor(attraction.rating))}
                           </span>
@@ -653,18 +602,19 @@ const DestinationPage: FunctionComponent = () => {
                 </p>
               )}
             </div>
-          )}
-          {activeTab === "experiences" && (
-            <div className="mb-10">
-              <h2 className="text-2xl font-bold text-theme-primary mb-6">
+          {/* Section Divider */}
+          <div className="w-full h-0.5 bg-gray-200 my-10 rounded-full" />
+          {/* Experiences Section */}
+          <div className="mb-16">
+              <h2 className="text-3xl font-extrabold text-theme-primary mb-8 tracking-tight">
                 Experience {destinationData?.name}
               </h2>
               {experiences.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
                   {experiences.map((experience) => (
                     <div
                       key={experience.id}
-                      className="bg-white rounded-xl shadow p-6 flex flex-col gap-4 hover:shadow-lg transition-shadow duration-200"
+                      className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 flex flex-col gap-4 hover:shadow-2xl transition-shadow duration-200"
                     >
                       <div className="relative">
                         <img
@@ -677,13 +627,13 @@ const DestinationPage: FunctionComponent = () => {
                         </div>
                       </div>
                       <div>
-                        <h3 className="font-semibold text-theme-primary text-lg mb-1">
+                        <h3 className="font-bold text-theme-primary text-xl mb-2 tracking-tight">
                           {experience.name}
                         </h3>
-                        <p className="text-theme-secondary mb-2">
+                        <p className="text-theme-secondary mb-3 text-base">
                           {experience.description}
                         </p>
-                        <div className="flex items-center gap-2 mb-2">
+                        <div className="flex items-center gap-2 mt-2 mb-2">
                           <span className="text-xs">
                             ⏱️ {experience.duration}
                           </span>
@@ -708,10 +658,11 @@ const DestinationPage: FunctionComponent = () => {
                 </p>
               )}
             </div>
-          )}
-          {activeTab === "package" && (
-            <div className="mb-10">
-              <h2 className="text-2xl font-bold text-theme-primary mb-6">
+          {/* Section Divider */}
+          <div className="w-full h-0.5 bg-gray-200 my-10 rounded-full" />
+          {/* Packages Section */}
+          <div className="mb-16">
+              <h2 className="text-3xl font-extrabold text-theme-primary mb-8 tracking-tight">
                 Packages for {destinationData?.name}
               </h2>
               {packagesLoading ? (
@@ -719,11 +670,11 @@ const DestinationPage: FunctionComponent = () => {
                   <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-[#6ab187] border-b-4"></div>
                 </div>
               ) : packages.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
                   {packages.map((pkg) => (
                     <div
                       key={pkg.id}
-                      className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 flex flex-col"
+                      className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden hover:shadow-2xl transition-shadow duration-300 flex flex-col"
                     >
                       <div className="relative h-48">
                         <img
@@ -748,13 +699,13 @@ const DestinationPage: FunctionComponent = () => {
                         )}
                       </div>
                       <div className="p-6 flex flex-col flex-grow">
-                        <h3 className="font-bold text-gray-900 text-xl mb-2">
+                        <h3 className="font-extrabold text-gray-900 text-xl mb-2 tracking-tight">
                           {pkg.title}
                         </h3>
-                        <p className="text-gray-600 text-sm mb-3 line-clamp-2 flex-grow">
+                        <p className="text-gray-600 text-base mb-4 line-clamp-2 flex-grow">
                           {pkg.subtitle || pkg.description || 'Explore this amazing destination'}
                         </p>
-                        <div className="flex items-center gap-2 mb-3 text-sm text-gray-600">
+                        <div className="flex items-center gap-2 mt-2 mb-3 text-sm text-gray-600">
                           <span>📍</span>
                           <span>{pkg.from_location} → {pkg.to_location}</span>
                         </div>
@@ -808,9 +759,10 @@ const DestinationPage: FunctionComponent = () => {
                 </div>
               )}
             </div>
-          )}
-          {activeTab === "weather" && (
-            <div className="mb-10">
+          {/* Section Divider */}
+          <div className="w-full h-0.5 bg-gray-200 my-10 rounded-full" />
+          {/* Weather Section */}
+          <div className="mb-12">
               <h2 className="text-2xl font-bold text-theme-primary mb-6">
                 Weather in {destinationData?.name}
               </h2>
@@ -884,7 +836,6 @@ const DestinationPage: FunctionComponent = () => {
                 </div>
               )}
             </div>
-          )}
         </div>
       </div>
     </Layout>
