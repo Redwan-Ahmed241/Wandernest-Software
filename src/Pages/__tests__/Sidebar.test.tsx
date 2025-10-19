@@ -125,8 +125,8 @@ describe('Sidebar Component', () => {
       </TestWrapper>
     );
 
-    expect(screen.getByText('John')).toBeInTheDocument();
-    expect(screen.getByText('Plan your next adventure')).toBeInTheDocument();
+  expect(screen.getByText('John')).toBeInTheDocument();
+  expect(screen.getByText('Travel Management')).toBeInTheDocument();
   });
 
   it('should have clickable buttons for all menu items', () => {
@@ -137,7 +137,7 @@ describe('Sidebar Component', () => {
     );
 
     const buttons = screen.getAllByRole('button');
-    expect(buttons).toHaveLength(6); // 6 navigation buttons
+    expect(buttons).toHaveLength(8); // 8 buttons: 6 nav, Settings, Sign Out
 
     buttons.forEach(button => {
       expect(button).not.toBeDisabled();
