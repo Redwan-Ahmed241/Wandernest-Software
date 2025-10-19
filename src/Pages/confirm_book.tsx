@@ -84,6 +84,9 @@ const ConfirmBook: React.FC = () => {
   const [totalPrice, setTotalPrice] = useState("");
   const [endDate, setEndDate] = useState("");
 
+  // Selection state for hotel on confirm page
+  const [selectedHotelId, setSelectedHotelId] = useState<string | null>(null);
+
   // Removed skip states since we're not allowing customization anymore
 
   const [warning, setWarning] = useState("");
@@ -1125,96 +1128,53 @@ const ConfirmBook: React.FC = () => {
                     }}
                   >
                     {packageDetails?.hotel ? (
-                      <div
-                        style={{
-                          borderRadius: 14,
-                          border: "2.5px solid #4e944f",
-                          boxShadow: "0 4px 24px rgba(76,177,106,0.15)",
-                          overflow: "hidden",
-                          background: "#fff",
-                          minWidth: 220,
-                          maxWidth: 240,
-                          flex: "0 0 220px",
-                          position: "relative",
-                        }}
-                      >
-                        <div
-                          style={{
-                            position: "absolute",
-                            top: 8,
-                            left: 8,
-                            background: "#4e944f",
-                            color: "white",
-                            padding: "4px 8px",
-                            borderRadius: 6,
-                            fontSize: 12,
-                            fontWeight: 600,
-                          }}
-                        >
-                          INCLUDED
-                        </div>
-                        <img
-                          src={"/placeholder.svg?height=120&width=200"}
-                          alt={packageDetails.hotel.name}
-                          style={{
-                            width: "100%",
-                            height: 120,
-                            objectFit: "cover",
-                            display: "block",
-                          }}
-                        />
-                        <div style={{ padding: "12px 12px 8px 12px" }}>
+                      (() => {
+                        const hotelSafe = packageDetails.hotel as NonNullable<typeof packageDetails.hotel>;
+                        return (
                           <div
-                            style={{
-                              fontWeight: 600,
-                              fontSize: 15,
-                              marginBottom: 4,
-                            }}
+                            className={`bg-white rounded-xl shadow-sm p-6 flex flex-col items-center text-center relative border-2 cursor-pointer transition-all duration-200 ${
+                              selectedHotelId === String(hotelSafe.id)
+                                ? "border-primary ring-2 ring-primary/40 scale-105 z-10"
+                                : "border-transparent"
+                            }`}
+                            onClick={() => setSelectedHotelId(String(hotelSafe.id))}
                           >
-                            {packageDetails.hotel.name}
-                          </div>
-                          <div
-                            style={{
-                              color: "#8a8a8a",
-                              fontSize: 13,
-                              marginBottom: 2,
-                            }}
-                          >
-                            {packageDetails.hotel.description ||
-                              "Hotel accommodation"}
-                          </div>
-                          {packageDetails.hotel.rating && (
-                            <div
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                marginTop: 4,
+                            <div className="absolute top-3 left-3 bg-green-600 text-white text-xs font-semibold px-2 py-1 rounded">
+                              INCLUDED
+                            </div>
+
+                            <div className="w-full h-36 overflow-hidden rounded-lg mb-4">
+                              <img
+                                className="w-full h-full object-cover"
+                                src={((hotelSafe as unknown) as Record<string, unknown>).image as string || ((hotelSafe as unknown) as Record<string, unknown>).image_url as string || "/placeholder.svg?height=160&width=320"}
+                                alt={hotelSafe.name}
+                              />
+                            </div>
+
+                            <h3 className="text-lg font-semibold text-gray-900 mb-1">{hotelSafe.name}</h3>
+                            <p className="text-sm text-gray-500 mb-4">{hotelSafe.description || "Hotel accommodation"}</p>
+
+                            {hotelSafe.price && (
+                              <div className="mt-auto text-lg font-bold text-green-700">৳{hotelSafe.price} per night</div>
+                            )}
+
+                            <button
+                              type="button"
+                              className={`mt-3 inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium focus:outline-none ${
+                                selectedHotelId === String(hotelSafe.id)
+                                  ? "bg-green-600 text-white"
+                                  : "bg-white border border-gray-200 text-gray-700"
+                              }`}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedHotelId(String(hotelSafe.id));
                               }}
                             >
-                              <span
-                                style={{ color: "#ffa500", marginRight: 4 }}
-                              >
-                                ★
-                              </span>
-                              <span style={{ fontSize: 12, color: "#666" }}>
-                                {packageDetails.hotel.rating}
-                              </span>
-                            </div>
-                          )}
-                          {packageDetails.hotel.price && (
-                            <div
-                              style={{
-                                color: "#4e944f",
-                                fontSize: 14,
-                                fontWeight: 600,
-                                marginTop: 4,
-                              }}
-                            >
-                              ৳{packageDetails.hotel.price} per night
-                            </div>
-                          )}
-                        </div>
-                      </div>
+                              {selectedHotelId === String(hotelSafe.id) ? "Selected" : "Select"}
+                            </button>
+                          </div>
+                        );
+                      })()
                     ) : (
                       <p>No hotel information available.</p>
                     )}
