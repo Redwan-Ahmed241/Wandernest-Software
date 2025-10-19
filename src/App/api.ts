@@ -1,5 +1,5 @@
 // API configuration and service functions
-const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_URL || "http://localhost:8000/api"
+const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_URL || "https://wander-nest-ad3s.onrender.com/api"
 
 // Get auth token from localStorage (matching your existing auth setup)
 const getAuthToken = (): string | null => {
@@ -367,6 +367,7 @@ export interface Trip {
   weather: string
   currency: string
   status: "upcoming" | "past" | "cancelled"
+  type?: "package" | "hotel" | "flight"
   created_at: string
   updated_at: string
   price?: number
