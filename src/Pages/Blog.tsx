@@ -32,40 +32,44 @@ interface BlogPost {
 class BlogAPI {
   private static baseURL = "https://wander-nest-ad3s.onrender.com/api";
 
-  private static getToken(): string | null {
-    // Check if localStorage is available (browser only)
-    if (typeof window === "undefined" || typeof localStorage === "undefined") {
-      return null;
-    }
-    // Check all possible token keys
-    const token =
-      localStorage.getItem("token") ||
-      localStorage.getItem("authToken") ||
-      localStorage.getItem("accessToken") ||
-      null;
-
-    console.log(
-      "BlogAPI.getToken() found:",
-      token ? `${token.substring(0, 20)}...` : "null"
-    );
-    return token;
-  }
-
-  private static async request(endpoint: string, options: RequestInit = {}) {
-    const token = this.getToken();
-
+  private static getAuthHeaders(): Record<string, string> {
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
-      ...(options.headers as Record<string, string>),
     };
 
-    // Only add Authorization header if token exists
-    if (token) {
-      headers.Authorization = `Bearer ${token}`;
-      console.log("BlogAPI sending request WITH token");
+    // Get token from localStorage - prioritize accessToken (JWT), fallback to simple token
+    const rawToken =
+      (typeof localStorage !== "undefined" &&
+        (localStorage.getItem("accessToken") ||
+         localStorage.getItem("token") ||
+         localStorage.getItem("authToken"))) ||
+      undefined;
+
+    if (rawToken) {
+      let tokenStr = String(rawToken).trim();
+      // Remove any existing Bearer/Token prefixes
+      tokenStr = tokenStr.replace(/^Bearer\s+/i, "").replace(/^Token\s+/i, "");
+
+      // Detect if it's a JWT (3 parts with dots, or starts with "ey")
+      const looksLikeJwt =
+        tokenStr.split(".").length === 3 || /^ey[A-Za-z0-9_-]/.test(tokenStr);
+
+      // Use Bearer for JWT, Token for simple tokens
+      const scheme = looksLikeJwt ? "Bearer" : "Token";
+      headers["Authorization"] = `${scheme} ${tokenStr}`;
+      console.log(`BlogAPI sending request WITH ${scheme} token`);
     } else {
       console.log("BlogAPI sending request WITHOUT token (anonymous)");
     }
+
+    return headers;
+  }
+
+  private static async request(endpoint: string, options: RequestInit = {}) {
+    const headers = {
+      ...this.getAuthHeaders(),
+      ...(options.headers as Record<string, string>),
+    };
 
     console.log("BlogAPI request to:", `${this.baseURL}${endpoint}`);
 
@@ -78,7 +82,7 @@ class BlogAPI {
 
     if (!response.ok) {
       // If 401 and we had a token, it's invalid - clear it
-      if (response.status === 401 && token) {
+      if (response.status === 401 && headers.Authorization) {
         console.warn("Token is invalid/expired, clearing localStorage");
         if (typeof localStorage !== "undefined") {
           localStorage.removeItem("token");
