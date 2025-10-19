@@ -749,9 +749,10 @@ const ConfirmBook: React.FC = () => {
           start_date: startDate,
           end_date: endDate,
           travelers: travelers,
-          note: !packageId && packageDetails?.id 
-            ? "Using template ID as fallback - backend did not return booking ID"
-            : undefined,
+          note:
+            !packageId && packageDetails?.id
+              ? "Using template ID as fallback - backend did not return booking ID"
+              : undefined,
         },
       });
 
