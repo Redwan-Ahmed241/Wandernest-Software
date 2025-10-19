@@ -688,11 +688,14 @@ const ConfirmBook: React.FC = () => {
         Array.isArray(createdPackage)
       );
 
-      // Backend might return id, pk, or package_id - check all possibilities
+      // Backend should return id, pk, or package_id - check all possibilities
       const packageId =
         createdPackage.id || createdPackage.pk || createdPackage.package_id;
 
-      if (!packageId) {
+      // FALLBACK: If backend doesn't return an ID, use template ID (defensive programming)
+      const finalPackageId = packageId || packageDetails?.id;
+
+      if (!finalPackageId) {
         console.error(
           "[Package Booking] No ID found in response:",
           createdPackage
@@ -703,69 +706,32 @@ const ConfirmBook: React.FC = () => {
         console.error(
           "[Package Booking] Expected response with 'id' and 'total_cost' fields"
         );
-
-        // TEMPORARY WORKAROUND: Use the package template ID from URL/state
-        // This is NOT ideal but allows testing until backend is fixed
-        console.warn(
-          "[Package Booking] WORKAROUND: Using package template ID from state"
+        throw new Error(
+          "Package booking created but no ID returned and no fallback available. Cannot proceed to payment."
         );
-
-        const fallbackPackageId = packageDetails?.id || packageId;
-
-        if (!fallbackPackageId) {
-          throw new Error(
-            "Package booking created but no ID returned. The backend endpoint may not be implemented correctly. Check console logs."
-          );
-        }
-
-        console.warn(
-          "[Package Booking] Using fallback Package ID:",
-          fallbackPackageId
-        );
-
-        // Use the fallback ID and continue
-        const fallbackPaymentResponse = await initiatePayment({
-          amount: createdPackage.total_cost || totalPrice,
-          currency: "BDT",
-          booking_id: String(fallbackPackageId),
-          service_type: "package" as const,
-          service_name: packageDetails?.title || "Package Booking",
-          service_details: `Package booking for ${travelers} travelers from ${
-            packageDetails?.source || packageDetails?.from_location
-          } to ${packageDetails?.destination || packageDetails?.to_location}`,
-          customer_name: customerName || "Guest",
-          customer_email: customerEmail || "guest@wandernest.com",
-          customer_phone: customerPhone || "N/A",
-          service_data: {
-            package_booking_id: fallbackPackageId,
-            original_template_id: packageDetails?.id,
-            package_title: packageDetails?.title,
-            from: packageDetails?.source || packageDetails?.from_location,
-            to: packageDetails?.destination || packageDetails?.to_location,
-            start_date: startDate,
-            end_date: endDate,
-            travelers: travelers,
-            note: "Using template ID as workaround - backend did not return booking ID",
-          },
-        });
-
-        console.log(
-          "[Payment] Payment initiated successfully (workaround):",
-          fallbackPaymentResponse
-        );
-        window.location.href = fallbackPaymentResponse.GatewayPageURL;
-        return; // Exit early
       }
 
-      console.log("[Package Booking] Extracted Package ID:", packageId);
+      // Log which ID we're using
+      if (!packageId && packageDetails?.id) {
+        console.warn(
+          "[Package Booking] ⚠️ FALLBACK: Backend did not return booking ID, using template ID:",
+          finalPackageId
+        );
+        console.warn(
+          "[Package Booking] This is a fallback mechanism. Backend should return 'id' field."
+        );
+      } else {
+        console.log(
+          "[Package Booking] ✅ Using booking ID from backend:",
+          finalPackageId
+        );
+      }
 
-      // STEP 2: Initiate payment with the real Package.id (as string, payments.ts will convert to integer)
-      console.log("[Payment] Initiating payment for Package ID:", packageId);
-
+      // Continue with payment using the final package ID
       const paymentResponse = await initiatePayment({
         amount: createdPackage.total_cost || totalPrice,
         currency: "BDT",
-        booking_id: String(packageId), // Convert to string, payments.ts will convert to integer
+        booking_id: String(finalPackageId), // Use finalPackageId (has fallback)
         service_type: "package" as const,
         service_name: packageDetails?.title || "Package Booking",
         service_details: `Package booking for ${travelers} travelers from ${
@@ -775,7 +741,7 @@ const ConfirmBook: React.FC = () => {
         customer_email: customerEmail || "guest@wandernest.com",
         customer_phone: customerPhone || "N/A",
         service_data: {
-          package_booking_id: packageId,
+          package_booking_id: finalPackageId,
           original_template_id: packageDetails?.id,
           package_title: packageDetails?.title,
           from: packageDetails?.source || packageDetails?.from_location,
@@ -783,6 +749,9 @@ const ConfirmBook: React.FC = () => {
           start_date: startDate,
           end_date: endDate,
           travelers: travelers,
+          note: !packageId && packageDetails?.id 
+            ? "Using template ID as fallback - backend did not return booking ID"
+            : undefined,
         },
       });
 
