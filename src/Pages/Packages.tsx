@@ -181,7 +181,11 @@ const Packages: FunctionComponent = () => {
   };
 
   // Filter packages by search and selected filters
-  const filteredPackages = packages.filter((pkg) => {
+  // Sorting logic
+  const [sortOption, setSortOption] = useState("Default");
+
+  // Filter packages by search and selected filters
+  let filteredPackages = packages.filter((pkg) => {
     const matchesSearch =
       search.length === 0 ||
       (pkg.title && pkg.title.toLowerCase().includes(search.toLowerCase()));
@@ -206,7 +210,23 @@ const Packages: FunctionComponent = () => {
       }
     );
     return matchesSearch && matchesFilters;
+
   });
+
+  // Apply sorting
+  if (sortOption === "Price: Low-High") {
+    filteredPackages = [...filteredPackages].sort((a, b) => {
+      const priceA = Number((a.price || a.total_cost || a.budget || "0").replace(/[^0-9.-]/g, ""));
+      const priceB = Number((b.price || b.total_cost || b.budget || "0").replace(/[^0-9.-]/g, ""));
+      return priceA - priceB;
+    });
+  } else if (sortOption === "Price: High-Low") {
+    filteredPackages = [...filteredPackages].sort((a, b) => {
+      const priceA = Number((a.price || a.total_cost || a.budget || "0").replace(/[^0-9.-]/g, ""));
+      const priceB = Number((b.price || b.total_cost || b.budget || "0").replace(/[^0-9.-]/g, ""));
+      return priceB - priceA;
+    });
+  }
 
   // Debug logging
   console.log("Packages total:", packages.length);
@@ -287,13 +307,24 @@ const Packages: FunctionComponent = () => {
           </div>
         </section>
 
-        {/* Filters Section */}
+        {/* Filters & Sorting Section */}
         <section className="py-8 bg-white border-b border-gray-200">
           <div className="max-w-6xl mx-auto px-4">
-            <div
-              className="flex flex-wrap justify-center gap-4"
-              ref={filterDropdownRef}
-            >
+            <div className="flex flex-wrap justify-center gap-4 items-center" ref={filterDropdownRef}>
+              {/* Sort By dropdown */}
+              <div className="relative">
+                <label htmlFor="sort" className="mr-2 font-semibold text-gray-700">Sort By:</label>
+                <select
+                  id="sort"
+                  value={sortOption}
+                  onChange={e => setSortOption(e.target.value)}
+                  className="px-6 py-3 rounded-xl font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all duration-200 border-none shadow focus:outline-none focus:ring-2 focus:ring-accent"
+                >
+                  <option value="Default">Default</option>
+                  <option value="Price: Low-High">Price: Low-High</option>
+                  <option value="Price: High-Low">Price: High-Low</option>
+                </select>
+              </div>
               {/* Destination filter */}
               <div className="relative">
                 <button

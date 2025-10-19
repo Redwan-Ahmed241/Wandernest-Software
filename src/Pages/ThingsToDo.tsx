@@ -31,6 +31,9 @@ const ThingsToDo: FunctionComponent = () => {
   const [locationQuery, setLocationQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
 
+  // Sorting state
+  const [sortOption, setSortOption] = useState("Default");
+
   const [apiData, setApiData] = useState<Activity[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -74,6 +77,22 @@ const ThingsToDo: FunctionComponent = () => {
     return matchesCategory && matchesActivity && matchesLocation;
   });
 
+  // Sorting logic
+  const sortedCards = [...filteredCards];
+  if (sortOption === "Price: Low-High") {
+    sortedCards.sort((a, b) => {
+      const priceA = Number(a.price.replace(/[^0-9.-]/g, ""));
+      const priceB = Number(b.price.replace(/[^0-9.-]/g, ""));
+      return priceA - priceB;
+    });
+  } else if (sortOption === "Price: High-Low") {
+    sortedCards.sort((a, b) => {
+      const priceA = Number(a.price.replace(/[^0-9.-]/g, ""));
+      const priceB = Number(b.price.replace(/[^0-9.-]/g, ""));
+      return priceB - priceA;
+    });
+  }
+
   // Pagination logic
   const ITEMS_PER_PAGE = 9; // 3x3 grid
   const {
@@ -84,7 +103,7 @@ const ThingsToDo: FunctionComponent = () => {
     totalItems,
     itemsPerPage,
   } = usePagination({
-    data: filteredCards,
+    data: sortedCards,
     itemsPerPage: ITEMS_PER_PAGE,
   });
 
@@ -146,7 +165,22 @@ const ThingsToDo: FunctionComponent = () => {
         {/* Category Filter */}
         <section className="py-8 bg-white">
           <div className="max-w-6xl mx-auto px-4">
-            <div className="flex flex-wrap justify-center gap-4">
+            <div className="flex flex-wrap justify-center gap-4 items-center">
+              {/* Sort By dropdown */}
+              <div className="relative">
+                <label htmlFor="sort" className="mr-2 font-semibold text-gray-700">Sort By:</label>
+                <select
+                  id="sort"
+                  value={sortOption}
+                  onChange={e => setSortOption(e.target.value)}
+                  className="px-6 py-3 rounded-xl font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all duration-200 border-none shadow focus:outline-none focus:ring-2 focus:ring-accent"
+                >
+                  <option value="Default">Default</option>
+                  <option value="Price: Low-High">Price: Low-High</option>
+                  <option value="Price: High-Low">Price: High-Low</option>
+                </select>
+              </div>
+              {/* Existing category filters */}
               {filterCategories.map((cat) => (
                 <button
                   key={cat.id}

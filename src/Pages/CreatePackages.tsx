@@ -611,7 +611,8 @@ const CreatePackage: FunctionComponent = () => {
     setShowErrorModal(false);
     
     if (!isFormValid()) {
-      alert("Please fill in all required fields and ensure dates are valid.");
+      setSelectionError("Please fill in all required fields and ensure dates are valid.");
+      setShowErrorModal(true);
       return;
     }
 
@@ -1400,7 +1401,7 @@ const CreatePackage: FunctionComponent = () => {
                 type="button"
                 className="w-full md:w-auto px-6 py-3 rounded-lg bg-green-500 text-white font-bold shadow hover:bg-green-600 transition-all duration-200"
                 onClick={handleCreatePackage}
-                disabled={!isFormValid() || isCreatingPackage}
+                disabled={isCreatingPackage}
               >
                 {isCreatingPackage ? "Creating Package..." : "Create Package"}
               </button>
