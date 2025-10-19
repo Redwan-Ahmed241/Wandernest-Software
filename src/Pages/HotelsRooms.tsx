@@ -441,6 +441,9 @@ const HotelsRooms: FunctionComponent = () => {
   }>({});
   const filterDropdownRef = useRef<HTMLDivElement>(null);
 
+    // Sorting state
+    const [sortOption, setSortOption] = useState("Default");
+
   // Data states
   const [hotels, setHotels] = useState<Hotel[]>([]);
   const [locationOptions, setLocationOptions] = useState<string[]>(["All"]);
@@ -589,7 +592,7 @@ const HotelsRooms: FunctionComponent = () => {
   };
 
   // Filter hotels by search and selected filters
-  const filteredHotels = hotels.filter((hotel) => {
+  let filteredHotels = hotels.filter((hotel) => {
     const query = search.toLowerCase();
     const matchesSearch =
       !query ||
@@ -631,6 +634,17 @@ const HotelsRooms: FunctionComponent = () => {
 
     return matchesSearch && matchesFilters;
   });
+
+  // Sorting logic
+  if (sortOption === "Price: Low-High") {
+    filteredHotels = [...filteredHotels].sort((a, b) => a.price - b.price);
+  } else if (sortOption === "Price: High-Low") {
+    filteredHotels = [...filteredHotels].sort((a, b) => b.price - a.price);
+  } else if (sortOption === "Rating (High > Low)") {
+    filteredHotels = [...filteredHotels].sort((a, b) => b.star - a.star);
+  } else if (sortOption === "Rating (Low > High)") {
+    filteredHotels = [...filteredHotels].sort((a, b) => a.star - b.star);
+  }
 
   // Pagination logic
   const ITEMS_PER_PAGE = 9; // 3x3 grid
@@ -701,10 +715,22 @@ const HotelsRooms: FunctionComponent = () => {
         {/* Filters Section */}
         <section className="py-8 bg-white border-b border-gray-200">
           <div className="max-w-6xl mx-auto px-4">
-            <div
-              className="flex flex-wrap justify-center gap-4"
-              ref={filterDropdownRef}
-            >
+            <div className="flex flex-wrap justify-center gap-4 items-center" ref={filterDropdownRef}>
+              {/* Sort By dropdown */}
+              <div className="relative">
+                <label htmlFor="sort" className="mr-2 font-semibold text-gray-700">Sort By:</label>
+                <select
+                  id="sort"
+                  value={sortOption}
+                  onChange={e => setSortOption(e.target.value)}
+                  className="px-6 py-3 rounded-xl font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all duration-200 border-none shadow focus:outline-none focus:ring-2 focus:ring-accent"
+                >
+                  <option value="Default">Default</option>
+                  <option value="Price: Low-High">Price: Low-High</option>
+                  <option value="Price: High-Low">Price: High-Low</option>
+                </select>
+              </div>
+              {/* Existing filters */}
               {Object.keys(dynamicFilterOptions).map((filter) => (
                 <div key={filter} className="relative">
                   <button
