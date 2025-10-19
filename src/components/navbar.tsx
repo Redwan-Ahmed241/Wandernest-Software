@@ -40,18 +40,12 @@ const Navbar: React.FC = () => {
             className="flex items-center gap-3 cursor-pointer group"
             onClick={goHome}
           >
-            <div
-              className="relative z-10 w-10 h-10 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300"
-              style={{
-                background: "linear-gradient(135deg, #4a6b5b 0%, #0d1c1c 100%)",
-              }}
-            >
-              <img
-                src="/Figma_photos/wandernest.svg"
-                alt="WanderNest"
-                className="w-6 h-6 filter brightness-0 invert"
-              />
-            </div>
+            <img
+              src="/Figma_photos/Gemini_Generated_Image_8c7rnh8c7rnh8c7r.svg"
+              alt="WanderNest Logo"
+              className="w-14 h-14 object-cover object-center rounded-full"
+              style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}
+            />
             <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-black">
               WanderNest
             </span>
