@@ -1,23 +1,38 @@
 import React from "react";
+import { useState } from "react";
+import { SidebarVisibilityContext } from "../Context/VisibilityContext";
 import Navbar from "./navbar";
 import Footer from "./footer";
-import ChatBot from "./ChatBot";
+import SidebarWrapper from "./SidebarWrapper";
+import { useAuth } from "../Authentication/auth-context";
+import ChatBot from "./Chatbot";
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [sidebarVisible, setSidebarVisible] = useState(false);
+  const { isAuthenticated } = useAuth();
   return (
-    <div className="flex flex-col min-h-screen w-full bg-gray-50">
-      {/* Navbar */}
-      <Navbar />
+    <SidebarVisibilityContext.Provider value={{ visible: sidebarVisible, setVisible: setSidebarVisible }}>
+      <div className="flex flex-col min-h-screen w-full bg-gray-50">
+        {/* Navbar */}
+        <Navbar />
 
-      {/* Page Content */}
-      <main className="flex-1 w-full pt-16">{children}</main>
+        {/* Sidebar only if authenticated */}
+        <SidebarVisibilityContext.Provider value={{ visible: sidebarVisible, setVisible: setSidebarVisible }}>
+          {isAuthenticated && sidebarVisible && <SidebarWrapper sidebarVisible={sidebarVisible} />}
+          <main
+            className={`flex-1 w-full pt-8 px-0 transition-all duration-500 ${isAuthenticated && sidebarVisible ? 'ml-20' : 'ml-0'}`}
+          >
+            {children}
+          </main>
+        </SidebarVisibilityContext.Provider>
 
-      {/* Footer */}
-      <Footer />
-
-      {/* AI ChatBot */}
-      <ChatBot />
-    </div>
+        {/* Footer */}
+        <div className={isAuthenticated && sidebarVisible ? 'ml-60 transition-all duration-500' : 'ml-0 transition-all duration-500'}>
+          <Footer />
+        </div>
+         <ChatBot />
+      </div>
+    </SidebarVisibilityContext.Provider>
   );
 };
 
