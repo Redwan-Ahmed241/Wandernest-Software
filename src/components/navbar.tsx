@@ -1,6 +1,8 @@
 "use client";
 
 import type React from "react";
+import { useContext } from "react";
+import { SidebarVisibilityContext, NavbarVisibilityContext } from "../Context/VisibilityContext";
 import { useCallback, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../Authentication/auth-context";
@@ -8,6 +10,10 @@ import ProfileDropdown from "./profiledropdown";
 import { Menu, X } from "react-feather";
 
 const Navbar: React.FC = () => {
+  // Sidebar visibility
+  const sidebarCtx = useContext(SidebarVisibilityContext);
+  // Navbar visibility
+  const navbarCtx = useContext(NavbarVisibilityContext);
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated, loading } = useAuth();
@@ -31,11 +37,27 @@ const Navbar: React.FC = () => {
     { label: "Things to Do", path: "/things-to-do", available: true },
   ];
 
+  if (!navbarCtx.visible) return null;
   return (
     <nav className="fixed top-0 left-0 right-0 z-[1000] bg-white border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
+  <div className="flex items-center justify-between h-16">
+          {/* Sidebar Toggle Button (left) */}
+          {isAuthenticated && (
+            <button
+              className={`mr-2 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition duration-300 shadow`}
+              onClick={() => sidebarCtx.setVisible(!sidebarCtx.visible)}
+              aria-label={sidebarCtx.visible ? "Hide sidebar" : "Show sidebar"}
+            >
+              {sidebarCtx.visible ? (
+                // Chevron left for hide
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+              ) : (
+                // Hamburger for show
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+              )}
+            </button>
+          )}
           <div
             className="flex items-center gap-3 cursor-pointer group"
             onClick={goHome}
@@ -51,7 +73,7 @@ const Navbar: React.FC = () => {
             </span>
           </div>
 
-          {/* Desktop Navigation */}
+          {/* Removed cross (X) button from navbar */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => {
               const isActive = location.pathname === item.path;

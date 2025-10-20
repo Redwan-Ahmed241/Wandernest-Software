@@ -1,6 +1,8 @@
 "use client";
 
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { SidebarVisibilityContext } from "../Context/VisibilityContext";
 import { useAuth } from "../Authentication/auth-context"; // Using your auth context
 
 import type { FunctionComponent } from "react";
@@ -15,8 +17,9 @@ import {
   FiLogOut,
 } from "react-icons/fi";
 const Sidebar: FunctionComponent = () => {
+  const sidebarCtx = useContext(SidebarVisibilityContext);
   const navigate = useNavigate();
-  const { user, isAuthenticated, loading } = useAuth();
+  const { user, isAuthenticated, loading, logout } = useAuth();
 
   const getInitial = () => {
     if (user?.first_name && user?.first_name.length > 0) {
@@ -30,7 +33,10 @@ const Sidebar: FunctionComponent = () => {
     return null;
   }
   return (
-    <aside className="bg-[#1a2536] w-64 min-h-screen flex flex-col justify-between shadow-xl">
+    <aside
+      className={`bg-[#1a2536] h-full w-full flex flex-col justify-between shadow-xl transition-all duration-500 ${sidebarCtx.visible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+      style={{ willChange: 'opacity', maxHeight: '100%' }}
+    >
       <div>
         <div className="flex flex-col items-center gap-2 pt-8 pb-4">
           <div className="w-14 h-14 rounded-full bg-[#6ab187] text-white flex items-center justify-center font-bold text-2xl shadow-lg select-none">
@@ -103,16 +109,16 @@ const Sidebar: FunctionComponent = () => {
             <FiBookOpen className="text-xl" /> Blog
           </button>
         </nav>
-        <div className="border-t border-[#22304a] mx-6 mt-6 pt-4">
+        <div className="border-t border-[#22304a] mx-6 mt-6 pt-4 flex flex-col gap-2">
           <button
             className={`flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-left text-[#b6c2d6] hover:bg-[#22304a] hover:text-white transition-all duration-200 w-full`}
-            onClick={() => navigate("/settings")}
+            onClick={() => navigate("/profile-settings")}
           >
             <FiSettings className="text-xl" /> Settings
           </button>
           <button
-            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-left text-red-500 border border-red-500 bg-transparent hover:bg-red-50 transition-all duration-200 mt-2"
-            onClick={() => navigate("/logout")}
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-left text-red-500 border border-red-500 bg-transparent hover:bg-red-50 transition-all duration-200"
+            onClick={() => { logout(); navigate('/login'); }}
           >
             <FiLogOut className="text-xl" /> Sign Out
           </button>

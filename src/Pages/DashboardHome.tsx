@@ -4,7 +4,7 @@ import type React from "react";
 import { type FunctionComponent, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Layout from "../components/layout";
-import Sidebar from "./Sidebar";
+// import Sidebar from "./Sidebar";
 import { useAuth } from "../Authentication/auth-context";
 import { useBooking } from "../Context/booking-context";
 import dashboardApi, { type Booking, type Stats } from "../api/dashboard";
@@ -342,7 +342,7 @@ const DashboardHome: FunctionComponent = () => {
     return (
       <Layout>
         <div className="flex min-h-screen bg-gray-50">
-          <Sidebar />
+          // ...existing code...
           <div className="flex-1 flex items-center justify-center">
             <div className="flex flex-col items-center gap-4">
               <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
@@ -371,7 +371,7 @@ const DashboardHome: FunctionComponent = () => {
         className="flex bg-gray-50"
         style={{ minHeight: "calc(100vh - 64px)" }}
       >
-        <Sidebar />
+  // ...existing code...
         <div className="flex-1 p-8">
           <div className="max-w-7xl mx-auto space-y-8">
             {error && (

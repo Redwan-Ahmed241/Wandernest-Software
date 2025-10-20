@@ -4,7 +4,7 @@ import type { FunctionComponent } from "react";
 import { useState, useEffect, useMemo } from "react";
 import Layout from "../components/layout";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "./Sidebar";
+// import Sidebar from "./Sidebar";
 import { type Trip } from "../App/api";
 import { useAuth } from "../Authentication/auth-context";
 import { useBooking } from "../Context/booking-context";
@@ -339,7 +339,7 @@ const MyTrips: FunctionComponent = () => {
     return (
       <Layout>
         <div className="flex min-h-screen bg-gray-50">
-          <Sidebar />
+          // ...existing code...
           <div className="flex-1 flex items-center justify-center">
             <div className="flex flex-col items-center gap-4">
               <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
@@ -360,7 +360,7 @@ const MyTrips: FunctionComponent = () => {
   return (
     <Layout>
       <div className="flex min-h-screen bg-gray-50">
-        <Sidebar />
+  // ...existing code...
         <div className="flex-1 p-8">
           <div className="max-w-7xl mx-auto space-y-8">
             {/* Header Section */}
