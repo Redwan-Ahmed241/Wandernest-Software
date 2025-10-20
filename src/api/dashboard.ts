@@ -215,27 +215,17 @@ export async function getDashboardStats(token?: string): Promise<Stats> {
   try {
     const raw = await request<Record<string, unknown>>('/api/dashboard/stats/', {}, token);
     console.log('🔍 DEBUG - Dashboard stats response:', raw);
-    
-    // normalize to Stats shape with safe numeric defaults
+    // Directly map new response keys
     const s: Stats = {
-      totalBookings: (() => {
-        const r = raw as Record<string, unknown> | null;
-        const candidate = Number(
-          r?.totalBookings ?? r?.total_bookings ?? r?.bookings_count ?? r?.total ?? r?.count ?? 0
-        );
-        if (!Number.isNaN(candidate) && candidate > 0) return candidate;
-        const results = r?.results;
-        if (Array.isArray(results)) return results.length;
-        return 0;
-      })(),
-      upcomingTrips: Number(raw?.upcomingTrips ?? raw?.upcoming_trips ?? 0) || 0,
-      totalSpent: Number(raw?.totalSpent ?? raw?.total_spent ?? 0) || 0,
-      completedTrips: Number(raw?.completedTrips ?? raw?.completed_trips ?? 0) || 0,
-      pendingBookings: Number(raw?.pendingBookings ?? raw?.pending_bookings ?? 0) || 0,
-      cancelledBookings: Number(raw?.cancelledBookings ?? raw?.cancelled_bookings ?? 0) || 0,
-      averageSpentPerTrip: Number(raw?.averageSpentPerTrip ?? raw?.average_spent_per_trip ?? 0) || 0,
-      favoriteDestination: String(raw?.favoriteDestination ?? raw?.favorite_destination ?? ''),
-      memberSince: String(raw?.memberSince ?? raw?.member_since ?? ''),
+      totalBookings: Number(raw?.totalBookings ?? 0),
+      upcomingTrips: Number(raw?.upcomingTrips ?? 0),
+      totalSpent: Number(raw?.totalSpent ?? 0),
+      completedTrips: Number(raw?.completedTrips ?? 0),
+      pendingBookings: Number(raw?.pendingBookings ?? 0),
+      cancelledBookings: Number(raw?.cancelledBookings ?? 0),
+      averageSpentPerTrip: Number(raw?.averageSpentPerTrip ?? 0),
+      favoriteDestination: String(raw?.favoriteDestination ?? ''),
+      memberSince: String(raw?.memberSince ?? ''),
     };
     
     // If stats endpoint returns 0 bookings, try to get actual count from bookings
