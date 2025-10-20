@@ -5,6 +5,7 @@ import Navbar from "./navbar";
 import Footer from "./footer";
 import SidebarWrapper from "./SidebarWrapper";
 import { useAuth } from "../Authentication/auth-context";
+import ChatBot from "./Chatbot";
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [sidebarVisible, setSidebarVisible] = useState(false);
@@ -29,6 +30,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         <div className={isAuthenticated && sidebarVisible ? 'ml-60 transition-all duration-500' : 'ml-0 transition-all duration-500'}>
           <Footer />
         </div>
+         <ChatBot />
       </div>
     </SidebarVisibilityContext.Provider>
   );
