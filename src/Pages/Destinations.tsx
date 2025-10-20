@@ -59,18 +59,21 @@ const Destinations: FunctionComponent = () => {
   }, []);
 
   const filteredDestinations = destinations.filter((dest) => {
-    const name = dest.name?.toLowerCase() || ""; // Default to empty string
-    const description = dest.description?.toLowerCase() || ""; // Default to empty string
-    const category = dest.category?.toLowerCase() || "all"; // Default to "all"
+    const name = (dest.name || "").toLowerCase();
+    const description = (dest.description || "").toLowerCase();
+    // Normalize category to match button IDs
+    const category = (dest.category || "all").replace(/s$/, "").toLowerCase();
+    const selected = selectedCategory.replace(/s$/, "").toLowerCase();
 
     const matchesSearch =
       !searchQuery ||
       name.includes(searchQuery.toLowerCase()) ||
       description.includes(searchQuery.toLowerCase());
 
+    // Match 'all' or exact category
     const matchesCategory =
-      selectedCategory.toLowerCase() === "all" ||
-      category === selectedCategory.toLowerCase();
+      selected === "all" ||
+      category === selected;
 
     return matchesSearch && matchesCategory;
   });
