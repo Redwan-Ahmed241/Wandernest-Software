@@ -6,7 +6,7 @@ import Navbar from "./navbar";
 import Footer from "./footer";
 import SidebarWrapper from "./SidebarWrapper";
 import { useAuth } from "../Authentication/auth-context";
-import ChatBot from "./Chatbot";
+import ChatBot from "./ChatBot";
 import { useLocation } from "react-router-dom";
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
