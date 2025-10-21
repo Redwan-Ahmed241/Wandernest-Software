@@ -296,23 +296,42 @@ const MyTrips: FunctionComponent = () => {
 
   // Fetch itinerary removed - not needed anymore
 
-  // Add logging to verify API responses
+  // Fetch trips from the new unified bookings endpoint
   const fetchTripsByType = async (type: "package" | "hotel" | "flight") => {
     setIsLoadingTrips(true);
     try {
-      // TODO: Update to use new API endpoint when backend is ready
-      // const response = await fetch(`http://localhost:5000/api/bookings?type=${type}`, {
-      //   headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-      // });
-      // const data = await response.json();
-      // setTrips(data.data.bookings || []);
+      const API_BASE =
+        import.meta.env.VITE_REACT_APP_API_URL ||
+        "https://wander-nest-ad3s.onrender.com/api";
+      const token =
+        localStorage.getItem("accessToken") || localStorage.getItem("token");
 
-      // For now, just set empty to use fallback data
-      setTrips([]);
-      console.log(`Fetching ${type} bookings...`);
+      if (!token) {
+        console.warn("No auth token found");
+        setTrips([]);
+        return;
+      }
+
+      const response = await fetch(`${API_BASE}/bookings/?type=${type}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch bookings: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log(`Fetched ${type} bookings:`, data);
+
+      // Handle the adapter response format: { success, data: { bookings, count } }
+      const bookings = data.data?.bookings || data.bookings || [];
+      setTrips(bookings);
     } catch (error) {
       console.error("Error fetching trips:", error);
-      setTrips([]);
+      setTrips([]); // Fall back to mock data on error
     } finally {
       setIsLoadingTrips(false);
     }
@@ -360,7 +379,7 @@ const MyTrips: FunctionComponent = () => {
   return (
     <Layout>
       <div className="flex min-h-screen bg-gray-50">
-  // ...existing code...
+        // ...existing code...
         <div className="flex-1 p-8">
           <div className="max-w-7xl mx-auto space-y-8">
             {/* Header Section */}
