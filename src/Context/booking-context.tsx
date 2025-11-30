@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-refresh/only-export-components */
 "use client";
 
@@ -68,7 +67,7 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
     const cancelled = bookings.filter((b) => b.status === "cancelled");
     const confirmedBookings = bookings.filter((b) => b.status === "confirmed");
     const totalSpent = confirmedBookings.reduce((sum, b) => sum + b.price, 0);
-    
+
     // Calculate favorite destination
     const destinations = bookings
       .filter((b) => b.location && b.status === "confirmed")
@@ -77,8 +76,9 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
       acc[dest] = (acc[dest] || 0) + 1;
       return acc;
     }, {} as Record<string, number>);
-    const favoriteDestination = Object.entries(destinationCounts)
-      .sort(([,a], [,b]) => b - a)[0]?.[0] || '';
+    const favoriteDestination =
+      Object.entries(destinationCounts).sort(([, a], [, b]) => b - a)[0]?.[0] ||
+      "";
 
     return {
       totalBookings: bookings.length,
@@ -87,9 +87,19 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
       completedTrips: completed.length,
       pendingBookings: pending.length,
       cancelledBookings: cancelled.length,
-      averageSpentPerTrip: confirmedBookings.length > 0 ? Math.round(totalSpent / confirmedBookings.length) : 0,
+      averageSpentPerTrip:
+        confirmedBookings.length > 0
+          ? Math.round(totalSpent / confirmedBookings.length)
+          : 0,
       favoriteDestination,
-      memberSince: bookings.length > 0 ? new Date(Math.min(...bookings.map(b => new Date(b.createdAt).getTime()))).toISOString().split('T')[0] : '',
+      memberSince:
+        bookings.length > 0
+          ? new Date(
+              Math.min(...bookings.map((b) => new Date(b.createdAt).getTime()))
+            )
+              .toISOString()
+              .split("T")[0]
+          : "",
     };
   }, [bookings]);
 
@@ -127,58 +137,66 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
     []
   );
 
-  // Refresh from API
+  // Refresh from API using new unified bookings endpoint
   const refreshBookings = async () => {
     setIsLoading(true);
     try {
-      const API_BASE = "https://wander-nest-ad3s.onrender.com";
+      const API_BASE =
+        import.meta.env.VITE_REACT_APP_API_URL ||
+        "https://wander-nest-ad3s.onrender.com/api";
+      const token =
+        localStorage.getItem("accessToken") || localStorage.getItem("token");
+
+      if (!token) {
+        console.warn("No auth token found for booking refresh");
+        setBookings([]);
+        setIsLoading(false);
+        return;
+      }
 
       const headers = {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       };
 
-      console.log("Refreshing bookings with headers:", headers);
+      console.log("Refreshing bookings from unified endpoint");
 
-      const hotelBookingsResponse = await fetch(`${API_BASE}/api/bookings/hotels/`, {
-        method: "GET",
-        headers,
-      });
+      // Fetch all booking types using the new unified endpoint
+      const [packageRes, hotelRes, flightRes] = await Promise.all([
+        fetch(`${API_BASE}/bookings/?type=package`, { headers }),
+        fetch(`${API_BASE}/bookings/?type=hotel`, { headers }),
+        fetch(`${API_BASE}/bookings/?type=flight`, { headers }),
+      ]);
 
-      const hotelBookings = hotelBookingsResponse.ok
-        ? await hotelBookingsResponse.json()
-        : [];
+      const allBookings: BookingItem[] = [];
 
-      const packageBookingsResponse = await fetch(`${API_BASE}/api/bookings/packages/`, {
-        method: "GET",
-        headers,
-      });
+      // Process package bookings
+      if (packageRes.ok) {
+        const packageData = await packageRes.json();
+        const packages =
+          packageData.data?.bookings || packageData.bookings || [];
+        allBookings.push(...packages);
+      }
 
-      const packageBookings = packageBookingsResponse.ok
-        ? await packageBookingsResponse.json()
-        : [];
+      // Process hotel bookings
+      if (hotelRes.ok) {
+        const hotelData = await hotelRes.json();
+        const hotels = hotelData.data?.bookings || hotelData.bookings || [];
+        allBookings.push(...hotels);
+      }
 
-      const tripBookingsResponse = await fetch(`${API_BASE}/api/bookings/trips/`, {
-        method: "GET",
-        headers,
-      });
+      // Process flight bookings
+      if (flightRes.ok) {
+        const flightData = await flightRes.json();
+        const flights = flightData.data?.bookings || flightData.bookings || [];
+        allBookings.push(...flights);
+      }
 
-      const tripBookings = tripBookingsResponse.ok
-        ? await tripBookingsResponse.json()
-        : [];
-
-      const allBookings = [
-        ...Array.isArray(hotelBookings) ? hotelBookings.map((b: any) => ({ ...b, type: "hotel" as const })) : [],
-        ...Array.isArray(packageBookings) ? packageBookings.map((b: any) => ({
-          ...b,
-          type: "package" as const,
-        })) : [],
-        ...Array.isArray(tripBookings) ? tripBookings.map((b: any) => ({ ...b, type: "trip" as const })) : [],
-      ];
-
+      console.log(`Loaded ${allBookings.length} total bookings`);
       setBookings(allBookings);
     } catch (error) {
       console.error("Failed to refresh bookings:", error);
+      setBookings([]); // Clear on error
     } finally {
       setIsLoading(false);
     }
