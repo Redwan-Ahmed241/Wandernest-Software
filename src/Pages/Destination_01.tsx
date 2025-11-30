@@ -478,13 +478,13 @@ const DestinationPage: FunctionComponent = () => {
             src={
               destinationData?.heroImage ||
               destinationData?.image ||
-              "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200"
+              "C:UsersRedwanDesktopSummer 2025SE LabWandernestpublicFigma_photoscox.jpg"
             }
             alt={destinationData?.name || "Destination"}
             className="w-full h-full object-cover rounded-b-2xl"
             onError={(e) => {
               e.currentTarget.src =
-                "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200";
+                "C:/Users/Redwan/Desktop/Summer 2025/SE Lab/Wandernest/public/Figma_photos/cox.jpg";
             }}
           />
           {/* Overlay for text readability, matching homepage/packages */}
