@@ -439,13 +439,19 @@ const Packages: FunctionComponent = () => {
               </div>
             ) : error ? (
               <div className="text-center py-16">
-                <div className="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <span className="text-3xl">⚠️</span>
+                <div className="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <span className="text-3xl">😕</span>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  Error Loading Packages
+                  Nothing to show
                 </h3>
-                <p className="text-red-600 mb-6">{error}</p>
+                <p className="text-gray-700 mb-6">
+                  We couldn't load the packages at this time. Please try again later or check your internet connection.
+                </p>
+                <details className="mb-4">
+                  <summary className="cursor-pointer text-sm text-gray-500">Show error details</summary>
+                  <div className="text-xs text-red-500 mt-2">{error}</div>
+                </details>
                 <button
                   onClick={() => window.location.reload()}
                   className="px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary-dark transition-all duration-200"
