@@ -27,7 +27,10 @@ interface PaymentSuccessNotificationProps {
   onClose: () => void;
 }
 
-const PaymentSuccessNotification: React.FC<PaymentSuccessNotificationProps> = ({ paymentData, onClose }) => {
+const PaymentSuccessNotification: React.FC<PaymentSuccessNotificationProps> = ({
+  paymentData,
+  onClose,
+}) => {
   if (!paymentData) return null;
 
   return (
@@ -40,7 +43,9 @@ const PaymentSuccessNotification: React.FC<PaymentSuccessNotificationProps> = ({
             </div>
             <div>
               <h3 className="font-bold text-lg">Payment Successful!</h3>
-              <p className="text-sm opacity-90">Your booking has been confirmed</p>
+              <p className="text-sm opacity-90">
+                Your booking has been confirmed
+              </p>
             </div>
           </div>
           <button
@@ -50,7 +55,7 @@ const PaymentSuccessNotification: React.FC<PaymentSuccessNotificationProps> = ({
             ×
           </button>
         </div>
-        
+
         <div className="bg-white bg-opacity-10 rounded-lg p-3 space-y-2 text-sm">
           <div className="flex justify-between">
             <span className="opacity-90">Transaction ID:</span>
@@ -58,7 +63,9 @@ const PaymentSuccessNotification: React.FC<PaymentSuccessNotificationProps> = ({
           </div>
           <div className="flex justify-between">
             <span className="opacity-90">Amount:</span>
-            <span className="font-medium">{paymentData.amount} {paymentData.currency}</span>
+            <span className="font-medium">
+              {paymentData.amount} {paymentData.currency}
+            </span>
           </div>
           <div className="flex justify-between">
             <span className="opacity-90">Booking ID:</span>
@@ -129,15 +136,17 @@ const DashboardHome: FunctionComponent = () => {
   const { isAuthenticated, loading: authLoading, user } = useAuth();
   // Prefer the dedicated API client but keep the booking context as a fallback
   const bookingCtx = useBooking();
-  const [bookings, setBookings] = useState<Booking[]>(bookingCtx?.bookings || []);
+  const [bookings, setBookings] = useState<Booking[]>(
+    bookingCtx?.bookings || []
+  );
   // Fallback bookings if none exist
   const fallbackBookings: Booking[] = [
     {
       id: "1",
-      title: "Cox's Bazar Beach Escape",
-      location: "Cox's Bazar",
-      image: "/Figma_photos/coxsbazar.jpg",
-      startDate: "2025-11-10",
+      title: "Sylhet Tea Garden Resort",
+      location: "Sylhet(Hotel)",
+      image: "/Figma_photos/srimangal.png",
+      startDate: "2025-11-11",
       endDate: "2025-11-15",
       status: "confirmed",
       price: 12000,
@@ -145,7 +154,7 @@ const DashboardHome: FunctionComponent = () => {
     {
       id: "2",
       title: "Sundarbans Adventure",
-      location: "Sundarbans",
+      location: "Sundarbans(premade_package)",
       image: "/Figma_photos/sundarban.jpg",
       startDate: "2025-12-01",
       endDate: "2025-12-05",
@@ -154,78 +163,83 @@ const DashboardHome: FunctionComponent = () => {
     },
     {
       id: "3",
-      title: "Sylhet Tea Garden Tour",
-      location: "Sylhet",
-      image: "/Figma_photos/srimangal.png",
+      title: "Cox's Bazar Beach Escape",
+      location: "Cox's Bazar(custom_package)",
+      image: "/Figma_photos/coxsbazar.jpg",
       startDate: "2026-01-20",
       endDate: "2026-01-23",
       status: "confirmed",
       price: 8000,
     },
   ];
-  const [stats, setStats] = useState<Stats>(bookingCtx?.stats || {
-    totalBookings: 0,
-    upcomingTrips: 0,
-    totalSpent: 0,
-    completedTrips: 0,
-    pendingBookings: 0,
-    cancelledBookings: 0,
-    averageSpentPerTrip: 0,
-    favoriteDestination: '',
-    memberSince: '',
-  });
+  const [stats, setStats] = useState<Stats>(
+    bookingCtx?.stats || {
+      totalBookings: 0,
+      upcomingTrips: 3,
+      totalSpent: 0,
+      completedTrips: 0,
+      pendingBookings: 0,
+      cancelledBookings: 0,
+      averageSpentPerTrip: 0,
+      favoriteDestination: "",
+      memberSince: "",
+    }
+  );
   const [isLoading, setIsLoading] = useState<boolean>(!!bookingCtx?.isLoading);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Payment success state
-  const [paymentSuccess, setPaymentSuccess] = useState<SSLCommerzPaymentData | null>(null);
+  const [paymentSuccess, setPaymentSuccess] =
+    useState<SSLCommerzPaymentData | null>(null);
 
   // Handle payment success from sessionStorage (from PaymentSuccess page)
   useEffect(() => {
     const checkPaymentSuccess = () => {
       // Check for payment data from sessionStorage (from PaymentSuccess component)
-      const paymentDataStr = sessionStorage.getItem('paymentSuccessData');
+      const paymentDataStr = sessionStorage.getItem("paymentSuccessData");
       if (paymentDataStr) {
         try {
           const paymentData: SSLCommerzPaymentData = JSON.parse(paymentDataStr);
           setPaymentSuccess(paymentData);
-          
+
           // Clear the data from sessionStorage
-          sessionStorage.removeItem('paymentSuccessData');
-          
-          console.log('✅ Payment success data loaded from storage:', paymentData);
-          
+          sessionStorage.removeItem("paymentSuccessData");
+
+          console.log(
+            "✅ Payment success data loaded from storage:",
+            paymentData
+          );
+
           // Refresh bookings and stats after successful payment
           if (bookingCtx?.refreshBookings) {
             bookingCtx.refreshBookings().catch(console.error);
           }
-          
+
           // Auto-dismiss notification after 8 seconds (shorter since user already saw full page)
           setTimeout(() => {
             setPaymentSuccess(null);
           }, 8000);
-          
         } catch (error) {
-          console.error('❌ Failed to parse payment success data:', error);
-          sessionStorage.removeItem('paymentSuccessData');
+          console.error("❌ Failed to parse payment success data:", error);
+          sessionStorage.removeItem("paymentSuccessData");
         }
       }
 
       // Also handle direct URL parameters (fallback for direct dashboard access)
       const urlParams = new URLSearchParams(location.search);
-      const status = urlParams.get('status');
-      
-      if (status === 'success') {
-        const tran_id = urlParams.get('tran_id');
-        const amount = urlParams.get('amount');
-        const currency = urlParams.get('currency');
-        const booking_id = urlParams.get('booking_id');
-        
+      const status = urlParams.get("status");
+
+      if (status === "success") {
+        const tran_id = urlParams.get("tran_id");
+        const amount = urlParams.get("amount");
+        const currency = urlParams.get("currency");
+        const booking_id = urlParams.get("booking_id");
+
         // Validate required parameters
         if (tran_id && amount && currency && booking_id) {
           const numericAmount = parseFloat(amount);
           if (isNaN(numericAmount) || numericAmount <= 0) {
-            console.error('❌ Invalid amount in payment success:', amount);
+            console.error("❌ Invalid amount in payment success:", amount);
             return;
           }
 
@@ -235,24 +249,24 @@ const DashboardHome: FunctionComponent = () => {
             amount,
             currency,
             booking_id,
-            card_type: urlParams.get('card_type') || undefined,
-            bank_tran_id: urlParams.get('bank_tran_id') || undefined,
-            val_id: urlParams.get('val_id') || undefined,
+            card_type: urlParams.get("card_type") || undefined,
+            bank_tran_id: urlParams.get("bank_tran_id") || undefined,
+            val_id: urlParams.get("val_id") || undefined,
           };
-          
+
           setPaymentSuccess(paymentData);
-          
+
           // Clean up URL by removing query parameters
           const cleanUrl = window.location.pathname;
-          window.history.replaceState({}, '', cleanUrl);
-          
-          console.log('✅ Payment success detected from URL:', paymentData);
-          
+          window.history.replaceState({}, "", cleanUrl);
+
+          console.log("✅ Payment success detected from URL:", paymentData);
+
           // Refresh bookings and stats after successful payment
           if (bookingCtx?.refreshBookings) {
             bookingCtx.refreshBookings().catch(console.error);
           }
-          
+
           // Auto-dismiss notification after 10 seconds
           setTimeout(() => {
             setPaymentSuccess(null);
@@ -276,19 +290,23 @@ const DashboardHome: FunctionComponent = () => {
         ]);
         if (!mounted) return;
         if (remoteStats) setStats(remoteStats as Stats);
-        if (Array.isArray(remoteBookings)) setBookings(remoteBookings as Booking[]);
+        if (Array.isArray(remoteBookings))
+          setBookings(remoteBookings as Booking[]);
       } catch (err) {
         // Fallback to context values if API fails
         if (!mounted) return;
-        console.warn('Dashboard API load failed', err);
-        console.log('🔍 DEBUG - Fallback booking context data:', bookingCtx?.bookings);
-        setError(String(err || 'Failed to load dashboard data'));
-        
+        console.warn("Dashboard API load failed", err);
+        console.log(
+          "🔍 DEBUG - Fallback booking context data:",
+          bookingCtx?.bookings
+        );
+        setError(String(err || "Failed to load dashboard data"));
+
         // Force refresh booking context data
         if (bookingCtx?.refreshBookings) {
           await bookingCtx.refreshBookings();
         }
-        
+
         if (bookingCtx?.bookings) setBookings(bookingCtx.bookings);
         if (bookingCtx?.stats) setStats(bookingCtx.stats);
       } finally {
@@ -303,7 +321,13 @@ const DashboardHome: FunctionComponent = () => {
     return () => {
       mounted = false;
     };
-  }, [authLoading, isAuthenticated, bookingCtx?.bookings, bookingCtx?.stats, bookingCtx]);
+  }, [
+    authLoading,
+    isAuthenticated,
+    bookingCtx?.bookings,
+    bookingCtx?.stats,
+    bookingCtx,
+  ]);
 
   // Handle closing payment success notification
   const handleClosePaymentNotification = () => {
@@ -313,11 +337,14 @@ const DashboardHome: FunctionComponent = () => {
   // Get recent bookings (last 5)
   const recentBookings = (bookings || []).slice(0, 5);
   // Use fallback if no real bookings
-  const displayBookings = recentBookings.length > 0 ? recentBookings : fallbackBookings;
+  const displayBookings =
+    recentBookings.length > 0 ? recentBookings : fallbackBookings;
 
   // Get upcoming trips
-  const upcomingTrips = (bookings || [])
-    .filter((b) => new Date(b.startDate) > new Date() && b.status === "confirmed")
+  const upcomingTrips = (bookings || [] || 3)
+    .filter(
+      (b) => new Date(b.startDate) > new Date() && b.status === "confirmed"
+    )
     .slice(0, 3);
 
   const formatDate = (dateString: string) => {
@@ -329,7 +356,7 @@ const DashboardHome: FunctionComponent = () => {
   };
 
   const formatCurrency = (amount?: number | null) => {
-    const n = typeof amount === 'number' && !Number.isNaN(amount) ? amount : 0;
+    const n = typeof amount === "number" && !Number.isNaN(amount) ? amount : 0;
     try {
       return `৳${n.toLocaleString()}`;
     } catch {
@@ -363,15 +390,15 @@ const DashboardHome: FunctionComponent = () => {
   return (
     <Layout>
       <BookingNotification />
-      <PaymentSuccessNotification 
-        paymentData={paymentSuccess} 
-        onClose={handleClosePaymentNotification} 
+      <PaymentSuccessNotification
+        paymentData={paymentSuccess}
+        onClose={handleClosePaymentNotification}
       />
       <div
         className="flex bg-gray-50"
         style={{ minHeight: "calc(100vh - 64px)" }}
       >
-  // ...existing code...
+        // ...existing code...
         <div className="flex-1 p-8">
           <div className="max-w-7xl mx-auto space-y-8">
             {error && (
@@ -515,7 +542,8 @@ const DashboardHome: FunctionComponent = () => {
                                 {booking.location}
                               </p>
                               <p className="text-xs text-gray-400">
-                                {formatDate(booking.startDate)} - {formatDate(booking.endDate)}
+                                {formatDate(booking.startDate)} -{" "}
+                                {formatDate(booking.endDate)}
                               </p>
                             </div>
                             <div className="text-right">
@@ -643,7 +671,8 @@ const DashboardHome: FunctionComponent = () => {
                               🗓️ {formatDate(trip.startDate)}
                             </p>
                             <p className="text-xs text-gray-500">
-                              👥 {trip.travelers ?? 1} traveler{(trip.travelers ?? 1) > 1 ? "s" : ""}
+                              👥 {trip.travelers ?? 1} traveler
+                              {(trip.travelers ?? 1) > 1 ? "s" : ""}
                             </p>
                           </div>
                         </div>

@@ -327,33 +327,38 @@ export async function getBookingsActive(token?: string): Promise<Booking[]> {
   }
 }
 
-// Helper function to fetch bookings from individual type endpoints
+// Helper function to fetch bookings using new unified endpoint with type filtering
 async function getBookingsFromTypeEndpoints(token?: string): Promise<Booking[]> {
   try {
-    const [hotelBookings, packageBookings, tripBookings] = await Promise.all([
-      // Use trailing slashes to match backend routing (Django/DRF often requires them)
-      request<unknown>('/api/bookings/hotels/', {}, token).catch((err) => {
+    const [hotelBookings, packageBookings, flightBookings] = await Promise.all([
+      // Use new unified endpoint with type query parameter
+      request<unknown>('/api/bookings/?type=hotel', {}, token).catch((err) => {
         console.error('🔍 DEBUG - Error fetching hotel bookings:', err);
-        return [];
+        return { data: { bookings: [] } };
       }),
-      request<unknown>('/api/bookings/packages/', {}, token).catch((err) => {
+      request<unknown>('/api/bookings/?type=package', {}, token).catch((err) => {
         console.error('🔍 DEBUG - Error fetching package bookings:', err);
-        return [];
+        return { data: { bookings: [] } };
       }),
-      request<unknown>('/api/bookings/trips/', {}, token).catch((err) => {
-        console.error('🔍 DEBUG - Error fetching trip bookings:', err);
-        return [];
+      request<unknown>('/api/bookings/?type=flight', {}, token).catch((err) => {
+        console.error('🔍 DEBUG - Error fetching flight bookings:', err);
+        return { data: { bookings: [] } };
       }),
     ]);
 
     console.log('🔍 DEBUG - Hotel bookings response:', hotelBookings);
     console.log('🔍 DEBUG - Package bookings response:', packageBookings);
-    console.log('🔍 DEBUG - Trip bookings response:', tripBookings);
+    console.log('🔍 DEBUG - Flight bookings response:', flightBookings);
 
-    // Normalize each response to an array
+    // Normalize each response to an array - handle new adapter format
     const normalizeToArray = (raw: unknown): unknown[] => {
       if (Array.isArray(raw)) return raw;
       const asRecord = (raw as Record<string, unknown> | null) ?? null;
+      // Handle adapter response format: { success, data: { bookings, count } }
+      if (asRecord?.data && typeof asRecord.data === 'object') {
+        const dataObj = asRecord.data as Record<string, unknown>;
+        if (Array.isArray(dataObj.bookings)) return dataObj.bookings as unknown[];
+      }
       if (Array.isArray(asRecord?.results)) return asRecord!.results as unknown[];
       if (Array.isArray(asRecord?.data)) return asRecord!.data as unknown[];
       if (Array.isArray(asRecord?.bookings)) return asRecord!.bookings as unknown[];
@@ -362,14 +367,14 @@ async function getBookingsFromTypeEndpoints(token?: string): Promise<Booking[]> 
 
     const hotelItems = normalizeToArray(hotelBookings);
     const packageItems = normalizeToArray(packageBookings);
-    const tripItems = normalizeToArray(tripBookings);
+    const flightItems = normalizeToArray(flightBookings);
 
     console.log('🔍 DEBUG - Hotel items count:', hotelItems.length);
     console.log('🔍 DEBUG - Package items count:', packageItems.length);
-    console.log('🔍 DEBUG - Trip items count:', tripItems.length);
+    console.log('🔍 DEBUG - Flight items count:', flightItems.length);
 
     // Combine all bookings
-    const allBookings = [...hotelItems, ...packageItems, ...tripItems];
+    const allBookings = [...hotelItems, ...packageItems, ...flightItems];
 
     return allBookings.map((item) => {
       const b = (item as Record<string, unknown>) ?? {};
