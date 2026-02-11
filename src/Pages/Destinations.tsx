@@ -136,11 +136,10 @@ const Destinations: FunctionComponent = () => {
                 <button
                   key={category.id}
                   onClick={() => setSelectedCategory(category.id)}
-                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 whitespace-normal ${
-                    selectedCategory === category.id
-                      ? "bg-[#4a6b5b] text-white shadow-lg scale-105 min-w-max hover:bg-[#0d1c1c]"
+                  className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 whitespace-normal ${selectedCategory === category.id
+                      ? "bg-[#6ab187] text-white shadow-lg scale-105 min-w-max hover:bg-[#0d1c1c]"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105 active:bg-gray-300"
-                  }`}
+                    }`}
                 >
                   <span className="text-lg">{category.icon}</span>
                   {category.label}
