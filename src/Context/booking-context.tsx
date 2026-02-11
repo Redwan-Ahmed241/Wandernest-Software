@@ -95,10 +95,10 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
       memberSince:
         bookings.length > 0
           ? new Date(
-              Math.min(...bookings.map((b) => new Date(b.createdAt).getTime()))
-            )
-              .toISOString()
-              .split("T")[0]
+            Math.min(...bookings.map((b) => new Date(b.createdAt).getTime()))
+          )
+            .toISOString()
+            .split("T")[0]
           : "",
     };
   }, [bookings]);
