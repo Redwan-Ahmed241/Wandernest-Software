@@ -1,18 +1,13 @@
 "use client";
 
 import type React from "react";
-import Footer from "../components/footer";
-import { useCallback } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Eye, EyeOff } from "react-feather";
+
 interface FormData {
   username: string;
-  first_name: string;
-  last_name: string;
   email: string;
-  phone: string;
-  country: string;
-  age: number | null;
   password: string;
   confirm_password: string;
 }
@@ -24,42 +19,25 @@ interface FormErrors {
 export default function SignupForm() {
   const [formData, setFormData] = useState<FormData>({
     username: "",
-    first_name: "",
-    last_name: "",
     email: "",
-    phone: "",
-    country: "",
-    age: null,
     password: "",
     confirm_password: "",
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
   const [apiError, setApiError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const navigate = useNavigate();
 
-  // Handle input changes
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
 
-    // Special handling for age field to convert to number
-    if (name === "age") {
-      const numValue = value === "" ? null : parseInt(value, 10);
-      setFormData((prev) => ({
-        ...prev,
-        [name]: numValue,
-      }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    }
-
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
@@ -68,75 +46,49 @@ export default function SignupForm() {
     }
   };
 
-  // Validate form
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
-    // Required field validation
     if (!formData.username.trim()) newErrors.username = "Username is required";
-    if (!formData.first_name.trim())
-      newErrors.first_name = "First name is required";
-    if (!formData.last_name.trim())
-      newErrors.last_name = "Last name is required";
     if (!formData.email.trim()) newErrors.email = "Email is required";
-    if (!formData.phone.trim()) newErrors.phone = "Phone number is required";
-    if (!formData.country) newErrors.country = "Country is required";
     if (!formData.password) newErrors.password = "Password is required";
     if (!formData.confirm_password)
       newErrors.confirm_password = "Please confirm your password";
 
-    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (formData.email && !emailRegex.test(formData.email)) {
       newErrors.email = "Please enter a valid email address";
     }
 
-    // Password validation
     if (formData.password && formData.password.length < 8) {
       newErrors.password = "Password must be at least 8 characters long";
     }
 
-    // Password confirmation
     if (formData.password !== formData.confirm_password) {
       newErrors.confirm_password = "Passwords do not match";
     }
 
-    // Username validation
     if (formData.username && formData.username.length < 3) {
       newErrors.username = "Username must be at least 3 characters long";
-    }
-
-    // Age validation (if provided)
-    if (formData.age !== null) {
-      if (isNaN(formData.age) || formData.age < 13 || formData.age > 120) {
-        newErrors.age = "Age must be between 13 and 120";
-      }
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-  const navigate = useNavigate();
 
-  const goHome = useCallback(() => {
-    navigate("/");
-  }, [navigate]);
-  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setApiError("");
 
     if (!validateForm()) {
       return;
     }
 
+    setIsLoading(true);
+
     const apiData = {
       username: formData.username,
-      first_name: formData.first_name,
-      last_name: formData.last_name,
       email: formData.email,
-      phone: formData.phone,
-      country: formData.country,
-      age: formData.age || 0,
       password: formData.password,
       confirm_password: formData.confirm_password,
     };
@@ -155,365 +107,249 @@ export default function SignupForm() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.log("Full errorData:", errorData);
         console.error("API Error Response:", errorData);
-        throw errorData;
+
+        // Handle specific error messages
+        if (errorData.username) {
+          setApiError(`Username: ${errorData.username[0]}`);
+        } else if (errorData.email) {
+          setApiError(`Email: ${errorData.email[0]}`);
+        } else if (errorData.password) {
+          setApiError(`Password: ${errorData.password[0]}`);
+        } else {
+          setApiError("Registration failed. Please try again.");
+        }
+        setIsLoading(false);
+        return;
       }
 
       const result = await response.json();
       console.log("Success:", result);
 
-      setIsSuccess(true);
-      setTimeout(() => {
-        navigate("/login");
-      }, 2000);
-
-      setFormData({
-        username: "",
-        first_name: "",
-        last_name: "",
-        email: "",
-        phone: "",
-        country: "",
-        age: null,
-        password: "",
-        confirm_password: "",
+      // Redirect to login with success message
+      navigate("/login", {
+        state: {
+          message: "Account created successfully! Please log in."
+        }
       });
+
     } catch (error: unknown) {
       console.error("Error:", error);
-      if (typeof error === "object" && error !== null) {
-        setApiError(JSON.stringify(error, null, 2));
-      } else if (error instanceof Error && error.message) {
-        setApiError(error.message);
-      } else {
-        setApiError("An unexpected error occurred");
-      }
+      setApiError("An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Reset success state
-  const resetSuccess = () => {
-    setIsSuccess(false);
+  const handleWanderNestClick = () => {
+    navigate("/");
   };
 
-  if (isSuccess) {
-    return (
-      <>
-        <div className="container">
-          <div className="form-wrapper">
-            <div className="card">
-              <div className="card-header">
-                <h1 className="card-title">Account Created Successfully!</h1>
-                <p className="card-description">
-                  Welcome!to WanderNest Your account has been created.
-                </p>
-              </div>
-              <div className="card-content">
-                <div className="success-message">
-                  <p>
-                    Thank you for signing up. You can now log in to your
-                    account.
-                  </p>
-                  <button
-                    onClick={resetSuccess}
-                    className="button"
-                    style={{ marginTop: "1rem" }}
-                  >
-                    Create Another Account
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <Footer />
-      </>
-    );
-  }
-
   return (
-    <div className="relative min-h-screen w-full flex flex-col justify-center items-center overflow-hidden">
-      {/* Wildlife Background */}
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Background Image */}
       <div
-        className="absolute inset-0 w-full h-full bg-cover bg-center z-0"
-        style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80')",
-        }}
-      ></div>
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary-dark/80 via-primary/60 to-transparent z-0"></div>
-      {/* Centered Form Container */}
-      <div className="relative z-10 w-full max-w-xl mx-auto my-16">
-        <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl p-10 transition-all duration-300 flex flex-col gap-6">
-          <h1 className="text-2xl font-bold text-primary-700 mb-2 text-center">
-            <div className="flex flex-col items-center mb-8">
-              <button onClick={goHome} className="focus:outline-none">
+        className="absolute inset-0 w-full h-full bg-cover bg-center"
+        style={{ backgroundImage: "url('/Figma_photos/travel-background.jpg')" }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0d1c1c]/80 via-[#4a6b5b]/60 to-[#0d1c1c]/80"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
+        <div className="w-full max-w-md">
+          {/* Modern Signup Card */}
+          <div className="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl overflow-hidden">
+            {/* Header */}
+            <div className="pt-10 pb-8 px-8 text-center border-b border-gray-100">
+              <div
+                className="inline-flex items-center gap-3 cursor-pointer group mb-6 hover:scale-105 transition-transform duration-300"
+                onClick={handleWanderNestClick}
+              >
                 <img
-                  src="/Figma_photos/wandernest.svg"
-                  alt="WanderNest"
-                  className="w-16 h-16 mb-2 drop-shadow-xl hover:scale-110 transition-transform duration-300"
+                  src="/Figma_photos/Screenshot 2025-10-19 185315.svg"
+                  alt="WanderNest Logo"
+                  className="w-16 h-16 drop-shadow-xl group-hover:scale-110 transition-transform duration-300"
                 />
-              </button>
-              <span className="text-3xl font-bold text-primary-700 drop-shadow-lg tracking-wide">
-                WanderNest
-              </span>
+                <span className="text-3xl font-bold bg-gradient-to-r from-[#4a6b5b] to-[#6ab187] bg-clip-text text-transparent">
+                  WanderNest
+                </span>
+              </div>
+
+              <h1 className="text-3xl font-bold text-gray-800 mb-2">
+                Create Account
+              </h1>
+              <p className="text-base text-gray-500">
+                Join WanderNest and start exploring Bangladesh
+              </p>
             </div>
-          </h1>
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            {apiError && (
-              <div className="mt-3 text-red-600 text-center font-medium">
-                {apiError}
-              </div>
-            )}
-            {/* Personal Information */}
-            <div className="section flex flex-col gap-2">
-              <h3 className="section-title font-semibold text-lg mb-2">
-                Personal Information
-              </h3>
-              <div className="field-group flex flex-col gap-2">
-                <label htmlFor="username" className="label font-medium">
-                  Username
-                </label>
-                <input
-                  id="username"
-                  name="username"
-                  className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${
-                    errors.username ? "border-red-500" : ""
-                  }`}
-                  placeholder="Enter your username"
-                  value={formData.username}
-                  onChange={handleChange}
-                  required
-                />
-                {errors.username && (
-                  <span className="text-red-600 text-sm mt-1">
-                    {errors.username}
-                  </span>
-                )}
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="field-group flex flex-col gap-2">
-                  <label htmlFor="first_name" className="label font-medium">
-                    First Name
+
+            {/* Form Section */}
+            <div className="p-8">
+              {apiError && (
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+                  <p className="text-red-600 text-sm font-medium text-center">
+                    {apiError}
+                  </p>
+                </div>
+              )}
+
+              <form className="space-y-5" onSubmit={handleSubmit}>
+                {/* Username */}
+                <div>
+                  <label
+                    htmlFor="username"
+                    className="block text-sm font-semibold text-gray-700 mb-2"
+                  >
+                    Username
                   </label>
                   <input
-                    id="first_name"
-                    name="first_name"
-                    className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${
-                      errors.first_name ? "border-red-500" : ""
-                    }`}
-                    placeholder="Enter your first name"
-                    value={formData.first_name}
+                    id="username"
+                    name="username"
+                    type="text"
+                    className={`w-full px-4 py-3.5 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6ab187] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white ${errors.username ? "border-red-500" : "border-gray-200 hover:border-gray-300"
+                      }`}
+                    placeholder="Choose a username"
+                    value={formData.username}
                     onChange={handleChange}
                     required
                   />
-                  {errors.first_name && (
-                    <span className="text-red-600 text-sm mt-1">
-                      {errors.first_name}
-                    </span>
+                  {errors.username && (
+                    <p className="text-red-600 text-sm mt-1.5">{errors.username}</p>
                   )}
                 </div>
-                <div className="field-group flex flex-col gap-2">
-                  <label htmlFor="last_name" className="label font-medium">
-                    Last Name
+
+                {/* Email */}
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-semibold text-gray-700 mb-2"
+                  >
+                    Email Address
                   </label>
                   <input
-                    id="last_name"
-                    name="last_name"
-                    className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${
-                      errors.last_name ? "border-red-500" : ""
-                    }`}
-                    placeholder="Enter your last name"
-                    value={formData.last_name}
+                    id="email"
+                    name="email"
+                    type="email"
+                    className={`w-full px-4 py-3.5 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6ab187] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white ${errors.email ? "border-red-500" : "border-gray-200 hover:border-gray-300"
+                      }`}
+                    placeholder="Enter your email"
+                    value={formData.email}
                     onChange={handleChange}
                     required
                   />
-                  {errors.last_name && (
-                    <span className="text-red-600 text-sm mt-1">
-                      {errors.last_name}
-                    </span>
+                  {errors.email && (
+                    <p className="text-red-600 text-sm mt-1.5">{errors.email}</p>
                   )}
                 </div>
-              </div>
-              <div className="grid grid-cols-3 gap-4">
-                <div className="field-group flex flex-col gap-2 col-span-2">
-                  <label htmlFor="country" className="label font-medium">
-                    Country
-                  </label>
-                  <input
-                    id="country"
-                    name="country"
-                    className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${
-                      errors.country ? "border-red-500" : ""
-                    }`}
-                    placeholder="Enter your country"
-                    value={formData.country}
-                    onChange={handleChange}
-                    required
-                  />
-                  {errors.country && (
-                    <span className="text-red-600 text-sm mt-1">
-                      {errors.country}
-                    </span>
-                  )}
-                </div>
-                <div className="field-group flex flex-col gap-2">
-                  <label htmlFor="age" className="label font-medium">
-                    Age{" "}
-                    <span className="optional-text text-gray-500">
-                      (Optional)
-                    </span>
-                  </label>
-                  <input
-                    id="age"
-                    name="age"
-                    type="number"
-                    min="13"
-                    max="120"
-                    className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${
-                      errors.age ? "border-red-500" : ""
-                    }`}
-                    placeholder="Age"
-                    value={formData.age || ""}
-                    onChange={handleChange}
-                  />
-                  {errors.age && (
-                    <span className="text-red-600 text-sm mt-1">
-                      {errors.age}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-            {/* Contact Information */}
-            <div className="section flex flex-col gap-2">
-              <h3 className="section-title font-semibold text-lg mb-2">
-                Contact Information
-              </h3>
-              <div className="field-group flex flex-col gap-2">
-                <label htmlFor="email" className="label font-medium">
-                  Email Address
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${
-                    errors.email ? "border-red-500" : ""
-                  }`}
-                  placeholder="Enter your email address"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
-                {errors.email && (
-                  <span className="text-red-600 text-sm mt-1">
-                    {errors.email}
-                  </span>
-                )}
-              </div>
-              <div className="field-group flex flex-col gap-2">
-                <label htmlFor="phone" className="label font-medium">
-                  Phone Number
-                </label>
-                <input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${
-                    errors.phone ? "border-red-500" : ""
-                  }`}
-                  placeholder="Enter your phone number"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  required
-                />
-                {errors.phone && (
-                  <span className="text-red-600 text-sm mt-1">
-                    {errors.phone}
-                  </span>
-                )}
-              </div>
-            </div>
-            {/* Account Security */}
-            <div className="section flex flex-col gap-2">
-              <h3 className="section-title font-semibold text-lg mb-2">
-                Account Security
-              </h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="field-group flex flex-col gap-2">
-                  <label htmlFor="password" className="label font-medium">
+
+                {/* Password */}
+                <div>
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-semibold text-gray-700 mb-2"
+                  >
                     Password
                   </label>
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${
-                      errors.password ? "border-red-500" : ""
-                    }`}
-                    placeholder="Create a password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                  />
+                  <div className="relative">
+                    <input
+                      id="password"
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      className={`w-full px-4 py-3.5 pr-12 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6ab187] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white ${errors.password ? "border-red-500" : "border-gray-200 hover:border-gray-300"
+                        }`}
+                      placeholder="Create a strong password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors duration-200"
+                    >
+                      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </button>
+                  </div>
                   {errors.password && (
-                    <span className="text-red-600 text-sm mt-1">
-                      {errors.password}
-                    </span>
+                    <p className="text-red-600 text-sm mt-1.5">{errors.password}</p>
                   )}
+                  <p className="text-xs text-gray-500 mt-1.5">
+                    Must be at least 8 characters long
+                  </p>
                 </div>
-                <div className="field-group flex flex-col gap-2">
+
+                {/* Confirm Password */}
+                <div>
                   <label
                     htmlFor="confirm_password"
-                    className="label font-medium"
+                    className="block text-sm font-semibold text-gray-700 mb-2"
                   >
                     Confirm Password
                   </label>
-                  <input
-                    id="confirm_password"
-                    name="confirm_password"
-                    type="password"
-                    className={`input bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 transition ${
-                      errors.confirm_password ? "border-red-500" : ""
-                    }`}
-                    placeholder="Confirm your password"
-                    value={formData.confirm_password}
-                    onChange={handleChange}
-                    required
-                  />
+                  <div className="relative">
+                    <input
+                      id="confirm_password"
+                      name="confirm_password"
+                      type={showConfirmPassword ? "text" : "password"}
+                      className={`w-full px-4 py-3.5 pr-12 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6ab187] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white ${errors.confirm_password ? "border-red-500" : "border-gray-200 hover:border-gray-300"
+                        }`}
+                      placeholder="Confirm your password"
+                      value={formData.confirm_password}
+                      onChange={handleChange}
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors duration-200"
+                    >
+                      {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </button>
+                  </div>
                   {errors.confirm_password && (
-                    <span className="text-red-600 text-sm mt-1">
-                      {errors.confirm_password}
-                    </span>
+                    <p className="text-red-600 text-sm mt-1.5">{errors.confirm_password}</p>
                   )}
                 </div>
-              </div>
+
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  className="w-full py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 bg-gradient-to-r from-[#6ab187] to-[#4a6b5b] hover:from-[#5a9c78] hover:to-[#3a5b4b] text-white"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Creating Account...
+                    </span>
+                  ) : (
+                    "Create Account"
+                  )}
+                </button>
+
+
+
+                {/* Sign In Link */}
+                <div className="text-center mt-6">
+                  <p className="text-sm text-gray-600">
+                    Already have an account?{" "}
+                    <button
+                      type="button"
+                      onClick={() => navigate("/login")}
+                      className="font-semibold text-[#4a6b5b] hover:text-[#0d1c1c] transition-colors duration-200 hover:underline"
+                    >
+                      Sign in
+                    </button>
+                  </p>
+                </div>
+              </form>
             </div>
-            <button
-              type="submit"
-              className="w-full py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-              style={{
-                backgroundColor: isLoading ? "#5a9c78" : "#6ab187",
-                color: "white",
-              }}
-              disabled={isLoading}
-            >
-              {isLoading ? "Creating Account..." : "Create Account"}
-            </button>
-            <div className="footer-text text-center mt-4">
-              Already have an account?{" "}
-              <a
-                href="/login"
-                className="footer-link text-primary-700 font-semibold hover:underline"
-              >
-                Sign in here
-              </a>
-            </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>

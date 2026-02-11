@@ -15,7 +15,7 @@ export default function TravelLogin() {
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated, login } = useAuth();
-  
+
   // Get the message from navigation state
   const redirectMessage = location.state?.message;
 
@@ -203,8 +203,8 @@ export default function TravelLogin() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Background Image - mobile: show entire photo (no crop). md+: fill the area for best desktop look */}
-      <div className="absolute inset-0 w-full h-full flex items-center justify-center bg-transparent">
+      {/* Background Image */}
+      <div className="absolute inset-0 w-full h-full">
         <img
           src="/Figma_photos/travel-background.jpg"
           alt="Travel background"
@@ -219,140 +219,129 @@ export default function TravelLogin() {
       {/* Content */}
       <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
         <div className="w-full max-w-md">
-          {/* Logo Section */}
-          <div className="text-center mb-8">
-            <div
-              className="inline-flex items-center gap-3 cursor-pointer group mb-6"
-              onClick={handleWanderNestClick}
-            >
-              <div className="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
+          {/* Modern Login Card - Everything Inside */}
+          <div className="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl overflow-hidden">
+            {/* Logo & Welcome Section - Inside Card */}
+            <div className="pt-10 pb-8 px-8 text-center border-b border-gray-100">
+              <div
+                className="inline-flex items-center gap-3 cursor-pointer group mb-6 hover:scale-105 transition-transform duration-300"
+                onClick={handleWanderNestClick}
+              >
                 <img
                   src="/Figma_photos/Screenshot 2025-10-19 185315.svg"
                   alt="WanderNest Logo"
-                  className="w-7 h-7"
+                  className="w-16 h-16 drop-shadow-xl group-hover:scale-110 transition-transform duration-300"
                 />
+                <span className="text-3xl font-bold bg-gradient-to-r from-[#4a6b5b] to-[#6ab187] bg-clip-text text-transparent">
+                  WanderNest
+                </span>
               </div>
-              <span className="text-2xl font-bold text-white group-hover:text-accent transition-colors duration-300">
-                WanderNest
-              </span>
-            </div>
-            <div className="text-center">
-              <h1 className="text-3xl font-bold text-white mb-2">
+
+              <h1 className="text-3xl font-bold text-gray-800 mb-2">
                 Welcome back
               </h1>
-              <p className="text-lg text-white/80">
+              <p className="text-base text-gray-500">
                 We're so excited to see you again!
               </p>
             </div>
-          </div>
 
-          {/* Login Form */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-8">
-            {redirectMessage && (
-              <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
-                <div className="flex items-center gap-2 justify-center">
-                  <span className="text-blue-600 text-lg">🔒</span>
-                  <p className="text-blue-700 text-sm font-medium">
-                    {redirectMessage}
+            {/* Form Section */}
+            <div className="p-8">
+              {redirectMessage && (
+                <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                  <div className="flex items-center gap-2 justify-center">
+                    <span className="text-blue-600 text-lg">🔒</span>
+                    <p className="text-blue-700 text-sm font-medium">
+                      {redirectMessage}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {error && (
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl animate-shake">
+                  <p className="text-red-600 text-sm font-medium text-center">
+                    {error}
                   </p>
                 </div>
-              </div>
-            )}
+              )}
 
-            {error && (
-              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
-                <p className="text-red-600 text-sm font-medium text-center">
-                  {error}
-                </p>
-              </div>
-            )}
+              <form className="space-y-5" onSubmit={handleSubmit}>
+                <div>
+                  <label
+                    htmlFor="username"
+                    className="block text-sm font-semibold text-gray-700 mb-2"
+                  >
+                    Username
+                  </label>
+                  <input
+                    id="username"
+                    type="text"
+                    className="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6ab187] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white hover:border-gray-300"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                    placeholder="Enter your username"
+                  />
+                </div>
 
-            <form className="space-y-6" onSubmit={handleSubmit}>
-              <div>
-                <label
-                  htmlFor="username"
-                  className="block text-sm font-semibold text-gray-700 mb-2"
-                >
-                  Username
-                </label>
-                <input
-                  id="username"
-                  type="text"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white/90"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  required
-                  placeholder="Enter your username"
-                />
-              </div>
+                <div>
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-semibold text-gray-700 mb-2"
+                  >
+                    Password
+                  </label>
+                  <input
+                    id="password"
+                    type="password"
+                    className="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6ab187] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white hover:border-gray-300"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    placeholder="Enter your password"
+                  />
+                </div>
 
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-semibold text-gray-700 mb-2"
-                >
-                  Password
-                </label>
-                <input
-                  id="password"
-                  type="password"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white/90"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  placeholder="Enter your password"
-                />
-              </div>
-
-              <div className="flex justify-center">
-                <button
-                  type="button"
-                  className="text-sm font-medium transition-colors duration-200 hover:underline"
-                  style={{ color: "#4a6b5b" }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.color = "#0d1c1c")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.color = "#4a6b5b")
-                  }
-                  onClick={() => navigate("/fpass")}
-                >
-                  Forgot your password?
-                </button>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                style={{
-                  backgroundColor: isLoading ? "#5a9c78" : "#6ab187",
-                  color: "white",
-                }}
-                disabled={isLoading}
-              >
-                {isLoading ? "Logging in..." : "Log in"}
-              </button>
-
-              <div className="text-center mt-6">
-                <p className="text-sm text-gray-600">
-                  Don't have an account?{" "}
+                <div className="flex justify-end">
                   <button
                     type="button"
-                    onClick={() => navigate("/signup")}
-                    className="font-medium transition-colors duration-200 hover:underline"
-                    style={{ color: "#4a6b5b" }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.color = "#0d1c1c")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.color = "#4a6b5b")
-                    }
+                    className="text-sm font-semibold text-[#4a6b5b] hover:text-[#0d1c1c] transition-colors duration-200 hover:underline"
+                    onClick={() => navigate("/fpass")}
                   >
-                    Sign up
+                    Forgot password?
                   </button>
-                </p>
-              </div>
-            </form>
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 bg-gradient-to-r from-[#6ab187] to-[#4a6b5b] hover:from-[#5a9c78] hover:to-[#3a5b4b] text-white"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Logging in...
+                    </span>
+                  ) : (
+                    "Log in"
+                  )}
+                </button>
+
+
+
+                <button
+                  type="button"
+                  onClick={() => navigate("/signup")}
+                  className="w-full py-3.5 rounded-xl font-semibold text-base border-2 border-[#6ab187] text-[#4a6b5b] hover:bg-[#6ab187] hover:text-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  Create an account
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
