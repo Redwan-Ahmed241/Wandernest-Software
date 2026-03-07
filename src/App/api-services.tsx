@@ -52,19 +52,22 @@ export const searchFlights = async (
   params: FlightSearchParams,
 ): Promise<Flight[]> => {
   try {
-    const response = await fetch(`${API_BASE}/api/flights/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`, // If auth required
-      },
-      body: JSON.stringify({
-        origin: params.from,
-        destination: params.to,
-        departure_date: params.departure,
-        passengers: params.passengers,
-      }),
+    const queryParams = new URLSearchParams({
+      origin: params.from,
+      destination: params.to,
+      departure_date: params.departure,
+      passengers: String(params.passengers),
     });
+    const response = await fetch(
+      `${API_BASE}/api/flights/search/?${queryParams}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      },
+    );
 
     if (!response.ok) {
       throw new Error("Failed to search flights");
@@ -81,7 +84,7 @@ export const searchFlights = async (
 // Weather API function
 export const getWeatherData = async (): Promise<WeatherData[]> => {
   try {
-    const response = await fetch(`${API_BASE}/api/weather/`, {
+    const response = await fetch(`${API_BASE}/api/weather/destinations`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -126,7 +129,7 @@ export const getWeatherData = async (): Promise<WeatherData[]> => {
 // Currency exchange API function
 export const getCurrencyRates = async (): Promise<CurrencyRate[]> => {
   try {
-    const response = await fetch(`${API_BASE}/api/currency/`, {
+    const response = await fetch(`${API_BASE}/api/currency/rates/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

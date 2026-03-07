@@ -3,7 +3,7 @@
 
 import React, { createContext, useContext, useState, useCallback } from "react";
 
-import { API_BASE } from '../config/api';
+import { API_BASE, getToken } from "../config/api";
 interface BookingItem {
   id: string;
   type: "hotel" | "package" | "trip";
@@ -59,10 +59,10 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
   const stats: BookingStats = React.useMemo(() => {
     const now = new Date();
     const upcoming = bookings.filter(
-      (b) => new Date(b.startDate) > now && b.status === "confirmed"
+      (b) => new Date(b.startDate) > now && b.status === "confirmed",
     );
     const completed = bookings.filter(
-      (b) => new Date(b.endDate) < now && b.status === "confirmed"
+      (b) => new Date(b.endDate) < now && b.status === "confirmed",
     );
     const pending = bookings.filter((b) => b.status === "pending");
     const cancelled = bookings.filter((b) => b.status === "cancelled");
@@ -73,10 +73,13 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
     const destinations = bookings
       .filter((b) => b.location && b.status === "confirmed")
       .map((b) => b.location!);
-    const destinationCounts = destinations.reduce((acc, dest) => {
-      acc[dest] = (acc[dest] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
+    const destinationCounts = destinations.reduce(
+      (acc, dest) => {
+        acc[dest] = (acc[dest] || 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>,
+    );
     const favoriteDestination =
       Object.entries(destinationCounts).sort(([, a], [, b]) => b - a)[0]?.[0] ||
       "";
@@ -96,10 +99,10 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
       memberSince:
         bookings.length > 0
           ? new Date(
-            Math.min(...bookings.map((b) => new Date(b.createdAt).getTime()))
-          )
-            .toISOString()
-            .split("T")[0]
+              Math.min(...bookings.map((b) => new Date(b.createdAt).getTime())),
+            )
+              .toISOString()
+              .split("T")[0]
           : "",
     };
   }, [bookings]);
@@ -123,7 +126,7 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
         window.dispatchEvent(event);
       }
     },
-    []
+    [],
   );
 
   // Update booking status
@@ -131,22 +134,19 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
     (id: string, status: BookingItem["status"]) => {
       setBookings((prev) =>
         prev.map((booking) =>
-          booking.id === id ? { ...booking, status } : booking
-        )
+          booking.id === id ? { ...booking, status } : booking,
+        ),
       );
     },
-    []
+    [],
   );
 
   // Refresh from API using new unified bookings endpoint
   const refreshBookings = async () => {
     setIsLoading(true);
     try {
-      const API_BASE =
-        import.meta.env.VITE_REACT_APP_API_URL ||
-        `${API_BASE}/api`;
-      const token =
-        localStorage.getItem("accessToken") || localStorage.getItem("token");
+      const apiUrl = `${API_BASE}/api`;
+      const token = getToken();
 
       if (!token) {
         console.warn("No auth token found for booking refresh");
@@ -164,9 +164,9 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
 
       // Fetch all booking types using the new unified endpoint
       const [packageRes, hotelRes, flightRes] = await Promise.all([
-        fetch(`${API_BASE}/bookings/?type=package`, { headers }),
-        fetch(`${API_BASE}/bookings/?type=hotel`, { headers }),
-        fetch(`${API_BASE}/bookings/?type=flight`, { headers }),
+        fetch(`${apiUrl}/bookings/?type=package`, { headers }),
+        fetch(`${apiUrl}/bookings/?type=hotel`, { headers }),
+        fetch(`${apiUrl}/bookings/?type=flight`, { headers }),
       ]);
 
       const allBookings: BookingItem[] = [];

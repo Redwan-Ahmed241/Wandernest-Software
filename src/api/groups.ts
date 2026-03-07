@@ -1,5 +1,4 @@
 import type {
-import { API_BASE } from '../config/api';
   Group,
   GroupPost,
   GroupMember,
@@ -16,7 +15,9 @@ import { API_BASE } from '../config/api';
   PaginationParams,
 } from '../types/groups';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || '${API_BASE}';
+import { API_BASE, getToken } from '../config/api';
+
+const API_BASE_URL = API_BASE;
 
 class GroupsAPI {
   private static async makeRequest<T>(
@@ -24,7 +25,7 @@ class GroupsAPI {
     options: RequestInit = {}
   ): Promise<ApiResponse<T>> {
     try {
-      const token = localStorage.getItem('authToken');
+      const token = getToken();
       const headers = {
         'Content-Type': 'application/json',
         ...(token && { Authorization: `Bearer ${token}` }),
