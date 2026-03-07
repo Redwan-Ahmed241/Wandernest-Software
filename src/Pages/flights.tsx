@@ -12,7 +12,8 @@ import "leaflet/dist/leaflet.css";
 import { useAuth } from "../Authentication/auth-context";
 
 // API Configuration
-const API_BASE_URL = "https://wander-nest-ad3s.onrender.com/api";
+import { API_BASE } from '../config/api';
+const API_BASE_URL = `${API_BASE}/api`;
 const WEATHER_API_KEY = "f69a050e081bb4a7910484976126421e";
 const CURRENCY_API_KEY = "cur_live_LPjcwFzBdUdWJgQwyqlhl4C0gWLcWchrgJJE9oT1";
 

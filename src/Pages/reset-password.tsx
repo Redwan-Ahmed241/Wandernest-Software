@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
+import { API_BASE } from '../config/api';
 const ResetPassword: React.FC = () => {
   const { uidb64, token } = useParams();
   const [password, setPassword] = useState("");
@@ -23,7 +24,7 @@ const ResetPassword: React.FC = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `https://wander-nest-ad3s.onrender.com/api/auth/password-reset-confirm/${uidb64}/${token}/`,
+        `${API_BASE}/api/auth/password-reset-confirm/${uidb64}/${token}/`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

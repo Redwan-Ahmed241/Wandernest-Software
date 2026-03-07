@@ -5,6 +5,8 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Authentication/auth-context";
 
+import { API_BASE, getToken, getAuthHeaders, clearTokens } from '../config/api';
+
 const ProfileDropdown: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, logout } = useAuth();
@@ -31,28 +33,23 @@ const ProfileDropdown: React.FC = () => {
     const confirmLogout = window.confirm("Do you want to logout?");
     if (!confirmLogout) return;
     try {
-      // Check if this is a mock token (starts with "mock-jwt-token-")
-      const token = localStorage.getItem("token");
-      const isMockToken = token && token.startsWith("mock-jwt-token-");
-
-      if (!isMockToken) {
-        // Only call logout API for real tokens
-        console.log("Calling logout API for real authentication");
-        await fetch("https://wander-nest-ad3s.onrender.com/api/auth/logout/", {
+      const token = getToken();
+      if (token) {
+        console.log("Calling logout API");
+        await fetch(`${API_BASE}/api/auth/logout/`, {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${token}`,
+            ...getAuthHeaders(),
             "Content-Type": "application/json",
           },
         });
-      } else {
-        console.log("Mock logout - skipping API call");
       }
     } catch (error) {
       console.error("Logout error:", error);
       // Continue with logout even if API call fails
     } finally {
       console.log("Logging out user and redirecting to home");
+      clearTokens();
       logout();
       navigate("/");
     }

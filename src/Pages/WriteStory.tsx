@@ -4,6 +4,7 @@ import { useAuth } from "../Authentication/auth-context";
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
 
+import { API_BASE } from '../config/api';
 interface BlogFormData {
   title: string;
   content: string;
@@ -270,7 +271,7 @@ const WriteStory: React.FC = () => {
 
       // Make API call
       const response = await fetch(
-        "https://wander-nest-ad3s.onrender.com/api/blogs/create",
+        `${API_BASE}/api/blogs/create`,
         {
           method: "POST",
           headers: requestHeaders,

@@ -7,7 +7,8 @@ import Layout from "../components/layout";
 import { useNavigate, useParams } from "react-router-dom";
 
 // API Base URL
-const API_BASE_URL = "https://wander-nest-ad3s.onrender.com";
+import { API_BASE } from '../config/api';
+const API_BASE_URL = `${API_BASE}`;
 
 // Interfaces for API responses
 interface DestinationData {

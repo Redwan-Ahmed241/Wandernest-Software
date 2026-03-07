@@ -3,6 +3,7 @@
 
 import React, { createContext, useContext, useState, useCallback } from "react";
 
+import { API_BASE } from '../config/api';
 interface BookingItem {
   id: string;
   type: "hotel" | "package" | "trip";
@@ -143,7 +144,7 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       const API_BASE =
         import.meta.env.VITE_REACT_APP_API_URL ||
-        "https://wander-nest-ad3s.onrender.com/api";
+        `${API_BASE}/api`;
       const token =
         localStorage.getItem("accessToken") || localStorage.getItem("token");
 

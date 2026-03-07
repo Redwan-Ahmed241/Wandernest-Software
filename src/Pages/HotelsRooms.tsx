@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Layout from "../components/layout";
 import { useAuth } from "../Authentication/auth-context";
 import {
+import { API_BASE } from '../config/api';
   Search,
   MapPin,
   Star,
@@ -48,7 +49,7 @@ const FILTER_OPTIONS = {
 
 type FilterKey = keyof typeof FILTER_OPTIONS;
 
-const MEDIA_BASE = "https://wander-nest-ad3s.onrender.com";
+const MEDIA_BASE = `${API_BASE}`;
 
 // Create hotel booking record
 // Helper to get normalized token and scheme
@@ -88,7 +89,7 @@ const createHotelBooking = async (bookingData: {
   location: string;
 }) => {
   const response = await fetch(
-    "https://wander-nest-ad3s.onrender.com/api/bookings/hotels/",
+    `${API_BASE}/api/bookings/hotels/`,
     {
       method: "POST",
       headers: getAuthHeaders(),
@@ -513,7 +514,7 @@ const HotelsRooms: FunctionComponent = () => {
     setSearchError("");
     try {
       const response = await fetch(
-        "https://wander-nest-ad3s.onrender.com/api/hotels/"
+        `${API_BASE}/api/hotels/`
       );
       if (!response.ok) throw new Error("Failed to fetch hotels");
 

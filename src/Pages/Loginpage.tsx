@@ -5,8 +5,7 @@ import type React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../Authentication/auth-context";
-import { storeTokens } from "../utils/authUtils";
-
+import { API_BASE, storeTokens } from '../config/api';
 export default function TravelLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -40,59 +39,12 @@ export default function TravelLogin() {
 
     console.log("Attempting login with:", { username, password: "***" });
 
-    // Mock authentication for testing
-    const mockCredentials = {
-      username: "admin",
-      password: "password123",
-    };
-
-    // Check if using mock credentials
-    if (
-      username === mockCredentials.username &&
-      password === mockCredentials.password
-    ) {
-      console.log("Using mock authentication - login successful");
-
-      // Create mock user data
-      const mockUser = {
-        id: "1",
-        email: "admin@wandernest.com",
-        first_name: "Admin",
-        last_name: "User",
-        username: "admin",
-      };
-
-      // Create mock token
-      const mockToken = "mock-jwt-token-" + Date.now();
-
-      // Use the auth context login function
-      login(mockToken, mockUser);
-
-      console.log("Mock login successful, checking for redirect");
-
-      // Check for stored redirect URL
-      const redirectUrl = sessionStorage.getItem("redirectAfterLogin");
-      if (redirectUrl) {
-        sessionStorage.removeItem("redirectAfterLogin");
-        navigate(redirectUrl);
-      } else {
-        navigate("/homepage");
-      }
-      return;
-    }
-
-    // Original API authentication logic (as fallback)
     try {
       const requestBody = { username, password };
-      console.log(
-        "Sending request to:",
-        "https://wander-nest-ad3s.onrender.com/api/auth/login/"
-      );
-      console.log("Request body:", requestBody);
+      const loginUrl = `${API_BASE}/api/auth/login/`;
+      console.log("Sending request to:", loginUrl);
 
-      const response = await fetch(
-        "https://wander-nest-ad3s.onrender.com/api/auth/login/",
-        {
+      const response = await fetch(loginUrl, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

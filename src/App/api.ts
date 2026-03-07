@@ -1,9 +1,10 @@
 // API configuration and service functions
-const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_URL || "https://wander-nest-ad3s.onrender.com/api"
+import { API_BASE, getToken } from '../config/api';
+const API_BASE_URL = `${API_BASE}/api`
 
 // Get auth token from localStorage (matching your existing auth setup)
 const getAuthToken = (): string | null => {
-  return localStorage.getItem("token")
+  return getToken();
 }
 
 // Utility function to rehydrate token after hard reload

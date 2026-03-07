@@ -7,10 +7,11 @@ import Layout from "../components/layout";
 import { getDestinations } from "../App/api-services";
 import { MapPin, Star, ArrowRight, Search } from "react-feather";
 
+import { API_BASE } from '../config/api';
 const incrementDestinationClick = async (id: number) => {
   try {
     await fetch(
-      `https://wander-nest-ad3s.onrender.com/api/home/destinations/${id}/click/`,
+      `${API_BASE}/api/home/destinations/${id}/click/`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },

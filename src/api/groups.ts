@@ -1,4 +1,5 @@
 import type {
+import { API_BASE } from '../config/api';
   Group,
   GroupPost,
   GroupMember,
@@ -15,7 +16,7 @@ import type {
   PaginationParams,
 } from '../types/groups';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://wander-nest-ad3s.onrender.com';
+const API_BASE_URL = import.meta.env.VITE_API_URL || '${API_BASE}';
 
 class GroupsAPI {
   private static async makeRequest<T>(

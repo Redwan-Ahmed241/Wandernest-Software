@@ -9,7 +9,8 @@ import type { UserProfile } from "../types/user";
 
 // UserProfile type now comes from src/types/user
 
-const API_URL = "https://wander-nest-ad3s.onrender.com/api/auth/edit-profile/";
+import { API_BASE } from '../config/api';
+const API_URL = `${API_BASE}/api/auth/edit-profile/`;
 
 // Helper function to map allowed profile fields
 const mapAllowedProfileFields = (data: Partial<UserProfile>): UserProfile => ({

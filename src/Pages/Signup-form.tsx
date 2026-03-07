@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "react-feather";
 
+import { API_BASE } from '../config/api';
 interface FormData {
   username: string;
   email: string;
@@ -95,7 +96,7 @@ export default function SignupForm() {
 
     try {
       const response = await fetch(
-        "https://wander-nest-ad3s.onrender.com/api/auth/register/",
+        `${API_BASE}/api/auth/register/`,
         {
           method: "POST",
           headers: {
