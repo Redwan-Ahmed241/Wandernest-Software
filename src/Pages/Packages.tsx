@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Layout from "../components/layout";
 import { useAuth } from "../Authentication/auth-context";
 import {
+import { API_BASE } from '../config/api';
   Search,
   MapPin,
   Star,
@@ -84,11 +85,11 @@ const Packages: FunctionComponent = () => {
       try {
         console.log(
           "🚀 Starting API call to:",
-          "https://wander-nest-ad3s.onrender.com/api/packages/unified/"
+          `${API_BASE}/api/packages/unified/`
         );
 
         const response = await fetch(
-          "https://wander-nest-ad3s.onrender.com/api/packages/unified/"
+          `${API_BASE}/api/packages/unified/`
         );
 
         console.log("📡 Response status:", response.status);

@@ -9,6 +9,7 @@ import { type Trip } from "../App/api";
 import { useAuth } from "../Authentication/auth-context";
 import { useBooking } from "../Context/booking-context";
 
+import { API_BASE } from '../config/api';
 interface ExtendedTrip extends Trip {
   price?: number;
   travelers?: number;
@@ -302,7 +303,7 @@ const MyTrips: FunctionComponent = () => {
     try {
       const API_BASE =
         import.meta.env.VITE_REACT_APP_API_URL ||
-        "https://wander-nest-ad3s.onrender.com/api";
+        `${API_BASE}/api`;
       const token =
         localStorage.getItem("accessToken") || localStorage.getItem("token");
 

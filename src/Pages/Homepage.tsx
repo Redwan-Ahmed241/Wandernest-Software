@@ -3,6 +3,7 @@
 "use client";
 
 import {
+import { API_BASE } from '../config/api';
     type FunctionComponent,
     useEffect,
     useState,
@@ -44,7 +45,7 @@ const HomePage: FunctionComponent = () => {
     const incrementDestinationClick = useCallback(async (id: number) => {
         try {
             await fetch(
-                `https://wander-nest-ad3s.onrender.com/api/home/destinations/${id}/click/`,
+                `${API_BASE}/api/home/destinations/${id}/click/`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },

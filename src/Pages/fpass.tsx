@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { API_BASE } from '../config/api';
 const FPass: React.FC = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -16,7 +17,7 @@ const FPass: React.FC = () => {
 
     try {
       const response = await fetch(
-        "https://wander-nest-ad3s.onrender.com/api/auth/password-reset/",
+        `${API_BASE}/api/auth/password-reset/`,
         {
           method: "POST",
           headers: {

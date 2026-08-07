@@ -1,13 +1,6 @@
-/**
- * Payment API Service
- * Centralized payment integration for SSLCommerz
- * 
- * Backend Endpoint: POST /api/payments/sslc/initiate/
- * Author: Updated based on backend standardization
- * Date: October 15, 2025
- */
 
-const API_BASE = "https://wander-nest-ad3s.onrender.com";
+
+import { API_BASE } from '../config/api';
 
 // TypeScript interfaces matching backend expectations
 export interface PaymentInitiateRequest {

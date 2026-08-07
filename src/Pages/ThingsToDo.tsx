@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import type { FunctionComponent } from "react";
+import { API_BASE } from '../config/api';
 //import { useNavigate } from "react-router-dom";
 import Layout from "../components/layout";
 import { Search, MapPin, Star, ArrowRight } from "react-feather";
@@ -46,7 +47,7 @@ const ThingsToDo: FunctionComponent = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://wander-nest-ad3s.onrender.com/api/things-to-do/"
+          `${API_BASE}/api/things-to-do/`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch data");

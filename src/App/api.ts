@@ -1,9 +1,10 @@
 // API configuration and service functions
-const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_URL || "https://wander-nest-ad3s.onrender.com/api"
+import { API_BASE, getToken } from '../config/api';
+const API_BASE_URL = `${API_BASE}/api`
 
 // Get auth token from localStorage (matching your existing auth setup)
 const getAuthToken = (): string | null => {
-  return localStorage.getItem("token")
+  return getToken();
 }
 
 // Utility function to rehydrate token after hard reload
@@ -207,10 +208,14 @@ export const packageAPI = {
 export const flightAPI = {
   // Search flights
   searchFlights: async (searchParams: FlightSearchParams) => {
-    return apiRequest("/flights/search/", {
-      method: "POST",
-      body: JSON.stringify(searchParams),
-    })
+    const params = new URLSearchParams();
+    if (searchParams.from) params.append('origin', searchParams.from);
+    if (searchParams.to) params.append('destination', searchParams.to);
+    if (searchParams.departure_date) params.append('departure_date', searchParams.departure_date);
+    if (searchParams.return_date) params.append('return_date', searchParams.return_date);
+    if (searchParams.passengers) params.append('passengers', String(searchParams.passengers));
+    if (searchParams.class) params.append('class', searchParams.class);
+    return apiRequest(`/flights/search/?${params.toString()}`)
   },
 
   // Create flight booking

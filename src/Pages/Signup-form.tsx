@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "react-feather";
 
+import { API_BASE } from "../config/api";
 interface FormData {
   username: string;
   email: string;
@@ -94,16 +95,13 @@ export default function SignupForm() {
     };
 
     try {
-      const response = await fetch(
-        "https://wander-nest-ad3s.onrender.com/api/auth/register/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(apiData),
-        }
-      );
+      const response = await fetch(`${API_BASE}/api/auth/register/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(apiData),
+      });
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -129,10 +127,9 @@ export default function SignupForm() {
       // Redirect to login with success message
       navigate("/login", {
         state: {
-          message: "Account created successfully! Please log in."
-        }
+          message: "Account created successfully! Please log in.",
+        },
       });
-
     } catch (error: unknown) {
       console.error("Error:", error);
       setApiError("An unexpected error occurred. Please try again.");
@@ -150,7 +147,9 @@ export default function SignupForm() {
       {/* Background Image */}
       <div
         className="absolute inset-0 w-full h-full bg-cover bg-center"
-        style={{ backgroundImage: "url('/Figma_photos/travel-background.jpg')" }}
+        style={{
+          backgroundImage: "url('/Figma_photos/travel-background.jpg')",
+        }}
       >
         <div className="absolute inset-0 bg-gradient-to-br from-[#0d1c1c]/80 via-[#4a6b5b]/60 to-[#0d1c1c]/80"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
@@ -208,15 +207,20 @@ export default function SignupForm() {
                     id="username"
                     name="username"
                     type="text"
-                    className={`w-full px-4 py-3.5 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6ab187] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white ${errors.username ? "border-red-500" : "border-gray-200 hover:border-gray-300"
-                      }`}
+                    className={`w-full px-4 py-3.5 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6ab187] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white ${
+                      errors.username
+                        ? "border-red-500"
+                        : "border-gray-200 hover:border-gray-300"
+                    }`}
                     placeholder="Choose a username"
                     value={formData.username}
                     onChange={handleChange}
                     required
                   />
                   {errors.username && (
-                    <p className="text-red-600 text-sm mt-1.5">{errors.username}</p>
+                    <p className="text-red-600 text-sm mt-1.5">
+                      {errors.username}
+                    </p>
                   )}
                 </div>
 
@@ -232,15 +236,20 @@ export default function SignupForm() {
                     id="email"
                     name="email"
                     type="email"
-                    className={`w-full px-4 py-3.5 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6ab187] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white ${errors.email ? "border-red-500" : "border-gray-200 hover:border-gray-300"
-                      }`}
+                    className={`w-full px-4 py-3.5 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6ab187] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white ${
+                      errors.email
+                        ? "border-red-500"
+                        : "border-gray-200 hover:border-gray-300"
+                    }`}
                     placeholder="Enter your email"
                     value={formData.email}
                     onChange={handleChange}
                     required
                   />
                   {errors.email && (
-                    <p className="text-red-600 text-sm mt-1.5">{errors.email}</p>
+                    <p className="text-red-600 text-sm mt-1.5">
+                      {errors.email}
+                    </p>
                   )}
                 </div>
 
@@ -257,8 +266,11 @@ export default function SignupForm() {
                       id="password"
                       name="password"
                       type={showPassword ? "text" : "password"}
-                      className={`w-full px-4 py-3.5 pr-12 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6ab187] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white ${errors.password ? "border-red-500" : "border-gray-200 hover:border-gray-300"
-                        }`}
+                      className={`w-full px-4 py-3.5 pr-12 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6ab187] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white ${
+                        errors.password
+                          ? "border-red-500"
+                          : "border-gray-200 hover:border-gray-300"
+                      }`}
                       placeholder="Create a strong password"
                       value={formData.password}
                       onChange={handleChange}
@@ -273,7 +285,9 @@ export default function SignupForm() {
                     </button>
                   </div>
                   {errors.password && (
-                    <p className="text-red-600 text-sm mt-1.5">{errors.password}</p>
+                    <p className="text-red-600 text-sm mt-1.5">
+                      {errors.password}
+                    </p>
                   )}
                   <p className="text-xs text-gray-500 mt-1.5">
                     Must be at least 8 characters long
@@ -293,8 +307,11 @@ export default function SignupForm() {
                       id="confirm_password"
                       name="confirm_password"
                       type={showConfirmPassword ? "text" : "password"}
-                      className={`w-full px-4 py-3.5 pr-12 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6ab187] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white ${errors.confirm_password ? "border-red-500" : "border-gray-200 hover:border-gray-300"
-                        }`}
+                      className={`w-full px-4 py-3.5 pr-12 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6ab187] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white ${
+                        errors.confirm_password
+                          ? "border-red-500"
+                          : "border-gray-200 hover:border-gray-300"
+                      }`}
                       placeholder="Confirm your password"
                       value={formData.confirm_password}
                       onChange={handleChange}
@@ -302,14 +319,22 @@ export default function SignupForm() {
                     />
                     <button
                       type="button"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
                       className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors duration-200"
                     >
-                      {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                      {showConfirmPassword ? (
+                        <EyeOff size={20} />
+                      ) : (
+                        <Eye size={20} />
+                      )}
                     </button>
                   </div>
                   {errors.confirm_password && (
-                    <p className="text-red-600 text-sm mt-1.5">{errors.confirm_password}</p>
+                    <p className="text-red-600 text-sm mt-1.5">
+                      {errors.confirm_password}
+                    </p>
                   )}
                 </div>
 
@@ -321,9 +346,25 @@ export default function SignupForm() {
                 >
                   {isLoading ? (
                     <span className="flex items-center justify-center gap-2">
-                      <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      <svg
+                        className="animate-spin h-5 w-5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
                       </svg>
                       Creating Account...
                     </span>
@@ -331,8 +372,6 @@ export default function SignupForm() {
                     "Create Account"
                   )}
                 </button>
-
-
 
                 {/* Sign In Link */}
                 <div className="text-center mt-6">

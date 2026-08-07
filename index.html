@@ -1,32 +1,114 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/Figma_photos/Screenshot 2025-10-19 185315.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Wandernest</title>
-
-  <!-- Preconnect to external domains for faster loading -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://images.pexels.com">
-  <link rel="preconnect" href="https://wander-nest-ad3s.onrender.com">
-
-  <!-- DNS prefetch for additional performance -->
-  <link rel="dns-prefetch" href="https://images.pexels.com">
-  <link rel="dns-prefetch" href="https://wander-nest-ad3s.onrender.com">
-
-  <!-- Preload critical resources -->
-  <link rel="preload" href="/Figma_photos/2102331.jpg" as="image" type="image/jpeg">
-
-  <!-- Load CSS normally to avoid build issues -->
-  <link rel="stylesheet" href="/src/global.css">
+  <title>Bangladesh Tourism — Wandernest Cinematic Experience</title>
+  <meta name="description" content="A high-performance cinematic scroll story showcasing Bangladesh's rich heritage and natural wonders." />
+  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="script.js" defer></script>
 </head>
-
 <body>
-  <div id="root"></div>
-  <script type="module" src="/src/main.tsx"></script>
+  <main class="site-shell">
+    <section class="cinema-scroll" id="cinema" aria-label="Bangladesh cinematic scroll story">
+      <div class="stage">
+        <div class="world">
+          <img class="scene-img sky-img" decoding="async" src="https://raft-blast-61784561.figma.site/_assets/v11/16b5007d9c93971e26ffe4e0e3e37946f6bd538c.png" alt="" />
+          <header class="site-header" aria-label="Primary navigation">
+            <a class="site-logo" href="#cinema">Wandernest Bangladesh</a>
+            <nav class="site-nav" aria-label="Main menu">
+              <a href="#cinema">Intro</a>
+              <a href="#heritage">Heritage</a>
+              <a href="#nature">Nature</a>
+              <a href="#destinations">Destinations</a>
+            </nav>
+            <button class="language-switcher" aria-label="Change language">
+              <span>BN / EN</span>
+              <span aria-hidden="true">⌄</span>
+            </button>
+          </header>
+          <div class="back-stack">
+            <img class="scene-img back-img back-four" decoding="async" src="https://raft-blast-61784561.figma.site/_assets/v11/8a7f8af50e0ce92ec2e228e7b0b4112178c51cf1.png" alt="" />
+            <section class="sights-slider" aria-label="Bangladesh sights slider">
+              <div class="sights-track">
+                <article class="sight-card" tabindex="0" role="button" aria-label="Open Sundarbans card">
+                  <span class="sight-kicker">World Heritage</span>
+                  <img class="sight-pin" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260730_230438_d526b8b6-8a2e-4e3b-9993-3908acae03a7.png" alt="" />
+                  <h3>Sundarbans</h3>
+                  <p>World's largest mangrove forest and sanctuary of the Royal Bengal Tiger.</p>
+                </article>
+                <article class="sight-card" tabindex="0" role="button" aria-label="Open Shat Gombuj Mosque card">
+                  <span class="sight-kicker">Historic Bagerhat</span>
+                  <img class="sight-pin" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260730_230442_140bc25b-b165-4249-904a-f708bff6970e.png" alt="" />
+                  <h3>Shat Gombuj Mosque</h3>
+                  <p>Iconic 15th-century 60-dome mosque built during the Bengal Sultanate.</p>
+                </article>
+                <article class="sight-card" tabindex="0" role="button" aria-label="Open Ahsan Manzil card">
+                  <span class="sight-kicker">Dhaka Landmark</span>
+                  <img class="sight-pin" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260730_230448_825949c9-ccdb-4857-b4a6-e349eccc9010.png" alt="" />
+                  <h3>Ahsan Manzil</h3>
+                  <p>The striking Pink Palace of Dhaka anchored along the Buriganga riverbank.</p>
+                </article>
+                <article class="sight-card" tabindex="0" role="button" aria-label="Open Cox's Bazar card">
+                  <span class="sight-kicker">Natural Wonder</span>
+                  <img class="sight-pin" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260730_230438_d526b8b6-8a2e-4e3b-9993-3908acae03a7.png" alt="" />
+                  <h3>Cox's Bazar</h3>
+                  <p>The world's longest unbroken natural sandy sea beach stretching 120km.</p>
+                </article>
+                <article class="sight-card" tabindex="0" role="button" aria-label="Open Srimangal card">
+                  <span class="sight-kicker">Tea Capital</span>
+                  <img class="sight-pin" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260730_230442_140bc25b-b165-4249-904a-f708bff6970e.png" alt="" />
+                  <h3>Srimangal</h3>
+                  <p>Lush tea estates, Lawachara rain forest, and famous seven-layer tea.</p>
+                </article>
+              </div>
+            </section>
+            <img class="scene-img back-img back-bazaar" decoding="async" src="https://raft-blast-61784561.figma.site/_assets/v11/864afe00e41e2fa20a5aa546e15cb807e0f81384.png" alt="" />
+          </div>
+          <div class="sights-controls" aria-label="Slider controls">
+            <button class="sight-nav sight-prev" aria-label="Previous sight">←</button>
+            <button class="sight-nav sight-next" aria-label="Next sight">→</button>
+          </div>
+          <h1 class="hero-title">BANGLADESH</h1>
+          <img class="scene-img splitframe-img splitframe-left" decoding="async" src="https://raft-blast-61784561.figma.site/_assets/v11/7536d7b60a1fce482cf6edf3f0bffd3bad5d0f8a.png" alt="" />
+          <img class="scene-img splitframe-img splitframe-right" decoding="async" src="https://raft-blast-61784561.figma.site/_assets/v11/392db6a6a6b98e868bd7f8d3f55bb719d51e5028.png" alt="" />
+          <img class="scene-img bridge-img" decoding="async" src="https://raft-blast-61784561.figma.site/_assets/v11/c6a6d8ef49bca43f708aa852692942c45ec950d4.png" alt="" />
+          <img class="scene-img frame-two-img" decoding="async" src="https://raft-blast-61784561.figma.site/_assets/v11/ba75252bab2b1c510987b74837770f7bc8a6b2d4.png" alt="" />
+          <div class="shade"></div>
+        </div>
+        <section class="intro-copy" aria-label="Bangladesh overview">
+          <p>From the world's largest mangrove forest to the longest natural beach, discover centuries of Sultanate, Mughal, and Bengal heritage.</p>
+          <div class="hero-tags" aria-label="Bangladesh highlights">
+            <span>Sundarbans</span>
+            <span>Cox's Bazar</span>
+            <span>UNESCO Heritage</span>
+          </div>
+        </section>
+        <section class="story-panel story-panel-bridge" aria-label="Heritage details">
+          <h2>Centuries of history along pristine rivers.</h2>
+          <p>Ancient mosques, terracotta temples, and royal palaces anchor historic quarters shaped by Bengal Sultanate, Mughal, and European architecture.</p>
+          <dl class="facts">
+            <div>
+              <dt>1459</dt>
+              <dd>Shat Gombuj Mosque Completed</dd>
+            </div>
+            <div>
+              <dt>1997</dt>
+              <dd>Sundarbans Inscribed by UNESCO</dd>
+            </div>
+          </dl>
+        </section>
+        <section class="story-panel story-panel-bazaar" aria-label="Destinations details">
+          <h2>Vibrant culture and emerald tea hills.</h2>
+          <p>Rolling green tea gardens, floating guava markets, artisan copper lanes, and riverside warmth welcome travelers across Bangladesh.</p>
+          <button class="note-button">
+            <span aria-hidden="true">↗</span>
+            <span>Explore Wandernest Packages</span>
+          </button>
+        </section>
+      </div>
+    </section>
+  </main>
 </body>
-
 </html>

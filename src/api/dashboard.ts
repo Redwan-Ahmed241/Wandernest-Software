@@ -146,18 +146,14 @@ export interface SavedSearch {
 
 type ApiSuccess<T> = { success: true; data: T };
 
+import { API_BASE, getToken, getAuthHeaders } from '../config/api';
+
 const meta = (import.meta as unknown) as { env?: Record<string, string> };
-// Default to the deployed API host if VITE_API_BASE is not provided locally
-const DEFAULT_API_BASE = "https://wander-nest-ad3s.onrender.com";
-const rawBase = meta.env?.VITE_API_BASE ?? DEFAULT_API_BASE;
-const API_BASE = String(rawBase).replace(/\/$/, "");
 const DEBUG = (meta.env?.VITE_DEBUG_API === 'true') || (typeof window !== 'undefined' && window.location && window.location.hostname.includes('localhost'));
 
 async function request<T>(path: string, options: RequestInit = {}, token?: string): Promise<T> {
   const url = path.startsWith("http") ? path : `${API_BASE}${path}`;
-  const resolvedToken = token ?? (typeof localStorage !== 'undefined'
-    ? (localStorage.getItem('token') || localStorage.getItem('access') || localStorage.getItem('access_token') || undefined)
-    : undefined);
+  const resolvedToken = token ?? getToken();
 
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
@@ -165,13 +161,7 @@ async function request<T>(path: string, options: RequestInit = {}, token?: strin
   };
 
   if (resolvedToken) {
-    // Normalize stored tokens: remove any existing 'Token ' or 'Bearer ' prefix
-    let tokenStr = String(resolvedToken).trim();
-    tokenStr = tokenStr.replace(/^Bearer\s+/i, '').replace(/^Token\s+/i, '');
-    // Heuristic: JWTs typically have three dot-separated parts or start with 'ey'
-    const looksLikeJwt = tokenStr.split('.').length === 3 || /^ey[A-Za-z0-9_-]/.test(tokenStr);
-    const scheme = looksLikeJwt ? 'Bearer' : 'Token';
-    headers['Authorization'] = `${scheme} ${tokenStr}`;
+    Object.assign(headers, getAuthHeaders(resolvedToken));
   }
 
   if (DEBUG) {

@@ -11,6 +11,7 @@ import { getHotels, type Hotel, getTransportOptions, type TransportOption } from
 import { guidesAPI, type Guide } from "../api/guides";
 
 // Function to get appropriate guide image based on guide data
+import { API_BASE } from '../config/api';
 const getGuideImage = (guide: Guide): string => {
   // First check if guide has a valid image URL from API
   if (guide.image && guide.image.trim() !== "" && guide.image !== "null" && guide.image !== "undefined") {
@@ -648,7 +649,7 @@ const CreatePackage: FunctionComponent = () => {
       };
 
       const response = await fetch(
-        "https://wander-nest-ad3s.onrender.com/api/packages/create/",
+        `${API_BASE}/api/packages/create/`,
         {
           method: "POST",
           headers,

@@ -1,10 +1,11 @@
 // Guide API service functions for frontend
 
-const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_URL || " https://wandernest-backend.vercel.app/api";
+import { EXPRESS_API_BASE, getToken } from '../config/api';
+const API_BASE_URL = `${EXPRESS_API_BASE}/api`;
 
 // Generic API request function
 const apiRequest = async (endpoint: string, options: RequestInit = {}) => {
-  const token = localStorage.getItem("token");
+  const token = getToken();
   
   const config: RequestInit = {
     method: 'GET',

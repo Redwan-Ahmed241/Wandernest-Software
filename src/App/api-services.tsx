@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { API_BASE, EXPRESS_API_BASE } from "../config/api";
+
 // Flight search API service
 export interface FlightSearchParams {
   from: string;
@@ -47,24 +49,24 @@ export interface Hotel {
 
 // Flight search function
 export const searchFlights = async (
-  params: FlightSearchParams
+  params: FlightSearchParams,
 ): Promise<Flight[]> => {
   try {
+    const queryParams = new URLSearchParams({
+      origin: params.from,
+      destination: params.to,
+      departure_date: params.departure,
+      passengers: String(params.passengers),
+    });
     const response = await fetch(
-      "https://wander-nest-ad3s.onrender.com/api/flights/",
+      `${API_BASE}/api/flights/search/?${queryParams}`,
       {
-        method: "POST",
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // If auth required
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({
-          origin: params.from,
-          destination: params.to,
-          departure_date: params.departure,
-          passengers: params.passengers,
-        }),
-      }
+      },
     );
 
     if (!response.ok) {
@@ -82,15 +84,12 @@ export const searchFlights = async (
 // Weather API function
 export const getWeatherData = async (): Promise<WeatherData[]> => {
   try {
-    const response = await fetch(
-      "https://wander-nest-ad3s.onrender.com/api/weather/",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await fetch(`${API_BASE}/api/weather/destinations`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
     if (!response.ok) {
       throw new Error("Failed to fetch weather data");
@@ -130,15 +129,12 @@ export const getWeatherData = async (): Promise<WeatherData[]> => {
 // Currency exchange API function
 export const getCurrencyRates = async (): Promise<CurrencyRate[]> => {
   try {
-    const response = await fetch(
-      "https://wander-nest-ad3s.onrender.com/api/currency/",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await fetch(`${API_BASE}/api/currency/rates/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
     if (!response.ok) {
       throw new Error("Failed to fetch currency rates");
@@ -162,15 +158,12 @@ export const getCurrencyRates = async (): Promise<CurrencyRate[]> => {
 // Destinations API function
 export const getDestinations = async () => {
   try {
-    const response = await fetch(
-      "https://wander-nest-ad3s.onrender.com/api/home/destinations/",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await fetch(`${API_BASE}/api/home/destinations/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     if (!response.ok) {
       throw new Error("Failed to fetch destinations");
     }
@@ -185,15 +178,12 @@ export const getDestinations = async () => {
 // Get single destination by ID
 export const getDestinationById = async (id: number) => {
   try {
-    const response = await fetch(
-      `https://wander-nest-ad3s.onrender.com/api/home/destinations/${id}/`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await fetch(`${API_BASE}/api/home/destinations/${id}/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     if (!response.ok) {
       throw new Error("Failed to fetch destination details");
     }
@@ -223,21 +213,23 @@ export interface TransportOption {
   rating?: number;
 }
 
-export const getTransportOptions = async (params: any = {}): Promise<TransportOption[]> => {
+export const getTransportOptions = async (
+  params: any = {},
+): Promise<TransportOption[]> => {
   try {
     const queryString = new URLSearchParams(params).toString();
     const response = await fetch(
-      `https://wandernest-backend.vercel.app/api/transport/options${queryString ? `?${queryString}` : ''}`,
+      `${EXPRESS_API_BASE}/api/transport/options${queryString ? `?${queryString}` : ""}`,
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     if (!response.ok) throw new Error("Failed to fetch transport options");
     const data = await response.json();
-    
+
     // Handle different response structures
     let transportData = [];
     if (data.success && data.data) {
@@ -247,7 +239,7 @@ export const getTransportOptions = async (params: any = {}): Promise<TransportOp
     } else if (data.results) {
       transportData = data.results;
     }
-    
+
     return Array.isArray(transportData) ? transportData : [];
   } catch (error) {
     console.error("Transport fetch error:", error);
@@ -255,16 +247,18 @@ export const getTransportOptions = async (params: any = {}): Promise<TransportOp
   }
 };
 
-export const getTransportById = async (id: number): Promise<TransportOption | null> => {
+export const getTransportById = async (
+  id: number,
+): Promise<TransportOption | null> => {
   try {
     const response = await fetch(
-      `https://wandernest-backend.vercel.app/api/transport/options/${id}`,
+      `${EXPRESS_API_BASE}/api/transport/options/${id}`,
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     if (!response.ok) throw new Error("Failed to fetch transport details");
     const data = await response.json();
@@ -275,12 +269,14 @@ export const getTransportById = async (id: number): Promise<TransportOption | nu
   }
 };
 
-export const getHotels = async (destination?: string | number): Promise<Hotel[]> => {
+export const getHotels = async (
+  destination?: string | number,
+): Promise<Hotel[]> => {
   try {
-    const url = destination 
-      ? `https://wander-nest-ad3s.onrender.com/api/hotels/?destination=${destination}`
-      : "https://wander-nest-ad3s.onrender.com/api/hotels/";
-    
+    const url = destination
+      ? `${API_BASE}/api/hotels/?destination=${destination}`
+      : `${API_BASE}/api/hotels/`;
+
     const response = await fetch(url);
     if (!response.ok) throw new Error("Failed to fetch hotels");
     const data = await response.json();
@@ -305,12 +301,12 @@ export const getHotels = async (destination?: string | number): Promise<Hotel[]>
         hotel.image_url && hotel.image_url.startsWith("http")
           ? hotel.image_url
           : hotel.image_url
-          ? `https://wander-nest-ad3s.onrender.com${hotel.image_url}`
-          : hotel.image && hotel.image.startsWith("http")
-          ? hotel.image
-          : hotel.image
-          ? `https://wander-nest-ad3s.onrender.com${hotel.image}`
-          : "/placeholder.svg?height=200&width=300",
+            ? `${API_BASE}${hotel.image_url}`
+            : hotel.image && hotel.image.startsWith("http")
+              ? hotel.image
+              : hotel.image
+                ? `${API_BASE}${hotel.image}`
+                : "/placeholder.svg?height=200&width=300",
       price: parseFloat(hotel.price) || 0,
       star: hotel.star || 0,
       amenities: hotel.amenities || [],
@@ -335,15 +331,17 @@ export interface Restaurant {
   tags: string[];
 }
 
-export const getRestaurants = async (destination?: string | number): Promise<Restaurant[]> => {
+export const getRestaurants = async (
+  destination?: string | number,
+): Promise<Restaurant[]> => {
   try {
-    const url = destination 
-      ? `https://wander-nest-ad3s.onrender.com/api/restaurants/?destination=${destination}`
-      : "https://wander-nest-ad3s.onrender.com/api/restaurants/";
-    
+    const url = destination
+      ? `${API_BASE}/api/restaurants/?destination=${destination}`
+      : `${API_BASE}/api/restaurants/`;
+
     const response = await fetch(url);
     if (!response.ok) throw new Error("Failed to fetch restaurants");
-    
+
     const data = await response.json();
     let restaurantData = [];
     if (Array.isArray(data)) {
@@ -355,7 +353,7 @@ export const getRestaurants = async (destination?: string | number): Promise<Res
     } else {
       throw new Error("Unexpected response structure");
     }
-    
+
     return restaurantData;
   } catch (error) {
     console.error("Restaurant fetch error:", error);
@@ -378,15 +376,17 @@ export interface Trip {
   travelers: number;
 }
 
-export const getTrips = async (destination?: string | number): Promise<Trip[]> => {
+export const getTrips = async (
+  destination?: string | number,
+): Promise<Trip[]> => {
   try {
-    const url = destination 
-      ? `https://wander-nest-ad3s.onrender.com/api/trips/?destination=${destination}`
-      : "https://wander-nest-ad3s.onrender.com/api/trips/";
-    
+    const url = destination
+      ? `${API_BASE}/api/trips/?destination=${destination}`
+      : `${API_BASE}/api/trips/`;
+
     const response = await fetch(url);
     if (!response.ok) throw new Error("Failed to fetch trips");
-    
+
     const data = await response.json();
     let tripData = [];
     if (Array.isArray(data)) {
@@ -398,7 +398,7 @@ export const getTrips = async (destination?: string | number): Promise<Trip[]> =
     } else {
       throw new Error("Unexpected response structure");
     }
-    
+
     return tripData;
   } catch (error) {
     console.error("Trip fetch error:", error);

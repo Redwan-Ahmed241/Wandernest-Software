@@ -1,3 +1,4 @@
+import { API_BASE, getAuthHeaders } from '../config/api';
 //
 // Tailwind conversion: remove CSS import
 import React, { useState, useEffect } from "react";
@@ -30,44 +31,18 @@ interface BlogPost {
 
 // API Service
 class BlogAPI {
-  private static baseURL = "https://wander-nest-ad3s.onrender.com/api";
+  private static baseURL = `${API_BASE}/api`;
 
-  private static getAuthHeaders(): Record<string, string> {
-    const headers: Record<string, string> = {
+  private static getHeaders(): Record<string, string> {
+    return {
       "Content-Type": "application/json",
+      ...getAuthHeaders(),
     };
-
-    // Get token from localStorage - prioritize accessToken (JWT), fallback to simple token
-    const rawToken =
-      (typeof localStorage !== "undefined" &&
-        (localStorage.getItem("accessToken") ||
-          localStorage.getItem("token") ||
-          localStorage.getItem("authToken"))) ||
-      undefined;
-
-    if (rawToken) {
-      let tokenStr = String(rawToken).trim();
-      // Remove any existing Bearer/Token prefixes
-      tokenStr = tokenStr.replace(/^Bearer\s+/i, "").replace(/^Token\s+/i, "");
-
-      // Detect if it's a JWT (3 parts with dots, or starts with "ey")
-      const looksLikeJwt =
-        tokenStr.split(".").length === 3 || /^ey[A-Za-z0-9_-]/.test(tokenStr);
-
-      // Use Bearer for JWT, Token for simple tokens
-      const scheme = looksLikeJwt ? "Bearer" : "Token";
-      headers["Authorization"] = `${scheme} ${tokenStr}`;
-      console.log(`BlogAPI sending request WITH ${scheme} token`);
-    } else {
-      console.log("BlogAPI sending request WITHOUT token (anonymous)");
-    }
-
-    return headers;
   }
 
   private static async request(endpoint: string, options: RequestInit = {}) {
     const headers = {
-      ...this.getAuthHeaders(),
+      ...this.getHeaders(),
       ...(options.headers as Record<string, string>),
     };
 

@@ -15,7 +15,9 @@ import type {
   PaginationParams,
 } from '../types/groups';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://wander-nest-ad3s.onrender.com';
+import { API_BASE, getToken } from '../config/api';
+
+const API_BASE_URL = API_BASE;
 
 class GroupsAPI {
   private static async makeRequest<T>(
@@ -23,7 +25,7 @@ class GroupsAPI {
     options: RequestInit = {}
   ): Promise<ApiResponse<T>> {
     try {
-      const token = localStorage.getItem('authToken');
+      const token = getToken();
       const headers = {
         'Content-Type': 'application/json',
         ...(token && { Authorization: `Bearer ${token}` }),

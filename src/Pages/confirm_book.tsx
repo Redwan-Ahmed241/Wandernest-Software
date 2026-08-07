@@ -1,5 +1,6 @@
 
 
+import { API_BASE } from '../config/api';
 const ConfirmBook: React.FC = () => {
   // FIRST: Authentication check - must be at the top
   const { isAuthenticated, loading: authLoading } = useAuth();
@@ -214,7 +215,7 @@ const ConfirmBook: React.FC = () => {
           console.log("Fetching package with ID:", pkg.id); // Debug log
 
           const response = await fetch(
-            "https://wander-nest-ad3s.onrender.com/api/packages/unified/"
+            `${API_BASE}/api/packages/unified/`
           );
 
           if (!response.ok) {
@@ -319,7 +320,7 @@ const ConfirmBook: React.FC = () => {
 
       // Use the unified packages API to fetch package details
       fetch(
-        `https://wander-nest-ad3s.onrender.com/api/packages/unified/?destination=${urlDestinationId}`
+        `${API_BASE}/api/packages/unified/?destination=${urlDestinationId}`
       )
         .then(async (response) => {
           if (response.ok) {
@@ -358,7 +359,7 @@ const ConfirmBook: React.FC = () => {
           try {
             console.log("🔄 Trying fallback: fetch all packages");
             const response = await fetch(
-              `https://wander-nest-ad3s.onrender.com/api/packages/unified/`
+              `${API_BASE}/api/packages/unified/`
             );
             if (!response.ok) throw new Error("Failed to fetch packages");
 
@@ -449,7 +450,7 @@ const ConfirmBook: React.FC = () => {
       setAttractionsLoading(true);
       setAttractionsError("");
 
-      const apiUrl = `https://wander-nest-ad3s.onrender.com/api/home/destinations/${destinationId}/`;
+      const apiUrl = `${API_BASE}/api/home/destinations/${destinationId}/`;
       console.log("🌐 Fetching from URL:", apiUrl);
 
       fetch(apiUrl)
@@ -498,7 +499,7 @@ const ConfirmBook: React.FC = () => {
       setExperiencesLoading(true);
       setExperiencesError("");
 
-      const apiUrl = `https://wander-nest-ad3s.onrender.com/api/home/destinations/${destinationId}/`;
+      const apiUrl = `${API_BASE}/api/home/destinations/${destinationId}/`;
       console.log("🌐 Fetching from URL:", apiUrl);
 
       fetch(apiUrl)
@@ -619,7 +620,7 @@ const ConfirmBook: React.FC = () => {
 
       // Create the package booking
       const createResponse = await fetch(
-        "https://wander-nest-ad3s.onrender.com/api/packages/create/",
+        `${API_BASE}/api/packages/create/`,
         {
           method: "POST",
           headers: {
