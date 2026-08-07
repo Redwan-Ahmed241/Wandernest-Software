@@ -54,6 +54,7 @@ const FPass = lazy(() => import("./Pages/fpass"));
 const ResetPassword = lazy(() => import("./Pages/reset-password"));
 const PrivacyPolicy = lazy(() => import("./Pages/PrivacyPolicy"));
 const Emergency = lazy(() => import("./Pages/Emergency"));
+const Heritage = lazy(() => import("./Pages/Heritage"));
 // Keep these as regular imports since they're used immediately
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
@@ -97,6 +98,7 @@ const AppRoutes: React.FC = () => {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<HomePage />} />
+        <Route path="/heritage" element={<Heritage />} />
         <Route path="/things-to-do" element={<ThingsToDo />} />
         <Route path="/hotels-rooms" element={<HotelsRooms />} />
         <Route path="/plan-a-trip" element={<PlanATrip />} />

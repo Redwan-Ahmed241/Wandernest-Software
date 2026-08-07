@@ -27,6 +27,7 @@ const Navbar: React.FC = () => {
 
   const navItems = [
     { label: "Destinations", path: "/destinations", available: true },
+    { label: "Heritage Scroll", path: "/heritage", available: true },
     { label: "Hotels", path: "/hotels-rooms", available: true },
     {
       label: "Flights",
