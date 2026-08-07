@@ -301,7 +301,7 @@ const MyTrips: FunctionComponent = () => {
   const fetchTripsByType = async (type: "package" | "hotel" | "flight") => {
     setIsLoadingTrips(true);
     try {
-      const API_BASE =
+      const apiBaseUrl =
         import.meta.env.VITE_REACT_APP_API_URL ||
         `${API_BASE}/api`;
       const token =
@@ -313,7 +313,7 @@ const MyTrips: FunctionComponent = () => {
         return;
       }
 
-      const response = await fetch(`${API_BASE}/bookings/?type=${type}`, {
+      const response = await fetch(`${apiBaseUrl}/bookings/?type=${type}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",

@@ -3,8 +3,8 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../components/layout";
 import { useAuth } from "../Authentication/auth-context";
-import {
 import { API_BASE } from '../config/api';
+import {
   Search,
   MapPin,
   Star,

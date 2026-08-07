@@ -271,7 +271,7 @@ export const BangladeshHeritageScroll: React.FC = () => {
         <div className="stage">
           <div className="world">
             <img className="scene-img sky-img" decoding="async" src="https://raft-blast-61784561.figma.site/_assets/v11/16b5007d9c93971e26ffe4e0e3e37946f6bd538c.png" alt="" />
-            <header class="site-header" aria-label="Primary navigation">
+            <header className="site-header" aria-label="Primary navigation">
               <a className="site-logo" href="#cinema">Wandernest Bangladesh</a>
               <nav className="site-nav" aria-label="Main menu">
                 <a href="#cinema">Intro</a>
