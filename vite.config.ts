@@ -18,6 +18,8 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
+      // Two HTML entries: the legacy page and the standalone tracker (own bundle).
+      input: { main: 'index.html', tracker: 'tracker.html' },
       output: {
         manualChunks: {
           // Vendor chunks for better caching
