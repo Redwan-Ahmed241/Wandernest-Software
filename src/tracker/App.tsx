@@ -4,6 +4,7 @@ import LivingFlagMap, { type DistrictInfo, type MapDistrict } from './components
 import { repository } from './domain/repository';
 import { decodeMask, encodeMask } from './domain/share';
 import { parseGroupParam } from './domain/group';
+import { allBadges, badgeProgress } from './domain/badges';
 import { nextMilestone, rankFor } from './domain/ranks';
 import { useTrackerState } from './domain/userState';
 import type { DistrictIndex } from './domain/types';
@@ -126,6 +127,34 @@ export default function App() {
     });
   }, [index, visitedIds]);
 
+  const [listingCount, setListingCount] = useState<Map<string, number>>(new Map());
+  useEffect(() => {
+    repository.getListings().then((all) => {
+      const m = new Map<string, number>();
+      for (const l of all) m.set(l.district, (m.get(l.district) ?? 0) + 1);
+      setListingCount(m);
+    });
+  }, []);
+
+  const badges = useMemo(() => badgeProgress(allBadges(index), visitedIds), [index, visitedIds]);
+  const earned = useMemo(() => badges.filter((b) => b.earned), [badges]);
+  // Celebrate a badge only when the user's own action earns it (not on load or on a shared map).
+  const [toast, setToast] = useState<string | null>(null);
+  const earnedBefore = useRef<Set<string> | null>(null);
+  useEffect(() => {
+    if (!index) return;
+    const now = new Set(earned.map((b) => b.badge.id));
+    const prev = earnedBefore.current;
+    earnedBefore.current = now;
+    if (!prev || shared) return;
+    const fresh = earned.find((b) => !prev.has(b.badge.id));
+    if (!fresh) return;
+    setToast(`${fresh.badge.icon} ${t(lang, 'badgeNew')}: ${fresh.badge.label[lang]}`);
+    const id = window.setTimeout(() => setToast(null), 4000);
+    return () => window.clearTimeout(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [earned, index]);
+
   const flash = useCallback((id: string) => {
     setJustChanged(id);
     window.clearTimeout(popTimer.current);
@@ -186,6 +215,8 @@ export default function App() {
     heading: t(lang, 'title'),
     unit: t(lang, 'explored'),
     site: /^(localhost|127\.)/.test(window.location.hostname) ? '' : window.location.host,
+    badges: earned.map((b) => b.badge.icon),
+    badgesLabel: t(lang, 'badgesTitle'),
   });
 
   return (
@@ -268,6 +299,21 @@ export default function App() {
                 {t(lang, 'details')}
               </button>
             </div>
+            {!shared && selStatus === 'want' && (listingCount.get(selected) ?? 0) > 0 && (
+              <button
+                type="button"
+                className="nudge"
+                onClick={() => {
+                  setDirDistrict(selected);
+                  go('directory');
+                }}
+              >
+                {t(lang, 'wantNudge')
+                  .replace('{d}', info[selected]?.name ?? '')
+                  .replace('{n}', num(lang, listingCount.get(selected) ?? 0))}{' '}
+                →
+              </button>
+            )}
           </div>
         )}
 
@@ -340,6 +386,41 @@ export default function App() {
           {t(lang, 'share')}
         </button>
 
+        <section className="badges a-badges">
+          <h2>
+            {t(lang, 'badgesTitle')}{' '}
+            <small className="muted">
+              {num(lang, earned.length)}/{num(lang, badges.length)}
+            </small>
+          </h2>
+          <ul>
+            {[...badges]
+              .sort(
+                (a, b) =>
+                  Number(b.earned) - Number(a.earned) ||
+                  b.done / b.badge.districts.length - a.done / a.badge.districts.length,
+              )
+              .map(({ badge, done, missing, earned: ok }) => (
+                <li key={badge.id} className={ok ? 'got' : ''}>
+                  <span className="ico" aria-hidden="true">
+                    {badge.icon}
+                  </span>
+                  <span className="txt">
+                    <strong>{badge.label[lang]}</strong>
+                    <small className="muted">
+                      {ok
+                        ? t(lang, 'badgeEarned')
+                        : `${num(lang, done)}/${num(lang, badge.districts.length)} · ${t(lang, 'badgeNeed')}: ${missing
+                            .slice(0, 3)
+                            .map((id) => info[id]?.name ?? id)
+                            .join(', ')}${missing.length > 3 ? '…' : ''}`}
+                    </small>
+                  </span>
+                </li>
+              ))}
+          </ul>
+        </section>
+
         {divisionStats.length > 0 && (
           <section className="divs a-divs">
             <h2>{t(lang, 'divisions')}</h2>
@@ -363,6 +444,12 @@ export default function App() {
           <p>{t(lang, 'footer')}</p>
         </footer>
       </div>
+      )}
+
+      {toast && (
+        <div className="toast" role="status">
+          {toast}
+        </div>
       )}
 
       <Suspense fallback={<p className="muted">…</p>}>

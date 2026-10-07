@@ -58,8 +58,8 @@ button {
   .layout {
     max-width: none;
     grid-template-columns: minmax(0, 7fr) minmax(360px, 5fr);
-    grid-template-rows: repeat(7, auto) 1fr;
-    grid-template-areas: 'map hero' 'map banner' 'map sel' 'map score' 'map search' 'map share' 'map divs' 'map foot';
+    grid-template-rows: repeat(8, auto) 1fr;
+    grid-template-areas: 'map hero' 'map banner' 'map sel' 'map score' 'map search' 'map share' 'map badges' 'map divs' 'map foot';
     column-gap: 32px;
   }
   .a-hero { grid-area: hero; }
@@ -68,6 +68,7 @@ button {
   .a-search { grid-area: search; }
   .a-share { grid-area: share; }
   .a-divs { grid-area: divs; }
+  .a-badges { grid-area: badges; }
   .a-foot { grid-area: foot; }
   .a-map {
     grid-area: map;
@@ -1015,4 +1016,79 @@ button {
 }
 .who-visited {
   margin: 0 0 8px;
+}
+
+/* ---- want-to-go nudge, badges, toast ---- */
+.nudge {
+  text-align: left;
+  background: rgba(127, 209, 176, 0.14);
+  border: 1px solid var(--mint);
+  color: var(--ink);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-weight: 600;
+}
+.badges h2 {
+  font-size: 1.05rem;
+  margin: 10px 0 8px;
+}
+.badges ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+.badges li {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  opacity: 0.6;
+}
+.badges li.got {
+  opacity: 1;
+  border-color: #ffd76a;
+  background: rgba(255, 215, 106, 0.08);
+}
+.badges .ico {
+  font-size: 1.5rem;
+  filter: grayscale(1);
+}
+.badges li.got .ico {
+  filter: none;
+}
+.badges .txt {
+  display: grid;
+}
+.toast {
+  position: fixed;
+  z-index: 60;
+  left: 50%;
+  top: 16px;
+  transform: translateX(-50%);
+  background: #2a2610;
+  border: 1px solid #ffd76a;
+  color: #fff5d1;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-weight: 700;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  animation: toast-in 0.3s ease-out;
+  max-width: calc(100vw - 32px);
+}
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    animation: none;
+  }
 }

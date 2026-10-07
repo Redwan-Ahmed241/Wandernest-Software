@@ -139,6 +139,14 @@ const S = {
     en: 'We never accept payment to change reviews or hide problems, and we do not take bookings or payments for you.',
     bn: 'রিভিউ বদলাতে বা সমস্যা লুকাতে আমরা কখনো টাকা নিই না, এবং আপনার হয়ে বুকিং বা পেমেন্টও নিই না।',
   },
+  badgesTitle: { en: 'Badges', bn: 'ব্যাজ' },
+  badgeEarned: { en: 'Unlocked!', bn: 'অর্জিত!' },
+  badgeNeed: { en: 'still need', bn: 'বাকি' },
+  badgeNew: { en: 'New badge', bn: 'নতুন ব্যাজ' },
+  wantNudge: {
+    en: 'Planning {d}? See {n} stays & tour contacts',
+    bn: '{d} যেতে চান? থাকা ও ট্যুরের {n}টি যোগাযোগ দেখুন',
+  },
   disclaimerTitle: { en: 'Independent directory', bn: 'স্বাধীন ডিরেক্টরি' },
   disclaimer: {
     en: 'WanderNest BD is an independent information directory with no commercial affiliation to the places listed. Details such as prices, opening status and contacts are compiled from public sources, may change without notice and may be out of date; always confirm directly with the provider. We do not take bookings or payments and do not guarantee any service or transaction. Names and logos belong to their owners and are used for identification only.',

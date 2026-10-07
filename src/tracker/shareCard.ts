@@ -16,6 +16,9 @@ export interface CardInput {
   heading: string;
   unit: string;
   site: string;
+  /** Icons of earned badges. */
+  badges: string[];
+  badgesLabel: string;
 }
 
 const GREEN = '#006A4E';
@@ -28,7 +31,8 @@ const digits = (lang: Lang, s: string) => (lang === 'bn' ? s.replace(/\d/g, (d) 
 
 /** Pure canvas rendering from the same SVG path data the map uses. */
 export async function renderCard(input: CardInput): Promise<Blob> {
-  const { format, lang, districts, viewBox, visited, want, count, percent, rankLabel, heading, unit, site } = input;
+  const { format, lang, districts, viewBox, visited, want, count, percent, rankLabel, heading, unit, site, badges, badgesLabel } =
+    input;
   const W = 1080;
   const H = format === 'story' ? 1920 : 1350;
   const canvas = document.createElement('canvas');
@@ -61,7 +65,7 @@ export async function renderCard(input: CardInput): Promise<Blob> {
 
   // map
   const mapTop = format === 'story' ? 330 : 200;
-  const mapBottom = format === 'story' ? H - 680 : H - 520;
+  const mapBottom = format === 'story' ? H - 720 : H - 580;
   const availH = mapBottom - mapTop;
   const availW = W - 140;
   const scale = Math.min(availW / viewBox[0], availH / viewBox[1]);
@@ -98,6 +102,13 @@ export async function renderCard(input: CardInput): Promise<Blob> {
   ctx.fill();
   ctx.fillStyle = '#ffffff';
   ctx.fillText(rankLabel, W / 2, py + 52);
+
+  // badges
+  if (badges.length) {
+    ctx.font = `600 38px ${FONT}`;
+    ctx.fillStyle = 'rgba(255,255,255,0.92)';
+    ctx.fillText(`${badges.slice(0, 8).join(' ')}  ${digits(lang, String(badges.length))} ${badgesLabel}`, W / 2, py + 140);
+  }
 
   // watermark
   ctx.font = `700 40px ${FONT}`;
