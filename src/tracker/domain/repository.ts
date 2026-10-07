@@ -1,4 +1,4 @@
-import type { DistrictDetail, DistrictIndex, DistrictRepository } from './types';
+import type { DistrictDetail, DistrictIndex, DistrictRepository, Listing } from './types';
 
 const ID_RE = /^[a-z0-9-]{1,40}$/;
 
@@ -9,6 +9,7 @@ const ID_RE = /^[a-z0-9-]{1,40}$/;
 export class StaticDistrictRepository implements DistrictRepository {
   private indexPromise: Promise<DistrictIndex> | null = null;
   private details = new Map<string, Promise<DistrictDetail | null>>();
+  private listings: Promise<Listing[]> | null = null;
 
   private base: string;
 
@@ -37,6 +38,14 @@ export class StaticDistrictRepository implements DistrictRepository {
       this.details.set(id, p);
     }
     return p;
+  }
+
+  getListings(): Promise<Listing[]> {
+    this.listings ??= fetch(`${this.base}/listings.json`)
+      .then((r) => (r.ok && (r.headers.get('content-type') ?? '').includes('json') ? r.json() : []))
+      .then((d) => (Array.isArray(d) ? (d as Listing[]) : []))
+      .catch(() => []);
+    return this.listings;
   }
 }
 

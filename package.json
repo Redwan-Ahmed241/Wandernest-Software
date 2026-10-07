@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "start": "vite",
-    "optimize-images": "node scripts/optimize-images.js"
+    "optimize-images": "node scripts/optimize-images.js",
+    "tracker:data": "node scripts/tracker/build-details.mjs && node scripts/tracker/build-listings.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",

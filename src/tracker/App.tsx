@@ -3,6 +3,7 @@ import mapData from './data/map.json';
 import LivingFlagMap, { type DistrictInfo, type MapDistrict } from './components/LivingFlagMap';
 import { repository } from './domain/repository';
 import { decodeMask, encodeMask } from './domain/share';
+import { parseGroupParam } from './domain/group';
 import { nextMilestone, rankFor } from './domain/ranks';
 import { useTrackerState } from './domain/userState';
 import type { DistrictIndex } from './domain/types';
@@ -10,6 +11,25 @@ import { num, t } from './i18n';
 
 const DistrictSheet = lazy(() => import('./components/DistrictSheet'));
 const ShareModal = lazy(() => import('./components/ShareModal'));
+const DirectoryView = lazy(() => import('./components/DirectoryView'));
+const GroupView = lazy(() => import('./components/GroupView'));
+const BusinessView = lazy(() => import('./components/BusinessView'));
+
+type View = 'map' | 'directory' | 'group' | 'business';
+const VIEWS: View[] = ['map', 'directory', 'group', 'business'];
+const NAV_KEY = { map: 'navMap', directory: 'navDirectory', group: 'navGroup', business: 'navBusiness' } as const;
+const readView = (): View => {
+  const h = window.location.hash.replace('#', '') as View;
+  return VIEWS.includes(h) ? h : 'map';
+};
+
+function readGroup() {
+  try {
+    return new URLSearchParams(window.location.search).get('g');
+  } catch {
+    return null;
+  }
+}
 
 const DISTRICTS = mapData.districts as MapDistrict[];
 const VIEWBOX = mapData.viewBox as [number, number];
@@ -51,6 +71,20 @@ export default function App() {
   const [query, setQuery] = useState('');
   const [justChanged, setJustChanged] = useState<string | null>(null);
   const popTimer = useRef<number | undefined>(undefined);
+  const [view, setViewState] = useState<View>(readView);
+  const [dirDistrict, setDirDistrict] = useState('');
+  const [groupInitial] = useState(() => parseGroupParam(readGroup()));
+
+  useEffect(() => {
+    const on = () => setViewState(readView());
+    window.addEventListener('hashchange', on);
+    return () => window.removeEventListener('hashchange', on);
+  }, []);
+  const go = useCallback((v: View) => {
+    window.location.hash = v === 'map' ? '' : v;
+    setViewState(v);
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     repository.getIndex().then(setIndex).catch(() => undefined);
@@ -160,6 +194,13 @@ export default function App() {
         <a className="brand" href="/">
           WanderNest <b>BD</b>
         </a>
+        <nav className="views" aria-label="Sections">
+          {VIEWS.map((v) => (
+            <button key={v} type="button" className={view === v ? 'on' : ''} aria-current={view === v ? 'page' : undefined} onClick={() => go(v)}>
+              {t(lang, NAV_KEY[v])}
+            </button>
+          ))}
+        </nav>
         <div className="lang" role="group" aria-label="Language">
           <button type="button" className={lang === 'en' ? 'on' : ''} aria-pressed={lang === 'en'} onClick={() => setLang('en')}>
             EN
@@ -170,6 +211,7 @@ export default function App() {
         </div>
       </header>
 
+      {view === 'map' && (
       <div className="layout">
         <section className="hero a-hero">
           <h1>{t(lang, 'title')}</h1>
@@ -321,6 +363,25 @@ export default function App() {
           <p>{t(lang, 'footer')}</p>
         </footer>
       </div>
+      )}
+
+      <Suspense fallback={<p className="muted">…</p>}>
+        {view === 'directory' && (
+          <DirectoryView lang={lang} index={index} district={dirDistrict} onDistrict={setDirDistrict} />
+        )}
+        {view === 'group' && (
+          <GroupView
+            lang={lang}
+            index={index}
+            myVisited={state.visited}
+            districts={DISTRICTS}
+            viewBox={VIEWBOX}
+            info={info}
+            initial={groupInitial}
+          />
+        )}
+        {view === 'business' && <BusinessView lang={lang} />}
+      </Suspense>
 
       <Suspense fallback={null}>
         {sheetOpen && sel && index && (
@@ -331,6 +392,11 @@ export default function App() {
             plan={state.trips[sel.id]}
             onUpdatePlan={(fn) => updateTrip(sel.id, fn)}
             onSelectDistrict={(id) => setSelected(id)}
+            onOpenDirectory={(id) => {
+              setSheetOpen(false);
+              setDirDistrict(id);
+              go('directory');
+            }}
             onClose={() => setSheetOpen(false)}
           />
         )}

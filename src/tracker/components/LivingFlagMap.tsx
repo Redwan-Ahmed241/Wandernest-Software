@@ -26,6 +26,8 @@ interface Props {
   info: Record<string, DistrictInfo>;
   lang: Lang;
   onSelect: (id: string | null) => void;
+  /** Overrides the three legend labels (visited, want, none). */
+  legend?: [string, string, string];
 }
 
 const MAX_ZOOM = 6;
@@ -49,7 +51,7 @@ const DistrictPath = memo(function DistrictPath({
 });
 
 export default function LivingFlagMap(props: Props) {
-  const { districts, viewBox, visited, want, selected, justChanged, info, lang, onSelect } = props;
+  const { districts, viewBox, visited, want, selected, justChanged, info, lang, onSelect, legend } = props;
   const [W, H] = viewBox;
   const [view, setView] = useState({ x: 0, y: 0, w: W, h: H });
   const [svgPx, setSvgPx] = useState({ w: 0, h: 0 });
@@ -247,15 +249,15 @@ export default function LivingFlagMap(props: Props) {
       <ul className="legend" aria-hidden="true">
         <li>
           <i className="sw s-visited" />
-          {t(lang, 'visited')}
+          {legend?.[0] ?? t(lang, 'visited')}
         </li>
         <li>
           <i className="sw s-want" />
-          {t(lang, 'want')}
+          {legend?.[1] ?? t(lang, 'want')}
         </li>
         <li>
           <i className="sw s-none" />
-          {t(lang, 'unvisited')}
+          {legend?.[2] ?? t(lang, 'unvisited')}
         </li>
       </ul>
     </div>

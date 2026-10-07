@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type { DirectContact, DistrictDetail, DistrictIndex, DistrictSummary, Lang } from '../domain/types';
+import type { DistrictDetail, DistrictIndex, DistrictSummary, Lang, Listing } from '../domain/types';
+import { CONFIG } from '../config';
+import ListingCard, { UnverifiedNotice } from './ListingCard';
+import { safeHttp, sortListings } from '../domain/listings';
 import { repository } from '../domain/repository';
 import { MAX_NOTES, defaultPlan, type TripPlan } from '../domain/userState';
 import { monthName, num, t } from '../i18n';
-
-// Set before launch: shown as the error-report / takedown contact.
-const REPORT_EMAIL = '';
 
 interface Props {
   district: DistrictSummary;
@@ -14,18 +14,18 @@ interface Props {
   plan: TripPlan | undefined;
   onUpdatePlan: (fn: (t: TripPlan) => TripPlan) => void;
   onSelectDistrict: (id: string) => void;
+  onOpenDirectory: (id: string) => void;
   onClose: () => void;
 }
 
 type Tab = 'overview' | 'places' | 'food' | 'stays' | 'trip';
 
-const safeHttp = (u: string | undefined) => (u && /^https?:\/\//i.test(u) ? u : undefined);
-const safeTel = (p: string | undefined) => (p && /^\+?[0-9 ()-]{6,20}$/.test(p) ? p.replace(/[^\d+]/g, '') : undefined);
 
-export default function DistrictSheet({ district, index, lang, plan, onUpdatePlan, onSelectDistrict, onClose }: Props) {
+export default function DistrictSheet({ district, index, lang, plan, onUpdatePlan, onSelectDistrict, onOpenDirectory, onClose }: Props) {
   const [detail, setDetail] = useState<DistrictDetail | null | undefined>(undefined);
   const [tab, setTab] = useState<Tab>('overview');
   const [newItem, setNewItem] = useState('');
+  const [listings, setListings] = useState<Listing[]>([]);
   const closeRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -33,6 +33,7 @@ export default function DistrictSheet({ district, index, lang, plan, onUpdatePla
     setDetail(undefined);
     setTab('overview');
     repository.getDetail(district.id).then((d) => live && setDetail(d));
+    repository.getListings().then((all) => live && setListings(all.filter((l) => l.district === district.id).sort(sortListings)));
     return () => {
       live = false;
     };
@@ -49,10 +50,10 @@ export default function DistrictSheet({ district, index, lang, plan, onUpdatePla
     const out: Tab[] = ['overview'];
     if (detail?.attractions?.length) out.push('places');
     if (detail?.food?.length) out.push('food');
-    if (detail?.stays?.length) out.push('stays');
+    if (listings.length) out.push('stays');
     out.push('trip');
     return out;
-  }, [detail]);
+  }, [detail, listings]);
 
   const name = (d: { name_en: string; name_bn: string }) => (lang === 'bn' ? d.name_bn : d.name_en);
   const division = index.divisions.find((d) => d.id === district.division);
@@ -84,7 +85,7 @@ export default function DistrictSheet({ district, index, lang, plan, onUpdatePla
               className={tab === k ? 'on' : ''}
               onClick={() => setTab(k)}
             >
-              {t(lang, k === 'trip' ? 'myTrip' : k)}
+              {t(lang, k === 'trip' ? 'myTrip' : k === 'stays' ? 'navDirectory' : k)}
             </button>
           ))}
         </div>
@@ -157,23 +158,18 @@ export default function DistrictSheet({ district, index, lang, plan, onUpdatePla
             </ul>
           )}
 
-          {tab === 'stays' && detail?.stays && (
-            <ul className="cards">
-              {detail.stays.map((s, i) => (
-                <li key={i}>
-                  <strong>
-                    {s.name} <span className="tag">{s.priceBand}</span>
-                  </strong>
-                  {s.publicPackages?.map((p, j) => (
-                    <span key={j}>{p}</span>
-                  ))}
-                  <Contact c={s.directContact} lang={lang} />
-                  <small className="muted">
-                    {t(lang, 'source')}: {s.source} · {t(lang, 'lastVerified')}: {s.lastVerified}
-                  </small>
-                </li>
-              ))}
-            </ul>
+          {tab === 'stays' && (
+            <>
+              <UnverifiedNotice lang={lang} />
+              <ul className="listings">
+                {listings.slice(0, 6).map((l) => (
+                  <ListingCard key={l.id} listing={l} lang={lang} />
+                ))}
+              </ul>
+              <button type="button" className="btn wide" onClick={() => onOpenDirectory(district.id)}>
+                {t(lang, 'navDirectory')} →
+              </button>
+            </>
           )}
 
           {tab === 'trip' && (
@@ -252,43 +248,15 @@ export default function DistrictSheet({ district, index, lang, plan, onUpdatePla
         <footer className="disclaimer">
           <strong>{t(lang, 'disclaimerTitle')}</strong>
           <p>{t(lang, 'disclaimer')}</p>
-          {REPORT_EMAIL ? (
-            <a href={`mailto:${REPORT_EMAIL}?subject=WanderNest%20BD%20-%20${encodeURIComponent(district.name_en)}`}>
+          {CONFIG.reportEmail ? (
+            <a href={`mailto:${CONFIG.reportEmail}?subject=WanderNest%20BD%20-%20${encodeURIComponent(district.name_en)}`}>
               {t(lang, 'report')}
             </a>
           ) : (
-            import.meta.env.DEV && <em>[Set REPORT_EMAIL in DistrictSheet.tsx before launch]</em>
+            import.meta.env.DEV && <em>[Set reportEmail in src/tracker/config.ts before launch]</em>
           )}
         </footer>
       </aside>
-    </div>
-  );
-}
-
-function Contact({ c, lang }: { c: DirectContact | undefined; lang: Lang }) {
-  if (!c) return null;
-  const tel = safeTel(c.phone);
-  const wa = safeTel(c.whatsapp);
-  const web = safeHttp(c.website);
-  const map = safeHttp(c.mapUrl);
-  return (
-    <div className="contact">
-      {tel && <a href={`tel:${tel}`}>{t(lang, 'call')}</a>}
-      {wa && (
-        <a href={`https://wa.me/${wa.replace('+', '')}`} target="_blank" rel="noopener noreferrer">
-          {t(lang, 'whatsapp')}
-        </a>
-      )}
-      {web && (
-        <a href={web} target="_blank" rel="noopener noreferrer">
-          {t(lang, 'website')}
-        </a>
-      )}
-      {map && (
-        <a href={map} target="_blank" rel="noopener noreferrer">
-          {t(lang, 'map')}
-        </a>
-      )}
     </div>
   );
 }

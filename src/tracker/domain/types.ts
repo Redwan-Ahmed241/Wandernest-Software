@@ -51,18 +51,34 @@ export interface DistrictDetail extends DistrictSummary {
     lastVerified?: string;
   }>;
   food: Array<{ name: Bilingual; note?: string }>;
-  stays?: Array<{
-    name: string;
-    priceBand: '৳' | '৳৳' | '৳৳৳';
-    directContact?: DirectContact;
-    publicPackages?: string[];
-    source: string;
-    lastVerified: string;
-  }>;
+}
+
+export type ListingKind = 'stay' | 'guide' | 'tour';
+
+/**
+ * A business collected from public internet sources. NOT verified by us:
+ * the UI must always show the source, collection date and "contact to confirm" notice.
+ */
+export interface Listing {
+  id: string;
+  kind: ListingKind;
+  district: string;
+  name: string;
+  area?: string;
+  /** Our own one-line description (never copied from the source). */
+  about?: Bilingual;
+  /** Price exactly as the source advertised it, with its date in collectedOn. */
+  priceNote?: string;
+  contact: DirectContact & { facebook?: string; email?: string };
+  sourceUrl: string;
+  collectedOn: string;
+  /** Paid placement. Always shown with a visible "Sponsored" label. */
+  featured?: boolean;
 }
 
 export interface DistrictRepository {
   getIndex(): Promise<DistrictIndex>;
   /** Resolves null when no editorial content exists for the district yet. */
   getDetail(id: string): Promise<DistrictDetail | null>;
+  getListings(): Promise<Listing[]>;
 }
