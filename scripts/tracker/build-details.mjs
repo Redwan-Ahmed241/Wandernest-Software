@@ -59,4 +59,23 @@ mkdirSync(outDir, { recursive: true });
 for (const c of CONTENT) {
   writeFileSync(resolve(outDir, `${c.id}.json`), JSON.stringify({ ...byId.get(c.id), ...c }));
 }
+// Compact bundle of all districts for the landing page's explore sections.
+const divisions = new Map(index.divisions.map((d) => [d.id, d]));
+const explore = index.districts.map((d) => {
+  const c = CONTENT.find((x) => x.id === d.id);
+  const dv = divisions.get(d.division);
+  return {
+    id: d.id,
+    en: d.name_en,
+    bn: d.name_bn,
+    div: { en: dv.en, bn: dv.bn },
+    sum: c?.summary ?? null,
+    months: c?.bestSeason.months ?? [],
+    note: c?.bestSeason.note_en ?? '',
+    places: (c?.attractions ?? []).map((a) => ({ en: a.name.en, bn: a.name.bn, cat: a.category })),
+    food: (c?.food ?? []).map((f) => ({ en: f.name.en, bn: f.name.bn })),
+  };
+});
+writeFileSync(resolve(root, 'public/tracker-data/explore.json'), JSON.stringify(explore));
+
 console.log(`wrote ${CONTENT.length} district detail files (${64 - CONTENT.length} districts have no editorial content yet)`);

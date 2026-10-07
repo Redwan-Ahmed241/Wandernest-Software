@@ -73,7 +73,7 @@ export default function App() {
   const [justChanged, setJustChanged] = useState<string | null>(null);
   const popTimer = useRef<number | undefined>(undefined);
   const [view, setViewState] = useState<View>(readView);
-  const [dirDistrict, setDirDistrict] = useState('');
+  const [dirDistrict, setDirDistrict] = useState(() => (readView() === 'directory' ? (readPreselect() ?? '') : ''));
   const [groupInitial] = useState(() => parseGroupParam(readGroup()));
 
   useEffect(() => {

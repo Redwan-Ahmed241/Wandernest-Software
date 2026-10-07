@@ -21,7 +21,8 @@
       <a class="logo" href="/">WanderNest <b>BD</b></a>
       <nav aria-label="Main">
         <a href="/tracker" data-i18n="navTracker">64-district map</a>
-        <a href="#explore" data-i18n="navExplore">Explore</a>
+        <a href="#todo" data-i18n="navTodo">Things to do</a>
+        <a href="#all" data-i18n="navAll">All districts</a>
         <a href="#about" data-i18n="navAbout">About</a>
       </nav>
       <div class="lang" role="group" aria-label="Language">
@@ -57,33 +58,72 @@
       <section id="explore" class="explore">
         <h2 data-i18n="exploreTitle">Where will you go next?</h2>
         <div class="cards">
-          <a class="card" href="/tracker?d=moulvibazar">
+          <a class="card" href="/tracker?d=moulvibazar" data-district="moulvibazar">
             <img src="/landing/sylhet.webp" alt="" loading="lazy" width="800" height="534" />
             <span class="card-body">
               <strong data-i18n="c1Title">Tea hills of Sreemangal</strong>
               <small data-i18n="c1Sub">Moulvibazar · Sylhet Division</small>
             </span>
           </a>
-          <a class="card" href="/tracker?d=khulna">
+          <a class="card" href="/tracker?d=khulna" data-district="khulna">
             <img src="/landing/sundarbans.webp" alt="" loading="lazy" width="800" height="450" />
             <span class="card-body">
               <strong data-i18n="c2Title">The Sundarbans</strong>
               <small data-i18n="c2Sub">Khulna · Khulna Division</small>
             </span>
           </a>
-          <a class="card" href="/tracker?d=coxs-bazar">
+          <a class="card" href="/tracker?d=coxs-bazar" data-district="coxs-bazar">
             <img src="/landing/st-martin.webp" alt="" loading="lazy" width="800" height="534" />
             <span class="card-body">
               <strong data-i18n="c3Title">St. Martin's Island</strong>
               <small data-i18n="c3Sub">Cox's Bazar · Chattogram Division</small>
             </span>
           </a>
-          <a class="card" href="/tracker?d=bandarban">
+          <a class="card" href="/tracker?d=bandarban" data-district="bandarban">
             <img src="/landing/bandarban.webp" alt="" loading="lazy" width="800" height="505" />
             <span class="card-body">
               <strong data-i18n="c4Title">Hills of Bandarban</strong>
               <small data-i18n="c4Sub">Bandarban · Chattogram Division</small>
             </span>
+          </a>
+        </div>
+      </section>
+
+      <section id="month" class="sect" hidden>
+        <h2><span data-i18n="monthTitle">Best to visit in</span> <span id="month-name"></span></h2>
+        <p class="muted" data-i18n="monthSub">Districts that are in season right now. Tap one for places, food and stays.</p>
+        <div class="rail" id="month-list"></div>
+      </section>
+
+      <section id="todo" class="sect" hidden>
+        <h2 data-i18n="todoTitle">Things to do across Bangladesh</h2>
+        <div class="pills" id="todo-tabs" role="group"></div>
+        <div class="grid" id="todo-list"></div>
+        <button type="button" class="more" id="todo-more">Show more</button>
+      </section>
+
+      <section id="all" class="sect" hidden>
+        <h2 data-i18n="allTitle">All 64 districts</h2>
+        <div id="div-list"></div>
+      </section>
+
+      <section id="features" class="sect">
+        <h2 data-i18n="featTitle">More than a map</h2>
+        <div class="features">
+          <a class="feature" href="/tracker">
+            <span class="fi" aria-hidden="true">🏅</span>
+            <strong data-i18n="f1Title">Earn badges</strong>
+            <small data-i18n="f1Sub">Hill Tracts Conqueror, Tea Trail, Mangrove Explorer and 12 more.</small>
+          </a>
+          <a class="feature" href="/tracker#group">
+            <span class="fi" aria-hidden="true">👥</span>
+            <strong data-i18n="f2Title">Compare with friends</strong>
+            <small data-i18n="f2Sub">See how much of Bangladesh your group has covered together.</small>
+          </a>
+          <a class="feature" href="/tracker#directory">
+            <span class="fi" aria-hidden="true">🏨</span>
+            <strong data-i18n="f3Title">Stays & tour contacts</strong>
+            <small data-i18n="f3Sub">Hotels, resorts and tour operators with direct phone numbers.</small>
           </a>
         </div>
       </section>
@@ -100,6 +140,19 @@
     <footer class="foot">
       <p data-i18n="footer">© WanderNest BD · Independent travel directory</p>
     </footer>
+    <dialog id="place" aria-labelledby="place-title">
+      <div class="dlg">
+        <button type="button" class="dlg-x" id="place-close" aria-label="Close">×</button>
+        <h2 id="place-title"></h2>
+        <p class="muted" id="place-div"></p>
+        <div id="place-body"></div>
+        <div class="dlg-actions">
+          <a class="cta" id="place-map" href="/tracker" data-i18n="markOnMap">Mark on my map</a>
+          <a class="cta ghost" id="place-stays" href="/tracker#directory" hidden></a>
+        </div>
+        <p class="draft-note" data-i18n="draftNote">Travel information is a draft and may contain mistakes. Check locally before you go.</p>
+      </div>
+    </dialog>
     <script type="module" src="/src/landing/main.ts"></script>
   </body>
 </html>
