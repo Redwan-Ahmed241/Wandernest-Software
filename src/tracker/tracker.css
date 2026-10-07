@@ -37,9 +37,57 @@ button {
 }
 
 .app {
-  max-width: 560px;
+  max-width: 1360px;
   margin: 0 auto;
   padding: 0 16px 120px;
+}
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 600px;
+  margin: 0 auto;
+}
+.layout > * {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+@media (min-width: 1024px) {
+  .app {
+    padding: 0 32px 40px;
+  }
+  .layout {
+    max-width: none;
+    grid-template-columns: minmax(0, 7fr) minmax(360px, 5fr);
+    grid-template-rows: repeat(7, auto) 1fr;
+    grid-template-areas: 'map hero' 'map banner' 'map sel' 'map score' 'map search' 'map share' 'map divs' 'map foot';
+    column-gap: 32px;
+  }
+  .a-hero { grid-area: hero; }
+  .a-banner { grid-area: banner; }
+  .a-score { grid-area: score; }
+  .a-search { grid-area: search; }
+  .a-share { grid-area: share; }
+  .a-divs { grid-area: divs; }
+  .a-foot { grid-area: foot; }
+  .a-map {
+    grid-area: map;
+    position: sticky;
+    top: 12px;
+    align-self: start;
+  }
+  .a-map .map-wrap {
+    height: calc(100vh - 88px);
+    min-height: 560px;
+    margin: 0;
+  }
+  .a-map .map {
+    height: 100%;
+    max-height: none;
+    aspect-ratio: auto;
+  }
+  .hero h1 {
+    margin-top: 4px;
+  }
 }
 .top {
   display: flex;
@@ -50,6 +98,12 @@ button {
 .brand {
   font-weight: 800;
   letter-spacing: 0.02em;
+  text-decoration: none;
+  color: inherit;
+  font-size: 1.1rem;
+}
+.brand b {
+  color: var(--red);
 }
 .lang {
   display: flex;
@@ -186,7 +240,6 @@ button {
   overflow: hidden;
   background: radial-gradient(120% 90% at 30% 10%, #0a3f31, var(--deep));
   border: 1px solid var(--line);
-  margin-bottom: 12px;
   contain: layout paint;
 }
 .map {
@@ -194,7 +247,7 @@ button {
   width: 100%;
   height: auto;
   aspect-ratio: 686 / 978;
-  max-height: 78vh;
+  max-height: 82vh;
   margin: 0 auto;
   touch-action: pan-y;
   position: relative;
@@ -234,6 +287,47 @@ button {
   100% {
     fill-opacity: 1;
   }
+}
+.lbl {
+  fill: #fff;
+  text-anchor: middle;
+  dominant-baseline: central;
+  font-weight: 600;
+  paint-order: stroke;
+  stroke: rgba(4, 35, 27, 0.85);
+  stroke-width: 0.28em;
+  stroke-linejoin: round;
+  pointer-events: none;
+  user-select: none;
+}
+.tip {
+  position: absolute;
+  z-index: 4;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  background: rgba(4, 35, 27, 0.94);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 6px 10px;
+  display: none;
+  white-space: nowrap;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+.tip.show {
+  display: grid;
+}
+.tip small,
+.who small {
+  color: var(--muted);
+}
+.who {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.who > div {
+  display: grid;
 }
 .sel {
   fill: none;
@@ -650,4 +744,18 @@ button {
 }
 .disclaimer a {
   color: #ffd76a;
+}
+
+@media (min-width: 1024px) {
+  /* On desktop the selection panel sits in the sidebar instead of covering the map. */
+  .actionbar {
+    position: static;
+    grid-area: sel;
+    max-width: none;
+    margin: 0 0 12px;
+    border-radius: 16px;
+    border: 1px solid var(--red);
+    box-shadow: none;
+    padding: 12px 14px;
+  }
 }

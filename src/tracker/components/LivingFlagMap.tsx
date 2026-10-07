@@ -30,8 +30,8 @@ interface Props {
 
 const MAX_ZOOM = 6;
 /** On-map labels appear once a district name can be drawn at this size without overlapping much. */
-const LABEL_PX = 10.5;
-const MIN_PX_PER_UNIT = 1.15;
+const LABEL_PX = 9.5;
+const MIN_PX_PER_UNIT = 0.62;
 
 /** The 64 <path>s only re-render when their own state changes. */
 const DistrictPath = memo(function DistrictPath({
@@ -196,6 +196,7 @@ export default function LivingFlagMap(props: Props) {
   }, [showLabels, districts, view, fontSize, info, visited]);
 
   const tip = hover ? info[hover] : undefined;
+  const selD = selected ? districts.find((d) => d.id === selected)?.d : undefined;
 
   return (
     <div className="map-wrap" ref={wrapRef}>
@@ -219,7 +220,7 @@ export default function LivingFlagMap(props: Props) {
         {districts.map((d) => (
           <DistrictPath key={d.id} id={d.id} d={d.d} cls={classes.get(d.id) ?? 'dist'} label={info[d.id]?.both ?? d.id} />
         ))}
-        {selected && <use href={`#p-${selected}`} className="sel" />}
+        {selD && <path d={selD} className="sel" />}
         {labels && <g aria-hidden="true">{labels}</g>}
       </svg>
       <div ref={tipRef} className={`tip ${tip ? 'show' : ''}`} aria-hidden="true">

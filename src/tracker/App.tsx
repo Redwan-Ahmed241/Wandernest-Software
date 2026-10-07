@@ -157,161 +157,170 @@ export default function App() {
   return (
     <div className="app">
       <header className="top">
-        <span className="brand">WanderNest BD</span>
+        <a className="brand" href="/">
+          WanderNest <b>BD</b>
+        </a>
         <div className="lang" role="group" aria-label="Language">
-          <button type="button" className={lang === 'en' ? 'on' : ''} onClick={() => setLang('en')}>
+          <button type="button" className={lang === 'en' ? 'on' : ''} aria-pressed={lang === 'en'} onClick={() => setLang('en')}>
             EN
           </button>
-          <button type="button" className={lang === 'bn' ? 'on' : ''} onClick={() => setLang('bn')}>
+          <button type="button" className={lang === 'bn' ? 'on' : ''} aria-pressed={lang === 'bn'} onClick={() => setLang('bn')}>
             বাংলা
           </button>
         </div>
       </header>
 
-      <section className="hero">
-        <h1>{t(lang, 'title')}</h1>
-        <p>{t(lang, 'sub')}</p>
-      </section>
+      <div className="layout">
+        <section className="hero a-hero">
+          <h1>{t(lang, 'title')}</h1>
+          <p>{t(lang, 'sub')}</p>
+        </section>
 
-      {shared && (
-        <div className="banner" role="status">
-          <span>{t(lang, 'sharedBanner')}</span>
-          <div className="row">
-            <button type="button" className="btn red" onClick={saveShared}>
-              {confirmSave ? t(lang, 'replaceWarn') : t(lang, 'saveShared')}
-            </button>
-            <button type="button" className="btn" onClick={exitShared}>
-              {t(lang, 'backMine')}
-            </button>
+        {shared && (
+          <div className="banner a-banner" role="status">
+            <span>{t(lang, 'sharedBanner')}</span>
+            <div className="row">
+              <button type="button" className="btn red" onClick={saveShared}>
+                {confirmSave ? t(lang, 'replaceWarn') : t(lang, 'saveShared')}
+              </button>
+              <button type="button" className="btn" onClick={exitShared}>
+                {t(lang, 'backMine')}
+              </button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      <section className="score" aria-live="polite">
-        <div className="big">
-          {num(lang, count)}
-          <span>/{num(lang, 64)}</span>
-        </div>
-        <div className="meta">
-          <strong>
-            {num(lang, percent)}% {t(lang, 'explored')}
-          </strong>
-          <span className="rank">{rank[lang]}</span>
-          {next && (
-            <small>
-              {t(lang, 'next')}: {num(lang, next)} {t(lang, 'districts')}
-            </small>
+        {selected && (
+          <div className="actionbar a-sel" role="region" aria-label={selName}>
+            <div className="who">
+              <div>
+                <strong>{info[selected]?.both ?? selName}</strong>
+                <small>{info[selected]?.division}</small>
+              </div>
+              <button type="button" className="x" onClick={() => setSelected(null)} aria-label={t(lang, 'close')}>
+                ×
+              </button>
+            </div>
+            <div className="acts">
+              {!shared && (
+                <>
+                  <button
+                    type="button"
+                    className={`btn ${selStatus === 'visited' ? 'red on' : ''}`}
+                    aria-pressed={selStatus === 'visited'}
+                    onClick={() => mark(selStatus === 'visited' ? 'none' : 'visited')}
+                  >
+                    ✓ {t(lang, 'visited')}
+                  </button>
+                  <button
+                    type="button"
+                    className={`btn ${selStatus === 'want' ? 'mint on' : ''}`}
+                    aria-pressed={selStatus === 'want'}
+                    onClick={() => mark(selStatus === 'want' ? 'none' : 'want')}
+                  >
+                    ☆ {t(lang, 'want')}
+                  </button>
+                </>
+              )}
+              <button type="button" className="btn" onClick={() => setSheetOpen(true)} disabled={!sel}>
+                {t(lang, 'details')}
+              </button>
+            </div>
+          </div>
+        )}
+
+        <section className="score a-score" aria-live="polite">
+          <div className="big">
+            {num(lang, count)}
+            <span>/{num(lang, 64)}</span>
+          </div>
+          <div className="meta">
+            <strong>
+              {num(lang, percent)}% {t(lang, 'explored')}
+            </strong>
+            <span className="rank">{rank[lang]}</span>
+            {next && (
+              <small>
+                {t(lang, 'next')}: {num(lang, next)} {t(lang, 'districts')}
+              </small>
+            )}
+          </div>
+          <div className="progress" aria-hidden="true">
+            <i style={{ width: `${percent}%` }} />
+          </div>
+        </section>
+
+        <div className="search a-search">
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={t(lang, 'search')}
+            aria-label={t(lang, 'search')}
+            autoComplete="off"
+            maxLength={40}
+          />
+          {results.length > 0 && (
+            <ul className="results">
+              {results.map((d) => (
+                <li key={d.id}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelected(d.id);
+                      setQuery('');
+                    }}
+                  >
+                    {lang === 'bn' ? d.name_bn : d.name_en}
+                    <small>{info[d.id]?.division}</small>
+                  </button>
+                </li>
+              ))}
+            </ul>
           )}
         </div>
-        <div className="progress" aria-hidden="true">
-          <i style={{ width: `${percent}%` }} />
-        </div>
-      </section>
 
-      <div className="search">
-        <input
-          type="search"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder={t(lang, 'search')}
-          aria-label={t(lang, 'search')}
-          autoComplete="off"
-          maxLength={40}
-        />
-        {results.length > 0 && (
-          <ul className="results">
-            {results.map((d) => (
-              <li key={d.id}>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSelected(d.id);
-                    setQuery('');
-                  }}
-                >
-                  {lang === 'bn' ? d.name_bn : d.name_en}
-                  <small>{lang === 'bn' ? d.name_en : d.name_bn}</small>
-                </button>
-              </li>
-            ))}
-          </ul>
+        <div className="a-map">
+          <LivingFlagMap
+            districts={DISTRICTS}
+            viewBox={VIEWBOX}
+            visited={visitedIds}
+            want={wantIds}
+            selected={selected}
+            justChanged={justChanged}
+            info={info}
+            lang={lang}
+            onSelect={setSelected}
+          />
+        </div>
+
+        <button type="button" className="btn red wide a-share" onClick={() => setShareOpen(true)}>
+          {t(lang, 'share')}
+        </button>
+
+        {divisionStats.length > 0 && (
+          <section className="divs a-divs">
+            <h2>{t(lang, 'divisions')}</h2>
+            <ul>
+              {divisionStats.map(({ dv, total, done }) => (
+                <li key={dv.id}>
+                  <span>{lang === 'bn' ? dv.bn : dv.en}</span>
+                  <span className="track">
+                    <i style={{ width: `${(done / total) * 100}%` }} />
+                  </span>
+                  <span className="n">
+                    {num(lang, done)}/{num(lang, total)}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
         )}
+
+        <footer className="foot a-foot">
+          <p>{t(lang, 'footer')}</p>
+        </footer>
       </div>
-
-      <LivingFlagMap
-        districts={DISTRICTS}
-        viewBox={VIEWBOX}
-        visited={visitedIds}
-        want={wantIds}
-        selected={selected}
-        justChanged={justChanged}
-        labels={labels}
-        lang={lang}
-        onSelect={setSelected}
-      />
-
-      <button type="button" className="btn red wide" onClick={() => setShareOpen(true)}>
-        {t(lang, 'share')}
-      </button>
-
-      {divisionStats.length > 0 && (
-        <section className="divs">
-          <h2>{t(lang, 'divisions')}</h2>
-          <ul>
-            {divisionStats.map(({ dv, total, done }) => (
-              <li key={dv.id}>
-                <span>{lang === 'bn' ? dv.bn : dv.en}</span>
-                <span className="track">
-                  <i style={{ width: `${(done / total) * 100}%` }} />
-                </span>
-                <span className="n">
-                  {num(lang, done)}/{num(lang, total)}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      <footer className="foot">
-        <p>{t(lang, 'footer')}</p>
-      </footer>
-
-      {selected && (
-        <div className="actionbar" role="region" aria-label={selName}>
-          <div className="who">
-            <strong>{selName}</strong>
-          </div>
-          <div className="acts">
-            {!shared && (
-              <>
-                <button
-                  type="button"
-                  className={`btn ${selStatus === 'visited' ? 'red on' : ''}`}
-                  aria-pressed={selStatus === 'visited'}
-                  onClick={() => mark(selStatus === 'visited' ? 'none' : 'visited')}
-                >
-                  ✓ {t(lang, 'visited')}
-                </button>
-                <button
-                  type="button"
-                  className={`btn ${selStatus === 'want' ? 'mint on' : ''}`}
-                  aria-pressed={selStatus === 'want'}
-                  onClick={() => mark(selStatus === 'want' ? 'none' : 'want')}
-                >
-                  ☆ {t(lang, 'want')}
-                </button>
-              </>
-            )}
-            <button type="button" className="btn" onClick={() => setSheetOpen(true)} disabled={!sel}>
-              {t(lang, 'details')}
-            </button>
-            <button type="button" className="x" onClick={() => setSelected(null)} aria-label={t(lang, 'close')}>
-              ×
-            </button>
-          </div>
-        </div>
-      )}
 
       <Suspense fallback={null}>
         {sheetOpen && sel && index && (

@@ -14,6 +14,7 @@ const S = {
   details: { en: 'Details', bn: 'বিস্তারিত' },
   share: { en: 'Share my map', bn: 'ম্যাপ শেয়ার করুন' },
   search: { en: 'Search a district (e.g. Bogra, কুমিল্লা)', bn: 'জেলা খুঁজুন (যেমন Bogra, কুমিল্লা)' },
+  division: { en: 'Division', bn: 'বিভাগ' },
   divisions: { en: 'Division progress', bn: 'বিভাগভিত্তিক অগ্রগতি' },
   next: { en: 'next milestone', bn: 'পরবর্তী লক্ষ্য' },
   sharedBanner: { en: 'You are viewing a shared map.', bn: 'আপনি একটি শেয়ার করা ম্যাপ দেখছেন।' },
