@@ -1,6 +1,6 @@
 import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import mapData from './data/map.json';
-import LivingFlagMap, { type MapDistrict } from './components/LivingFlagMap';
+import LivingFlagMap, { type DistrictInfo, type MapDistrict } from './components/LivingFlagMap';
 import { repository } from './domain/repository';
 import { decodeMask, encodeMask } from './domain/share';
 import { nextMilestone, rankFor } from './domain/ranks';
@@ -19,6 +19,15 @@ const BIT_TO_ID = DISTRICTS.map((d) => d.id);
 
 const norm = (s: string) => s.toLowerCase().normalize('NFC').replace(/[^\p{L}\p{M}\p{N}]/gu, '');
 
+function readPreselect(): string | null {
+  try {
+    const d = new URLSearchParams(window.location.search).get('d');
+    return d && ID_TO_BIT.has(d) ? d : null;
+  } catch {
+    return null;
+  }
+}
+
 function readShared(): { visited: Set<number>; want: Set<number> } | null {
   try {
     const q = new URLSearchParams(window.location.search);
@@ -35,7 +44,7 @@ export default function App() {
   const lang = state.lang;
   const [index, setIndex] = useState<DistrictIndex | null>(null);
   const [shared, setShared] = useState(readShared);
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selected, setSelected] = useState<string | null>(readPreselect);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const [confirmSave, setConfirmSave] = useState(false);
@@ -56,9 +65,17 @@ export default function App() {
   const wantIds = useMemo(() => new Set([...wantBits].map((b) => BIT_TO_ID[b]).filter(Boolean)), [wantBits]);
 
   const byId = useMemo(() => new Map((index?.districts ?? []).map((d) => [d.id, d])), [index]);
-  const labels = useMemo(() => {
-    const o: Record<string, string> = {};
-    for (const d of index?.districts ?? []) o[d.id] = lang === 'bn' ? d.name_bn : d.name_en;
+  const info = useMemo(() => {
+    const o: Record<string, DistrictInfo> = {};
+    const divs = new Map((index?.divisions ?? []).map((d) => [d.id, d]));
+    for (const d of index?.districts ?? []) {
+      const dv = divs.get(d.division);
+      o[d.id] = {
+        name: lang === 'bn' ? d.name_bn : d.name_en,
+        both: `${d.name_en} | ${d.name_bn}`,
+        division: dv ? `${lang === 'bn' ? dv.bn : dv.en} ${t(lang, 'division')}` : '',
+      };
+    }
     return o;
   }, [index, lang]);
 

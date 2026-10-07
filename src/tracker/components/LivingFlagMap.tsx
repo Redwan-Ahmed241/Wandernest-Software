@@ -8,6 +8,14 @@ export interface MapDistrict {
   c: [number, number];
 }
 
+export interface DistrictInfo {
+  /** Short name in the current language, used for on-map labels. */
+  name: string;
+  /** "Sylhet | সিলেট" */
+  both: string;
+  division: string;
+}
+
 interface Props {
   districts: MapDistrict[];
   viewBox: [number, number];
@@ -15,12 +23,15 @@ interface Props {
   want: ReadonlySet<string>;
   selected: string | null;
   justChanged: string | null;
-  labels: Record<string, string>;
+  info: Record<string, DistrictInfo>;
   lang: Lang;
   onSelect: (id: string | null) => void;
 }
 
 const MAX_ZOOM = 6;
+/** On-map labels appear once a district name can be drawn at this size without overlapping much. */
+const LABEL_PX = 10.5;
+const MIN_PX_PER_UNIT = 1.15;
 
 /** The 64 <path>s only re-render when their own state changes. */
 const DistrictPath = memo(function DistrictPath({
@@ -38,11 +49,14 @@ const DistrictPath = memo(function DistrictPath({
 });
 
 export default function LivingFlagMap(props: Props) {
-  const { districts, viewBox, visited, want, selected, justChanged, labels, lang, onSelect } = props;
+  const { districts, viewBox, visited, want, selected, justChanged, info, lang, onSelect } = props;
   const [W, H] = viewBox;
   const [view, setView] = useState({ x: 0, y: 0, w: W, h: H });
+  const [svgPx, setSvgPx] = useState({ w: 0, h: 0 });
+  const [hover, setHover] = useState<string | null>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
+  const tipRef = useRef<HTMLDivElement>(null);
   const drag = useRef<{ x: number; y: number; vx: number; vy: number; moved: boolean } | null>(null);
   const suppressClick = useRef(false);
   const zoomed = view.w < W - 0.5;
@@ -70,6 +84,19 @@ export default function LivingFlagMap(props: Props) {
     };
   }, []);
 
+  useEffect(() => {
+    const svg = svgRef.current;
+    if (!svg) return;
+    const ro = new ResizeObserver(([e]) => setSvgPx({ w: e.contentRect.width, h: e.contentRect.height }));
+    ro.observe(svg);
+    return () => ro.disconnect();
+  }, []);
+
+  // Screen pixels per SVG unit (viewBox is letterboxed with "meet").
+  const pxPerUnit = svgPx.w && svgPx.h ? Math.min(svgPx.w / view.w, svgPx.h / view.h) : 0;
+  const showLabels = pxPerUnit >= MIN_PX_PER_UNIT;
+  const fontSize = pxPerUnit ? LABEL_PX / pxPerUnit : 0;
+
   const clamp = useCallback(
     (v: { x: number; y: number; w: number; h: number }) => {
       const w = Math.min(W, Math.max(W / MAX_ZOOM, v.w));
@@ -85,17 +112,25 @@ export default function LivingFlagMap(props: Props) {
   );
 
   const zoomBy = useCallback(
-    (factor: number) => {
+    (factor: number, cx?: number, cy?: number) => {
       setView((v) => {
         const nw = v.w / factor;
-        const cx = v.x + v.w / 2;
-        const cy = v.y + v.h / 2;
         const nh = (nw / W) * H;
-        return clamp({ x: cx - nw / 2, y: cy - nh / 2, w: nw, h: nh });
+        const px = cx ?? v.x + v.w / 2;
+        const py = cy ?? v.y + v.h / 2;
+        return clamp({ x: px - nw / 2, y: py - nh / 2, w: nw, h: nh });
       });
     },
     [W, H, clamp],
   );
+
+  // Zoom towards a newly selected district (e.g. from search) if we are zoomed in.
+  useEffect(() => {
+    if (!selected || !zoomed) return;
+    const d = districts.find((x) => x.id === selected);
+    if (d) setView((v) => clamp({ ...v, x: d.c[0] - v.w / 2, y: d.c[1] - v.h / 2 }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected]);
 
   // One click handler for the whole map (event delegation).
   const onClick = (e: React.MouseEvent<SVGSVGElement>) => {
@@ -113,16 +148,23 @@ export default function LivingFlagMap(props: Props) {
     drag.current = { x: e.clientX, y: e.clientY, vx: view.x, vy: view.y, moved: false };
   };
   const onPointerMove = (e: React.PointerEvent<SVGSVGElement>) => {
+    if (e.pointerType === 'mouse') {
+      const id = (e.target as Element).closest?.('path[data-id]')?.getAttribute('data-id') ?? null;
+      if (id !== hover) setHover(id);
+      const tip = tipRef.current;
+      const wrap = wrapRef.current;
+      if (tip && wrap && id) {
+        const r = wrap.getBoundingClientRect();
+        tip.style.transform = `translate3d(${e.clientX - r.left + 14}px, ${e.clientY - r.top + 14}px, 0)`;
+      }
+    }
     const dr = drag.current;
-    const svg = svgRef.current;
-    if (!dr || !svg || e.buttons === 0) return;
+    if (!dr || !pxPerUnit || e.buttons === 0) return;
     const dx = e.clientX - dr.x;
     const dy = e.clientY - dr.y;
     if (!dr.moved && Math.hypot(dx, dy) < 6) return;
     dr.moved = true;
-    const rect = svg.getBoundingClientRect();
-    const k = view.w / rect.width;
-    setView((v) => clamp({ ...v, x: dr.vx - dx * k, y: dr.vy - dy * k }));
+    setView((v) => clamp({ ...v, x: dr.vx - dx / pxPerUnit, y: dr.vy - dy / pxPerUnit }));
   };
   const endDrag = () => {
     if (drag.current?.moved) suppressClick.current = true;
@@ -141,6 +183,20 @@ export default function LivingFlagMap(props: Props) {
     return m;
   }, [districts, visited, want, justChanged]);
 
+  const labels = useMemo(() => {
+    if (!showLabels) return null;
+    const pad = fontSize * 4;
+    return districts
+      .filter((d) => d.c[0] > view.x - pad && d.c[0] < view.x + view.w + pad && d.c[1] > view.y && d.c[1] < view.y + view.h)
+      .map((d) => (
+        <text key={d.id} x={d.c[0]} y={d.c[1]} fontSize={fontSize} className={visited.has(d.id) ? 'lbl on' : 'lbl'}>
+          {info[d.id]?.name ?? ''}
+        </text>
+      ));
+  }, [showLabels, districts, view, fontSize, info, visited]);
+
+  const tip = hover ? info[hover] : undefined;
+
   return (
     <div className="map-wrap" ref={wrapRef}>
       <div className="sun" aria-hidden="true" />
@@ -154,14 +210,26 @@ export default function LivingFlagMap(props: Props) {
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}
-        onPointerLeave={endDrag}
+        onPointerLeave={() => {
+          endDrag();
+          setHover(null);
+        }}
         onPointerCancel={endDrag}
       >
         {districts.map((d) => (
-          <DistrictPath key={d.id} id={d.id} d={d.d} cls={classes.get(d.id) ?? 'dist'} label={labels[d.id] ?? d.id} />
+          <DistrictPath key={d.id} id={d.id} d={d.d} cls={classes.get(d.id) ?? 'dist'} label={info[d.id]?.both ?? d.id} />
         ))}
         {selected && <use href={`#p-${selected}`} className="sel" />}
+        {labels && <g aria-hidden="true">{labels}</g>}
       </svg>
+      <div ref={tipRef} className={`tip ${tip ? 'show' : ''}`} aria-hidden="true">
+        {tip && (
+          <>
+            <strong>{tip.both}</strong>
+            <small>{tip.division}</small>
+          </>
+        )}
+      </div>
       <div className="zoom-ctl">
         <button type="button" onClick={() => zoomBy(1.6)} aria-label={t(lang, 'zoomIn')}>
           +

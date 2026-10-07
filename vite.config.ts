@@ -1,10 +1,21 @@
-import { defineConfig } from 'vite'
+import { defineConfig, type Connect, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
+// Mirrors public/_redirects so /tracker works in `vite` and `vite preview` too.
+const rewriteTracker: Connect.NextHandleFunction = (req, _res, next) => {
+  if (req.url && /^\/tracker\/?(\?|$)/.test(req.url)) req.url = req.url.replace(/^\/tracker\/?/, '/tracker.html')
+  next()
+}
+const trackerRoute = (): Plugin => ({
+  name: 'tracker-route',
+  configureServer: (s) => void s.middlewares.use(rewriteTracker),
+  configurePreviewServer: (s) => void s.middlewares.use(rewriteTracker),
+})
+
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [react(), tailwindcss(), trackerRoute()],
   server: {
     port: 1241, // Change this to your desired port
     proxy: {
